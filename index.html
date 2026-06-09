@@ -24,6 +24,11 @@
   .tabbar button{flex:0 0 auto;background:var(--panel);border:1px solid var(--line);border-radius:11px;color:var(--sub);font-family:inherit;font-weight:700;font-size:12px;padding:9px 13px;cursor:pointer;white-space:nowrap}
   .tabbar button.on{background:var(--accent);color:#10121a;border-color:var(--accent)}
   .panel{display:none}.panel.on{display:block}
+  .subbar{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:14px;scrollbar-width:none}.subbar::-webkit-scrollbar{display:none}
+  .subbar button{flex:0 0 auto;background:#0e1016;border:1px solid var(--line);border-radius:10px;color:var(--sub);font-family:inherit;font-weight:700;font-size:12px;padding:8px 12px;cursor:pointer;white-space:nowrap}
+  .subbar button.on{background:var(--accent2);color:#10121a;border-color:var(--accent2)}
+  .subbar button.soon{opacity:.45;cursor:default}
+  .sub{display:none}.sub.on{display:block}
 
   .seg{display:flex;background:var(--panel);border:1px solid var(--line);border-radius:11px;overflow:hidden;margin-bottom:14px}
   .seg button{flex:1;background:none;border:none;color:var(--sub);font-family:inherit;font-weight:700;font-size:13px;padding:10px 0;cursor:pointer}
@@ -93,9 +98,7 @@
     <button data-t="pred">👑 プレデター</button>
     <button data-t="srv">🟢 サーバー</button>
     <button data-t="find">🔍 検索</button>
-    <button data-t="shindan">🎯 立ち回り診断</button>
-    <button data-t="ng">🚫 使うな診断</button>
-    <button data-t="roul">🎰 ルーレット</button>
+    <button data-t="diag">🧪 診断・あそび</button>
   </div>
 
   <!-- マップ -->
@@ -128,8 +131,18 @@
     <div class="note">※Apexの仕様で、本人がゲーム内で装備している“トラッカー”の数値しか取得できません（キルトラッカー未装備ならキル数は出ません）。</div>
   </div>
 
+  <!-- 診断・あそび（タブの中に複数パネル。今後の追加はここに足すだけ） -->
+  <div class="panel" id="pdiag">
+    <div class="subbar" id="subbar">
+      <button class="on" data-s="ssh">🎯 立ち回り</button>
+      <button data-s="sng">🚫 使うな</button>
+      <button data-s="sroul">🎰 ルーレット</button>
+      <button class="soon" disabled>🧭 使うべき(近日)</button>
+      <button class="soon" disabled>🔥 強さ(近日)</button>
+    </div>
+
   <!-- 立ち回り診断 -->
-  <div class="panel" id="pshindan">
+  <div class="sub on" id="ssh">
     <div id="shStart">
       <div class="result"><div class="ic">🎯</div><div class="tname" style="font-size:30px">立ち回り診断</div></div>
       <div class="note" style="text-align:center">30の質問で、あなたのApexの立ち回りを13タイプに診断。<br>詰めるタイプ？安置取り？情報屋？</div>
@@ -144,7 +157,7 @@
   </div>
 
   <!-- 使うな診断 -->
-  <div class="panel" id="png">
+  <div class="sub" id="sng">
     <div id="ngStart">
       <div class="result"><div class="ic">🚫</div><div class="tname ng" style="font-size:28px">このキャラ使うな診断</div></div>
       <div class="note" style="text-align:center">12の質問で、<b>あなたが絶対に使ってはいけないレジェンド</b>を激辛で名指しします。ネタとしてどうぞ😈</div>
@@ -159,7 +172,7 @@
   </div>
 
   <!-- ルーレット -->
-  <div class="panel" id="proul">
+  <div class="sub" id="sroul">
     <div class="roul">
       <div style="font-size:14px;color:var(--sub)">3人分の使用キャラをルーレットで決定！</div>
       <div class="slots" id="slots"></div>
@@ -167,6 +180,7 @@
       <div class="note">※レジェンドは配列を編集可。最新シーズンの追加キャラは足してね。</div>
     </div>
   </div>
+  </div><!-- /pdiag -->
 
   <div class="ad" id="ad"></div>
   <footer>
@@ -177,7 +191,7 @@
 
 <script>
 /* ====== 設定 ====== */
-var APEX_GAS_URL = "";  // ★ Code_apex.gs をデプロイしたURLを貼る（空ならデータ系は「未設定」表示）
+var APEX_GAS_URL = "https://script.google.com/macros/s/AKfycbzYzvrRF2hsaYhPDUOzRQQ_81kgx75P9Qk-0etrbyMbEZInK4CMa2Br9JUnDzixOZybZQ/exec";  // Code_apex.gs 中継URL
 var SHOW_AD = true;
 /* アクセスカウンター（共通） */
 (function(){ var SITE="apex", CU="https://script.google.com/macros/s/AKfycbysy658Zhkvc07oEl_mqM7T9C_RifLzxA5Nt1aVxU60gXu4TYTK3P1fuxtsi4AU7XHL/exec";
@@ -188,12 +202,18 @@ var $=function(id){return document.getElementById(id);};
 /* ====== タブ ====== */
 document.querySelectorAll("#tabbar button").forEach(function(b){ b.onclick=function(){
   document.querySelectorAll("#tabbar button").forEach(function(x){x.classList.remove("on");}); b.classList.add("on");
-  var map={map:"pmap",pred:"ppred",srv:"psrv",find:"pfind",shindan:"pshindan",ng:"png",roul:"proul"};
+  var map={map:"pmap",pred:"ppred",srv:"psrv",find:"pfind",diag:"pdiag"};
   document.querySelectorAll(".panel").forEach(function(p){p.classList.remove("on");});
   $(map[b.dataset.t]).classList.add("on"); window.scrollTo(0,0);
   if(b.dataset.t==="pred"&&!predLoaded)loadPred();
   if(b.dataset.t==="srv"&&!srvLoaded)loadSrv();
-  if(b.dataset.t==="roul")initRoul();
+};});
+/* 診断サブタブ */
+document.querySelectorAll("#subbar button[data-s]").forEach(function(b){ b.onclick=function(){
+  document.querySelectorAll("#subbar button").forEach(function(x){x.classList.remove("on");}); b.classList.add("on");
+  document.querySelectorAll("#pdiag .sub").forEach(function(p){p.classList.remove("on");});
+  $(b.dataset.s).classList.add("on"); window.scrollTo(0,0);
+  if(b.dataset.s==="sroul")initRoul();
 };});
 
 /* ====== データ取得 ====== */
