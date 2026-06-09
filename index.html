@@ -3,412 +3,372 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>APEX激やばツール｜マップ・プレデター・診断</title>
-<meta name="description" content="Apexのマップローテ・プレデターボーダー・サーバー状態・スタッツ検索に加え、立ち回り診断や使うな診断まで詰め込んだ激やばツール。">
+<title>APEX激やばツール｜マップ・プレデター・スタッツ・診断</title>
+<meta name="description" content="Apexのマップローテ・プレデターボーダー・サーバー状態・スタッツ検索・ランキングに加え、立ち回り診断や使うな診断など激やばツールを全部入り。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Teko:wght@500;600;700&family=Zen+Kaku+Gothic+New:wght@500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Zen+Kaku+Gothic+New:wght@500;700;900&display=swap" rel="stylesheet">
 <style>
-  :root{--bg:#0b0c11;--panel:#15171f;--panel2:#1b1e29;--line:#2a2d3a;--text:#eef1f6;--sub:#8b93a7;--dim:#5b6477;--accent:#ff5a3c;--accent2:#ffb02e;--rank:#c062ff;--ok:#3fb98f;--warn:#ffb02e;--down:#ff4d5e;}
+  :root{--bg:#06070d;--panel:#0c1018;--panel2:#0b0f18;--line:#1d2740;--text:#e9f3ff;--sub:#7e8db0;--dim:#56607a;--cy:#19e3ff;--mg:#ff3df2;--or:#ff6a1f;--ok:#22e3a0;--warn:#ffc23d;--down:#ff3d5e;--pred:#ff4d3d;--rank:#c062ff;--plat:#39c6ff;}
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-  body{font-family:'Zen Kaku Gothic New',sans-serif;background:radial-gradient(120% 70% at 50% -10%,#1a1320,#0b0c11 60%) fixed;color:var(--text);min-height:100dvh;display:flex;flex-direction:column;align-items:center}
-  .wrap{width:100%;max-width:470px;padding:0 13px 40px}
-  .mono{font-variant-numeric:tabular-nums}
-  header{display:flex;align-items:center;justify-content:space-between;padding:15px 2px 10px}
-  .logo{font-family:'Teko';font-weight:700;font-size:30px;letter-spacing:1px;line-height:.8}
-  .logo .x{color:var(--accent)} .logo small{display:block;font-family:'Zen Kaku Gothic New';font-weight:500;font-size:10px;color:var(--sub);letter-spacing:2px;margin-top:3px}
-  .upd{font-size:10px;color:var(--sub);display:flex;align-items:center;gap:6px}
-  .upd .dot{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 8px var(--ok);animation:blink 1.6s infinite}@keyframes blink{50%{opacity:.25}}
-
-  .tabbar{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:14px;scrollbar-width:none}
-  .tabbar::-webkit-scrollbar{display:none}
-  .tabbar button{flex:0 0 auto;background:var(--panel);border:1px solid var(--line);border-radius:11px;color:var(--sub);font-family:inherit;font-weight:700;font-size:12px;padding:9px 13px;cursor:pointer;white-space:nowrap}
-  .tabbar button.on{background:var(--accent);color:#10121a;border-color:var(--accent)}
-  .panel{display:none}.panel.on{display:block}
-  .subbar{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:14px;scrollbar-width:none}.subbar::-webkit-scrollbar{display:none}
-  .subbar button{flex:0 0 auto;background:#0e1016;border:1px solid var(--line);border-radius:10px;color:var(--sub);font-family:inherit;font-weight:700;font-size:12px;padding:8px 12px;cursor:pointer;white-space:nowrap}
-  .subbar button.on{background:var(--accent2);color:#10121a;border-color:var(--accent2)}
-  .subbar button.soon{opacity:.45;cursor:default}
-  .sub{display:none}.sub.on{display:block}
-
-  .seg{display:flex;background:var(--panel);border:1px solid var(--line);border-radius:11px;overflow:hidden;margin-bottom:14px}
-  .seg button{flex:1;background:none;border:none;color:var(--sub);font-family:inherit;font-weight:700;font-size:13px;padding:10px 0;cursor:pointer}
-  .seg button.on[data-m="casual"]{background:var(--accent);color:#10121a}
-  .seg button.on[data-m="ranked"]{background:var(--rank);color:#fff}
-
-  .hero{border:1px solid var(--line);border-radius:18px;overflow:hidden;margin-bottom:14px;background:var(--panel);min-height:120px}
-  .hero .thumb{height:130px;position:relative;display:flex;align-items:flex-end;padding:14px}
-  .hero .thumb::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent,rgba(0,0,0,.55))}
-  .hero .thumb .ic{position:absolute;top:12px;right:16px;font-size:44px;opacity:.55}
-  .hero .thumb .mode{position:relative;z-index:2;font-family:'Teko';font-weight:600;font-size:15px;letter-spacing:2px;background:rgba(0,0,0,.4);padding:2px 10px;border-radius:20px}
-  .hero .body{padding:14px 16px 16px} .hero .mapname{font-family:'Teko';font-weight:700;font-size:36px;line-height:.85}
-  .hero .timer{display:flex;align-items:baseline;gap:8px;margin-top:10px} .hero .timer .lab{font-size:11px;color:var(--sub)} .hero .timer .t{font-family:'Teko';font-weight:700;font-size:32px;color:var(--accent2);line-height:.8}
-  .sect{font-size:12px;font-weight:900;letter-spacing:1px;color:var(--sub);margin:4px 2px 10px}
-  .nexts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-  .ncard{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--panel)}
-  .ncard .thumb{height:66px;display:flex;align-items:center;justify-content:center;position:relative} .ncard .thumb .ic{font-size:24px;opacity:.6}
-  .ncard .lab{position:absolute;top:7px;left:9px;font-size:9px;font-weight:700;letter-spacing:1px;background:rgba(0,0,0,.4);padding:1px 7px;border-radius:10px}
-  .ncard .nm{padding:8px 10px;font-family:'Teko';font-weight:600;font-size:18px;line-height:.9}
-
-  .pcard{display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:14px;background:var(--panel);padding:13px;margin-bottom:10px}
-  .pcard .pic{width:42px;height:42px;border-radius:10px;background:#0e1016;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:19px}
-  .pcard .pinfo{flex:1} .pcard .plat{font-weight:700;font-size:12px;color:var(--sub)} .pcard .rp{font-family:'Teko';font-weight:700;font-size:28px;line-height:.85;color:var(--accent2)} .pcard .rp small{font-family:'Zen Kaku Gothic New';font-size:11px;color:var(--sub);font-weight:500;margin-left:3px}
-  .pcard .mast{text-align:right;font-size:10px;color:var(--sub)} .pcard .mast b{display:block;font-family:'Teko';font-size:20px;color:var(--text);line-height:1}
-
-  .srow{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:11px;background:var(--panel);padding:11px 13px;margin-bottom:8px;font-size:13px}
-  .srow .sd{width:10px;height:10px;border-radius:50%;flex:0 0 auto} .srow .sn{flex:1;font-weight:700} .srow .sv{font-size:11px;color:var(--sub)}
-
-  .search input,.search select{width:100%;background:#0e1016;border:1px solid var(--line);border-radius:10px;color:#fff;font-family:inherit;font-size:15px;padding:11px;margin-bottom:8px}
-  .search button{width:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border:none;color:#10121a;font-family:'Teko';font-weight:700;font-size:18px;border-radius:10px;padding:11px;cursor:pointer}
-  .pstat{border:1px solid var(--line);border-radius:14px;background:var(--panel);padding:14px;margin-top:14px}
-  .pstat .nm{font-family:'Teko';font-weight:700;font-size:26px} .pstat .meta{font-size:12px;color:var(--sub);margin:4px 0 10px}
-  .pstat .grid{display:grid;grid-template-columns:1fr 1fr;gap:8px} .pstat .g{background:#0e1016;border:1px solid var(--line);border-radius:10px;padding:9px 11px} .pstat .g .k{font-size:10px;color:var(--sub)} .pstat .g .v{font-family:'Teko';font-weight:700;font-size:20px}
-
-  /* 診断共通 */
-  .bar{height:8px;background:#0c0e14;border-radius:8px;overflow:hidden;margin:12px 0 4px}.bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--accent2),var(--accent));border-radius:8px;transition:.25s}
-  .qnum{font-family:'Teko';font-size:14px;color:var(--sub);letter-spacing:1px}
-  .q{font-size:18px;font-weight:700;line-height:1.5;margin:10px 0 14px;min-height:50px}
-  .opts{display:flex;flex-direction:column;gap:9px}
-  .opt{border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:13px 15px;font-size:14px;font-weight:700;cursor:pointer;line-height:1.4}.opt:active{transform:scale(.99)}.opt:hover{border-color:var(--accent)}
-  .navrow{display:flex;justify-content:space-between;margin-top:13px}.navrow button{background:none;border:1px solid var(--line);color:var(--sub);border-radius:10px;padding:8px 15px;font-family:inherit;font-weight:700;font-size:13px;cursor:pointer}
-  .result{text-align:center;padding-top:4px}.result .ic{font-size:60px}.result .tname{font-family:'Teko';font-weight:700;font-size:38px;line-height:.9;margin-top:4px;color:var(--accent2)}.result .tname.ng{color:var(--down)}.result .tsub{font-size:12px;color:var(--sub);letter-spacing:2px;margin-top:4px}
-  .result .desc{font-size:14px;line-height:1.7;text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;margin:14px 0}
-  .gc{display:flex;gap:10px;text-align:left;margin-bottom:12px}.gc>div{flex:1;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--panel)}.gc .t{font-size:11px;font-weight:900;letter-spacing:1px;margin-bottom:4px}.gc .good .t{color:var(--ok)}.gc .care .t{color:var(--accent)}.gc p{font-size:12px;color:#cdd4e0;line-height:1.5}
-  .recos{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:6px 0 4px}.chip{font-size:12px;font-weight:700;border:1px solid var(--line);border-radius:20px;padding:5px 12px;background:var(--panel)}
-  .btn{display:block;width:100%;padding:12px;border:none;border-radius:12px;font-family:'Teko';font-weight:700;font-size:18px;letter-spacing:1px;cursor:pointer;margin-top:9px}
-  .btn.x{background:#111;color:#fff;border:1px solid #333}.btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent2));color:#10121a}.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--text)}
-
-  .roul{text-align:center}.slots{display:flex;gap:10px;justify-content:center;margin:18px 0}
-  .slot{flex:1;height:110px;border:1px solid var(--line);border-radius:14px;background:var(--panel);display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;position:relative}
-  .slot .pi{font-size:11px;color:var(--dim);position:absolute;top:8px}.slot .nm{font-family:'Teko';font-weight:700;font-size:22px;line-height:1;padding:0 4px}.slot.win{border-color:var(--accent2);box-shadow:0 0 18px rgba(255,176,46,.3)}.slot.spin .nm{animation:roll .08s linear infinite}@keyframes roll{0%{transform:translateY(-6px);opacity:.5}100%{transform:translateY(6px);opacity:.5}}
-
-  .note{font-size:11px;color:var(--dim);background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:9px 12px;margin-top:10px;line-height:1.6}
-  .ad{display:flex;justify-content:center;margin:16px 0 0}.ad iframe{border:0}
-  footer{margin-top:18px;font-size:10px;color:var(--dim);line-height:1.7;border-top:1px solid var(--line);padding-top:14px}footer a{color:var(--accent2);text-decoration:none}
+  body{font-family:'Zen Kaku Gothic New',sans-serif;background:var(--bg);color:var(--text);min-height:100dvh;overflow-x:hidden}
+  #fx{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5}
+  .scan{position:fixed;inset:0;z-index:1;pointer-events:none;background:repeating-linear-gradient(0deg,transparent 0 2px,rgba(25,227,255,.02) 2px 3px)}
+  .mono{font-family:'Chakra Petch',monospace;font-variant-numeric:tabular-nums}
+  .shell{position:relative;z-index:3;max-width:900px;margin:0 auto;padding:16px 14px 70px}
+  a{color:var(--cy)}
+  /* header */
+  .hd{display:flex;align-items:center;justify-content:space-between;padding:6px 2px 14px}
+  .brand{font-family:'Chakra Petch';font-weight:700;font-size:26px;letter-spacing:1px;cursor:pointer}.brand b{color:var(--cy);text-shadow:0 0 12px var(--cy)}.brand i{font-style:normal;color:var(--mg);text-shadow:0 0 12px var(--mg)}
+  .live{font-family:'Chakra Petch';font-size:10px;color:var(--sub);display:flex;gap:6px;align-items:center}.live .d{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 9px var(--ok);animation:bl 1.6s infinite}@keyframes bl{50%{opacity:.3}}
+  /* hub tiles */
+  .hubgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-top:4px}
+  .tile{position:relative;border:1px solid var(--line);background:linear-gradient(160deg,var(--panel),#0a0d14);border-radius:16px;padding:20px 16px;cursor:pointer;overflow:hidden;min-height:128px;display:flex;flex-direction:column;justify-content:space-between;transition:.16s}
+  .tile::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 80% 0,var(--g,#19e3ff)22,transparent 60%);opacity:.5}
+  .tile:hover{transform:translateY(-3px);border-color:var(--g,#19e3ff);box-shadow:0 8px 30px -8px var(--g,#19e3ff)}
+  .tile .ic{font-size:32px;position:relative}.tile .nm{font-family:'Chakra Petch';font-weight:700;font-size:19px;position:relative}.tile .ds{font-size:11px;color:var(--sub);margin-top:3px;position:relative;line-height:1.4}
+  .tile .lv{position:absolute;top:12px;right:12px;font-family:'Chakra Petch';font-size:10px;color:var(--ok);border:1px solid var(--ok);border-radius:20px;padding:1px 8px;z-index:2}
+  /* views */
+  .view{display:none}.view.on{display:block;animation:fade .3s}@keyframes fade{from{opacity:0;transform:translateY(8px)}}
+  .back{font-family:'Chakra Petch';font-weight:600;font-size:13px;color:var(--cy);background:none;border:1px solid var(--line);border-radius:8px;padding:8px 13px;cursor:pointer}
+  .caption{display:flex;align-items:baseline;gap:10px;margin:14px 2px 12px;flex-wrap:wrap}.caption h1{font-family:'Chakra Petch';font-weight:700;font-size:23px}.caption .d{font-size:12px;color:var(--sub)}
+  .eyebrow{font-family:'Chakra Petch';font-size:11px;letter-spacing:2px;color:var(--mg);margin:6px 2px 8px}
+  .note{font-size:11px;color:var(--dim);line-height:1.6;margin-top:12px}
+  .warnbox{border:1px solid rgba(255,194,61,.4);background:rgba(255,194,61,.07);border-radius:10px;padding:11px 13px;font-size:12px;color:var(--warn);line-height:1.6;margin-bottom:12px}
+  /* HUD frame */
+  .hud{position:relative;border:1px solid var(--line);background:linear-gradient(180deg,rgba(25,227,255,.03),transparent);padding:16px}
+  .hud::before,.hud::after{content:"";position:absolute;width:16px;height:16px;border:2px solid var(--cy)}.hud::before{top:-1px;left:-1px;border-right:none;border-bottom:none}.hud::after{bottom:-1px;right:-1px;border-left:none;border-top:none}
+  /* map */
+  .mrow{display:grid;grid-template-columns:48px 1fr auto;gap:14px;align-items:center;padding:15px 0;border-bottom:1px solid rgba(33,48,77,.6)}.mrow:last-child{border:none}
+  .mic{width:48px;height:48px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:24px;border:1px solid var(--line)}
+  .mmode{font-family:'Chakra Petch';font-size:10px;letter-spacing:1px;color:var(--sub)}.mname{font-family:'Chakra Petch';font-weight:700;font-size:21px;line-height:1;margin-top:2px}.mnext{font-size:11px;color:var(--sub);margin-top:5px}
+  .mtm{text-align:right}.mtm .l{font-size:10px;color:var(--sub)}.mtm b{font-family:'Chakra Petch';font-weight:700;font-size:22px;color:var(--or);display:block;text-shadow:0 0 10px rgba(255,106,31,.4)}
+  /* pred */
+  .phero{border:1px solid var(--pred);border-radius:20px;padding:24px 20px;text-align:center;background:radial-gradient(circle at 50% 0,rgba(255,77,61,.2),transparent 65%),var(--panel);margin-bottom:14px}
+  .phero .crown{font-size:38px}.phero .lab{font-family:'Chakra Petch';font-size:12px;letter-spacing:2px;color:var(--sub);margin-top:4px}.phero .rp{font-family:'Chakra Petch';font-weight:700;font-size:clamp(48px,13vw,84px);line-height:.85;color:var(--pred);text-shadow:0 0 28px rgba(255,77,61,.5)}.phero .rp small{font-family:'Zen Kaku Gothic New';font-size:15px;color:var(--sub);font-weight:500}.phero .pl{font-family:'Chakra Petch';font-weight:700;font-size:17px;margin-top:8px}.phero .cnt{font-size:13px;color:var(--sub);margin-top:6px}.phero .cnt b{font-family:'Chakra Petch';color:var(--text)}
+  .pothers{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.po{border:1px solid var(--line);background:var(--panel);border-radius:13px;padding:14px;text-align:center}.po .e{font-size:20px}.po .pl{font-size:11px;color:var(--sub);margin-top:2px}.po .rp{font-family:'Chakra Petch';font-weight:700;font-size:20px;margin-top:4px}.po .cnt{font-size:10px;color:var(--sub);margin-top:2px}
+  /* servers */
+  .banner{display:flex;align-items:center;gap:16px;border:1px solid var(--ok);background:linear-gradient(120deg,rgba(34,227,160,.1),transparent);border-radius:16px;padding:16px 18px;margin-bottom:10px}
+  .banner.warn{border-color:var(--warn);background:linear-gradient(120deg,rgba(255,194,61,.1),transparent)}.banner.down{border-color:var(--down);background:linear-gradient(120deg,rgba(255,61,94,.1),transparent)}
+  .banner .big{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;border:2px solid currentColor}.banner.ok2{color:var(--ok)}.banner.warn{color:var(--warn)}.banner.down{color:var(--down)}
+  .banner .s{font-family:'Chakra Petch';font-weight:700;font-size:22px;color:var(--text)}.banner .sub{color:var(--sub);font-size:12px;margin-top:4px}
+  .histbar{display:flex;gap:10px;margin-bottom:14px}.hc{flex:1;border:1px solid var(--line);background:var(--panel);border-radius:12px;padding:11px;text-align:center}.hc .k{font-size:10px;color:var(--sub);font-family:'Chakra Petch'}.hc .v{font-family:'Chakra Petch';font-weight:700;font-size:18px;margin-top:3px}
+  .sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+  .stile{border:1px solid var(--line);background:var(--panel);border-radius:13px;padding:13px;position:relative}.stile .led{position:absolute;top:13px;right:13px;width:11px;height:11px;border-radius:50%}.stile .rg{font-family:'Chakra Petch';font-weight:700;font-size:15px}.stile .sv{font-size:11px;color:var(--sub);margin-top:2px}.stile .st{font-family:'Chakra Petch';font-size:12px;font-weight:700;margin-top:10px}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;margin:10px 2px;font-size:12px;color:var(--sub)}.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px}
+  /* search */
+  .searchbar{display:flex;gap:8px;margin-bottom:16px}.searchbar input{flex:1;background:#0a0d14;border:1px solid var(--line);border-radius:10px;color:#fff;padding:11px 14px;font-size:15px}.searchbar select{background:#0a0d14;border:1px solid var(--line);border-radius:10px;color:#fff;padding:0 8px}.searchbar button{background:linear-gradient(90deg,var(--cy),var(--mg));border:none;color:#06070d;font-family:'Chakra Petch';font-weight:700;border-radius:10px;padding:0 16px;cursor:pointer}
+  .ptop{display:flex;gap:16px;align-items:center;border:1px solid var(--line);background:radial-gradient(circle at 85% 0,rgba(57,198,255,.16),transparent 55%),var(--panel);border-radius:18px;padding:16px}
+  .gauge{width:104px;height:104px;flex:0 0 104px;border-radius:50%;position:relative;background:conic-gradient(from 180deg,var(--cy) 0 var(--p,60%),#0e1320 0)}.gauge::after{content:"";position:absolute;inset:10px;border-radius:50%;background:var(--panel)}.gauge .in{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}.gauge .n{font-family:'Chakra Petch';font-weight:700;font-size:38px;line-height:.8}.gauge .o{font-size:10px;color:var(--sub)}
+  .pwho .nm{font-family:'Chakra Petch';font-weight:700;font-size:22px;line-height:1}.pwho .meta{font-size:12px;color:var(--sub);margin-top:5px}.pwho .on{color:var(--ok)}.pwho .verd{font-family:'Chakra Petch';font-weight:700;color:var(--mg);margin-top:8px;font-size:14px}
+  .subtabs{display:flex;gap:6px;margin:14px 0;overflow-x:auto;scrollbar-width:none}.subtabs::-webkit-scrollbar{display:none}.subtabs button{flex:0 0 auto;font-family:'Chakra Petch';font-weight:600;font-size:13px;color:var(--sub);background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:9px 15px;cursor:pointer}.subtabs button.on{color:var(--bg);background:linear-gradient(90deg,var(--cy),var(--mg));font-weight:700}
+  .spane{display:none}.spane.on{display:block}
+  .sgrid2{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}@media(min-width:520px){.sgrid2{grid-template-columns:repeat(4,1fr)}}
+  .stat{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px}.stat.calc{border-color:rgba(255,61,242,.4)}.stat .k{font-size:10px;color:var(--sub);font-family:'Chakra Petch'}.stat.calc .k{color:var(--mg)}.stat .v{font-family:'Chakra Petch';font-weight:700;font-size:21px;margin-top:3px}
+  .leg{display:flex;align-items:center;gap:10px;margin-bottom:8px}.leg .n{width:96px;font-size:13px;font-weight:700}.leg .b{flex:1;height:13px;background:#0a0d14;border-radius:6px;overflow:hidden}.leg .b>i{display:block;height:100%;background:linear-gradient(90deg,var(--cy),var(--mg))}.leg .v{font-family:'Chakra Petch';font-size:12px;color:var(--sub);width:54px;text-align:right}
+  .rankcard{border:1px solid var(--line);background:var(--panel);border-radius:14px;padding:18px;text-align:center}.rankcard .e{font-size:36px}.rankcard .r{font-family:'Chakra Petch';font-weight:700;font-size:22px;margin-top:6px}.rankcard .rp{color:var(--plat);font-family:'Chakra Petch'}.rankcard .bar{height:8px;background:#0a0d14;border-radius:8px;margin:14px 0 6px;overflow:hidden}.rankcard .bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--plat),var(--mg))}.rankcard .t{font-size:12px;color:var(--sub)}.rankcard .t b{color:#fff;font-family:'Chakra Petch'}
+  .peak{display:flex;align-items:center;gap:10px;border:1px solid rgba(127,212,255,.4);background:rgba(57,198,255,.06);border-radius:12px;padding:12px 14px;margin-top:10px}.peak .e{font-size:22px}.peak .k{font-size:11px;color:var(--sub)}.peak .v{font-family:'Chakra Petch';font-weight:700;font-size:16px;color:var(--plat)}
+  .match{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;border:1px solid var(--line);background:var(--panel);border-radius:12px;padding:11px 14px;margin-bottom:8px}.match .pl{font-family:'Chakra Petch';font-weight:700;font-size:18px;width:44px;text-align:center}.match .pl.win{color:var(--warn)}.match .mid .lg{font-weight:700;font-size:14px}.match .mid .sm{font-size:11px;color:var(--sub);margin-top:2px}.match .tm{font-size:11px;color:var(--sub);text-align:right}
+  /* leaderboard */
+  .filters{display:flex;gap:8px;margin-bottom:14px}.filters select{flex:1;background:#0a0d14;border:1px solid var(--line);border-radius:10px;color:#fff;padding:11px;font-size:14px;font-family:inherit}
+  .lbrow{display:grid;grid-template-columns:42px 1fr auto;gap:12px;align-items:center;border:1px solid var(--line);background:var(--panel);border-radius:12px;padding:11px 14px;margin-bottom:8px}.lbrow.top{border-color:var(--warn);background:linear-gradient(110deg,rgba(255,194,61,.1),var(--panel))}.lbrow .rk{font-family:'Chakra Petch';font-weight:700;font-size:22px;text-align:center;color:var(--sub)}.lbrow.top .rk{color:var(--warn)}.lbrow .nm{font-weight:700;font-size:14px}.lbrow .sb{font-size:11px;color:var(--sub)}.lbrow .vv{font-family:'Chakra Petch';font-weight:700;font-size:18px}
+  /* diagnoses */
+  .bar{height:8px;background:#0a0d14;border:1px solid var(--line);border-radius:8px;overflow:hidden;margin:14px 0 4px}.bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--cy),var(--mg));transition:.25s}
+  .qnum{font-family:'Chakra Petch';font-size:13px;color:var(--sub)}.q{font-size:18px;font-weight:700;line-height:1.5;margin:10px 0 14px;min-height:48px}
+  .opt{border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:13px 15px;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:9px;line-height:1.4}.opt:hover{border-color:var(--cy)}.opt:active{transform:scale(.99)}
+  .navrow{display:flex;justify-content:space-between;margin-top:8px}.navrow button{background:none;border:1px solid var(--line);color:var(--sub);border-radius:10px;padding:8px 15px;font-family:inherit;font-weight:700;font-size:13px;cursor:pointer}
+  .btn{display:block;width:100%;padding:13px;border:none;border-radius:12px;font-family:'Chakra Petch';font-weight:700;font-size:17px;letter-spacing:1px;cursor:pointer;margin-top:9px}
+  .btn.primary{background:linear-gradient(90deg,var(--cy),var(--mg));color:#06070d}.btn.x{background:#111;color:#fff;border:1px solid #333}.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--text)}.btn.hot{background:linear-gradient(90deg,var(--or),var(--down));color:#fff}
+  .res{text-align:center}.res .ic{font-size:56px}.res .tn{font-family:'Chakra Petch';font-weight:700;font-size:34px;line-height:.9;margin-top:4px;color:var(--cy)}.res .tn.ng{color:var(--down)}.res .ts{font-size:12px;color:var(--sub);letter-spacing:2px;margin-top:4px}
+  .res .desc{font-size:14px;line-height:1.7;text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;margin:14px 0}
+  .gc{display:flex;gap:10px;text-align:left;margin-bottom:12px}.gc>div{flex:1;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--panel)}.gc .t{font-size:11px;font-weight:900;letter-spacing:1px;margin-bottom:4px}.gc .good .t{color:var(--ok)}.gc .care .t{color:var(--or)}.gc p{font-size:12px;color:#cdd4e0;line-height:1.5}
+  .chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:6px 0}.chip{font-size:12px;font-weight:700;border:1px solid var(--line);border-radius:20px;padding:5px 12px;background:var(--panel)}
+  .slots{display:flex;gap:10px;justify-content:center;margin:18px 0}.slot{flex:1;height:104px;border:1px solid var(--line);border-radius:14px;background:var(--panel);display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;position:relative}.slot .pi{font-size:11px;color:var(--dim);position:absolute;top:8px}.slot .nm{font-family:'Chakra Petch';font-weight:700;font-size:20px;padding:0 4px}.slot.win{border-color:var(--cy);box-shadow:0 0 18px rgba(25,227,255,.3)}.slot.spin .nm{animation:roll .08s linear infinite}@keyframes roll{0%{transform:translateY(-6px);opacity:.5}100%{transform:translateY(6px);opacity:.5}}
+  .field{margin-bottom:13px}.field label{display:block;font-size:13px;font-weight:700;margin-bottom:6px}.field .hint{font-size:11px;color:var(--sub);font-weight:500;margin-left:5px}.field input,.field select{width:100%;background:#0a0d14;border:1px solid var(--line);border-radius:10px;color:#fff;padding:11px;font-size:15px;font-family:inherit}
+  .verdict{border:2px solid var(--rk,#888);border-radius:20px;padding:22px;background:var(--panel);margin-bottom:14px;text-align:center}.verdict .lab{font-family:'Chakra Petch';font-size:12px;letter-spacing:2px;color:var(--sub)}.verdict .rk{font-family:'Chakra Petch';font-weight:700;font-size:clamp(38px,11vw,60px);line-height:.9;color:var(--rk,#fff);margin-top:6px}.verdict .cm{font-size:13px;line-height:1.7;color:#dbe2ee;margin-top:12px;text-align:left}
+  .li{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid #161a26;font-size:13px}.li:last-child{border:none}.li .k{flex:1;color:var(--sub)}.li .v{font-family:'Chakra Petch';font-weight:700}.li .mk{width:20px;text-align:center}
+  .need{border:1px solid rgba(255,194,61,.4);background:rgba(255,194,61,.07);border-radius:12px;padding:12px;text-align:left;font-size:13px;color:#ffe2a8;line-height:1.7;margin-bottom:12px}
+  /* ad + footer */
+  .ad{margin:18px 0;display:flex;justify-content:center}.ad iframe{border:0}
+  footer{margin-top:20px;font-size:10px;color:var(--dim);line-height:1.7;border-top:1px solid var(--line);padding-top:14px}footer a{color:var(--cy);text-decoration:none}
+  .loading{color:var(--sub);font-size:13px;padding:20px;text-align:center}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <div class="logo"><span class="x">APEX</span>激やばツール<small>MAP / PRED / STATS / 診断</small></div>
-    <div class="upd"><span class="dot"></span><span id="upd">—</span></div>
-  </header>
+<canvas id="fx"></canvas><div class="scan"></div>
+<div class="shell">
+  <div class="hd"><div class="brand" onclick="home()"><b>APEX</b><i>激やば</i>ツール</div><div class="live"><span class="d"></span>LIVE</div></div>
 
-  <div class="tabbar" id="tabbar">
-    <button class="on" data-t="map">🗺️ マップ</button>
-    <button data-t="pred">👑 プレデター</button>
-    <button data-t="srv">🟢 サーバー</button>
-    <button data-t="find">🔍 検索</button>
-    <button data-t="diag">🧪 診断・あそび</button>
-  </div>
-
-  <!-- マップ -->
-  <div class="panel on" id="pmap">
-    <div class="seg" id="seg"><button class="on" data-m="casual">カジュアル(BR)</button><button data-m="ranked">ランク</button></div>
-    <div class="hero" id="hero"><div class="body"><div class="mapname">読み込み中…</div></div></div>
-    <div class="sect">NEXT ― このあと</div>
-    <div class="nexts" id="nexts"></div>
-  </div>
-  <!-- プレデター -->
-  <div class="panel" id="ppred">
-    <div class="sect">現在のプレデター ボーダー（到達RP）</div>
-    <div id="predList"><div class="note">読み込み中…</div></div>
-    <div class="note">※ボーダー＝各プラットフォーム上位枠の到達RP。リセット直後やシーズン序盤は大きく動きます。</div>
-  </div>
-  <!-- サーバー -->
-  <div class="panel" id="psrv">
-    <div class="sect">サーバー状態</div>
-    <div id="srvList"><div class="note">読み込み中…</div></div>
-  </div>
-  <!-- 検索 -->
-  <div class="panel" id="pfind">
-    <div class="sect">プレイヤー スタッツ検索</div>
-    <div class="search">
-      <input id="pname" placeholder="プレイヤー名（PCはOrigin名）" autocomplete="off">
-      <select id="pplat"><option value="PC">PC (Origin/Steam)</option><option value="PS4">PlayStation</option><option value="X1">Xbox</option><option value="SWITCH">Switch</option></select>
-      <button onclick="findPlayer()">検索する</button>
+  <!-- ===== HUB ===== -->
+  <div id="home">
+    <div class="hubgrid">
+      <div class="tile" style="--g:#19e3ff" onclick="open_('map')"><span class="lv">LIVE</span><div class="ic">🗺️</div><div><div class="nm">マップ</div><div class="ds">現在/次・残り時間</div></div></div>
+      <div class="tile" style="--g:#ff4d3d" onclick="open_('pred')"><span class="lv">LIVE</span><div class="ic">👑</div><div><div class="nm">プレデター</div><div class="ds">到達RPボーダー</div></div></div>
+      <div class="tile" style="--g:#22e3a0" onclick="open_('srv')"><span class="lv">LIVE</span><div class="ic">📡</div><div><div class="nm">サーバー</div><div class="ds">障害・稼働状況</div></div></div>
+      <div class="tile" style="--g:#ff3df2" onclick="open_('find')"><div class="ic">🔍</div><div><div class="nm">検索</div><div class="ds">戦績＋やばさ採点</div></div></div>
+      <div class="tile" style="--g:#ffc23d" onclick="open_('rank')"><div class="ic">🏅</div><div><div class="nm">ランキング</div><div class="ds">レジェンド別キル</div></div></div>
+      <div class="tile" style="--g:#c062ff" onclick="open_('diag')"><div class="ic">🧪</div><div><div class="nm">診断・あそび</div><div class="ds">5種の診断＆ルーレット</div></div></div>
     </div>
-    <div id="pResult"></div>
-    <div class="note">※Apexの仕様で、本人がゲーム内で装備している“トラッカー”の数値しか取得できません（キルトラッカー未装備ならキル数は出ません）。</div>
+    <div class="ad" id="adHome"></div>
+    <footer>データ：<a href="https://apexlegendsstatus.com" target="_blank" rel="noopener">Data from apexlegendsstatus.com</a>（非公式Apex API）。Apex Legends は Electronic Arts / Respawn の商標です。本サイトは非公式のファン制作ツールです。</footer>
   </div>
 
-  <!-- 診断・あそび（タブの中に複数パネル。今後の追加はここに足すだけ） -->
-  <div class="panel" id="pdiag">
-    <div class="subbar" id="subbar">
-      <button class="on" data-s="ssh">🎯 立ち回り</button>
-      <button data-s="sng">🚫 使うな</button>
-      <button data-s="sroul">🎰 ルーレット</button>
-      <button class="soon" disabled>🧭 使うべき(近日)</button>
-      <button class="soon" disabled>🔥 強さ(近日)</button>
-    </div>
-
-  <!-- 立ち回り診断 -->
-  <div class="sub on" id="ssh">
-    <div id="shStart">
-      <div class="result"><div class="ic">🎯</div><div class="tname" style="font-size:30px">立ち回り診断</div></div>
-      <div class="note" style="text-align:center">30の質問で、あなたのApexの立ち回りを13タイプに診断。<br>詰めるタイプ？安置取り？情報屋？</div>
-      <button class="btn primary" onclick="startSh()">診断スタート</button>
-    </div>
-    <div id="shQ" style="display:none">
-      <div class="qnum" id="qnum"></div><div class="bar"><i id="qbar"></i></div>
-      <div class="q" id="qtext"></div><div class="opts" id="qopts"></div>
-      <div class="navrow"><button onclick="prevSh()" id="qprev">← 戻る</button><button onclick="resetSh()">やめる</button></div>
-    </div>
-    <div id="shResult" class="result" style="display:none"></div>
+  <!-- ===== MAP ===== -->
+  <div class="view" id="v-map"><button class="back" onclick="home()">← ホーム</button>
+    <div class="caption"><h1>🗺️ マップ</h1><span class="d">現在と次のマップ・残り時間</span></div>
+    <div class="hud" id="mapHud"><div class="loading">読み込み中…</div></div>
+    <div class="ad adSlot"></div>
   </div>
 
-  <!-- 使うな診断 -->
-  <div class="sub" id="sng">
-    <div id="ngStart">
-      <div class="result"><div class="ic">🚫</div><div class="tname ng" style="font-size:28px">このキャラ使うな診断</div></div>
-      <div class="note" style="text-align:center">12の質問で、<b>あなたが絶対に使ってはいけないレジェンド</b>を激辛で名指しします。ネタとしてどうぞ😈</div>
-      <button class="btn primary" onclick="startNg()">診断スタート</button>
-    </div>
-    <div id="ngQ" style="display:none">
-      <div class="qnum" id="ngnum"></div><div class="bar"><i id="ngbar"></i></div>
-      <div class="q" id="ngtext"></div><div class="opts" id="ngopts"></div>
-      <div class="navrow"><button onclick="prevNg()" id="ngprev">← 戻る</button><button onclick="resetNg()">やめる</button></div>
-    </div>
-    <div id="ngResult" class="result" style="display:none"></div>
+  <!-- ===== PRED ===== -->
+  <div class="view" id="v-pred"><button class="back" onclick="home()">← ホーム</button>
+    <div class="caption"><h1>👑 プレデター</h1><span class="d">いまプレデターになるのに必要なRP</span></div>
+    <div id="predBox"><div class="loading">読み込み中…</div></div>
+    <div class="note">ボーダー＝上位枠に入るのに必要なRP。リセット直後やシーズン序盤は大きく動きます。</div>
+    <div class="ad adSlot"></div>
   </div>
 
-  <!-- ルーレット -->
-  <div class="sub" id="sroul">
-    <div class="roul">
-      <div style="font-size:14px;color:var(--sub)">3人分の使用キャラをルーレットで決定！</div>
-      <div class="slots" id="slots"></div>
-      <button class="btn primary" id="spinBtn" onclick="spin()">🎰 まわす</button>
-      <div class="note">※レジェンドは配列を編集可。最新シーズンの追加キャラは足してね。</div>
-    </div>
+  <!-- ===== SERVERS ===== -->
+  <div class="view" id="v-srv"><button class="back" onclick="home()">← ホーム</button>
+    <div class="caption"><h1>📡 サーバー状態</h1><span class="d">Apex公式サーバーの稼働状況</span></div>
+    <div id="srvBox"><div class="loading">読み込み中…</div></div>
+    <div class="ad adSlot"></div>
   </div>
-  </div><!-- /pdiag -->
 
-  <div class="ad" id="ad"></div>
-  <footer>
-    データ：<a href="https://apexlegendsstatus.com" target="_blank" rel="noopener">Data from apexlegendsstatus.com</a>（非公式Apex API）。<br>
-    Apex Legends は Electronic Arts / Respawn Entertainment の商標です。本サイトは非公式のファン制作ツールです。
-  </footer>
+  <!-- ===== FIND ===== -->
+  <div class="view" id="v-find"><button class="back" onclick="home()">← ホーム</button>
+    <div class="caption"><h1>🔍 プレイヤー検索</h1><span class="d">戦績を照会＋やばさを自動採点</span></div>
+    <div class="searchbar"><input id="pname" placeholder="プレイヤー名（PCはOrigin名）" autocomplete="off"><select id="pplat"><option value="PC">PC</option><option value="PS4">PS</option><option value="X1">Xbox</option><option value="SWITCH">Switch</option></select><button onclick="findPlayer()">検索</button></div>
+    <div id="findBox"></div>
+    <div class="ad adSlot"></div>
+  </div>
+
+  <!-- ===== RANKING ===== -->
+  <div class="view" id="v-rank"><button class="back" onclick="home()">← ホーム</button>
+    <div class="caption"><h1>🏅 ランキング</h1><span class="d">レジェンド別のキル上位プレイヤー</span></div>
+    <div class="warnbox">⚠️ ランキングはAPI仕様上、取得が不安定です。表示できない時間帯や一部レジェンドのみの場合があります。</div>
+    <div class="filters">
+      <select id="lbLegend"><option value="horizon">ホライゾン</option><option value="wraith">レイス</option><option value="octane">オクタン</option><option value="bloodhound">ブラッドハウンド</option><option value="valkyrie">ヴァルキリー</option><option value="lifeline">ライフライン</option></select>
+      <select id="lbPlat"><option value="PC">PC</option><option value="PS4">PS</option><option value="X1">Xbox</option><option value="SWITCH">Switch</option></select>
+      <button class="searchbar" style="display:inline-flex"><span onclick="loadLb()" style="background:linear-gradient(90deg,var(--cy),var(--mg));color:#06070d;font-family:'Chakra Petch';font-weight:700;border-radius:10px;padding:11px 16px;cursor:pointer">表示</span></button>
+    </div>
+    <div id="lbBox"></div>
+    <div class="ad adSlot"></div>
+  </div>
+
+  <!-- ===== DIAGNOSES HUB ===== -->
+  <div class="view" id="v-diag"><button class="back" onclick="home()">← ホーム</button>
+    <div class="caption"><h1>🧪 診断・あそび</h1><span class="d">あなたを分析するミニ診断集</span></div>
+    <div class="hubgrid">
+      <div class="tile" style="--g:#19e3ff" onclick="openDiag('sh')"><div class="ic">🎯</div><div><div class="nm">立ち回り診断</div><div class="ds">30問・13タイプ</div></div></div>
+      <div class="tile" style="--g:#ff3d5e" onclick="openDiag('ng')"><div class="ic">🚫</div><div><div class="nm">使うな診断</div><div class="ds">激辛で名指し</div></div></div>
+      <div class="tile" style="--g:#22e3a0" onclick="openDiag('ub')"><div class="ic">🧭</div><div><div class="nm">使うべきキャラ</div><div class="ds">最適レジェンド</div></div></div>
+      <div class="tile" style="--g:#ff6a1f" onclick="openDiag('ts')"><div class="ic">🔥</div><div><div class="nm">強さ診断(激辛)</div><div class="ds">適正ランク判定</div></div></div>
+      <div class="tile" style="--g:#c062ff" onclick="openDiag('rl')"><div class="ic">🎰</div><div><div class="nm">ルーレット</div><div class="ds">3人分を抽選</div></div></div>
+    </div>
+    <div id="diagArea" style="margin-top:16px"></div>
+    <div class="ad adSlot"></div>
+  </div>
+
 </div>
-
 <script>
-/* ====== 設定 ====== */
-var APEX_GAS_URL = "https://script.google.com/macros/s/AKfycbzYzvrRF2hsaYhPDUOzRQQ_81kgx75P9Qk-0etrbyMbEZInK4CMa2Br9JUnDzixOZybZQ/exec";  // Code_apex.gs 中継URL
-var SHOW_AD = true;
-/* アクセスカウンター（共通） */
-(function(){ var SITE="apex", CU="https://script.google.com/macros/s/AKfycbysy658Zhkvc07oEl_mqM7T9C_RifLzxA5Nt1aVxU60gXu4TYTK3P1fuxtsi4AU7XHL/exec";
-  try{ fetch(CU+"?site="+encodeURIComponent(SITE),{mode:"no-cors",cache:"no-store"}); }catch(e){} })();
-var SHARE_TAG = "APEX激やばツール";
+/* ===== config ===== */
+var APEX_GAS_URL="https://script.google.com/macros/s/AKfycbzYzvrRF2hsaYhPDUOzRQQ_81kgx75P9Qk-0etrbyMbEZInK4CMa2Br9JUnDzixOZybZQ/exec";
+var SHOW_AD=true, SHARE_TAG="APEX激やばツール";
+(function(){var SITE="apex",CU="https://script.google.com/macros/s/AKfycbysy658Zhkvc07oEl_mqM7T9C_RifLzxA5Nt1aVxU60gXu4TYTK3P1fuxtsi4AU7XHL/exec";try{fetch(CU+"?site="+encodeURIComponent(SITE),{mode:"no-cors",cache:"no-store"});}catch(e){}})();
 var $=function(id){return document.getElementById(id);};
+function gas(type,extra){return fetch(APEX_GAS_URL+"?type="+type+(extra||""),{cache:"no-store"}).then(function(r){return r.json();});}
+function esc(s){return String(s).replace(/[<>&]/g,function(c){return{'<':'&lt;','>':'&gt;','&':'&amp;'}[c];});}
 
-/* ====== タブ ====== */
-document.querySelectorAll("#tabbar button").forEach(function(b){ b.onclick=function(){
-  document.querySelectorAll("#tabbar button").forEach(function(x){x.classList.remove("on");}); b.classList.add("on");
-  var map={map:"pmap",pred:"ppred",srv:"psrv",find:"pfind",diag:"pdiag"};
-  document.querySelectorAll(".panel").forEach(function(p){p.classList.remove("on");});
-  $(map[b.dataset.t]).classList.add("on"); window.scrollTo(0,0);
-  if(b.dataset.t==="pred"&&!predLoaded)loadPred();
-  if(b.dataset.t==="srv"&&!srvLoaded)loadSrv();
-};});
-/* 診断サブタブ */
-document.querySelectorAll("#subbar button[data-s]").forEach(function(b){ b.onclick=function(){
-  document.querySelectorAll("#subbar button").forEach(function(x){x.classList.remove("on");}); b.classList.add("on");
-  document.querySelectorAll("#pdiag .sub").forEach(function(p){p.classList.remove("on");});
-  $(b.dataset.s).classList.add("on"); window.scrollTo(0,0);
-  if(b.dataset.s==="sroul")initRoul();
-};});
-
-/* ====== データ取得 ====== */
-function gas(type,extra){ return fetch(APEX_GAS_URL+"?type="+type+(extra||""),{cache:"no-store"}).then(function(r){return r.json();}); }
-function noGas(elId){ $(elId).innerHTML='<div class="note">⚠ APEX_GAS_URL が未設定です。Code_apex.gs をデプロイしてURLを貼ると表示されます。</div>'; }
-
-/* --- マップ --- */
-var MAPS={ "World's Edge":{c:"#e8632f",ic:"🌋"},"Storm Point":{c:"#2fae8e",ic:"🏝️"},"Olympus":{c:"#36c3c8",ic:"☁️"},"Broken Moon":{c:"#8a6cff",ic:"🌙"},"Kings Canyon":{c:"#d9a23c",ic:"🏜️"},"E-District":{c:"#ff4fa3",ic:"🌃"} };
-function grad(m){var c=(MAPS[m]||{}).c||"#666";return "linear-gradient(135deg,"+c+"cc,"+c+"55),repeating-linear-gradient(45deg,#0000 0 12px,#ffffff08 12px 13px)";}
-function micon(m){return (MAPS[m]||{}).ic||"🗺️";}
-function fmt(s){s=Math.max(0,Math.floor(s));var h=Math.floor(s/3600),m=Math.floor((s%3600)/60),ss=s%60;return (h>0?h+":"+String(m).padStart(2,"0"):m)+":"+String(ss).padStart(2,"0");}
-var mapData=null, mapMode="casual", curRemain=0;
-function loadMap(){ if(!APEX_GAS_URL){ $("hero").innerHTML='<div class="body"><div class="mapname">未設定</div></div>'; noGas("nexts"); return; }
-  gas("map").then(function(d){ mapData=d; renderMap(); $("upd").textContent="更新 "+new Date().toLocaleTimeString('ja-JP',{hour:'2-digit',minute:'2-digit'}); })
-  .catch(function(){ $("hero").innerHTML='<div class="body"><div class="mapname">取得失敗</div></div>'; });
-}
-function modeObj(){ return mapMode==="casual" ? (mapData&&mapData.battle_royale) : (mapData&&mapData.ranked); }
-function renderMap(){
-  var o=modeObj(); if(!o||!o.current){ $("hero").innerHTML='<div class="body"><div class="mapname">データなし</div></div>'; $("nexts").innerHTML=""; return; }
-  var cur=o.current, nx=o.next||{}; var label=mapMode==="casual"?"カジュアル バトロワ":"ランクリーグ";
-  curRemain=(cur.remainingSecs!=null?cur.remainingSecs:0);
-  $("hero").innerHTML='<div class="thumb" style="background:'+grad(cur.map)+'"><span class="ic">'+micon(cur.map)+'</span><span class="mode">'+label+'</span></div>'
-    +'<div class="body"><div class="mapname">'+(cur.map||"-")+'</div><div class="timer"><span class="lab">残り</span><span class="t mono" id="cd">'+fmt(curRemain)+'</span><span class="lab">で次へ</span></div></div>';
-  $("nexts").innerHTML='<div class="ncard"><div class="thumb" style="background:'+grad(nx.map)+'"><span class="lab">NEXT</span><span class="ic">'+micon(nx.map)+'</span></div><div class="nm">'+(nx.map||"-")+'</div></div>'
-    +'<div class="ncard"><div class="thumb" style="background:'+grad((o.current&&o.current.map))+'"><span class="lab">現在</span><span class="ic">'+micon(cur.map)+'</span></div><div class="nm">'+(cur.map||"-")+'</div></div>';
-}
-document.querySelectorAll("#seg button").forEach(function(b){ b.onclick=function(){ document.querySelectorAll("#seg button").forEach(function(x){x.classList.remove("on");}); b.classList.add("on"); mapMode=b.dataset.m; renderMap(); };});
-setInterval(function(){ if(curRemain>0){ curRemain--; var cd=$("cd"); if(cd)cd.textContent=fmt(curRemain); } },1000);
-
-/* --- プレデター --- */
-var predLoaded=false;
-function loadPred(){ if(!APEX_GAS_URL){noGas("predList");return;} predLoaded=true;
-  gas("pred").then(function(d){ var rp=d.RP||{}; var order=[["PC","🖥️","PC"],["PS4","🎮","PlayStation"],["X1","🎮","Xbox"],["SWITCH","🕹️","Switch"]];
-    var html=order.map(function(o){ var x=rp[o[0]]; if(!x)return ""; var val=(x.val!=null?x.val:"-"); var n=(x.totalMastersAndPreds!=null?x.totalMastersAndPreds:"-");
-      return '<div class="pcard"><div class="pic">'+o[1]+'</div><div class="pinfo"><div class="plat">'+o[2]+'</div><div class="rp mono">'+(typeof val==="number"?val.toLocaleString():val)+'<small>RP</small></div></div><div class="mast">マスター+プレ<b class="mono">'+n+'</b></div></div>';
-    }).join(""); $("predList").innerHTML=html||'<div class="note">データなし</div>';
-  }).catch(function(){ $("predList").innerHTML='<div class="note">取得失敗</div>'; predLoaded=false; });
+/* ===== nav ===== */
+var loaded={};
+function home(){document.querySelectorAll('.view').forEach(function(v){v.classList.remove('on')});$('home').style.display='block';window.scrollTo(0,0);}
+function open_(sec){$('home').style.display='none';document.querySelectorAll('.view').forEach(function(v){v.classList.remove('on')});$('v-'+sec).classList.add('on');window.scrollTo(0,0);
+  if(sec==='map'&&!loaded.map){loaded.map=1;loadMap();}
+  if(sec==='pred'&&!loaded.pred){loaded.pred=1;loadPred();}
+  if(sec==='srv'&&!loaded.srv){loaded.srv=1;loadSrv();}
 }
 
-/* --- サーバー --- */
-var srvLoaded=false;
-function statusColor(s){ s=String(s||"").toUpperCase(); if(s.indexOf("UP")>=0||s==="OK")return "var(--ok)"; if(s.indexOf("SLOW")>=0||s.indexOf("DELAY")>=0)return "var(--warn)"; return "var(--down)"; }
-function loadSrv(){ if(!APEX_GAS_URL){noGas("srvList");return;} srvLoaded=true;
-  gas("servers").then(function(d){ var html=""; Object.keys(d||{}).forEach(function(svc){ var regions=d[svc]; if(typeof regions!=="object")return;
-      var worst="UP",any=false; Object.keys(regions).forEach(function(r){ var st=regions[r]&&regions[r].Status; if(st){any=true; var su=String(st).toUpperCase(); if(su.indexOf("UP")<0){ worst=st; }} });
-      if(!any)return; html+='<div class="srow"><span class="sd" style="background:'+statusColor(worst)+'"></span><span class="sn">'+svc.replace(/_/g," ")+'</span><span class="sv">'+worst+'</span></div>';
-    }); $("srvList").innerHTML=html||'<div class="note">データなし</div>';
-  }).catch(function(){ $("srvList").innerHTML='<div class="note">取得失敗</div>'; srvLoaded=false; });
+/* ===== ad slots ===== */
+function fillAds(){if(!SHOW_AD)return;var ad='<iframe src="ad-rect.html" width="300" height="250" scrolling="no" frameborder="0" loading="lazy"></iframe>';$('adHome').innerHTML=ad;document.querySelectorAll('.adSlot').forEach(function(a){a.innerHTML=ad;});}
+
+/* ===== MAP ===== */
+var MAPS={"World's Edge":{c:"#e8632f",i:"🌋",j:"ワールズエッジ"},"Storm Point":{c:"#2fae8e",i:"🏝️",j:"ストームポイント"},"Olympus":{c:"#36c3c8",i:"☁️",j:"オリンパス"},"Broken Moon":{c:"#8a6cff",i:"🌙",j:"ブロークンムーン"},"Kings Canyon":{c:"#d9a23c",i:"🏜️",j:"キングスキャニオン"},"E-District":{c:"#ff4fa3",i:"🌃",j:"Eディストリクト"}};
+function mj(n){return (MAPS[n]||{}).j||n||"-";}function mi(n){return (MAPS[n]||{}).i||"🗺️";}function mc(n){return (MAPS[n]||{}).c||"#666";}
+var mapTimers=[];
+function fmt(s){s=Math.max(0,Math.floor(s));var h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60;return (h>0?h+":"+String(m).padStart(2,"0"):m)+":"+String(x).padStart(2,"0");}
+function loadMap(){gas('map').then(function(d){renderMap(d);}).catch(function(){$('mapHud').innerHTML='<div class="loading">取得失敗</div>';});}
+function mrow(mode,o,modeColor){if(!o||!o.current)return '';var cur=o.current,nx=o.next||{};var ev=cur.eventName?(cur.eventName+" / "):"";
+  var id='cd_'+Math.random().toString(36).slice(2,7);
+  if(cur.remainingSecs!=null)mapTimers.push({id:id,t:cur.remainingSecs});
+  return '<div class="mrow"><div class="mic" style="background:linear-gradient(135deg,'+mc(cur.map)+'44,#0c1018)">'+mi(cur.map)+'</div>'
+    +'<div><div class="mmode">'+mode+'</div><div class="mname">'+ev+mj(cur.map)+'</div><div class="mnext">NEXT → '+mj(nx.map)+'</div></div>'
+    +'<div class="mtm"><span class="l">残り</span><b class="mono" id="'+id+'">'+(cur.remainingSecs!=null?fmt(cur.remainingSecs):'-')+'</b></div></div>';}
+function renderMap(d){mapTimers=[];var h='';
+  h+=mrow('CASUAL / BR',d.battle_royale);
+  h+=mrow('RANKED',d.ranked);
+  if(d.ltm&&d.ltm.current)h+=mrow('MIXTAPE',d.ltm);
+  if(d.wildcard&&d.wildcard.current)h+=mrow('WILDCARD',d.wildcard);
+  $('mapHud').innerHTML=h||'<div class="loading">データなし</div>';}
+setInterval(function(){mapTimers.forEach(function(o){if(o.t>0)o.t--;var e=$(o.id);if(e)e.textContent=fmt(o.t);});},1000);
+
+/* ===== PRED ===== */
+function loadPred(){gas('pred').then(function(d){var rp=d.RP||{};var order=[["PC","🖥️","PC"],["PS4","🎮","PlayStation"],["X1","🎮","Xbox"],["SWITCH","🕹️","Switch"]];
+  var arr=order.map(function(o){var x=rp[o[0]]||{};return {key:o[0],e:o[1],pl:o[2],val:(x.val!=null?x.val:0),cnt:(x.totalMastersAndPreds!=null?x.totalMastersAndPreds:'-')};}).filter(function(x){return x.val>0;});
+  if(!arr.length){$('predBox').innerHTML='<div class="loading">データなし</div>';return;}
+  arr.sort(function(a,b){return b.val-a.val;});var top=arr[0],rest=arr.slice(1);
+  var h='<div class="phero"><div class="crown">👑</div><div class="lab">'+top.pl+' ・ 上位ボーダー</div><div class="rp mono">'+top.val.toLocaleString()+'<small> RP</small></div><div class="pl">'+top.e+' '+top.pl+' が現在の最難関</div><div class="cnt">マスター＋プレデター <b class="mono">'+(typeof top.cnt==='number'?top.cnt.toLocaleString():top.cnt)+'</b> 人</div></div>';
+  h+='<div class="pothers">'+rest.map(function(x){return '<div class="po"><div class="e">'+x.e+'</div><div class="pl">'+x.pl+'</div><div class="rp mono">'+x.val.toLocaleString()+'</div><div class="cnt">'+(typeof x.cnt==='number'?x.cnt.toLocaleString():x.cnt)+'人</div></div>';}).join('')+'</div>';
+  $('predBox').innerHTML=h;
+}).catch(function(){$('predBox').innerHTML='<div class="loading">取得失敗</div>';loaded.pred=0;});}
+
+/* ===== SERVERS ===== */
+var SVCJP={"Origin_login":"EAアカウント ログイン","EA_novafusion":"EAサーバー","ApexOauth_Crossplay":"クロスプレイ認証","Apex_login":"Apexログイン","selfCoreTest":"コア接続","otherPlatforms":"各種ネットワーク"};
+function stColor(s){s=String(s||"").toUpperCase();if(s.indexOf("UP")>=0||s==="OK")return "var(--ok)";if(s.indexOf("SLOW")>=0||s.indexOf("DELAY")>=0)return "var(--warn)";return "var(--down)";}
+function stJP(s){s=String(s||"").toUpperCase();if(s.indexOf("UP")>=0||s==="OK")return "正常";if(s.indexOf("SLOW")>=0||s.indexOf("DELAY")>=0)return "遅延";return "停止";}
+function loadSrv(){
+  gas('servers').then(function(d){
+    var tiles='',worstAll="UP",svcCount=0;
+    Object.keys(d||{}).forEach(function(svc){var regs=d[svc];if(typeof regs!=='object')return;var worst="UP",any=false;
+      Object.keys(regs).forEach(function(rg){var st=regs[rg]&&regs[rg].Status;if(st){any=true;if(String(st).toUpperCase().indexOf("UP")<0){worst=st;if(stJP(st)==="停止")worstAll="DOWN";else if(worstAll==="UP")worstAll="SLOW";}}});
+      if(!any)return;svcCount++;
+      tiles+='<div class="stile"><span class="led" style="background:'+stColor(worst)+';box-shadow:0 0 9px '+stColor(worst)+'"></span><div class="rg">'+esc(SVCJP[svc]||svc.replace(/_/g," "))+'</div><div class="sv">公式サービス</div><div class="st" style="color:'+stColor(worst)+'">'+stJP(worst)+'</div></div>';
+    });
+    var bCls=worstAll==="UP"?"ok2":(worstAll==="DOWN"?"down":"warn"),bIc=worstAll==="UP"?"✓":"⚠",bTx=worstAll==="UP"?"すべて正常":"一部で障害が発生中";
+    var banner='<div class="banner '+bCls+'"><div class="big">'+bIc+'</div><div><div class="s">'+bTx+'</div><div class="sub" id="srvSub">'+svcCount+'サービスを確認 ・ 最終確認 たった今</div></div></div>';
+    var legend='<div class="legend"><span><i style="background:var(--ok)"></i>正常</span><span><i style="background:var(--warn)"></i>遅延</span><span><i style="background:var(--down)"></i>停止</span></div>';
+    var hist='<div class="histbar"><div class="hc"><div class="k">全体</div><div class="v" style="color:'+stColor(worstAll)+'">'+stJP(worstAll)+'</div></div><div class="hc"><div class="k">24h 稼働率</div><div class="v mono" id="upv">—</div></div><div class="hc"><div class="k">前回の障害</div><div class="v" id="incv" style="font-size:13px">—</div></div></div>';
+    $('srvBox').innerHTML=banner+hist+legend+'<div class="sgrid">'+tiles+'</div>';
+    gas('history').then(function(hd){if(hd&&hd.ok){if(hd.uptime24h!=null)$('upv').textContent=hd.uptime24h+'%';$('incv').textContent=hd.lastIncident?ago(hd.lastIncident):'なし';}else{$('upv').textContent='計測中';$('incv').textContent='計測中';}}).catch(function(){});
+  }).catch(function(){$('srvBox').innerHTML='<div class="loading">取得失敗</div>';loaded.srv=0;});
+}
+function ago(iso){var d=new Date(iso),s=Math.floor((Date.now()-d)/1000);if(s<60)return "たった今";if(s<3600)return Math.floor(s/60)+"分前";if(s<86400)return Math.floor(s/3600)+"時間前";return Math.floor(s/86400)+"日前";}
+
+/* ===== FIND ===== */
+var RANKTH=[["ルーキー",0],["ブロンズ",1000],["シルバー",3000],["ゴールド",6000],["プラチナ",10000],["ダイヤ",15000],["マスター",21000]];
+function nextRank(rp){for(var i=0;i<RANKTH.length;i++){if(rp<RANKTH[i][1])return {name:RANKTH[i][0],need:RANKTH[i][1]-rp};}return null;}
+function findPlayer(){var name=($('pname').value||'').trim(),plat=$('pplat').value;if(!name){$('findBox').innerHTML='<div class="warnbox">名前を入れてね</div>';return;}
+  $('findBox').innerHTML='<div class="loading">検索中…</div>';
+  gas('player','&player='+encodeURIComponent(name)+'&platform='+plat).then(function(d){
+    if(!d||d.Error||d.error){$('findBox').innerHTML='<div class="warnbox">見つからない / 取得失敗（名前・機種を確認）</div>';return;}
+    var g=d.global||{},rt=d.realtime||{},sel=(d.legends&&d.legends.selected)||{},total=d.total||{},rank=g.rank||{};
+    var lvl=g.level!=null?g.level:0,rp=rank.rankScore!=null?Number(rank.rankScore):0;
+    // computed
+    var kills=(total.kills&&total.kills.value)||null,dmg=(total.damage&&total.damage.value)||null,wins=(total.wins&&total.wins.value)||null,games=(total.games_played&&total.games_played.value)||null;
+    var kd=(kills!=null&&total.deaths&&total.deaths.value)?(kills/Math.max(1,total.deaths.value)).toFixed(2):null;
+    var avg=(dmg!=null&&games)?Math.round(dmg/games):null,wr=(wins!=null&&games)?((wins/games*100).toFixed(1)+'%'):null;
+    var score=Math.min(100,Math.round(Math.min(lvl/8,45)+Math.min(rp/600,45)+(kd?Math.min(kd*4,10):0)));
+    var verd=score>=80?"ガチ勢":score>=60?"そこそこやり込み勢":score>=40?"そこそこ":score>=20?"カジュアル":"これからの人";
+    var nr=nextRank(rp);
+    var legs=[];var all=(d.legends&&d.legends.all)||{};Object.keys(all).forEach(function(k){var L=all[k];var kk=null;(L.data||[]).forEach(function(t){if(/kill/i.test(t.key||t.name||''))kk=t.value;});if(kk!=null)legs.push({n:k,v:Number(kk)});});legs.sort(function(a,b){return b.v-a.v;});legs=legs.slice(0,4);var lmax=legs.length?legs[0].v:1;
+    var H='<div class="ptop"><div class="gauge" style="--p:'+score+'%"><div class="in"><div class="n mono">'+score+'</div><div class="o">/100</div></div></div>'
+      +'<div class="pwho"><div class="nm">'+esc(g.name||name)+'</div><div class="meta">'+plat+' ・ Lv.'+lvl+(rt.isOnline?' ・ <span class="on">● オンライン</span>':'')+(sel.LegendName?' ・ 使用中 '+esc(sel.LegendName):'')+'</div><div class="verd">「'+verd+'」</div></div></div>'
+      +'<button class="btn x" onclick="share(\'やばさ'+score+'点・適正「'+verd+'」だった\')">𝕏 やばさ'+score+'点をシェア</button>'
+      +'<div class="subtabs"><button class="on" data-p="o" onclick="ftab(this,\'o\')">概要</button><button data-p="l" onclick="ftab(this,\'l\')">レジェンド別</button><button data-p="r" onclick="ftab(this,\'r\')">ランク</button><button data-p="m" onclick="ftab(this,\'m\')">マッチ履歴 ⚠️</button></div>';
+    H+='<div class="spane on" id="fp-o"><div class="sgrid2">'
+      +'<div class="stat calc"><div class="k">KD</div><div class="v mono">'+(kd||'—')+'</div></div>'
+      +'<div class="stat calc"><div class="k">平均ダメ</div><div class="v mono">'+(avg||'—')+'</div></div>'
+      +'<div class="stat calc"><div class="k">勝率</div><div class="v mono">'+(wr||'—')+'</div></div>'
+      +'<div class="stat"><div class="k">レベル</div><div class="v mono">'+lvl+'</div></div>'
+      +'<div class="stat"><div class="k">総キル</div><div class="v mono">'+(kills!=null?Number(kills).toLocaleString():'—')+'</div></div>'
+      +'<div class="stat"><div class="k">RP</div><div class="v mono">'+(rp?rp.toLocaleString():'—')+'</div></div></div>'
+      +((kd==null||avg==null)?'<div class="note">※KD・平均ダメ・勝率は、本人がそのトラッカーを装備している時だけ取得できます（未装備は「—」）。</div>':'')+'</div>';
+    H+='<div class="spane" id="fp-l">'+(legs.length?legs.map(function(l){return '<div class="leg"><span class="n">'+esc(l.n)+'</span><span class="b"><i style="width:'+Math.round(l.v/lmax*100)+'%"></i></span><span class="v mono">'+l.v.toLocaleString()+'</span></div>';}).join(''):'<div class="note">レジェンド別キルのトラッカー情報がありません（未装備）。</div>')+'</div>';
+    H+='<div class="spane" id="fp-r"><div class="rankcard"><div class="e">🏆</div><div class="r">'+(rank.rankName||'-')+' '+(rank.rankDiv||'')+' ・ <span class="rp mono">'+(rp?rp.toLocaleString():'-')+' RP</span></div>'+(nr?'<div class="bar"><i style="width:60%"></i></div><div class="t">次（'+nr.name+'）まで <b class="mono">'+nr.need.toLocaleString()+' RP</b></div>':'')+'</div><div class="note">※最高到達ランクはAPIで取得できた場合のみ表示されます。</div></div>';
+    H+='<div class="spane" id="fp-m"><div class="warnbox">⚠️ マッチ履歴はAPI仕様上、取得が不安定です。取れない時は表示されません。</div><div id="fp-m-list" class="loading">読み込み中…</div></div>';
+    $('findBox').innerHTML=H;
+    gas('matches','&player='+encodeURIComponent(name)+'&platform='+plat).then(function(md){
+      var list=Array.isArray(md)?md:(md&&md.matches)||[];
+      if(!list.length){$('fp-m-list').outerHTML='<div class="note" id="fp-m-list">マッチ履歴は取得できませんでした（API不安定）。</div>';return;}
+      $('fp-m-list').outerHTML='<div id="fp-m-list">'+list.slice(0,8).map(function(m){return '<div class="match"><span class="pl mono">#'+(m.gameData&&m.gameData.placement||m.placement||'-')+'</span><div class="mid"><div class="lg">'+esc((m.legendPlayed||m.legend||'-'))+'</div><div class="sm">'+((m.gameData&&m.gameData.kills)||m.kills||0)+'キル</div></div><span class="tm">'+(m.timestamp?ago(new Date(m.timestamp*1000).toISOString()):'')+'</span></div>';}).join('')+'</div>';
+    }).catch(function(){var e=$('fp-m-list');if(e)e.outerHTML='<div class="note" id="fp-m-list">マッチ履歴は取得できませんでした（API不安定）。</div>';});
+  }).catch(function(){$('findBox').innerHTML='<div class="warnbox">取得失敗（通信エラー）</div>';});
+}
+function ftab(b,p){document.querySelectorAll('#v-find .subtabs button').forEach(function(x){x.classList.remove('on')});b.classList.add('on');document.querySelectorAll('#v-find .spane').forEach(function(x){x.classList.remove('on')});$('fp-'+p).classList.add('on');}
+
+/* ===== LEADERBOARD ===== */
+function loadLb(){var lg=$('lbLegend').value,pl=$('lbPlat').value;$('lbBox').innerHTML='<div class="loading">読み込み中…</div>';
+  gas('leaderboard','&legend='+lg+'&platform='+pl).then(function(d){
+    var arr=[];if(Array.isArray(d))arr=d;else if(d&&d.legend&&Array.isArray(d.legend))arr=d.legend;else if(d&&Array.isArray(d.data))arr=d.data;
+    if(!arr.length){$('lbBox').innerHTML='<div class="warnbox">このレジェンド/機種のランキングは今は取得できませんでした（API不安定）。時間をおくか別レジェンドで試してね。</div>';return;}
+    $('lbBox').innerHTML=arr.slice(0,15).map(function(p,i){var nm=p.name||p.playerName||p.uid||'-';var v=p.value||p.kills||p.score||0;
+      return '<div class="lbrow'+(i<3?' top':'')+'"><div class="rk">'+(i+1)+'</div><div><div class="nm">'+esc(nm)+'</div><div class="sb">'+pl+'</div></div><div class="vv mono">'+Number(v).toLocaleString()+'</div></div>';}).join('');
+  }).catch(function(){$('lbBox').innerHTML='<div class="warnbox">取得失敗（API不安定）。</div>';});
 }
 
-/* --- プレイヤー検索 --- */
-function findPlayer(){ if(!APEX_GAS_URL){noGas("pResult");return;}
-  var name=($("pname").value||"").trim(); var plat=$("pplat").value; if(!name){$("pResult").innerHTML='<div class="note">名前を入れてね</div>';return;}
-  $("pResult").innerHTML='<div class="note">検索中…</div>';
-  gas("player","&player="+encodeURIComponent(name)+"&platform="+plat).then(function(d){
-    if(!d||d.Error||d.error){ $("pResult").innerHTML='<div class="note">見つからない / 取得失敗（名前・プラットフォームを確認）</div>'; return; }
-    var g=d.global||{}, rt=d.realtime||{}, sel=(d.legends&&d.legends.selected)||{};
-    var rank=g.rank||{}; var trackers=(sel.data||[]).slice(0,4);
-    var grids='<div class="g"><div class="k">レベル</div><div class="v mono">'+(g.level!=null?g.level:"-")+'</div></div>'
-      +'<div class="g"><div class="k">ランク</div><div class="v" style="font-size:15px">'+(rank.rankName||"-")+' '+(rank.rankDiv||"")+'</div></div>'
-      +'<div class="g"><div class="k">RP</div><div class="v mono">'+(rank.rankScore!=null?Number(rank.rankScore).toLocaleString():"-")+'</div></div>'
-      +'<div class="g"><div class="k">使用中</div><div class="v" style="font-size:15px">'+(sel.LegendName||rt.selectedLegend||"-")+'</div></div>';
-    var tk=trackers.map(function(t){ return '<div class="g"><div class="k">'+(t.name||t.key||"-")+'</div><div class="v mono">'+(t.value!=null?Number(t.value).toLocaleString():"-")+'</div></div>'; }).join("");
-    $("pResult").innerHTML='<div class="pstat"><div class="nm">'+(g.name||name)+'</div><div class="meta">'+plat+(rt.isOnline?' ・ 🟢オンライン':'')+'</div>'
-      +'<div class="grid">'+grids+'</div>'+(tk?'<div class="sect" style="margin:12px 2px 8px">装備中トラッカー</div><div class="grid">'+tk+'</div>':'<div class="note" style="margin-top:10px">表示できるトラッカーがありません（未装備）。</div>')+'</div>';
-  }).catch(function(){ $("pResult").innerHTML='<div class="note">取得失敗（通信エラー）</div>'; });
-}
+/* ===== SHARE ===== */
+function share(txt){var url=location.href.split('#')[0];window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent('【APEX激やばツール】'+txt+' あなたは？')+'&url='+encodeURIComponent(url)+'&hashtags='+encodeURIComponent(SHARE_TAG),'_blank');}
 
-/* ====== 立ち回り診断（30問・13タイプ） ====== */
-var Q=[
- {q:"敵を見つけた。まず？",a:[["すぐ詰める",{AGG:2,RISK:1}],["味方と連携してから",{SUP:2,POS:1}],["位置取りを直す",{POS:2}],["様子を見て漁夫狙い",{RISK:-1,POS:1}]]},
- {q:"得意な交戦距離は？",a:[["ゼロ距離・近距離",{RNG:2,AGG:1}],["中距離",{}],["遠距離・狙撃",{RNG:-2,INFO:1}]]},
- {q:"ファイト中、味方が倒れた。",a:[["倒し切るのが先",{AGG:2}],["即カバー・蘇生",{SUP:2}],["引いて立て直す",{POS:1,RISK:-1}]]},
- {q:"終盤の安置、どう動く？",a:[["有利ポジ早取り",{POS:2}],["端で隠れて生存",{RISK:-2,POS:1}],["中央で漁夫待ち",{POS:1,RISK:-1}],["音の方へ突撃",{AGG:2,RISK:1}]]},
- {q:"パーティでの役割は？",a:[["前線で開幕",{AGG:2,RNG:1}],["指示・IGL",{SUP:1,POS:1,INFO:1}],["索敵・情報共有",{INFO:2}],["後方支援・カバー",{SUP:2,RNG:-1}]]},
- {q:"漁る派？戦う派？",a:[["戦闘最優先",{AGG:2}],["バランス",{}],["まず物資、戦い回避",{RISK:-2}]]},
- {q:"索敵について",a:[["常に情報を取る",{INFO:2}],["必要な時だけ",{}],["勘とエイムで突撃",{AGG:1,INFO:-1}]]},
- {q:"勝てるか微妙なファイト。",a:[["仕掛ける",{AGG:2,RISK:2}],["条件次第",{}],["降りる",{RISK:-2,POS:1}]]},
- {q:"移動スキル持ちなら？",a:[["飛び回って撹乱",{AGG:1,RISK:1,RNG:1}],["味方と固まる",{SUP:1,POS:1}],["安全ルート",{RISK:-1,POS:1}]]},
- {q:"理想の1試合は？",a:[["キル盛り盛り",{AGG:2,RNG:1}],["味方を活かして勝つ",{SUP:2}],["静かに勝ち切る",{RISK:-1,POS:1}]]},
- {q:"罠・設置系スキルは？",a:[["大好き、地形ハメ",{POS:2,INFO:1}],["状況で",{}],["使わない機動派",{AGG:1,RNG:1}]]},
- {q:"開幕の降下先は？",a:[["激戦区ダイブ",{AGG:2,RISK:2}],["安全地帯",{RISK:-2}],["味方の指示",{SUP:1,POS:1}]]},
- {q:"敵の背後を取れた。",a:[["即フルコミット",{AGG:2}],["味方を待つ",{SUP:2}],["位置だけ取り様子見",{POS:1,RISK:-1}]]},
- {q:"あなたのエイムは？",a:[["近距離が強い",{RNG:2,AGG:1}],["中距離安定",{}],["遠距離・置き",{RNG:-2}]]},
- {q:"味方とはぐれた。",a:[["単独で暴れる",{AGG:1,SUP:-1,RISK:1}],["最優先で合流",{SUP:2,POS:1}],["隠れて待つ",{RISK:-1}]]},
- {q:"漁夫について",a:[["されるより先に自分が",{AGG:1,RISK:1}],["タイミング計って漁夫",{POS:1,RISK:-1,INFO:1}],["巻き込まれない距離",{RISK:-1,POS:1}]]},
- {q:"装備不十分な序盤の交戦",a:[["関係ない撃ち勝つ",{AGG:2,RISK:1}],["不利なら避ける",{RISK:-1}]]},
- {q:"チームの作戦は？",a:[["攻めの圧で主導権",{AGG:2}],["守りと位置で勝つ",{POS:2,RISK:-1}]]},
- {q:"ピン・コールは？",a:[["細かく指示する",{SUP:2,INFO:1}],["最低限",{}],["黙々と自分で",{SUP:-1,AGG:1}]]},
- {q:"高台を見つけた。",a:[["陣取って遠距離で削る",{RNG:-1,POS:1}],["素早く越えて接近",{AGG:1,RNG:1}],["味方の射線を作る位置に",{SUP:1,POS:1}]]},
- {q:"残り3部隊、安置小。",a:[["先に動き主導権",{AGG:2,POS:1}],["最後まで隠れ漁夫",{RISK:-2,POS:1}]]},
- {q:"蘇生バナー回収は？",a:[["リスクあっても取る",{SUP:2,RISK:1}],["安全になってから",{SUP:1,RISK:-1}],["状況次第で諦め",{RISK:-1,AGG:1}]]},
- {q:"好きなのは？",a:[["撃ち合いのアドレナリン",{AGG:2,RNG:1}],["読み勝ちの快感",{POS:2,INFO:1}],["味方と勝つ達成感",{SUP:2}]]},
- {q:"被ダメ覚悟の特攻は？",a:[["する、先手必勝",{AGG:2,RISK:2}],["体力管理しながら",{RISK:-1,POS:1}]]},
- {q:"索敵情報を得たら？",a:[["即仕掛ける材料に",{AGG:1,INFO:1}],["回避と位置取りに",{POS:1,INFO:1,RISK:-1}]]},
- {q:"あなたのプレイは？",a:[["前に出て道を作る",{AGG:2}],["後ろから支える",{SUP:2,RNG:-1}],["俯瞰して指揮",{INFO:1,POS:1,SUP:1}]]},
- {q:"負けてる試合、",a:[["一発逆転を狙う",{AGG:1,RISK:2}],["順位ポイント拾い",{RISK:-1,POS:1}]]},
- {q:"単独で2人相手、",a:[["1人ずつ詰めて殲滅",{AGG:2,RISK:2}],["引いて時間稼ぎ",{RISK:-2,POS:1}]]},
- {q:"近距離で不意の遭遇！",a:[["反射で詰めて殴る",{RNG:2,AGG:2}],["距離を取り直す",{RNG:-1,RISK:-1,POS:1}]]},
- {q:"あなたにとってApexとは？",a:[["撃ち合いを楽しむ",{AGG:1,RNG:1}],["頭脳戦・位置取り",{POS:2,INFO:1}],["仲間との連携",{SUP:2}]]},
-];
-var TYPES=[
- {n:"アグロハンター",e:"⚔️",sig:{AGG:3,RNG:1,RISK:2},d:"見つけたら詰める前線ファイター。試合を動かす圧が武器。",good:"開幕とファイトで主導権を握れる。キルで勝負できる。",care:"突っ込みすぎて孤立しがち。引き際を意識。",rec:["オクタン","レイス","アッシュ"]},
- {n:"ゼロ距離の狂犬",e:"🐺",sig:{RNG:3,AGG:2,RISK:1},d:"近距離特化。懐に潜り込んで溶かす接近戦の鬼。",good:"近距離の撃ち合いが圧倒的。狭所で無類。",care:"遠距離で何もできない時間が出る。距離管理が鍵。",rec:["レイス","オクタン","マッドマギー"]},
- {n:"安置の支配者",e:"🗺️",sig:{POS:3,RISK:-1},d:"位置と地形で勝つ司令塔。常に有利ポジを先取り。",good:"終盤が異常に強い。被弾を抑える。",care:"受け身すぎてキルが伸びないことも。",rec:["コースティック","ワットソン","キャタリスト"]},
- {n:"静かなる生存者",e:"🍃",sig:{RISK:-3,POS:1,AGG:-1},d:"目立たず終盤まで生き残るハイド＆順位型。",good:"安定した順位ポイント。無駄死にしない。",care:"漁夫られると一瞬。キル貢献が薄い。",rec:["ミラージュ","レイス","オクタン"]},
- {n:"情報の支配者",e:"📡",sig:{INFO:3},d:"索敵とスキャンで常に先手を取るリコン型。",good:"敵の位置を読んで有利を作る。",care:"情報を取るだけで動けないと宝の持ち腐れ。",rec:["ブラッドハウンド","シア","クリプト"]},
- {n:"戦場の指揮官",e:"🎖️",sig:{SUP:2,POS:2,INFO:2},d:"指示と判断でチームを勝たせるIGL型。",good:"全体最適の動き。味方の力を引き出す。",care:"自分の撃ち合いが疎かになりがち。",rec:["ブラッドハウンド","ジブラルタル","ニューキャッスル"]},
- {n:"神出鬼没のムーブ職人",e:"🌀",sig:{AGG:1,RISK:2,RNG:1},d:"機動力で飛び回り撹乱しながら美味しい所を取る。",good:"自由なポジ取りと奇襲。読まれにくい。",care:"動きすぎて味方と分断されやすい。",rec:["ヴァルキリー","ホライゾン","パスファインダー"]},
- {n:"孤高のスナイパー",e:"🎯",sig:{RNG:-3,INFO:1,AGG:-1},d:"遠距離から一点読みで削る狙撃手。",good:"安全な位置から継続ダメージ。",care:"近距離に詰められると弱い。",rec:["ヴァンテージ","ブラッドハウンド","シア"]},
- {n:"罠師",e:"🕸️",sig:{POS:2,INFO:1,AGG:-1},d:"設置と地形で相手をハメる守りの達人。",good:"建物・狭所が要塞になる。",care:"オープンや攻めは器用貧乏に。",rec:["コースティック","ワットソン","ランパート"]},
- {n:"縁の下のサポーター",e:"💉",sig:{SUP:3,RNG:-1,AGG:-1},d:"蘇生・カバー・物資で味方を支える献身型。",good:"チームの生存力を底上げ。",care:"自分が前に出る判断が遅れがち。",rec:["ライフライン","ニューキャッスル","ローバ"]},
- {n:"一匹狼",e:"🦁",sig:{AGG:2,SUP:-2,RISK:1},d:"個人技で自走するソロファイター気質。",good:"単独でも戦果を出せる地力。",care:"連携を切ると3対3で不利。",rec:["レイス","ランパート","ベンチャー"]},
- {n:"連携の達人",e:"🤝",sig:{SUP:2,POS:2},d:"3人で固まって動く王道チームプレイ型。",good:"事故が少なく安定して勝てる。",care:"味方依存だと単独場面で脆い。",rec:["ジブラルタル","ライフライン","ブラッドハウンド"]},
- {n:"漁夫の達人",e:"🦅",sig:{POS:1,INFO:2,RISK:-1,AGG:-1},d:"戦いを見極め、最高のタイミングで刈り取る。",good:"低リスクで漁夫・高順位。",care:"待ちすぎて好機を逃すと何もできず終了。",rec:["シア","クリプト","コースティック"]},
-];
-var shA=[],shi=0;
-function startSh(){ shA=new Array(Q.length).fill(null); shi=0; $("shStart").style.display="none"; $("shResult").style.display="none"; $("shQ").style.display="block"; renderShQ(); }
-function resetSh(){ $("shQ").style.display="none"; $("shResult").style.display="none"; $("shStart").style.display="block"; }
-function renderShQ(){ var q=Q[shi]; $("qnum").textContent="Q "+(shi+1)+" / "+Q.length; $("qbar").style.width=Math.round(shi/Q.length*100)+"%"; $("qtext").textContent=q.q;
-  $("qopts").innerHTML=q.a.map(function(o,i){return '<div class="opt" onclick="pickSh('+i+')">'+o[0]+'</div>';}).join(""); $("qprev").style.visibility=shi>0?"visible":"hidden"; }
-function pickSh(i){ shA[shi]=i; if(shi<Q.length-1){shi++;renderShQ();}else finishSh(); }
-function prevSh(){ if(shi>0){shi--;renderShQ();} }
-function bestMatch(types,norm,worst){ var best=null,bs=worst?1e9:-1e9; types.forEach(function(t){ var tm=0; for(var k in t.sig)tm+=t.sig[k]*t.sig[k]; tm=Math.sqrt(tm)||1; var dot=0; for(var k in t.sig)dot+=(t.sig[k]/tm)*(norm[k]||0); if(worst?dot<bs:dot>bs){bs=dot;best=t;} }); return best; }
-function profile(answers,bank){ var ax={AGG:0,POS:0,SUP:0,INFO:0,RNG:0,RISK:0}; answers.forEach(function(ai,qi){ var s=bank[qi].a[ai][1]; for(var k in s)ax[k]+=s[k]; }); var mag=0; for(var k in ax)mag+=ax[k]*ax[k]; mag=Math.sqrt(mag)||1; var n={}; for(var k in ax)n[k]=ax[k]/mag; return n; }
-function finishSh(){ var t=bestMatch(TYPES,profile(shA,Q),false); $("shQ").style.display="none"; var b=$("shResult"); b.style.display="block";
-  b.innerHTML='<div class="ic">'+t.e+'</div><div class="tname">'+t.n+'</div><div class="tsub">YOUR PLAYSTYLE</div>'
-    +'<div class="desc">'+t.d+'</div><div class="gc"><div class="good"><div class="t">💪 強み</div><p>'+t.good+'</p></div><div class="care"><div class="t">⚠ 注意</div><p>'+t.care+'</p></div></div>'
-    +'<div style="font-size:12px;color:var(--sub);margin-bottom:6px">相性のいいレジェンド</div><div class="recos">'+t.rec.map(function(r){return '<span class="chip">'+r+'</span>';}).join("")+'</div>'
-    +'<button class="btn x" onclick="share(\'立ち回りタイプは「'+t.n+'」だった！\')">𝕏 結果をシェア</button><button class="btn primary" onclick="startSh()">もう一度</button>';
-}
+/* ===== DIAGNOSES ===== */
+function profile(ans,bank){var ax={AGG:0,POS:0,SUP:0,INFO:0,RNG:0,RISK:0};ans.forEach(function(a,q){var s=bank[q].a[a][1];for(var k in s)ax[k]+=s[k];});var mag=0;for(var k in ax)mag+=ax[k]*ax[k];mag=Math.sqrt(mag)||1;var n={};for(var k in ax)n[k]=ax[k]/mag;return n;}
+function bestList(list,n,worst){var out=list.map(function(t){var tm=0;for(var k in t.sig)tm+=t.sig[k]*t.sig[k];tm=Math.sqrt(tm)||1;var dot=0;for(var k in t.sig)dot+=(t.sig[k]/tm)*(n[k]||0);return {t:t,dot:dot};});out.sort(function(a,b){return worst?a.dot-b.dot:b.dot-a.dot;});return out;}
+var diagState={};
+function openDiag(d){diagState.cur=d;var a=$('diagArea');
+  if(d==='sh'){shStart();}else if(d==='ng'){ngStart();}else if(d==='ub'){ubStart();}else if(d==='ts'){tsStart();}else if(d==='rl'){rlStart();}
+  a.scrollIntoView({behavior:'smooth',block:'start'});}
 
-/* ====== 使うな診断（12問・激辛） ====== */
-var NGQ=[
- {q:"撃ち合いは正直…",a:[["自信ある",{AGG:2,RNG:1}],["普通",{}],["苦手",{AGG:-2,RNG:-1}]]},
- {q:"連携・ピンは",a:[["マメに出す",{SUP:2}],["普通",{}],["一人で動く",{SUP:-2,AGG:1}]]},
- {q:"終盤は",a:[["攻める",{AGG:2}],["隠れる",{RISK:-2,POS:1}]]},
- {q:"距離は",a:[["近距離",{RNG:2,AGG:1}],["遠距離",{RNG:-2}]]},
- {q:"索敵は",a:[["する",{INFO:2}],["勘で突撃",{INFO:-1,AGG:1}]]},
- {q:"リスクは",a:[["取る",{RISK:2,AGG:1}],["避ける",{RISK:-2}]]},
- {q:"移動は",a:[["飛び回る",{AGG:1,RISK:1}],["固まる",{SUP:1,POS:1}]]},
- {q:"役割は",a:[["前線",{AGG:2}],["後方支援",{SUP:2,RNG:-1}]]},
- {q:"罠・設置は",a:[["好き",{POS:2}],["使わない",{AGG:1}]]},
- {q:"ファイトは",a:[["自分から",{AGG:2}],["様子見",{RISK:-2,POS:1}]]},
- {q:"蘇生・カバーは",a:[["最優先",{SUP:2}],["後回し",{AGG:1,SUP:-1}]]},
- {q:"プレイの軸は",a:[["キル",{AGG:2,RNG:1}],["位置",{POS:2}],["連携",{SUP:2}]]},
-];
-/* レジェンドの“向いてる人”プロフィール＋使うなロースト */
-var LEGNG=[
- {n:"レイス",e:"🌀",sig:{AGG:2,RNG:1,RISK:1},roast:"ポータルを開く前に溶ける。攻めない君にレイスは宝の持ち腐れ。"},
- {n:"ワットソン",e:"⚡",sig:{POS:3,RISK:-2,AGG:-2},roast:"フェンスを張る前に突っ込んで爆散。守れない君が触ると地獄。"},
- {n:"ジブラルタル",e:"🛡️",sig:{SUP:2,POS:1,RISK:-1},roast:"でかい的になって味方より先に消える。連携しない君には罰ゲーム。"},
- {n:"ヴァンテージ",e:"🎯",sig:{RNG:-3,INFO:1,RISK:-1},roast:"近距離大好きな君がスナイパー？ 索敵だけして何もできず終わる。"},
- {n:"コースティック",e:"☣️",sig:{POS:3,AGG:-2,RISK:-2},roast:"ガスを撒く頃には君はもうリスポン画面を眺めてる。"},
- {n:"オクタン",e:"💉",sig:{AGG:2,RISK:2},roast:"慎重派の君がオクタン？ スティム焚いて単騎特攻、味方に置いていかれる。"},
- {n:"ライフライン",e:"🚑",sig:{SUP:3,AGG:-1},roast:"蘇生そっちのけで撃ち合う君に、ライフラインを持つ資格なし。"},
- {n:"ブラッドハウンド",e:"🐦‍⬛",sig:{INFO:2,AGG:1},roast:"スキャン情報を共有しない君のブラハは、ただの足の速い的。"},
- {n:"ニューキャッスル",e:"🧱",sig:{SUP:3,POS:1},roast:"守る気ゼロの君が壁役？ 味方を置いて前に出てチーム崩壊。"},
- {n:"パスファインダー",e:"🤖",sig:{AGG:1,RISK:1,RNG:1},roast:"グラップルで逃げるだけ。何もせず安置に転がされて終了。"},
- {n:"シア",e:"👁️",sig:{INFO:2,RISK:-1},roast:"せっかちな君のシアは、アルティを置く前に殴り合って死ぬ。"},
- {n:"キャタリスト",e:"🟣",sig:{POS:3,RISK:-2},roast:"壁を作る前に飛び出す君は、守りスキルを全部無駄にする天才。"},
- {n:"ホライゾン",e:"🌌",sig:{AGG:1,RISK:1},roast:"リフトを上に張って隠れるだけ。攻めない君には完全な持ち腐れ。"},
-];
-var ngA=[],ngi=0;
-function startNg(){ ngA=new Array(NGQ.length).fill(null); ngi=0; $("ngStart").style.display="none"; $("ngResult").style.display="none"; $("ngQ").style.display="block"; renderNgQ(); }
-function resetNg(){ $("ngQ").style.display="none"; $("ngResult").style.display="none"; $("ngStart").style.display="block"; }
-function renderNgQ(){ var q=NGQ[ngi]; $("ngnum").textContent="Q "+(ngi+1)+" / "+NGQ.length; $("ngbar").style.width=Math.round(ngi/NGQ.length*100)+"%"; $("ngtext").textContent=q.q;
-  $("ngopts").innerHTML=q.a.map(function(o,i){return '<div class="opt" onclick="pickNg('+i+')">'+o[0]+'</div>';}).join(""); $("ngprev").style.visibility=ngi>0?"visible":"hidden"; }
-function pickNg(i){ ngA[ngi]=i; if(ngi<NGQ.length-1){ngi++;renderNgQ();}else finishNg(); }
-function prevNg(){ if(ngi>0){ngi--;renderNgQ();} }
-function finishNg(){ var L=bestMatch(LEGNG,profile(ngA,NGQ),true); $("ngQ").style.display="none"; var b=$("ngResult"); b.style.display="block";
-  b.innerHTML='<div class="ic">'+L.e+'</div><div class="tsub" style="color:var(--down)">YOU MUST NOT USE</div><div class="tname ng">'+L.n+'</div>'
-    +'<div class="desc" style="border-color:#5a2630;background:#1c1216">😈 <b>絶対に使うな。</b><br>'+L.roast+'</div>'
-    +'<button class="btn x" onclick="share(\'俺が絶対に使っちゃダメなレジェンドは「'+L.n+'」だった😇\')">𝕏 結果をシェア</button><button class="btn primary" onclick="startNg()">もう一度</button>';
-}
+/* 立ち回り (30Q/13type) */
+var SHQ=[{q:"敵を見つけた。まず？",a:[["すぐ詰める",{AGG:2,RISK:1}],["味方と連携",{SUP:2,POS:1}],["位置取りを直す",{POS:2}],["様子を見て漁夫",{RISK:-1,POS:1}]]},{q:"得意な交戦距離は？",a:[["近距離",{RNG:2,AGG:1}],["中距離",{}],["遠距離",{RNG:-2,INFO:1}]]},{q:"味方が倒れた。",a:[["倒し切る",{AGG:2}],["即カバー蘇生",{SUP:2}],["引いて立て直す",{POS:1,RISK:-1}]]},{q:"終盤どう動く？",a:[["有利ポジ早取り",{POS:2}],["隠れて生存",{RISK:-2,POS:1}],["中央で漁夫",{POS:1,RISK:-1}],["音の方へ突撃",{AGG:2,RISK:1}]]},{q:"役割は？",a:[["前線",{AGG:2,RNG:1}],["指示IGL",{SUP:1,POS:1,INFO:1}],["索敵",{INFO:2}],["後方支援",{SUP:2,RNG:-1}]]},{q:"漁る派？戦う派？",a:[["戦闘最優先",{AGG:2}],["バランス",{}],["物資優先",{RISK:-2}]]},{q:"索敵は？",a:[["常に情報",{INFO:2}],["必要時",{}],["勘で突撃",{AGG:1,INFO:-1}]]},{q:"微妙なファイト",a:[["仕掛ける",{AGG:2,RISK:2}],["条件次第",{}],["降りる",{RISK:-2,POS:1}]]},{q:"移動スキル持ちなら",a:[["飛び回る",{AGG:1,RISK:1,RNG:1}],["味方と固まる",{SUP:1,POS:1}],["安全ルート",{RISK:-1,POS:1}]]},{q:"理想の試合は？",a:[["キル盛り",{AGG:2,RNG:1}],["味方を活かす",{SUP:2}],["静かに勝つ",{RISK:-1,POS:1}]]},{q:"罠設置は？",a:[["大好き",{POS:2,INFO:1}],["状況で",{}],["使わない機動派",{AGG:1,RNG:1}]]},{q:"降下先は？",a:[["激戦区",{AGG:2,RISK:2}],["安全地帯",{RISK:-2}],["指示に従う",{SUP:1,POS:1}]]},{q:"背後を取れた",a:[["即コミット",{AGG:2}],["味方を待つ",{SUP:2}],["様子見",{POS:1,RISK:-1}]]},{q:"エイムは？",a:[["近距離強い",{RNG:2,AGG:1}],["中距離安定",{}],["遠距離置き",{RNG:-2}]]},{q:"味方とはぐれた",a:[["単独で暴れる",{AGG:1,SUP:-1,RISK:1}],["合流最優先",{SUP:2,POS:1}],["隠れる",{RISK:-1}]]},{q:"漁夫について",a:[["先に自分が",{AGG:1,RISK:1}],["計って漁夫",{POS:1,RISK:-1,INFO:1}],["距離を取る",{RISK:-1,POS:1}]]},{q:"序盤の不利交戦",a:[["撃ち勝つ",{AGG:2,RISK:1}],["避ける",{RISK:-1}]]},{q:"作戦は？",a:[["攻めの圧",{AGG:2}],["守りと位置",{POS:2,RISK:-1}]]},{q:"コールは？",a:[["細かく指示",{SUP:2,INFO:1}],["最低限",{}],["黙々と",{SUP:-1,AGG:1}]]},{q:"高台を見た",a:[["遠距離で削る",{RNG:-1,POS:1}],["越えて接近",{AGG:1,RNG:1}],["射線を作る",{SUP:1,POS:1}]]},{q:"残り3部隊安置小",a:[["先に動く",{AGG:2,POS:1}],["隠れ漁夫",{RISK:-2,POS:1}]]},{q:"バナー回収",a:[["リスク取る",{SUP:2,RISK:1}],["安全後",{SUP:1,RISK:-1}],["諦め",{RISK:-1,AGG:1}]]},{q:"好きなのは",a:[["撃ち合い",{AGG:2,RNG:1}],["読み勝ち",{POS:2,INFO:1}],["連携勝ち",{SUP:2}]]},{q:"特攻する？",a:[["する",{AGG:2,RISK:2}],["体力管理",{RISK:-1,POS:1}]]},{q:"索敵情報を得たら",a:[["仕掛ける材料",{AGG:1,INFO:1}],["回避と位置",{POS:1,INFO:1,RISK:-1}]]},{q:"プレイは？",a:[["前に出る",{AGG:2}],["後ろで支える",{SUP:2,RNG:-1}],["俯瞰指揮",{INFO:1,POS:1,SUP:1}]]},{q:"負けてる試合",a:[["一発逆転",{AGG:1,RISK:2}],["順位拾い",{RISK:-1,POS:1}]]},{q:"単独で2人相手",a:[["殲滅狙う",{AGG:2,RISK:2}],["時間稼ぎ",{RISK:-2,POS:1}]]},{q:"近距離遭遇",a:[["殴り勝つ",{RNG:2,AGG:2}],["距離取り直す",{RNG:-1,RISK:-1,POS:1}]]},{q:"Apexとは？",a:[["撃ち合い",{AGG:1,RNG:1}],["頭脳戦",{POS:2,INFO:1}],["連携",{SUP:2}]]}];
+var SHT=[{n:"アグロハンター",e:"⚔️",sig:{AGG:3,RNG:1,RISK:2},d:"見つけたら詰める前線ファイター。圧が武器。",good:"主導権を握れる。キルで勝負。",care:"突っ込みすぎて孤立しがち。",rec:["オクタン","レイス","アッシュ"]},{n:"ゼロ距離の狂犬",e:"🐺",sig:{RNG:3,AGG:2,RISK:1},d:"近距離特化。懐で溶かす接近戦の鬼。",good:"近距離が圧倒的。",care:"遠距離で空白が出る。",rec:["レイス","オクタン","マッドマギー"]},{n:"安置の支配者",e:"🗺️",sig:{POS:3,RISK:-1},d:"位置と地形で勝つ司令塔。",good:"終盤が異常に強い。",care:"受け身でキルが伸びにくい。",rec:["コースティック","ワットソン","キャタリスト"]},{n:"静かなる生存者",e:"🍃",sig:{RISK:-3,POS:1,AGG:-1},d:"終盤まで生き残るハイド型。",good:"安定順位。無駄死にしない。",care:"漁夫られると一瞬。",rec:["ミラージュ","レイス","オクタン"]},{n:"情報の支配者",e:"📡",sig:{INFO:3},d:"索敵で先手を取るリコン型。",good:"有利を作れる。",care:"動けないと宝の持ち腐れ。",rec:["ブラッドハウンド","シア","クリプト"]},{n:"戦場の指揮官",e:"🎖️",sig:{SUP:2,POS:2,INFO:2},d:"指示でチームを勝たせるIGL。",good:"全体最適。",care:"自分の撃ち合いが疎かに。",rec:["ブラッドハウンド","ジブラルタル","ニューキャッスル"]},{n:"ムーブ職人",e:"🌀",sig:{AGG:1,RISK:2,RNG:1},d:"機動力で飛び回り撹乱。",good:"奇襲と自由なポジ。",care:"味方と分断されやすい。",rec:["ヴァルキリー","ホライゾン","パスファインダー"]},{n:"孤高のスナイパー",e:"🎯",sig:{RNG:-3,INFO:1,AGG:-1},d:"遠距離で削る狙撃手。",good:"安全に継続ダメージ。",care:"近距離に弱い。",rec:["ヴァンテージ","ブラッドハウンド","シア"]},{n:"罠師",e:"🕸️",sig:{POS:2,INFO:1,AGG:-1},d:"設置と地形でハメる守りの達人。",good:"建物が要塞に。",care:"攻めは器用貧乏。",rec:["コースティック","ワットソン","ランパート"]},{n:"サポーター",e:"💉",sig:{SUP:3,RNG:-1,AGG:-1},d:"蘇生とカバーで支える献身型。",good:"生存力を底上げ。",care:"前に出る判断が遅れがち。",rec:["ライフライン","ニューキャッスル","ローバ"]},{n:"一匹狼",e:"🦁",sig:{AGG:2,SUP:-2,RISK:1},d:"個人技で自走するソロ気質。",good:"単独でも戦果。",care:"連携を切ると不利。",rec:["レイス","ランパート","ベンチャー"]},{n:"連携の達人",e:"🤝",sig:{SUP:2,POS:2},d:"3人で固まる王道チーム型。",good:"事故が少ない。",care:"単独場面で脆い。",rec:["ジブラルタル","ライフライン","ブラッドハウンド"]},{n:"漁夫の達人",e:"🦅",sig:{POS:1,INFO:2,RISK:-1,AGG:-1},d:"最高のタイミングで刈り取る。",good:"低リスクで高順位。",care:"待ちすぎて好機を逃す。",rec:["シア","クリプト","コースティック"]}];
+var shA,shi;
+function shStart(){shA=new Array(SHQ.length).fill(null);shi=0;shRender();}
+function shRender(){var q=SHQ[shi];$('diagArea').innerHTML='<div class="qnum">Q '+(shi+1)+' / '+SHQ.length+'</div><div class="bar"><i style="width:'+Math.round(shi/SHQ.length*100)+'%"></i></div><div class="q">'+q.q+'</div>'+q.a.map(function(o,i){return '<div class="opt" onclick="shPick('+i+')">'+o[0]+'</div>';}).join('')+'<div class="navrow"><button onclick="shPrev()" style="visibility:'+(shi>0?'visible':'hidden')+'">← 戻る</button><button onclick="openDiag(\'sh\')">最初から</button></div>';}
+function shPick(i){shA[shi]=i;if(shi<SHQ.length-1){shi++;shRender();}else{var t=bestList(SHT,profile(shA,SHQ),false)[0].t;$('diagArea').innerHTML='<div class="res"><div class="ic">'+t.e+'</div><div class="tn">'+t.n+'</div><div class="ts">YOUR PLAYSTYLE</div><div class="desc">'+t.d+'</div><div class="gc"><div class="good"><div class="t">💪 強み</div><p>'+t.good+'</p></div><div class="care"><div class="t">⚠ 注意</div><p>'+t.care+'</p></div></div><div style="font-size:12px;color:var(--sub);margin-bottom:6px">相性のいいレジェンド</div><div class="chips">'+t.rec.map(function(r){return '<span class="chip">'+r+'</span>';}).join('')+'</div><button class="btn x" onclick="share(\'立ち回りタイプは「'+t.n+'」だった\')">𝕏 シェア</button><button class="btn primary" onclick="openDiag(\'sh\')">もう一度</button></div>';}}
+function shPrev(){if(shi>0){shi--;shRender();}}
 
-/* ====== 共有（自動で #APEX激やばツール） ====== */
-function share(txt){ var url=location.href.split("#")[0];
-  window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent("【APEX激やばツール】"+txt+" あなたは？")+"&url="+encodeURIComponent(url)+"&hashtags="+encodeURIComponent(SHARE_TAG),"_blank"); }
+/* 使うな (12Q/13roast) */
+var NGQ=[{q:"撃ち合いは正直…",a:[["自信ある",{AGG:2,RNG:1}],["普通",{}],["苦手",{AGG:-2,RNG:-1}]]},{q:"連携は",a:[["マメに",{SUP:2}],["普通",{}],["一人で",{SUP:-2,AGG:1}]]},{q:"終盤は",a:[["攻める",{AGG:2}],["隠れる",{RISK:-2,POS:1}]]},{q:"距離は",a:[["近距離",{RNG:2,AGG:1}],["遠距離",{RNG:-2}]]},{q:"索敵は",a:[["する",{INFO:2}],["勘で",{INFO:-1,AGG:1}]]},{q:"リスクは",a:[["取る",{RISK:2,AGG:1}],["避ける",{RISK:-2}]]},{q:"移動は",a:[["飛び回る",{AGG:1,RISK:1}],["固まる",{SUP:1,POS:1}]]},{q:"役割は",a:[["前線",{AGG:2}],["後方支援",{SUP:2,RNG:-1}]]},{q:"罠は",a:[["好き",{POS:2}],["使わない",{AGG:1}]]},{q:"ファイトは",a:[["自分から",{AGG:2}],["様子見",{RISK:-2,POS:1}]]},{q:"蘇生は",a:[["最優先",{SUP:2}],["後回し",{AGG:1,SUP:-1}]]},{q:"軸は",a:[["キル",{AGG:2,RNG:1}],["位置",{POS:2}],["連携",{SUP:2}]]}];
+var LEGNG=[{n:"レイス",e:"🌀",sig:{AGG:2,RNG:1,RISK:1},roast:"ポータルを開く前に溶ける。攻めない君には宝の持ち腐れ。"},{n:"ワットソン",e:"⚡",sig:{POS:3,RISK:-2,AGG:-2},roast:"フェンスを張る前に突っ込んで爆散する。"},{n:"ジブラルタル",e:"🛡️",sig:{SUP:2,POS:1,RISK:-1},roast:"でかい的になって味方より先に消える。"},{n:"ヴァンテージ",e:"🎯",sig:{RNG:-3,INFO:1,RISK:-1},roast:"近距離大好きな君がスナイパー？索敵だけして終わる。"},{n:"コースティック",e:"☣️",sig:{POS:3,AGG:-2,RISK:-2},roast:"ガスを撒く頃には君はもうリスポン画面。"},{n:"オクタン",e:"💉",sig:{AGG:2,RISK:2},roast:"慎重派の君が単騎特攻、味方に置いていかれる。"},{n:"ライフライン",e:"🚑",sig:{SUP:3,AGG:-1},roast:"蘇生そっちのけで撃ち合う君に持つ資格なし。"},{n:"ブラッドハウンド",e:"🐦‍⬛",sig:{INFO:2,AGG:1},roast:"情報を共有しない君のブラハはただの足の速い的。"},{n:"ニューキャッスル",e:"🧱",sig:{SUP:3,POS:1},roast:"守る気ゼロの君が壁役？チーム崩壊。"},{n:"パスファインダー",e:"🤖",sig:{AGG:1,RISK:1,RNG:1},roast:"逃げるだけで何もせず安置に転がされる。"},{n:"シア",e:"👁️",sig:{INFO:2,RISK:-1},roast:"せっかちな君はアルティを置く前に死ぬ。"},{n:"キャタリスト",e:"🟣",sig:{POS:3,RISK:-2},roast:"壁を作る前に飛び出す、守りスキル全無駄の天才。"},{n:"ホライゾン",e:"🌌",sig:{AGG:1,RISK:1},roast:"リフトで隠れるだけ。攻めない君には完全な持ち腐れ。"}];
+var ngA,ngi;
+function ngStart(){ngA=new Array(NGQ.length).fill(null);ngi=0;ngRender();}
+function ngRender(){var q=NGQ[ngi];$('diagArea').innerHTML='<div class="qnum">Q '+(ngi+1)+' / '+NGQ.length+'</div><div class="bar"><i style="width:'+Math.round(ngi/NGQ.length*100)+'%"></i></div><div class="q">'+q.q+'</div>'+q.a.map(function(o,i){return '<div class="opt" onclick="ngPick('+i+')">'+o[0]+'</div>';}).join('')+'<div class="navrow"><button onclick="ngPrev()" style="visibility:'+(ngi>0?'visible':'hidden')+'">← 戻る</button><button onclick="openDiag(\'ng\')">最初から</button></div>';}
+function ngPick(i){ngA[ngi]=i;if(ngi<NGQ.length-1){ngi++;ngRender();}else{var L=bestList(LEGNG,profile(ngA,NGQ),true)[0].t;$('diagArea').innerHTML='<div class="res"><div class="ic">'+L.e+'</div><div class="ts" style="color:var(--down)">YOU MUST NOT USE</div><div class="tn ng">'+L.n+'</div><div class="desc" style="border-color:#5a2630;background:#1c1216">😈 <b>絶対に使うな。</b><br>'+L.roast+'</div><button class="btn x" onclick="share(\'俺が絶対に使っちゃダメなのは「'+L.n+'」だった😇\')">𝕏 シェア</button><button class="btn primary" onclick="openDiag(\'ng\')">もう一度</button></div>';}}
+function ngPrev(){if(ngi>0){ngi--;ngRender();}}
 
-/* ====== ルーレット ====== */
+/* 使うべき (12Q/17legend) */
+var UBQ=[{q:"戦闘スタイルは？",a:[["前に出て詰める",{AGG:2}],["有利位置を取る",{POS:1,RISK:-1}],["味方を支える",{SUP:2}]]},{q:"得意距離は？",a:[["近距離",{RNG:2,AGG:1}],["中距離",{}],["遠距離",{RNG:-2}]]},{q:"索敵は？",a:[["自分が取る",{INFO:2}],["勘で突撃",{AGG:1}]]},{q:"役割は？",a:[["前線",{AGG:2}],["守り",{POS:2,RISK:-1}],["サポート",{SUP:2}],["索敵",{INFO:2}]]},{q:"機動力は？",a:[["飛び回る",{AGG:1,RISK:1}],["固まる",{POS:1,SUP:1}]]},{q:"リスクは？",a:[["取る",{RISK:2}],["避ける",{RISK:-2}]]},{q:"味方が倒れたら？",a:[["蘇生優先",{SUP:2}],["まず敵を倒す",{AGG:1}]]},{q:"罠は？",a:[["好き",{POS:2}],["使わない",{AGG:1}]]},{q:"終盤は？",a:[["攻める",{AGG:2}],["位置で勝つ",{POS:2}]]},{q:"ソロ耐性は？",a:[["一人でも戦える",{AGG:1,RISK:1}],["連携前提",{SUP:1,POS:1}]]},{q:"エイムは？",a:[["自信あり",{RNG:1,AGG:1}],["スキルで補う",{INFO:1,POS:1}]]},{q:"勝ち方は？",a:[["キル",{AGG:2,RNG:1}],["読み",{POS:1,INFO:1}],["支え",{SUP:2}]]}];
+var UBL=[{n:"オクタン",e:"💉",role:"高機動アタッカー",sig:{AGG:2,RISK:2},m:"スティムで超高速、先手を取り続けられる。",d:"体力を削るので無理な突撃で溶けやすい。"},{n:"レイス",e:"🌀",role:"万能アタッカー",sig:{AGG:2,RNG:1,RISK:1},m:"低姿勢＆ポータルで攻防自在。一生強い。",d:"エイムと判断力ありきの上級者向け。"},{n:"ホライゾン",e:"🌌",role:"エイム型",sig:{AGG:1,RISK:1,POS:1},m:"縦の機動と空中エイム安定。",d:"位置がバレやすい。"},{n:"パスファインダー",e:"🤖",role:"ムーブ",sig:{AGG:1,RISK:1,RNG:1},m:"自由なポジ取り、奇襲も逃げも自在。",d:"的が大きい。"},{n:"ヴァルキリー",e:"🚀",role:"偵察寄り機動",sig:{POS:1,INFO:1,RISK:1},m:"飛行で再配置＆妨害。",d:"アルティ中無防備。"},{n:"ブラッドハウンド",e:"🐦‍⬛",role:"攻めの索敵",sig:{INFO:2,AGG:1},m:"スキャンで攻めの起点。最強索敵。",d:"情報を活かせないと持ち腐れ。"},{n:"シア",e:"👁️",role:"静かな索敵",sig:{INFO:2,RISK:-1},m:"静かに索敵＆妨害。",d:"受け身になりがち。"},{n:"クリプト",e:"🛰️",role:"偵察＆EMP",sig:{INFO:2,POS:1,RISK:-1},m:"安全に索敵、EMPで集団を崩す。",d:"操作中は無防備。"},{n:"ジブラルタル",e:"🛡️",role:"タンク",sig:{SUP:2,POS:1,RISK:-1},m:"ドーム＋砲撃で守りも攻めも。",d:"的が大きい。"},{n:"ニューキャッスル",e:"🧱",role:"守りの要",sig:{SUP:2,POS:1},m:"壁と蘇生で味方を鉄壁に。",d:"火力は控えめ。"},{n:"ライフライン",e:"🚑",role:"ヒーラー",sig:{SUP:2},m:"蘇生と回復で生存力UP。初心者にも◎。",d:"自衛火力が低め。"},{n:"ローバ",e:"💎",role:"物資＆離脱",sig:{SUP:1,POS:1,RISK:-1},m:"安全に離脱＆物資確保。",d:"戦闘性能は控えめ。"},{n:"コースティック",e:"☣️",role:"籠り最強",sig:{POS:2,RISK:-1,AGG:-1},m:"建物を要塞化。終盤で無類。",d:"オープンや攻めは苦手。"},{n:"ワットソン",e:"⚡",role:"終盤の鬼",sig:{POS:2,RISK:-2},m:"侵入を完全シャットアウト。",d:"序盤や機動戦は苦手。"},{n:"マッドマギー",e:"🔥",role:"近距離破壊",sig:{AGG:2,RNG:1},m:"籠り破壊＆近距離の圧。",d:"索敵が無く遠距離は無力。"},{n:"バンガロール",e:"💨",role:"万能",sig:{AGG:1,POS:1},m:"スモークと走りで攻防自在。",d:"器用貧乏になりがち。"},{n:"ヴァンテージ",e:"🎯",role:"スナイパー",sig:{RNG:-3,INFO:1},m:"遠距離からマーク＆狙撃。",d:"近距離に詰められると不利。"}];
+var ubA,ubi;
+function ubStart(){ubA=new Array(UBQ.length).fill(null);ubi=0;ubRender();}
+function ubRender(){var q=UBQ[ubi];$('diagArea').innerHTML='<div class="qnum">Q '+(ubi+1)+' / '+UBQ.length+'</div><div class="bar"><i style="width:'+Math.round(ubi/UBQ.length*100)+'%"></i></div><div class="q">'+q.q+'</div>'+q.a.map(function(o,i){return '<div class="opt" onclick="ubPick('+i+')">'+o[0]+'</div>';}).join('')+'<div class="navrow"><button onclick="ubPrev()" style="visibility:'+(ubi>0?'visible':'hidden')+'">← 戻る</button><button onclick="openDiag(\'ub\')">最初から</button></div>';}
+function ubPick(i){ubA[ubi]=i;if(ubi<UBQ.length-1){ubi++;ubRender();}else{var s=bestList(UBL,profile(ubA,UBQ),false);var b=s[0].t,a1=s[1].t,a2=s[2].t;$('diagArea').innerHTML='<div class="res"><div class="ic">'+b.e+'</div><div class="ts">YOU SHOULD MAIN</div><div class="tn">'+b.n+'</div><div style="font-size:12px;color:var(--sub);margin-top:4px">'+b.role+'</div><div class="gc" style="margin-top:14px"><div class="good"><div class="t">💪 メリット</div><p>'+b.m+'</p></div><div class="care"><div class="t">⚠ デメリット</div><p>'+b.d+'</p></div></div><div style="font-size:12px;color:var(--sub);margin-bottom:6px">次点の相性</div><div class="chips"><span class="chip">'+a1.e+' '+a1.n+'</span><span class="chip">'+a2.e+' '+a2.n+'</span></div><button class="btn x" onclick="share(\'使うべきレジェンドは「'+b.n+'」だった\')">𝕏 シェア</button><button class="btn primary" onclick="openDiag(\'ub\')">もう一度</button></div>';}}
+function ubPrev(){if(ubi>0){ubi--;ubRender();}}
+
+/* 強さ (form) */
+var TRANK=[{n:"ブロンズ",c:"#cd7f32",cm:"まずは生き残ること。漁夫と安置から。"},{n:"シルバー",c:"#c0c0c0",cm:"伸びしろの塊。基礎を固めれば上がる。"},{n:"ゴールド",c:"#ffd34d",cm:"平均ど真ん中。ここが分かれ道。"},{n:"プラチナ",c:"#39c6ff",cm:"平均より上。だが人口が溜まる沼。数字で抜け出せ。"},{n:"ダイヤ",c:"#7fd4ff",cm:"上手い部類。だが安定して数字を出せて本物。"},{n:"マスター",c:"#c062ff",cm:"強い。だがプレの壁(KD3/ダメ1000)はまだ高い。"},{n:"プレデター",c:"#ff4d3d",cm:"本物の頂点。だがその座は一瞬で溶ける。"}];
+function tsStart(){$('diagArea').innerHTML='<div class="warnbox">⚠️ ネタ込みの激辛採点。プレデター認定は「ランクKD3超＋平均ダメ1000超＋プレ到達経験＋今季100戦」を全部満たして初めて。</div>'
+  +'<div class="field"><label>最高到達ランク</label><select id="ts_peak"><option value="0">未/ブロンズ</option><option value="1">シルバー</option><option value="2">ゴールド</option><option value="3" selected>プラチナ</option><option value="4">ダイヤ</option><option value="5">マスター</option><option value="6">プレデター</option></select></div>'
+  +'<div class="field"><label>ランクのKD<span class="hint">キル÷デス</span></label><input id="ts_kd" type="number" step="0.1" inputmode="decimal" value="2.1"></div>'
+  +'<div class="field"><label>平均ダメージ<span class="hint">1試合</span></label><input id="ts_dmg" type="number" inputmode="numeric" value="640"></div>'
+  +'<div class="field"><label>プレデター到達回数</label><input id="ts_pred" type="number" inputmode="numeric" value="0"></div>'
+  +'<div class="field"><label>今季ランク試合数</label><input id="ts_games" type="number" inputmode="numeric" value="120"></div>'
+  +'<div class="field"><label>優勝/バッジ</label><select id="ts_extra"><option value="0">ほぼ無い</option><option value="1" selected>そこそこ</option><option value="2">よくある</option></select></div>'
+  +'<button class="btn hot" onclick="tsJudge()">🔥 容赦なく判定する</button>';}
+function tsv(id){return parseFloat($(id).value)||0;}
+function tsJudge(){var kd=tsv('ts_kd'),dmg=tsv('ts_dmg'),pred=tsv('ts_pred'),games=tsv('ts_games'),peak=tsv('ts_peak'),extra=tsv('ts_extra');var idx,need="";
+  if(kd>3&&dmg>1000&&pred>=1&&games>=100)idx=6;
+  else if(kd>=2.5&&dmg>=900&&peak>=4&&games>=80){idx=5;need="プレには KD3超・平均ダメ1000超・プレ到達・今季100戦 が全部必要。";}
+  else if(kd>=2&&dmg>=750&&games>=50){idx=4;need="マスターには KD2.5・ダメ900・最高ダイヤ以上・今季80戦。";}
+  else if(kd>=1.5&&dmg>=600){idx=3;need="ダイヤには KD2.0・ダメ750・今季50戦。";}
+  else if(kd>=1.1&&dmg>=450){idx=2;need="プラチナ突破には KD1.5・ダメ600。";}
+  else if(kd>=0.8){idx=1;need="ゴールドには KD1.1・ダメ450。";}
+  else{idx=0;need="まずは KD0.8、デスを減らす立ち回りから。";}
+  if(peak+1<idx){idx=Math.max(peak,0);need="申告の最高ランクを超える判定は出せない。まずそこに到達を。";}
+  var thin=games<10,R=TRANK[idx];var mk=function(ok){return ok?'<span class="mk" style="color:var(--ok)">✓</span>':'<span class="mk" style="color:var(--down)">✗</span>';};
+  $('diagArea').innerHTML='<div class="verdict" style="--rk:'+R.c+'"><div class="lab">YOUR TRUE RANK</div><div class="rk" style="--rk:'+R.c+'">'+R.n+'</div><div class="cm">'+(thin?'<b style="color:var(--down)">※今季'+games+'戦では材料が薄い（参考値）。</b><br>':'')+R.cm+'</div></div>'
+    +'<div class="hud" style="margin-bottom:12px"><div class="eyebrow" style="margin:0 0 8px">採点の内訳</div><div class="li"><span class="k">ランクKD</span>'+mk(kd>=2)+'<span class="v mono">'+kd.toFixed(1)+'</span></div><div class="li"><span class="k">平均ダメージ</span>'+mk(dmg>=750)+'<span class="v mono">'+dmg+'</span></div><div class="li"><span class="k">プレ到達</span>'+mk(pred>=1)+'<span class="v mono">'+pred+'回</span></div><div class="li"><span class="k">今季試合数</span>'+mk(games>=50)+'<span class="v mono">'+games+'</span></div></div>'
+    +(need?'<div class="need">📈 上を目指すなら：'+need+'</div>':'')
+    +'<button class="btn x" onclick="share(\'激辛診断の適正ランクは「'+R.n+'」だった🔥\')">𝕏 シェア</button><button class="btn hot" onclick="openDiag(\'ts\')">やり直す</button>';
+  window.scrollTo(0,0);}
+
+/* ルーレット */
 var LEGENDS=["レイス","パスファインダー","オクタン","ワットソン","ライフライン","ジブラルタル","ブラッドハウンド","バンガロール","コースティック","ミラージュ","クリプト","レヴナント","ローバ","ランパート","ホライゾン","ヒューズ","ヴァルキリー","シア","アッシュ","マッドマギー","ニューキャッスル","ヴァンテージ","キャタリスト","バリスティック","コンジット","オルター","ベンチャー"];
-var roulInit=false;
-function initRoul(){ if(roulInit)return; roulInit=true; $("slots").innerHTML=[0,1,2].map(function(i){return '<div class="slot" id="slot'+i+'"><span class="pi">P'+(i+1)+'</span><span class="nm">?</span></div>';}).join(""); }
+function rlStart(){$('diagArea').innerHTML='<div class="res"><div style="font-size:14px;color:var(--sub);margin-bottom:6px">3人分の使用キャラを抽選！</div><div class="slots" id="slots">'+[0,1,2].map(function(i){return '<div class="slot" id="slot'+i+'"><span class="pi">P'+(i+1)+'</span><span class="nm">?</span></div>';}).join('')+'</div><button class="btn primary" id="spinBtn" onclick="spin()">🎰 まわす</button></div>';}
 var spinning=false;
-function spin(){ initRoul(); if(spinning)return; spinning=true; $("spinBtn").textContent="🎰 回転中…";
-  for(var i=0;i<3;i++){ $("slot"+i).classList.add("spin"); $("slot"+i).classList.remove("win"); }
-  var pool=LEGENDS.slice(),pick=[]; for(var j=0;j<3;j++){ pick.push(pool.splice(Math.floor(Math.random()*pool.length),1)[0]); }
-  var tick=setInterval(function(){ for(var i=0;i<3;i++){ $("slot"+i).querySelector(".nm").textContent=LEGENDS[Math.floor(Math.random()*LEGENDS.length)]; } },80);
-  [0,1,2].forEach(function(i){ setTimeout(function(){ var s=$("slot"+i); s.classList.remove("spin"); s.querySelector(".nm").textContent=pick[i]; s.classList.add("win"); if(i===2){clearInterval(tick);spinning=false;$("spinBtn").textContent="🎰 もう一回まわす";} },900+i*500); });
-}
+function spin(){if(spinning)return;spinning=true;$('spinBtn').textContent='🎰 回転中…';for(var i=0;i<3;i++){$('slot'+i).classList.add('spin');$('slot'+i).classList.remove('win');}var pool=LEGENDS.slice(),pick=[];for(var j=0;j<3;j++){pick.push(pool.splice(Math.floor(Math.random()*pool.length),1)[0]);}var tick=setInterval(function(){for(var i=0;i<3;i++){$('slot'+i).querySelector('.nm').textContent=LEGENDS[Math.floor(Math.random()*LEGENDS.length)];}},80);[0,1,2].forEach(function(i){setTimeout(function(){var s=$('slot'+i);s.classList.remove('spin');s.querySelector('.nm').textContent=pick[i];s.classList.add('win');if(i===2){clearInterval(tick);spinning=false;$('spinBtn').textContent='🎰 もう一回';}},900+i*500);});}
 
-/* 広告・初期化 */
-if(SHOW_AD){ $("ad").innerHTML='<iframe src="ad-rect.html" width="300" height="250" scrolling="no" frameborder="0" loading="lazy"></iframe>'; }
-loadMap();
+/* init */
+fillAds();
+(function(){var cv=$('fx'),c=cv.getContext('2d'),w,h,ps=[];function rz(){w=cv.width=innerWidth;h=cv.height=innerHeight;}rz();addEventListener('resize',rz);for(var i=0;i<60;i++)ps.push({x:Math.random()*w,y:Math.random()*h,v:.2+Math.random()*.7,r:Math.random()*1.6+.4,c:Math.random()<.5?'#19e3ff':'#ff3df2'});var rm=matchMedia('(prefers-reduced-motion:reduce)').matches;function lp(){c.clearRect(0,0,w,h);for(var i=0;i<ps.length;i++){var p=ps[i];p.y-=p.v;if(p.y<-5){p.y=h+5;p.x=Math.random()*w;}c.globalAlpha=.45;c.fillStyle=p.c;c.shadowBlur=8;c.shadowColor=p.c;c.beginPath();c.arc(p.x,p.y,p.r,0,7);c.fill();}if(!rm)requestAnimationFrame(lp);}lp();})();
 </script>
 </body>
 </html>
