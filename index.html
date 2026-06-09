@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>APEX激やばツール｜マップ・プレデター・診断</title>
+<meta name="description" content="Apexのマップローテ・プレデターボーダー・サーバー状態・スタッツ検索に加え、立ち回り診断や使うな診断まで詰め込んだ激やばツール。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Teko:wght@500;600;700&family=Zen+Kaku+Gothic+New:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0b0c11;--panel:#15171f;--panel2:#1b1e29;--line:#2a2d3a;--text:#eef1f6;--sub:#8b93a7;--dim:#5b6477;--accent:#ff5a3c;--accent2:#ffb02e;--rank:#c062ff;--ok:#3fb98f;--warn:#ffb02e;--down:#ff4d5e;}
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  body{font-family:'Zen Kaku Gothic New',sans-serif;background:radial-gradient(120% 70% at 50% -10%,#1a1320,#0b0c11 60%) fixed;color:var(--text);min-height:100dvh;display:flex;flex-direction:column;align-items:center}
+  .wrap{width:100%;max-width:470px;padding:0 13px 40px}
+  .mono{font-variant-numeric:tabular-nums}
+  header{display:flex;align-items:center;justify-content:space-between;padding:15px 2px 10px}
+  .logo{font-family:'Teko';font-weight:700;font-size:30px;letter-spacing:1px;line-height:.8}
+  .logo .x{color:var(--accent)} .logo small{display:block;font-family:'Zen Kaku Gothic New';font-weight:500;font-size:10px;color:var(--sub);letter-spacing:2px;margin-top:3px}
+  .upd{font-size:10px;color:var(--sub);display:flex;align-items:center;gap:6px}
+  .upd .dot{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 8px var(--ok);animation:blink 1.6s infinite}@keyframes blink{50%{opacity:.25}}
+
+  .tabbar{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:14px;scrollbar-width:none}
+  .tabbar::-webkit-scrollbar{display:none}
+  .tabbar button{flex:0 0 auto;background:var(--panel);border:1px solid var(--line);border-radius:11px;color:var(--sub);font-family:inherit;font-weight:700;font-size:12px;padding:9px 13px;cursor:pointer;white-space:nowrap}
+  .tabbar button.on{background:var(--accent);color:#10121a;border-color:var(--accent)}
+  .panel{display:none}.panel.on{display:block}
+
+  .seg{display:flex;background:var(--panel);border:1px solid var(--line);border-radius:11px;overflow:hidden;margin-bottom:14px}
+  .seg button{flex:1;background:none;border:none;color:var(--sub);font-family:inherit;font-weight:700;font-size:13px;padding:10px 0;cursor:pointer}
+  .seg button.on[data-m="casual"]{background:var(--accent);color:#10121a}
+  .seg button.on[data-m="ranked"]{background:var(--rank);color:#fff}
+
+  .hero{border:1px solid var(--line);border-radius:18px;overflow:hidden;margin-bottom:14px;background:var(--panel);min-height:120px}
+  .hero .thumb{height:130px;position:relative;display:flex;align-items:flex-end;padding:14px}
+  .hero .thumb::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent,rgba(0,0,0,.55))}
+  .hero .thumb .ic{position:absolute;top:12px;right:16px;font-size:44px;opacity:.55}
+  .hero .thumb .mode{position:relative;z-index:2;font-family:'Teko';font-weight:600;font-size:15px;letter-spacing:2px;background:rgba(0,0,0,.4);padding:2px 10px;border-radius:20px}
+  .hero .body{padding:14px 16px 16px} .hero .mapname{font-family:'Teko';font-weight:700;font-size:36px;line-height:.85}
+  .hero .timer{display:flex;align-items:baseline;gap:8px;margin-top:10px} .hero .timer .lab{font-size:11px;color:var(--sub)} .hero .timer .t{font-family:'Teko';font-weight:700;font-size:32px;color:var(--accent2);line-height:.8}
+  .sect{font-size:12px;font-weight:900;letter-spacing:1px;color:var(--sub);margin:4px 2px 10px}
+  .nexts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .ncard{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--panel)}
+  .ncard .thumb{height:66px;display:flex;align-items:center;justify-content:center;position:relative} .ncard .thumb .ic{font-size:24px;opacity:.6}
+  .ncard .lab{position:absolute;top:7px;left:9px;font-size:9px;font-weight:700;letter-spacing:1px;background:rgba(0,0,0,.4);padding:1px 7px;border-radius:10px}
+  .ncard .nm{padding:8px 10px;font-family:'Teko';font-weight:600;font-size:18px;line-height:.9}
+
+  .pcard{display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:14px;background:var(--panel);padding:13px;margin-bottom:10px}
+  .pcard .pic{width:42px;height:42px;border-radius:10px;background:#0e1016;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:19px}
+  .pcard .pinfo{flex:1} .pcard .plat{font-weight:700;font-size:12px;color:var(--sub)} .pcard .rp{font-family:'Teko';font-weight:700;font-size:28px;line-height:.85;color:var(--accent2)} .pcard .rp small{font-family:'Zen Kaku Gothic New';font-size:11px;color:var(--sub);font-weight:500;margin-left:3px}
+  .pcard .mast{text-align:right;font-size:10px;color:var(--sub)} .pcard .mast b{display:block;font-family:'Teko';font-size:20px;color:var(--text);line-height:1}
+
+  .srow{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:11px;background:var(--panel);padding:11px 13px;margin-bottom:8px;font-size:13px}
+  .srow .sd{width:10px;height:10px;border-radius:50%;flex:0 0 auto} .srow .sn{flex:1;font-weight:700} .srow .sv{font-size:11px;color:var(--sub)}
+
+  .search input,.search select{width:100%;background:#0e1016;border:1px solid var(--line);border-radius:10px;color:#fff;font-family:inherit;font-size:15px;padding:11px;margin-bottom:8px}
+  .search button{width:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border:none;color:#10121a;font-family:'Teko';font-weight:700;font-size:18px;border-radius:10px;padding:11px;cursor:pointer}
+  .pstat{border:1px solid var(--line);border-radius:14px;background:var(--panel);padding:14px;margin-top:14px}
+  .pstat .nm{font-family:'Teko';font-weight:700;font-size:26px} .pstat .meta{font-size:12px;color:var(--sub);margin:4px 0 10px}
+  .pstat .grid{display:grid;grid-template-columns:1fr 1fr;gap:8px} .pstat .g{background:#0e1016;border:1px solid var(--line);border-radius:10px;padding:9px 11px} .pstat .g .k{font-size:10px;color:var(--sub)} .pstat .g .v{font-family:'Teko';font-weight:700;font-size:20px}
+
+  /* 診断共通 */
+  .bar{height:8px;background:#0c0e14;border-radius:8px;overflow:hidden;margin:12px 0 4px}.bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--accent2),var(--accent));border-radius:8px;transition:.25s}
+  .qnum{font-family:'Teko';font-size:14px;color:var(--sub);letter-spacing:1px}
+  .q{font-size:18px;font-weight:700;line-height:1.5;margin:10px 0 14px;min-height:50px}
+  .opts{display:flex;flex-direction:column;gap:9px}
+  .opt{border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:13px 15px;font-size:14px;font-weight:700;cursor:pointer;line-height:1.4}.opt:active{transform:scale(.99)}.opt:hover{border-color:var(--accent)}
+  .navrow{display:flex;justify-content:space-between;margin-top:13px}.navrow button{background:none;border:1px solid var(--line);color:var(--sub);border-radius:10px;padding:8px 15px;font-family:inherit;font-weight:700;font-size:13px;cursor:pointer}
+  .result{text-align:center;padding-top:4px}.result .ic{font-size:60px}.result .tname{font-family:'Teko';font-weight:700;font-size:38px;line-height:.9;margin-top:4px;color:var(--accent2)}.result .tname.ng{color:var(--down)}.result .tsub{font-size:12px;color:var(--sub);letter-spacing:2px;margin-top:4px}
+  .result .desc{font-size:14px;line-height:1.7;text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;margin:14px 0}
+  .gc{display:flex;gap:10px;text-align:left;margin-bottom:12px}.gc>div{flex:1;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--panel)}.gc .t{font-size:11px;font-weight:900;letter-spacing:1px;margin-bottom:4px}.gc .good .t{color:var(--ok)}.gc .care .t{color:var(--accent)}.gc p{font-size:12px;color:#cdd4e0;line-height:1.5}
+  .recos{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:6px 0 4px}.chip{font-size:12px;font-weight:700;border:1px solid var(--line);border-radius:20px;padding:5px 12px;background:var(--panel)}
+  .btn{display:block;width:100%;padding:12px;border:none;border-radius:12px;font-family:'Teko';font-weight:700;font-size:18px;letter-spacing:1px;cursor:pointer;margin-top:9px}
+  .btn.x{background:#111;color:#fff;border:1px solid #333}.btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent2));color:#10121a}.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--text)}
+
+  .roul{text-align:center}.slots{display:flex;gap:10px;justify-content:center;margin:18px 0}
+  .slot{flex:1;height:110px;border:1px solid var(--line);border-radius:14px;background:var(--panel);display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;position:relative}
+  .slot .pi{font-size:11px;color:var(--dim);position:absolute;top:8px}.slot .nm{font-family:'Teko';font-weight:700;font-size:22px;line-height:1;padding:0 4px}.slot.win{border-color:var(--accent2);box-shadow:0 0 18px rgba(255,176,46,.3)}.slot.spin .nm{animation:roll .08s linear infinite}@keyframes roll{0%{transform:translateY(-6px);opacity:.5}100%{transform:translateY(6px);opacity:.5}}
+
+  .note{font-size:11px;color:var(--dim);background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:9px 12px;margin-top:10px;line-height:1.6}
+  .ad{display:flex;justify-content:center;margin:16px 0 0}.ad iframe{border:0}
+  footer{margin-top:18px;font-size:10px;color:var(--dim);line-height:1.7;border-top:1px solid var(--line);padding-top:14px}footer a{color:var(--accent2);text-decoration:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo"><span class="x">APEX</span>激やばツール<small>MAP / PRED / STATS / 診断</small></div>
+    <div class="upd"><span class="dot"></span><span id="upd">—</span></div>
+  </header>
+
+  <div class="tabbar" id="tabbar">
+    <button class="on" data-t="map">🗺️ マップ</button>
+    <button data-t="pred">👑 プレデター</button>
+    <button data-t="srv">🟢 サーバー</button>
+    <button data-t="find">🔍 検索</button>
+    <button data-t="shindan">🎯 立ち回り診断</button>
+    <button data-t="ng">🚫 使うな診断</button>
+    <button data-t="roul">🎰 ルーレット</button>
+  </div>
+
+  <!-- マップ -->
+  <div class="panel on" id="pmap">
+    <div class="seg" id="seg"><button class="on" data-m="casual">カジュアル(BR)</button><button data-m="ranked">ランク</button></div>
+    <div class="hero" id="hero"><div class="body"><div class="mapname">読み込み中…</div></div></div>
+    <div class="sect">NEXT ― このあと</div>
+    <div class="nexts" id="nexts"></div>
+  </div>
+  <!-- プレデター -->
+  <div class="panel" id="ppred">
+    <div class="sect">現在のプレデター ボーダー（到達RP）</div>
+    <div id="predList"><div class="note">読み込み中…</div></div>
+    <div class="note">※ボーダー＝各プラットフォーム上位枠の到達RP。リセット直後やシーズン序盤は大きく動きます。</div>
+  </div>
+  <!-- サーバー -->
+  <div class="panel" id="psrv">
+    <div class="sect">サーバー状態</div>
+    <div id="srvList"><div class="note">読み込み中…</div></div>
+  </div>
+  <!-- 検索 -->
+  <div class="panel" id="pfind">
+    <div class="sect">プレイヤー スタッツ検索</div>
+    <div class="search">
+      <input id="pname" placeholder="プレイヤー名（PCはOrigin名）" autocomplete="off">
+      <select id="pplat"><option value="PC">PC (Origin/Steam)</option><option value="PS4">PlayStation</option><option value="X1">Xbox</option><option value="SWITCH">Switch</option></select>
+      <button onclick="findPlayer()">検索する</button>
+    </div>
+    <div id="pResult"></div>
+    <div class="note">※Apexの仕様で、本人がゲーム内で装備している“トラッカー”の数値しか取得できません（キルトラッカー未装備ならキル数は出ません）。</div>
+  </div>
+
+  <!-- 立ち回り診断 -->
+  <div class="panel" id="pshindan">
+    <div id="shStart">
+      <div class="result"><div class="ic">🎯</div><div class="tname" style="font-size:30px">立ち回り診断</div></div>
+      <div class="note" style="text-align:center">30の質問で、あなたのApexの立ち回りを13タイプに診断。<br>詰めるタイプ？安置取り？情報屋？</div>
+      <button class="btn primary" onclick="startSh()">診断スタート</button>
+    </div>
+    <div id="shQ" style="display:none">
+      <div class="qnum" id="qnum"></div><div class="bar"><i id="qbar"></i></div>
+      <div class="q" id="qtext"></div><div class="opts" id="qopts"></div>
+      <div class="navrow"><button onclick="prevSh()" id="qprev">← 戻る</button><button onclick="resetSh()">やめる</button></div>
+    </div>
+    <div id="shResult" class="result" style="display:none"></div>
+  </div>
+
+  <!-- 使うな診断 -->
+  <div class="panel" id="png">
+    <div id="ngStart">
+      <div class="result"><div class="ic">🚫</div><div class="tname ng" style="font-size:28px">このキャラ使うな診断</div></div>
+      <div class="note" style="text-align:center">12の質問で、<b>あなたが絶対に使ってはいけないレジェンド</b>を激辛で名指しします。ネタとしてどうぞ😈</div>
+      <button class="btn primary" onclick="startNg()">診断スタート</button>
+    </div>
+    <div id="ngQ" style="display:none">
+      <div class="qnum" id="ngnum"></div><div class="bar"><i id="ngbar"></i></div>
+      <div class="q" id="ngtext"></div><div class="opts" id="ngopts"></div>
+      <div class="navrow"><button onclick="prevNg()" id="ngprev">← 戻る</button><button onclick="resetNg()">やめる</button></div>
+    </div>
+    <div id="ngResult" class="result" style="display:none"></div>
+  </div>
+
+  <!-- ルーレット -->
+  <div class="panel" id="proul">
+    <div class="roul">
+      <div style="font-size:14px;color:var(--sub)">3人分の使用キャラをルーレットで決定！</div>
+      <div class="slots" id="slots"></div>
+      <button class="btn primary" id="spinBtn" onclick="spin()">🎰 まわす</button>
+      <div class="note">※レジェンドは配列を編集可。最新シーズンの追加キャラは足してね。</div>
+    </div>
+  </div>
+
+  <div class="ad" id="ad"></div>
+  <footer>
+    データ：<a href="https://apexlegendsstatus.com" target="_blank" rel="noopener">Data from apexlegendsstatus.com</a>（非公式Apex API）。<br>
+    Apex Legends は Electronic Arts / Respawn Entertainment の商標です。本サイトは非公式のファン制作ツールです。
+  </footer>
+</div>
+
+<script>
+/* ====== 設定 ====== */
+var APEX_GAS_URL = "";  // ★ Code_apex.gs をデプロイしたURLを貼る（空ならデータ系は「未設定」表示）
+var SHOW_AD = true;
+/* アクセスカウンター（共通） */
+(function(){ var SITE="apex", CU="https://script.google.com/macros/s/AKfycbysy658Zhkvc07oEl_mqM7T9C_RifLzxA5Nt1aVxU60gXu4TYTK3P1fuxtsi4AU7XHL/exec";
+  try{ fetch(CU+"?site="+encodeURIComponent(SITE),{mode:"no-cors",cache:"no-store"}); }catch(e){} })();
+var SHARE_TAG = "APEX激やばツール";
+var $=function(id){return document.getElementById(id);};
+
+/* ====== タブ ====== */
+document.querySelectorAll("#tabbar button").forEach(function(b){ b.onclick=function(){
+  document.querySelectorAll("#tabbar button").forEach(function(x){x.classList.remove("on");}); b.classList.add("on");
+  var map={map:"pmap",pred:"ppred",srv:"psrv",find:"pfind",shindan:"pshindan",ng:"png",roul:"proul"};
+  document.querySelectorAll(".panel").forEach(function(p){p.classList.remove("on");});
+  $(map[b.dataset.t]).classList.add("on"); window.scrollTo(0,0);
+  if(b.dataset.t==="pred"&&!predLoaded)loadPred();
+  if(b.dataset.t==="srv"&&!srvLoaded)loadSrv();
+  if(b.dataset.t==="roul")initRoul();
+};});
+
+/* ====== データ取得 ====== */
+function gas(type,extra){ return fetch(APEX_GAS_URL+"?type="+type+(extra||""),{cache:"no-store"}).then(function(r){return r.json();}); }
+function noGas(elId){ $(elId).innerHTML='<div class="note">⚠ APEX_GAS_URL が未設定です。Code_apex.gs をデプロイしてURLを貼ると表示されます。</div>'; }
+
+/* --- マップ --- */
+var MAPS={ "World's Edge":{c:"#e8632f",ic:"🌋"},"Storm Point":{c:"#2fae8e",ic:"🏝️"},"Olympus":{c:"#36c3c8",ic:"☁️"},"Broken Moon":{c:"#8a6cff",ic:"🌙"},"Kings Canyon":{c:"#d9a23c",ic:"🏜️"},"E-District":{c:"#ff4fa3",ic:"🌃"} };
+function grad(m){var c=(MAPS[m]||{}).c||"#666";return "linear-gradient(135deg,"+c+"cc,"+c+"55),repeating-linear-gradient(45deg,#0000 0 12px,#ffffff08 12px 13px)";}
+function micon(m){return (MAPS[m]||{}).ic||"🗺️";}
+function fmt(s){s=Math.max(0,Math.floor(s));var h=Math.floor(s/3600),m=Math.floor((s%3600)/60),ss=s%60;return (h>0?h+":"+String(m).padStart(2,"0"):m)+":"+String(ss).padStart(2,"0");}
+var mapData=null, mapMode="casual", curRemain=0;
+function loadMap(){ if(!APEX_GAS_URL){ $("hero").innerHTML='<div class="body"><div class="mapname">未設定</div></div>'; noGas("nexts"); return; }
+  gas("map").then(function(d){ mapData=d; renderMap(); $("upd").textContent="更新 "+new Date().toLocaleTimeString('ja-JP',{hour:'2-digit',minute:'2-digit'}); })
+  .catch(function(){ $("hero").innerHTML='<div class="body"><div class="mapname">取得失敗</div></div>'; });
+}
+function modeObj(){ return mapMode==="casual" ? (mapData&&mapData.battle_royale) : (mapData&&mapData.ranked); }
+function renderMap(){
+  var o=modeObj(); if(!o||!o.current){ $("hero").innerHTML='<div class="body"><div class="mapname">データなし</div></div>'; $("nexts").innerHTML=""; return; }
+  var cur=o.current, nx=o.next||{}; var label=mapMode==="casual"?"カジュアル バトロワ":"ランクリーグ";
+  curRemain=(cur.remainingSecs!=null?cur.remainingSecs:0);
+  $("hero").innerHTML='<div class="thumb" style="background:'+grad(cur.map)+'"><span class="ic">'+micon(cur.map)+'</span><span class="mode">'+label+'</span></div>'
+    +'<div class="body"><div class="mapname">'+(cur.map||"-")+'</div><div class="timer"><span class="lab">残り</span><span class="t mono" id="cd">'+fmt(curRemain)+'</span><span class="lab">で次へ</span></div></div>';
+  $("nexts").innerHTML='<div class="ncard"><div class="thumb" style="background:'+grad(nx.map)+'"><span class="lab">NEXT</span><span class="ic">'+micon(nx.map)+'</span></div><div class="nm">'+(nx.map||"-")+'</div></div>'
+    +'<div class="ncard"><div class="thumb" style="background:'+grad((o.current&&o.current.map))+'"><span class="lab">現在</span><span class="ic">'+micon(cur.map)+'</span></div><div class="nm">'+(cur.map||"-")+'</div></div>';
+}
+document.querySelectorAll("#seg button").forEach(function(b){ b.onclick=function(){ document.querySelectorAll("#seg button").forEach(function(x){x.classList.remove("on");}); b.classList.add("on"); mapMode=b.dataset.m; renderMap(); };});
+setInterval(function(){ if(curRemain>0){ curRemain--; var cd=$("cd"); if(cd)cd.textContent=fmt(curRemain); } },1000);
+
+/* --- プレデター --- */
+var predLoaded=false;
+function loadPred(){ if(!APEX_GAS_URL){noGas("predList");return;} predLoaded=true;
+  gas("pred").then(function(d){ var rp=d.RP||{}; var order=[["PC","🖥️","PC"],["PS4","🎮","PlayStation"],["X1","🎮","Xbox"],["SWITCH","🕹️","Switch"]];
+    var html=order.map(function(o){ var x=rp[o[0]]; if(!x)return ""; var val=(x.val!=null?x.val:"-"); var n=(x.totalMastersAndPreds!=null?x.totalMastersAndPreds:"-");
+      return '<div class="pcard"><div class="pic">'+o[1]+'</div><div class="pinfo"><div class="plat">'+o[2]+'</div><div class="rp mono">'+(typeof val==="number"?val.toLocaleString():val)+'<small>RP</small></div></div><div class="mast">マスター+プレ<b class="mono">'+n+'</b></div></div>';
+    }).join(""); $("predList").innerHTML=html||'<div class="note">データなし</div>';
+  }).catch(function(){ $("predList").innerHTML='<div class="note">取得失敗</div>'; predLoaded=false; });
+}
+
+/* --- サーバー --- */
+var srvLoaded=false;
+function statusColor(s){ s=String(s||"").toUpperCase(); if(s.indexOf("UP")>=0||s==="OK")return "var(--ok)"; if(s.indexOf("SLOW")>=0||s.indexOf("DELAY")>=0)return "var(--warn)"; return "var(--down)"; }
+function loadSrv(){ if(!APEX_GAS_URL){noGas("srvList");return;} srvLoaded=true;
+  gas("servers").then(function(d){ var html=""; Object.keys(d||{}).forEach(function(svc){ var regions=d[svc]; if(typeof regions!=="object")return;
+      var worst="UP",any=false; Object.keys(regions).forEach(function(r){ var st=regions[r]&&regions[r].Status; if(st){any=true; var su=String(st).toUpperCase(); if(su.indexOf("UP")<0){ worst=st; }} });
+      if(!any)return; html+='<div class="srow"><span class="sd" style="background:'+statusColor(worst)+'"></span><span class="sn">'+svc.replace(/_/g," ")+'</span><span class="sv">'+worst+'</span></div>';
+    }); $("srvList").innerHTML=html||'<div class="note">データなし</div>';
+  }).catch(function(){ $("srvList").innerHTML='<div class="note">取得失敗</div>'; srvLoaded=false; });
+}
+
+/* --- プレイヤー検索 --- */
+function findPlayer(){ if(!APEX_GAS_URL){noGas("pResult");return;}
+  var name=($("pname").value||"").trim(); var plat=$("pplat").value; if(!name){$("pResult").innerHTML='<div class="note">名前を入れてね</div>';return;}
+  $("pResult").innerHTML='<div class="note">検索中…</div>';
+  gas("player","&player="+encodeURIComponent(name)+"&platform="+plat).then(function(d){
+    if(!d||d.Error||d.error){ $("pResult").innerHTML='<div class="note">見つからない / 取得失敗（名前・プラットフォームを確認）</div>'; return; }
+    var g=d.global||{}, rt=d.realtime||{}, sel=(d.legends&&d.legends.selected)||{};
+    var rank=g.rank||{}; var trackers=(sel.data||[]).slice(0,4);
+    var grids='<div class="g"><div class="k">レベル</div><div class="v mono">'+(g.level!=null?g.level:"-")+'</div></div>'
+      +'<div class="g"><div class="k">ランク</div><div class="v" style="font-size:15px">'+(rank.rankName||"-")+' '+(rank.rankDiv||"")+'</div></div>'
+      +'<div class="g"><div class="k">RP</div><div class="v mono">'+(rank.rankScore!=null?Number(rank.rankScore).toLocaleString():"-")+'</div></div>'
+      +'<div class="g"><div class="k">使用中</div><div class="v" style="font-size:15px">'+(sel.LegendName||rt.selectedLegend||"-")+'</div></div>';
+    var tk=trackers.map(function(t){ return '<div class="g"><div class="k">'+(t.name||t.key||"-")+'</div><div class="v mono">'+(t.value!=null?Number(t.value).toLocaleString():"-")+'</div></div>'; }).join("");
+    $("pResult").innerHTML='<div class="pstat"><div class="nm">'+(g.name||name)+'</div><div class="meta">'+plat+(rt.isOnline?' ・ 🟢オンライン':'')+'</div>'
+      +'<div class="grid">'+grids+'</div>'+(tk?'<div class="sect" style="margin:12px 2px 8px">装備中トラッカー</div><div class="grid">'+tk+'</div>':'<div class="note" style="margin-top:10px">表示できるトラッカーがありません（未装備）。</div>')+'</div>';
+  }).catch(function(){ $("pResult").innerHTML='<div class="note">取得失敗（通信エラー）</div>'; });
+}
+
+/* ====== 立ち回り診断（30問・13タイプ） ====== */
+var Q=[
+ {q:"敵を見つけた。まず？",a:[["すぐ詰める",{AGG:2,RISK:1}],["味方と連携してから",{SUP:2,POS:1}],["位置取りを直す",{POS:2}],["様子を見て漁夫狙い",{RISK:-1,POS:1}]]},
+ {q:"得意な交戦距離は？",a:[["ゼロ距離・近距離",{RNG:2,AGG:1}],["中距離",{}],["遠距離・狙撃",{RNG:-2,INFO:1}]]},
+ {q:"ファイト中、味方が倒れた。",a:[["倒し切るのが先",{AGG:2}],["即カバー・蘇生",{SUP:2}],["引いて立て直す",{POS:1,RISK:-1}]]},
+ {q:"終盤の安置、どう動く？",a:[["有利ポジ早取り",{POS:2}],["端で隠れて生存",{RISK:-2,POS:1}],["中央で漁夫待ち",{POS:1,RISK:-1}],["音の方へ突撃",{AGG:2,RISK:1}]]},
+ {q:"パーティでの役割は？",a:[["前線で開幕",{AGG:2,RNG:1}],["指示・IGL",{SUP:1,POS:1,INFO:1}],["索敵・情報共有",{INFO:2}],["後方支援・カバー",{SUP:2,RNG:-1}]]},
+ {q:"漁る派？戦う派？",a:[["戦闘最優先",{AGG:2}],["バランス",{}],["まず物資、戦い回避",{RISK:-2}]]},
+ {q:"索敵について",a:[["常に情報を取る",{INFO:2}],["必要な時だけ",{}],["勘とエイムで突撃",{AGG:1,INFO:-1}]]},
+ {q:"勝てるか微妙なファイト。",a:[["仕掛ける",{AGG:2,RISK:2}],["条件次第",{}],["降りる",{RISK:-2,POS:1}]]},
+ {q:"移動スキル持ちなら？",a:[["飛び回って撹乱",{AGG:1,RISK:1,RNG:1}],["味方と固まる",{SUP:1,POS:1}],["安全ルート",{RISK:-1,POS:1}]]},
+ {q:"理想の1試合は？",a:[["キル盛り盛り",{AGG:2,RNG:1}],["味方を活かして勝つ",{SUP:2}],["静かに勝ち切る",{RISK:-1,POS:1}]]},
+ {q:"罠・設置系スキルは？",a:[["大好き、地形ハメ",{POS:2,INFO:1}],["状況で",{}],["使わない機動派",{AGG:1,RNG:1}]]},
+ {q:"開幕の降下先は？",a:[["激戦区ダイブ",{AGG:2,RISK:2}],["安全地帯",{RISK:-2}],["味方の指示",{SUP:1,POS:1}]]},
+ {q:"敵の背後を取れた。",a:[["即フルコミット",{AGG:2}],["味方を待つ",{SUP:2}],["位置だけ取り様子見",{POS:1,RISK:-1}]]},
+ {q:"あなたのエイムは？",a:[["近距離が強い",{RNG:2,AGG:1}],["中距離安定",{}],["遠距離・置き",{RNG:-2}]]},
+ {q:"味方とはぐれた。",a:[["単独で暴れる",{AGG:1,SUP:-1,RISK:1}],["最優先で合流",{SUP:2,POS:1}],["隠れて待つ",{RISK:-1}]]},
+ {q:"漁夫について",a:[["されるより先に自分が",{AGG:1,RISK:1}],["タイミング計って漁夫",{POS:1,RISK:-1,INFO:1}],["巻き込まれない距離",{RISK:-1,POS:1}]]},
+ {q:"装備不十分な序盤の交戦",a:[["関係ない撃ち勝つ",{AGG:2,RISK:1}],["不利なら避ける",{RISK:-1}]]},
+ {q:"チームの作戦は？",a:[["攻めの圧で主導権",{AGG:2}],["守りと位置で勝つ",{POS:2,RISK:-1}]]},
+ {q:"ピン・コールは？",a:[["細かく指示する",{SUP:2,INFO:1}],["最低限",{}],["黙々と自分で",{SUP:-1,AGG:1}]]},
+ {q:"高台を見つけた。",a:[["陣取って遠距離で削る",{RNG:-1,POS:1}],["素早く越えて接近",{AGG:1,RNG:1}],["味方の射線を作る位置に",{SUP:1,POS:1}]]},
+ {q:"残り3部隊、安置小。",a:[["先に動き主導権",{AGG:2,POS:1}],["最後まで隠れ漁夫",{RISK:-2,POS:1}]]},
+ {q:"蘇生バナー回収は？",a:[["リスクあっても取る",{SUP:2,RISK:1}],["安全になってから",{SUP:1,RISK:-1}],["状況次第で諦め",{RISK:-1,AGG:1}]]},
+ {q:"好きなのは？",a:[["撃ち合いのアドレナリン",{AGG:2,RNG:1}],["読み勝ちの快感",{POS:2,INFO:1}],["味方と勝つ達成感",{SUP:2}]]},
+ {q:"被ダメ覚悟の特攻は？",a:[["する、先手必勝",{AGG:2,RISK:2}],["体力管理しながら",{RISK:-1,POS:1}]]},
+ {q:"索敵情報を得たら？",a:[["即仕掛ける材料に",{AGG:1,INFO:1}],["回避と位置取りに",{POS:1,INFO:1,RISK:-1}]]},
+ {q:"あなたのプレイは？",a:[["前に出て道を作る",{AGG:2}],["後ろから支える",{SUP:2,RNG:-1}],["俯瞰して指揮",{INFO:1,POS:1,SUP:1}]]},
+ {q:"負けてる試合、",a:[["一発逆転を狙う",{AGG:1,RISK:2}],["順位ポイント拾い",{RISK:-1,POS:1}]]},
+ {q:"単独で2人相手、",a:[["1人ずつ詰めて殲滅",{AGG:2,RISK:2}],["引いて時間稼ぎ",{RISK:-2,POS:1}]]},
+ {q:"近距離で不意の遭遇！",a:[["反射で詰めて殴る",{RNG:2,AGG:2}],["距離を取り直す",{RNG:-1,RISK:-1,POS:1}]]},
+ {q:"あなたにとってApexとは？",a:[["撃ち合いを楽しむ",{AGG:1,RNG:1}],["頭脳戦・位置取り",{POS:2,INFO:1}],["仲間との連携",{SUP:2}]]},
+];
+var TYPES=[
+ {n:"アグロハンター",e:"⚔️",sig:{AGG:3,RNG:1,RISK:2},d:"見つけたら詰める前線ファイター。試合を動かす圧が武器。",good:"開幕とファイトで主導権を握れる。キルで勝負できる。",care:"突っ込みすぎて孤立しがち。引き際を意識。",rec:["オクタン","レイス","アッシュ"]},
+ {n:"ゼロ距離の狂犬",e:"🐺",sig:{RNG:3,AGG:2,RISK:1},d:"近距離特化。懐に潜り込んで溶かす接近戦の鬼。",good:"近距離の撃ち合いが圧倒的。狭所で無類。",care:"遠距離で何もできない時間が出る。距離管理が鍵。",rec:["レイス","オクタン","マッドマギー"]},
+ {n:"安置の支配者",e:"🗺️",sig:{POS:3,RISK:-1},d:"位置と地形で勝つ司令塔。常に有利ポジを先取り。",good:"終盤が異常に強い。被弾を抑える。",care:"受け身すぎてキルが伸びないことも。",rec:["コースティック","ワットソン","キャタリスト"]},
+ {n:"静かなる生存者",e:"🍃",sig:{RISK:-3,POS:1,AGG:-1},d:"目立たず終盤まで生き残るハイド＆順位型。",good:"安定した順位ポイント。無駄死にしない。",care:"漁夫られると一瞬。キル貢献が薄い。",rec:["ミラージュ","レイス","オクタン"]},
+ {n:"情報の支配者",e:"📡",sig:{INFO:3},d:"索敵とスキャンで常に先手を取るリコン型。",good:"敵の位置を読んで有利を作る。",care:"情報を取るだけで動けないと宝の持ち腐れ。",rec:["ブラッドハウンド","シア","クリプト"]},
+ {n:"戦場の指揮官",e:"🎖️",sig:{SUP:2,POS:2,INFO:2},d:"指示と判断でチームを勝たせるIGL型。",good:"全体最適の動き。味方の力を引き出す。",care:"自分の撃ち合いが疎かになりがち。",rec:["ブラッドハウンド","ジブラルタル","ニューキャッスル"]},
+ {n:"神出鬼没のムーブ職人",e:"🌀",sig:{AGG:1,RISK:2,RNG:1},d:"機動力で飛び回り撹乱しながら美味しい所を取る。",good:"自由なポジ取りと奇襲。読まれにくい。",care:"動きすぎて味方と分断されやすい。",rec:["ヴァルキリー","ホライゾン","パスファインダー"]},
+ {n:"孤高のスナイパー",e:"🎯",sig:{RNG:-3,INFO:1,AGG:-1},d:"遠距離から一点読みで削る狙撃手。",good:"安全な位置から継続ダメージ。",care:"近距離に詰められると弱い。",rec:["ヴァンテージ","ブラッドハウンド","シア"]},
+ {n:"罠師",e:"🕸️",sig:{POS:2,INFO:1,AGG:-1},d:"設置と地形で相手をハメる守りの達人。",good:"建物・狭所が要塞になる。",care:"オープンや攻めは器用貧乏に。",rec:["コースティック","ワットソン","ランパート"]},
+ {n:"縁の下のサポーター",e:"💉",sig:{SUP:3,RNG:-1,AGG:-1},d:"蘇生・カバー・物資で味方を支える献身型。",good:"チームの生存力を底上げ。",care:"自分が前に出る判断が遅れがち。",rec:["ライフライン","ニューキャッスル","ローバ"]},
+ {n:"一匹狼",e:"🦁",sig:{AGG:2,SUP:-2,RISK:1},d:"個人技で自走するソロファイター気質。",good:"単独でも戦果を出せる地力。",care:"連携を切ると3対3で不利。",rec:["レイス","ランパート","ベンチャー"]},
+ {n:"連携の達人",e:"🤝",sig:{SUP:2,POS:2},d:"3人で固まって動く王道チームプレイ型。",good:"事故が少なく安定して勝てる。",care:"味方依存だと単独場面で脆い。",rec:["ジブラルタル","ライフライン","ブラッドハウンド"]},
+ {n:"漁夫の達人",e:"🦅",sig:{POS:1,INFO:2,RISK:-1,AGG:-1},d:"戦いを見極め、最高のタイミングで刈り取る。",good:"低リスクで漁夫・高順位。",care:"待ちすぎて好機を逃すと何もできず終了。",rec:["シア","クリプト","コースティック"]},
+];
+var shA=[],shi=0;
+function startSh(){ shA=new Array(Q.length).fill(null); shi=0; $("shStart").style.display="none"; $("shResult").style.display="none"; $("shQ").style.display="block"; renderShQ(); }
+function resetSh(){ $("shQ").style.display="none"; $("shResult").style.display="none"; $("shStart").style.display="block"; }
+function renderShQ(){ var q=Q[shi]; $("qnum").textContent="Q "+(shi+1)+" / "+Q.length; $("qbar").style.width=Math.round(shi/Q.length*100)+"%"; $("qtext").textContent=q.q;
+  $("qopts").innerHTML=q.a.map(function(o,i){return '<div class="opt" onclick="pickSh('+i+')">'+o[0]+'</div>';}).join(""); $("qprev").style.visibility=shi>0?"visible":"hidden"; }
+function pickSh(i){ shA[shi]=i; if(shi<Q.length-1){shi++;renderShQ();}else finishSh(); }
+function prevSh(){ if(shi>0){shi--;renderShQ();} }
+function bestMatch(types,norm,worst){ var best=null,bs=worst?1e9:-1e9; types.forEach(function(t){ var tm=0; for(var k in t.sig)tm+=t.sig[k]*t.sig[k]; tm=Math.sqrt(tm)||1; var dot=0; for(var k in t.sig)dot+=(t.sig[k]/tm)*(norm[k]||0); if(worst?dot<bs:dot>bs){bs=dot;best=t;} }); return best; }
+function profile(answers,bank){ var ax={AGG:0,POS:0,SUP:0,INFO:0,RNG:0,RISK:0}; answers.forEach(function(ai,qi){ var s=bank[qi].a[ai][1]; for(var k in s)ax[k]+=s[k]; }); var mag=0; for(var k in ax)mag+=ax[k]*ax[k]; mag=Math.sqrt(mag)||1; var n={}; for(var k in ax)n[k]=ax[k]/mag; return n; }
+function finishSh(){ var t=bestMatch(TYPES,profile(shA,Q),false); $("shQ").style.display="none"; var b=$("shResult"); b.style.display="block";
+  b.innerHTML='<div class="ic">'+t.e+'</div><div class="tname">'+t.n+'</div><div class="tsub">YOUR PLAYSTYLE</div>'
+    +'<div class="desc">'+t.d+'</div><div class="gc"><div class="good"><div class="t">💪 強み</div><p>'+t.good+'</p></div><div class="care"><div class="t">⚠ 注意</div><p>'+t.care+'</p></div></div>'
+    +'<div style="font-size:12px;color:var(--sub);margin-bottom:6px">相性のいいレジェンド</div><div class="recos">'+t.rec.map(function(r){return '<span class="chip">'+r+'</span>';}).join("")+'</div>'
+    +'<button class="btn x" onclick="share(\'立ち回りタイプは「'+t.n+'」だった！\')">𝕏 結果をシェア</button><button class="btn primary" onclick="startSh()">もう一度</button>';
+}
+
+/* ====== 使うな診断（12問・激辛） ====== */
+var NGQ=[
+ {q:"撃ち合いは正直…",a:[["自信ある",{AGG:2,RNG:1}],["普通",{}],["苦手",{AGG:-2,RNG:-1}]]},
+ {q:"連携・ピンは",a:[["マメに出す",{SUP:2}],["普通",{}],["一人で動く",{SUP:-2,AGG:1}]]},
+ {q:"終盤は",a:[["攻める",{AGG:2}],["隠れる",{RISK:-2,POS:1}]]},
+ {q:"距離は",a:[["近距離",{RNG:2,AGG:1}],["遠距離",{RNG:-2}]]},
+ {q:"索敵は",a:[["する",{INFO:2}],["勘で突撃",{INFO:-1,AGG:1}]]},
+ {q:"リスクは",a:[["取る",{RISK:2,AGG:1}],["避ける",{RISK:-2}]]},
+ {q:"移動は",a:[["飛び回る",{AGG:1,RISK:1}],["固まる",{SUP:1,POS:1}]]},
+ {q:"役割は",a:[["前線",{AGG:2}],["後方支援",{SUP:2,RNG:-1}]]},
+ {q:"罠・設置は",a:[["好き",{POS:2}],["使わない",{AGG:1}]]},
+ {q:"ファイトは",a:[["自分から",{AGG:2}],["様子見",{RISK:-2,POS:1}]]},
+ {q:"蘇生・カバーは",a:[["最優先",{SUP:2}],["後回し",{AGG:1,SUP:-1}]]},
+ {q:"プレイの軸は",a:[["キル",{AGG:2,RNG:1}],["位置",{POS:2}],["連携",{SUP:2}]]},
+];
+/* レジェンドの“向いてる人”プロフィール＋使うなロースト */
+var LEGNG=[
+ {n:"レイス",e:"🌀",sig:{AGG:2,RNG:1,RISK:1},roast:"ポータルを開く前に溶ける。攻めない君にレイスは宝の持ち腐れ。"},
+ {n:"ワットソン",e:"⚡",sig:{POS:3,RISK:-2,AGG:-2},roast:"フェンスを張る前に突っ込んで爆散。守れない君が触ると地獄。"},
+ {n:"ジブラルタル",e:"🛡️",sig:{SUP:2,POS:1,RISK:-1},roast:"でかい的になって味方より先に消える。連携しない君には罰ゲーム。"},
+ {n:"ヴァンテージ",e:"🎯",sig:{RNG:-3,INFO:1,RISK:-1},roast:"近距離大好きな君がスナイパー？ 索敵だけして何もできず終わる。"},
+ {n:"コースティック",e:"☣️",sig:{POS:3,AGG:-2,RISK:-2},roast:"ガスを撒く頃には君はもうリスポン画面を眺めてる。"},
+ {n:"オクタン",e:"💉",sig:{AGG:2,RISK:2},roast:"慎重派の君がオクタン？ スティム焚いて単騎特攻、味方に置いていかれる。"},
+ {n:"ライフライン",e:"🚑",sig:{SUP:3,AGG:-1},roast:"蘇生そっちのけで撃ち合う君に、ライフラインを持つ資格なし。"},
+ {n:"ブラッドハウンド",e:"🐦‍⬛",sig:{INFO:2,AGG:1},roast:"スキャン情報を共有しない君のブラハは、ただの足の速い的。"},
+ {n:"ニューキャッスル",e:"🧱",sig:{SUP:3,POS:1},roast:"守る気ゼロの君が壁役？ 味方を置いて前に出てチーム崩壊。"},
+ {n:"パスファインダー",e:"🤖",sig:{AGG:1,RISK:1,RNG:1},roast:"グラップルで逃げるだけ。何もせず安置に転がされて終了。"},
+ {n:"シア",e:"👁️",sig:{INFO:2,RISK:-1},roast:"せっかちな君のシアは、アルティを置く前に殴り合って死ぬ。"},
+ {n:"キャタリスト",e:"🟣",sig:{POS:3,RISK:-2},roast:"壁を作る前に飛び出す君は、守りスキルを全部無駄にする天才。"},
+ {n:"ホライゾン",e:"🌌",sig:{AGG:1,RISK:1},roast:"リフトを上に張って隠れるだけ。攻めない君には完全な持ち腐れ。"},
+];
+var ngA=[],ngi=0;
+function startNg(){ ngA=new Array(NGQ.length).fill(null); ngi=0; $("ngStart").style.display="none"; $("ngResult").style.display="none"; $("ngQ").style.display="block"; renderNgQ(); }
+function resetNg(){ $("ngQ").style.display="none"; $("ngResult").style.display="none"; $("ngStart").style.display="block"; }
+function renderNgQ(){ var q=NGQ[ngi]; $("ngnum").textContent="Q "+(ngi+1)+" / "+NGQ.length; $("ngbar").style.width=Math.round(ngi/NGQ.length*100)+"%"; $("ngtext").textContent=q.q;
+  $("ngopts").innerHTML=q.a.map(function(o,i){return '<div class="opt" onclick="pickNg('+i+')">'+o[0]+'</div>';}).join(""); $("ngprev").style.visibility=ngi>0?"visible":"hidden"; }
+function pickNg(i){ ngA[ngi]=i; if(ngi<NGQ.length-1){ngi++;renderNgQ();}else finishNg(); }
+function prevNg(){ if(ngi>0){ngi--;renderNgQ();} }
+function finishNg(){ var L=bestMatch(LEGNG,profile(ngA,NGQ),true); $("ngQ").style.display="none"; var b=$("ngResult"); b.style.display="block";
+  b.innerHTML='<div class="ic">'+L.e+'</div><div class="tsub" style="color:var(--down)">YOU MUST NOT USE</div><div class="tname ng">'+L.n+'</div>'
+    +'<div class="desc" style="border-color:#5a2630;background:#1c1216">😈 <b>絶対に使うな。</b><br>'+L.roast+'</div>'
+    +'<button class="btn x" onclick="share(\'俺が絶対に使っちゃダメなレジェンドは「'+L.n+'」だった😇\')">𝕏 結果をシェア</button><button class="btn primary" onclick="startNg()">もう一度</button>';
+}
+
+/* ====== 共有（自動で #APEX激やばツール） ====== */
+function share(txt){ var url=location.href.split("#")[0];
+  window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent("【APEX激やばツール】"+txt+" あなたは？")+"&url="+encodeURIComponent(url)+"&hashtags="+encodeURIComponent(SHARE_TAG),"_blank"); }
+
+/* ====== ルーレット ====== */
+var LEGENDS=["レイス","パスファインダー","オクタン","ワットソン","ライフライン","ジブラルタル","ブラッドハウンド","バンガロール","コースティック","ミラージュ","クリプト","レヴナント","ローバ","ランパート","ホライゾン","ヒューズ","ヴァルキリー","シア","アッシュ","マッドマギー","ニューキャッスル","ヴァンテージ","キャタリスト","バリスティック","コンジット","オルター","ベンチャー"];
+var roulInit=false;
+function initRoul(){ if(roulInit)return; roulInit=true; $("slots").innerHTML=[0,1,2].map(function(i){return '<div class="slot" id="slot'+i+'"><span class="pi">P'+(i+1)+'</span><span class="nm">?</span></div>';}).join(""); }
+var spinning=false;
+function spin(){ initRoul(); if(spinning)return; spinning=true; $("spinBtn").textContent="🎰 回転中…";
+  for(var i=0;i<3;i++){ $("slot"+i).classList.add("spin"); $("slot"+i).classList.remove("win"); }
+  var pool=LEGENDS.slice(),pick=[]; for(var j=0;j<3;j++){ pick.push(pool.splice(Math.floor(Math.random()*pool.length),1)[0]); }
+  var tick=setInterval(function(){ for(var i=0;i<3;i++){ $("slot"+i).querySelector(".nm").textContent=LEGENDS[Math.floor(Math.random()*LEGENDS.length)]; } },80);
+  [0,1,2].forEach(function(i){ setTimeout(function(){ var s=$("slot"+i); s.classList.remove("spin"); s.querySelector(".nm").textContent=pick[i]; s.classList.add("win"); if(i===2){clearInterval(tick);spinning=false;$("spinBtn").textContent="🎰 もう一回まわす";} },900+i*500); });
+}
+
+/* 広告・初期化 */
+if(SHOW_AD){ $("ad").innerHTML='<iframe src="ad-rect.html" width="300" height="250" scrolling="no" frameborder="0" loading="lazy"></iframe>'; }
+loadMap();
+</script>
+</body>
+</html>
