@@ -91,81 +91,105 @@
   .ad{margin:18px 0;display:flex;justify-content:center}.ad iframe{border:0}
   footer{margin-top:20px;font-size:10px;color:var(--dim);line-height:1.7;border-top:1px solid var(--line);padding-top:14px}footer a{color:var(--cy);text-decoration:none}
   .loading{color:var(--sub);font-size:13px;padding:20px;text-align:center}
+.shopgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-top:12px}
+.prnote{font-size:12px;color:var(--sub);border:1px solid var(--line);border-radius:8px;padding:7px 10px;margin:10px 0;background:rgba(255,255,255,.03)}
+.pcard{background:linear-gradient(160deg,#121826,#0c1018);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;transition:transform .15s,border-color .15s,box-shadow .15s}
+.pcard:hover{transform:translateY(-4px);border-color:var(--cy);box-shadow:0 10px 30px rgba(25,227,255,.18)}
+.pthumb{height:130px;background-size:cover;background-position:center;background-color:#0a0e16}
+.pthumb.ph{display:flex;align-items:center;justify-content:center;font-size:42px;filter:grayscale(.15)}
+.pbody{padding:11px 12px 13px;display:flex;flex-direction:column;gap:6px;flex:1}
+.pcat{font-size:11px;color:var(--cy);letter-spacing:.04em;text-transform:uppercase;display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.pwho{color:var(--mg);font-weight:600;text-transform:none}
+.pname{font-weight:700;font-size:15px;line-height:1.3}
+.pnote{font-size:12.5px;color:var(--sub);line-height:1.5;flex:1}
+.prow{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:4px}
+.pprice{font-weight:700;color:#fff}
+.pbtn{background:linear-gradient(135deg,var(--cy),var(--mg));color:#04121a;font-weight:800;font-size:13px;padding:8px 13px;border-radius:9px;text-decoration:none;white-space:nowrap}
+.pbtn.off{background:rgba(255,255,255,.08);color:var(--sub);font-weight:600}
+.shoptabs{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 8px}
+.schip{background:rgba(255,255,255,.05);border:1px solid var(--line);color:var(--sub);font-size:12.5px;font-weight:600;padding:7px 13px;border-radius:999px;cursor:pointer;transition:.15s;font-family:inherit}
+.schip:hover{color:var(--text);border-color:var(--cy)}
+.schip.on{background:linear-gradient(135deg,var(--cy),var(--mg));color:#04121a;border-color:transparent}
 </style>
 </head>
 <body>
 <canvas id="fx"></canvas><div class="scan"></div>
 <div class="shell">
-  <div class="hd"><div class="brand" onclick="home()"><b>APEX</b><i>激やば</i>ツール</div><div class="live"><span class="d"></span>LIVE</div></div>
+  <div class="hd"><div class="brand" onclick="home()"><b>APEX</b><i>激やば</i>ツール</div><div style="display:flex;align-items:center;gap:10px"><button class="back" id="langBtn" onclick="toggleLang()" style="font-size:12px;padding:6px 11px">EN</button><div class="live"><span class="d"></span>LIVE</div></div></div>
 
   <!-- ===== HUB ===== -->
   <div id="home">
     <div class="hubgrid">
-      <div class="tile" style="--g:#19e3ff" onclick="open_('map')"><span class="lv">LIVE</span><div class="ic">🗺️</div><div><div class="nm">マップ</div><div class="ds">現在/次・残り時間</div></div></div>
-      <div class="tile" style="--g:#ff4d3d" onclick="open_('pred')"><span class="lv">LIVE</span><div class="ic">👑</div><div><div class="nm">プレデター</div><div class="ds">到達RPボーダー</div></div></div>
-      <div class="tile" style="--g:#22e3a0" onclick="open_('srv')"><span class="lv">LIVE</span><div class="ic">📡</div><div><div class="nm">サーバー</div><div class="ds">障害・稼働状況</div></div></div>
-      <div class="tile" style="--g:#ff3df2" onclick="open_('find')"><div class="ic">🔍</div><div><div class="nm">検索</div><div class="ds">戦績＋やばさ採点</div></div></div>
-      <div class="tile" style="--g:#ffc23d" onclick="open_('rank')"><div class="ic">🏅</div><div><div class="nm">ランキング</div><div class="ds">レジェンド別キル</div></div></div>
-      <div class="tile" style="--g:#c062ff" onclick="open_('diag')"><div class="ic">🧪</div><div><div class="nm">診断・あそび</div><div class="ds">5種の診断＆ルーレット</div></div></div>
+      <div class="tile" style="--g:#19e3ff" onclick="open_('map')"><span class="lv">LIVE</span><div class="ic">🗺️</div><div><div class="nm" data-i18n="tile_map_n">マップ</div><div class="ds" data-i18n="tile_map_d">現在/次・残り時間</div></div></div>
+      <div class="tile" style="--g:#ff4d3d" onclick="open_('pred')"><span class="lv">LIVE</span><div class="ic">👑</div><div><div class="nm" data-i18n="tile_pred_n">プレデター</div><div class="ds" data-i18n="tile_pred_d">到達RPボーダー</div></div></div>
+      <div class="tile" style="--g:#22e3a0" onclick="open_('srv')"><span class="lv">LIVE</span><div class="ic">📡</div><div><div class="nm" data-i18n="tile_srv_n">サーバー</div><div class="ds" data-i18n="tile_srv_d">障害・稼働状況</div></div></div>
+      <div class="tile" style="--g:#ff3df2" onclick="open_('find')"><div class="ic">🔍</div><div><div class="nm" data-i18n="tile_find_n">検索</div><div class="ds" data-i18n="tile_find_d">戦績＋やばさ採点</div></div></div>
+      <div class="tile" style="--g:#c062ff" onclick="open_('diag')"><div class="ic">🧪</div><div><div class="nm" data-i18n="tile_diag_n">診断・あそび</div><div class="ds" data-i18n="tile_diag_d">12診断＋ルーレット</div></div></div>
+      <div class="tile" style="--g:#ffb02e" onclick="open_('shop')"><div class="ic">🛒</div><div><div class="nm" data-i18n="tile_shop_n">商品紹介</div><div class="ds" data-i18n="tile_shop_d">使用デバイス紹介</div></div></div>
     </div>
     <div class="ad" id="adHome"></div>
-    <footer>データ：<a href="https://apexlegendsstatus.com" target="_blank" rel="noopener">Data from apexlegendsstatus.com</a>（非公式Apex API）。Apex Legends は Electronic Arts / Respawn の商標です。本サイトは非公式のファン制作ツールです。</footer>
+    <footer data-i18n-html="footer">データ：<a href="https://apexlegendsstatus.com" target="_blank" rel="noopener">Data from apexlegendsstatus.com</a>（非公式Apex API）。Apex Legends は Electronic Arts / Respawn の商標です。本サイトは非公式のファン制作ツールです。</footer>
   </div>
 
   <!-- ===== MAP ===== -->
-  <div class="view" id="v-map"><button class="back" onclick="home()">← ホーム</button>
-    <div class="caption"><h1>🗺️ マップ</h1><span class="d">現在と次のマップ・残り時間</span></div>
+  <div class="view" id="v-map"><button class="back" data-i18n="back" onclick="home()">← ホーム</button>
+    <div class="caption"><h1 data-i18n="cap_map_h">🗺️ マップ</h1><span class="d" data-i18n="cap_map_d">現在と次のマップ・残り時間</span></div>
     <div class="hud" id="mapHud"><div class="loading">読み込み中…</div></div>
     <div class="ad adSlot"></div>
   </div>
 
   <!-- ===== PRED ===== -->
-  <div class="view" id="v-pred"><button class="back" onclick="home()">← ホーム</button>
-    <div class="caption"><h1>👑 プレデター</h1><span class="d">いまプレデターになるのに必要なRP</span></div>
+  <div class="view" id="v-pred"><button class="back" data-i18n="back" onclick="home()">← ホーム</button>
+    <div class="caption"><h1 data-i18n="cap_pred_h">👑 プレデター</h1><span class="d" data-i18n="cap_pred_d">いまプレデターになるのに必要なRP</span></div>
     <div id="predBox"><div class="loading">読み込み中…</div></div>
     <div class="note">ボーダー＝上位枠に入るのに必要なRP。リセット直後やシーズン序盤は大きく動きます。</div>
     <div class="ad adSlot"></div>
   </div>
 
   <!-- ===== SERVERS ===== -->
-  <div class="view" id="v-srv"><button class="back" onclick="home()">← ホーム</button>
-    <div class="caption"><h1>📡 サーバー状態</h1><span class="d">Apex公式サーバーの稼働状況</span></div>
+  <div class="view" id="v-srv"><button class="back" data-i18n="back" onclick="home()">← ホーム</button>
+    <div class="caption"><h1 data-i18n="cap_srv_h">📡 サーバー状態</h1><span class="d" data-i18n="cap_srv_d">Apex公式サーバーの稼働状況</span></div>
     <div id="srvBox"><div class="loading">読み込み中…</div></div>
     <div class="ad adSlot"></div>
   </div>
 
   <!-- ===== FIND ===== -->
-  <div class="view" id="v-find"><button class="back" onclick="home()">← ホーム</button>
-    <div class="caption"><h1>🔍 プレイヤー検索</h1><span class="d">戦績を照会＋やばさを自動採点</span></div>
-    <div class="searchbar"><input id="pname" placeholder="プレイヤー名（PCはOrigin名）" autocomplete="off"><select id="pplat"><option value="PC">PC</option><option value="PS4">PS</option><option value="X1">Xbox</option><option value="SWITCH">Switch</option></select><button onclick="findPlayer()">検索</button></div>
+  <div class="view" id="v-find"><button class="back" data-i18n="back" onclick="home()">← ホーム</button>
+    <div class="caption"><h1 data-i18n="cap_find_h">🔍 プレイヤー検索</h1><span class="d" data-i18n="cap_find_d">戦績を照会＋やばさを自動採点</span></div>
+    <div class="searchbar"><input id="pname" data-i18n-ph="find_ph" placeholder="プレイヤー名（PCはOrigin名）" autocomplete="off"><select id="pplat"><option value="PC">PC</option><option value="PS4">PS</option><option value="X1">Xbox</option><option value="SWITCH">Switch</option></select><button onclick="findPlayer()" data-i18n="find_btn">検索</button></div>
     <div id="findBox"></div>
     <div class="ad adSlot"></div>
   </div>
 
   <!-- ===== RANKING ===== -->
-  <div class="view" id="v-rank"><button class="back" onclick="home()">← ホーム</button>
-    <div class="caption"><h1>🏅 ランキング</h1><span class="d">レジェンド別のキル上位プレイヤー</span></div>
-    <div class="warnbox">⚠️ ランキングはAPI仕様上、取得が不安定です。表示できない時間帯や一部レジェンドのみの場合があります。</div>
-    <div class="filters">
-      <select id="lbLegend"><option value="horizon">ホライゾン</option><option value="wraith">レイス</option><option value="octane">オクタン</option><option value="bloodhound">ブラッドハウンド</option><option value="valkyrie">ヴァルキリー</option><option value="lifeline">ライフライン</option></select>
-      <select id="lbPlat"><option value="PC">PC</option><option value="PS4">PS</option><option value="X1">Xbox</option><option value="SWITCH">Switch</option></select>
-      <button class="searchbar" style="display:inline-flex"><span onclick="loadLb()" style="background:linear-gradient(90deg,var(--cy),var(--mg));color:#06070d;font-family:'Chakra Petch';font-weight:700;border-radius:10px;padding:11px 16px;cursor:pointer">表示</span></button>
-    </div>
-    <div id="lbBox"></div>
-    <div class="ad adSlot"></div>
-  </div>
-
   <!-- ===== DIAGNOSES HUB ===== -->
-  <div class="view" id="v-diag"><button class="back" onclick="home()">← ホーム</button>
-    <div class="caption"><h1>🧪 診断・あそび</h1><span class="d">あなたを分析するミニ診断集</span></div>
+  <div class="view" id="v-diag"><button class="back" data-i18n="back" onclick="home()">← ホーム</button>
+    <div class="caption"><h1 data-i18n="cap_diag_h">🧪 診断・あそび</h1><span class="d" data-i18n="cap_diag_d">あなたを分析するミニ診断集</span></div>
+    <div class="note" data-i18n="diag_jp_note"></div>
     <div class="hubgrid">
       <div class="tile" style="--g:#19e3ff" onclick="openDiag('sh')"><div class="ic">🎯</div><div><div class="nm">立ち回り診断</div><div class="ds">30問・13タイプ</div></div></div>
       <div class="tile" style="--g:#ff3d5e" onclick="openDiag('ng')"><div class="ic">🚫</div><div><div class="nm">使うな診断</div><div class="ds">激辛で名指し</div></div></div>
       <div class="tile" style="--g:#22e3a0" onclick="openDiag('ub')"><div class="ic">🧭</div><div><div class="nm">使うべきキャラ</div><div class="ds">最適レジェンド</div></div></div>
       <div class="tile" style="--g:#ff6a1f" onclick="openDiag('ts')"><div class="ic">🔥</div><div><div class="nm">強さ診断(激辛)</div><div class="ds">適正ランク判定</div></div></div>
       <div class="tile" style="--g:#c062ff" onclick="openDiag('rl')"><div class="ic">🎰</div><div><div class="nm">ルーレット</div><div class="ds">3人分を抽選</div></div></div>
+      <div class="tile" style="--g:#22e3a0" onclick="openDiag('lk')"><div class="ic">🍀</div><div><div class="nm">今日のラッキー</div><div class="ds">日替わりおすすめ</div></div></div>
+      <div class="tile" style="--g:#ff3df2" onclick="openDiag('du')"><div class="ic">🤝</div><div><div class="nm">デュオ相性</div><div class="ds">2人の相性%</div></div></div>
+      <div class="tile" style="--g:#ff3d5e" onclick="openDiag('tr')"><div class="ic">💣</div><div><div class="nm">地雷度診断</div><div class="ds">トロール度を採点</div></div></div>
+      <div class="tile" style="--g:#ffc23d" onclick="openDiag('ga')"><div class="ic">🎂</div><div><div class="nm">ゲーマー年齢</div><div class="ds">プレイから年齢判定</div></div></div>
+      <div class="tile" style="--g:#39c6ff" onclick="openDiag('pt')"><div class="ic">🎭</div><div><div class="nm">パーティ役割</div><div class="ds">3人で役割分担</div></div></div>
+      <div class="tile" style="--g:#ffc23d" onclick="openDiag('mt')"><div class="ic">🛡️</div><div><div class="nm">煽り耐性</div><div class="ds">メンタル強度を採点</div></div></div>
+      <div class="tile" style="--g:#22e3a0" onclick="openDiag('sp')"><div class="ic">🧭</div><div><div class="nm">ソロ/パーティ</div><div class="ds">向いてる編成判定</div></div></div>
+      <div class="tile" style="--g:#19e3ff" onclick="openDiag('iq')"><div class="ic">🧠</div><div><div class="nm">立ち回りIQ</div><div class="ds">戦術IQテスト</div></div></div>
     </div>
     <div id="diagArea" style="margin-top:16px"></div>
+    <div class="ad adSlot"></div>
+  </div>
+
+  <div class="view" id="v-shop"><button class="back" data-i18n="back" onclick="home()">← ホーム</button>
+    <div class="caption"><h1 data-i18n="cap_shop_h">🛒 商品紹介</h1><span class="d" data-i18n="cap_shop_d">プロ・配信者の使用デバイス</span></div>
+    <div class="prnote" data-i18n="shop_pr">※PR・アフィリエイトリンクを含みます</div>
+    <div id="shopTabs" class="shoptabs"></div>
+    <div id="shopGrid" class="shopgrid"></div>
     <div class="ad adSlot"></div>
   </div>
 
@@ -178,6 +202,51 @@ var SHOW_AD=true, SHARE_TAG="APEX激やばツール";
 var $=function(id){return document.getElementById(id);};
 function gas(type,extra){return fetch(APEX_GAS_URL+"?type="+type+(extra||""),{cache:"no-store"}).then(function(r){return r.json();});}
 function esc(s){return String(s).replace(/[<>&]/g,function(c){return{'<':'&lt;','>':'&gt;','&':'&amp;'}[c];});}
+/* ===== i18n ===== */
+var LANG="ja";
+var T={
+ja:{back:"← ホーム",
+ tile_map_n:"マップ",tile_map_d:"現在/次・残り時間",tile_pred_n:"プレデター",tile_pred_d:"到達RPボーダー",tile_srv_n:"サーバー",tile_srv_d:"障害・稼働状況",tile_find_n:"検索",tile_find_d:"戦績＋やばさ採点",tile_diag_n:"診断・あそび",tile_diag_d:"12診断＋ルーレット",
+ cap_map_h:"🗺️ マップ",cap_map_d:"現在と次のマップ・残り時間",cap_pred_h:"👑 プレデター",cap_pred_d:"いまプレデターになるのに必要なRP",cap_srv_h:"📡 サーバー状態",cap_srv_d:"Apex公式サーバーの稼働状況",cap_find_h:"🔍 プレイヤー検索",cap_find_d:"戦績を照会＋やばさを自動採点",cap_diag_h:"🧪 診断・あそび",cap_diag_d:"あなたを分析するミニ診断集",diag_jp_note:"",
+ find_ph:"プレイヤー名（PCはOrigin名）",find_btn:"検索",
+ footer:'データ：<a href="https://apexlegendsstatus.com" target="_blank" rel="noopener">Data from apexlegendsstatus.com</a>（非公式Apex API）。Apex Legends は Electronic Arts / Respawn の商標です。本サイトは非公式のファン制作ツールです。',
+ remain:"残り",nodata:"データなし",fail:"取得失敗",searching:"検索中…",
+ pred_border:"上位ボーダー",pred_hardest:"が現在の最難関",pred_mp:"マスター＋プレデター",people:"人",
+ st_ok:"正常",st_slow:"混雑/遅延",st_down:"停止",b_ok:"すべて正常",b_down:"一部サービスで障害",b_slow:"一部が混雑/遅延",official:"公式サービス",srv_checked:"サービスを確認 ・ 最終確認 たった今",overall:"全体",uptime24:"24h 稼働率",lastinc:"前回の障害",measuring:"計測中",none:"なし",note_srv:"※第三者の監視サービスの計測値です。「混雑/遅延」や一部地域の表示でも、実際は普通にプレイできる場合があります。完全な停止は赤で表示。",
+ ago_now:"たった今",ago_min:"分前",ago_hour:"時間前",ago_day:"日前",
+ st_avg:"平均ダメ",st_wr:"勝率",st_lvl:"レベル",st_kills:"総キル",sub_o:"概要",sub_l:"レジェンド別",sub_r:"ランク",online:"オンライン",using:"使用中",
+ verd_5:"ガチ勢",verd_4:"そこそこやり込み勢",verd_3:"そこそこ",verd_2:"カジュアル",verd_1:"これからの人",share:"シェア",
+ err_name:"名前を入れてね",err_notfound:"見つからない / 取得失敗（名前・機種を確認）",err_fail:"取得失敗（通信エラー）",
+ note_trk:"※KD・平均ダメ・勝率は、本人がそのトラッカーを装備している時だけ取得できます（未装備は「—」）。",note_leg:"レジェンド別キルのトラッカー情報がありません（未装備）。",note_rank:"※最高到達ランクはAPIで取得できた場合のみ表示されます。",next_a:"次（",next_b:"）まで",tile_shop_n:"商品紹介",tile_shop_d:"使用デバイス紹介",cap_shop_h:"🛒 商品紹介",cap_shop_d:"プロ・配信者の使用デバイス",shop_pr:"※PR・アフィリエイトリンクを含みます",shop_buy:"チェックする",shop_soon:"準備中",shop_empty:"まだ商品がありません",shop_all:"すべて",shop_loading:"読み込み中…"},
+en:{back:"← Home",
+ tile_map_n:"Map",tile_map_d:"Current/next & timer",tile_pred_n:"Predator",tile_pred_d:"RP border",tile_srv_n:"Servers",tile_srv_d:"Status & outages",tile_find_n:"Search",tile_find_d:"Stats & score",tile_diag_n:"Quizzes",tile_diag_d:"12 quizzes + roulette",
+ cap_map_h:"🗺️ Map",cap_map_d:"Current & next maps with timers",cap_pred_h:"👑 Predator",cap_pred_d:"RP needed to hit Predator right now",cap_srv_h:"📡 Server Status",cap_srv_d:"Apex official server status",cap_find_h:"🔍 Player Search",cap_find_d:"Look up stats + auto score",cap_diag_h:"🧪 Quizzes & Fun",cap_diag_d:"Mini quizzes that analyze you",diag_jp_note:"Note: the quizzes are in Japanese only.",
+ find_ph:"Player name (PC: Origin/EA name)",find_btn:"Search",
+ footer:'Data: <a href="https://apexlegendsstatus.com" target="_blank" rel="noopener">apexlegendsstatus.com</a> (unofficial Apex API). Apex Legends is a trademark of Electronic Arts / Respawn. This is an unofficial fan-made tool.',
+ remain:"Left",nodata:"No data",fail:"Failed to load",searching:"Searching…",
+ pred_border:"Top border",pred_hardest:"is currently the hardest",pred_mp:"Master + Predator",people:"players",
+ st_ok:"OK",st_slow:"Busy/Slow",st_down:"Down",b_ok:"All systems normal",b_down:"Some services down",b_slow:"Some services busy/slow",official:"Official service",srv_checked:" services checked · just now",overall:"Overall",uptime24:"24h uptime",lastinc:"Last incident",measuring:"Measuring",none:"None",note_srv:"Third-party monitor readings. Busy/slow or single-region flags often still play fine. Only full outages show red.",
+ ago_now:"just now",ago_min:"m ago",ago_hour:"h ago",ago_day:"d ago",
+ st_avg:"Avg dmg",st_wr:"Win%",st_lvl:"Level",st_kills:"Total kills",sub_o:"Overview",sub_l:"By legend",sub_r:"Rank",online:"Online",using:"Using",
+ verd_5:"Hardcore",verd_4:"Pretty dedicated",verd_3:"Average",verd_2:"Casual",verd_1:"Just starting",share:"Share",
+ err_name:"Enter a name",err_notfound:"Not found / failed (check name & platform)",err_fail:"Failed (network error)",
+ note_trk:"KD, avg damage and win rate are only available when the player has those trackers equipped (— if not).",note_leg:"No per-legend kill tracker data (not equipped).",note_rank:"Peak rank shows only when the API returns it.",next_a:"To ",next_b:"",tile_shop_n:"Gear",tile_shop_d:"Pro gear picks",cap_shop_h:"🛒 Gear",cap_shop_d:"Devices pros & streamers use",shop_pr:"Contains affiliate links (PR)",shop_buy:"Check it",shop_soon:"Coming soon",shop_empty:"No items yet",shop_all:"All",shop_loading:"Loading…"}
+};
+function t(k){var d=T[LANG]||T.ja;return (d[k]!=null?d[k]:(T.ja[k]!=null?T.ja[k]:k));}
+function rankLabel(n){if(LANG==='ja')return n;return ({"ルーキー":"Rookie","ブロンズ":"Bronze","シルバー":"Silver","ゴールド":"Gold","プラチナ":"Platinum","ダイヤ":"Diamond","マスター":"Master"}[n]||n);}
+function mapName(n){return LANG==='en'?(n||'-'):mj(n);}
+function shareScore(sc,v){return LANG==='en'?('Sus score '+sc+'/100 · "'+v+'"'):('やばさ'+sc+'点・適正「'+v+'」だった');}
+function applyStatic(){
+ document.querySelectorAll('[data-i18n]').forEach(function(el){var v=t(el.getAttribute('data-i18n'));if(v!=null)el.textContent=v;});
+ document.querySelectorAll('[data-i18n-html]').forEach(function(el){var v=t(el.getAttribute('data-i18n-html'));if(v!=null)el.innerHTML=v;});
+ document.querySelectorAll('[data-i18n-ph]').forEach(function(el){var v=t(el.getAttribute('data-i18n-ph'));if(v!=null)el.placeholder=v;});
+ var lb=$('langBtn');if(lb)lb.textContent=(LANG==='ja'?'EN':'日本語');
+ document.documentElement.lang=LANG;
+}
+function reRender(){ if($('v-map').classList.contains('on')){loadMap();} else if($('v-pred').classList.contains('on')){loadPred();} else if($('v-srv').classList.contains('on')){loadSrv();} else if($('v-find').classList.contains('on')&&($('pname').value||'').trim()){findPlayer();} }
+function toggleLang(){LANG=(LANG==='ja'?'en':'ja');try{localStorage.setItem('apexLang',LANG);}catch(e){}applyStatic();reRender();}
+
+
 
 /* ===== nav ===== */
 var loaded={};
@@ -186,6 +255,7 @@ function open_(sec){$('home').style.display='none';document.querySelectorAll('.v
   if(sec==='map'&&!loaded.map){loaded.map=1;loadMap();}
   if(sec==='pred'&&!loaded.pred){loaded.pred=1;loadPred();}
   if(sec==='srv'&&!loaded.srv){loaded.srv=1;loadSrv();}
+  if(sec==='shop'&&!loaded.shop){loaded.shop=1;loadShop();}
 }
 
 /* ===== ad slots ===== */
@@ -196,60 +266,69 @@ var MAPS={"World's Edge":{c:"#e8632f",i:"🌋",j:"ワールズエッジ"},"Storm
 function mj(n){return (MAPS[n]||{}).j||n||"-";}function mi(n){return (MAPS[n]||{}).i||"🗺️";}function mc(n){return (MAPS[n]||{}).c||"#666";}
 var mapTimers=[];
 function fmt(s){s=Math.max(0,Math.floor(s));var h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60;return (h>0?h+":"+String(m).padStart(2,"0"):m)+":"+String(x).padStart(2,"0");}
-function loadMap(){gas('map').then(function(d){renderMap(d);}).catch(function(){$('mapHud').innerHTML='<div class="loading">取得失敗</div>';});}
+function loadMap(){gas('map').then(function(d){renderMap(d);}).catch(function(){$('mapHud').innerHTML='<div class="loading">'+t('fail')+'</div>';});}
 function mrow(mode,o,modeColor){if(!o||!o.current)return '';var cur=o.current,nx=o.next||{};var ev=cur.eventName?(cur.eventName+" / "):"";
   var id='cd_'+Math.random().toString(36).slice(2,7);
   if(cur.remainingSecs!=null)mapTimers.push({id:id,t:cur.remainingSecs});
   return '<div class="mrow"><div class="mic" style="background:linear-gradient(135deg,'+mc(cur.map)+'44,#0c1018)">'+mi(cur.map)+'</div>'
-    +'<div><div class="mmode">'+mode+'</div><div class="mname">'+ev+mj(cur.map)+'</div><div class="mnext">NEXT → '+mj(nx.map)+'</div></div>'
-    +'<div class="mtm"><span class="l">残り</span><b class="mono" id="'+id+'">'+(cur.remainingSecs!=null?fmt(cur.remainingSecs):'-')+'</b></div></div>';}
+    +'<div><div class="mmode">'+mode+'</div><div class="mname">'+ev+mapName(cur.map)+'</div><div class="mnext">NEXT → '+mapName(nx.map)+'</div></div>'
+    +'<div class="mtm"><span class="l">'+t('remain')+'</span><b class="mono" id="'+id+'">'+(cur.remainingSecs!=null?fmt(cur.remainingSecs):'-')+'</b></div></div>';}
 function renderMap(d){mapTimers=[];var h='';
   h+=mrow('CASUAL / BR',d.battle_royale);
   h+=mrow('RANKED',d.ranked);
   if(d.ltm&&d.ltm.current)h+=mrow('MIXTAPE',d.ltm);
   if(d.wildcard&&d.wildcard.current)h+=mrow('WILDCARD',d.wildcard);
-  $('mapHud').innerHTML=h||'<div class="loading">データなし</div>';}
+  $('mapHud').innerHTML=h||'<div class="loading">'+t('nodata')+'</div>';}
 setInterval(function(){mapTimers.forEach(function(o){if(o.t>0)o.t--;var e=$(o.id);if(e)e.textContent=fmt(o.t);});},1000);
 
 /* ===== PRED ===== */
 function loadPred(){gas('pred').then(function(d){var rp=d.RP||{};var order=[["PC","🖥️","PC"],["PS4","🎮","PlayStation"],["X1","🎮","Xbox"],["SWITCH","🕹️","Switch"]];
   var arr=order.map(function(o){var x=rp[o[0]]||{};return {key:o[0],e:o[1],pl:o[2],val:(x.val!=null?x.val:0),cnt:(x.totalMastersAndPreds!=null?x.totalMastersAndPreds:'-')};}).filter(function(x){return x.val>0;});
-  if(!arr.length){$('predBox').innerHTML='<div class="loading">データなし</div>';return;}
+  if(!arr.length){$('predBox').innerHTML='<div class="loading">'+t('nodata')+'</div>';return;}
   arr.sort(function(a,b){return b.val-a.val;});var top=arr[0],rest=arr.slice(1);
-  var h='<div class="phero"><div class="crown">👑</div><div class="lab">'+top.pl+' ・ 上位ボーダー</div><div class="rp mono">'+top.val.toLocaleString()+'<small> RP</small></div><div class="pl">'+top.e+' '+top.pl+' が現在の最難関</div><div class="cnt">マスター＋プレデター <b class="mono">'+(typeof top.cnt==='number'?top.cnt.toLocaleString():top.cnt)+'</b> 人</div></div>';
-  h+='<div class="pothers">'+rest.map(function(x){return '<div class="po"><div class="e">'+x.e+'</div><div class="pl">'+x.pl+'</div><div class="rp mono">'+x.val.toLocaleString()+'</div><div class="cnt">'+(typeof x.cnt==='number'?x.cnt.toLocaleString():x.cnt)+'人</div></div>';}).join('')+'</div>';
+  var h='<div class="phero"><div class="crown">👑</div><div class="lab">'+top.pl+' ・ '+t('pred_border')+'</div><div class="rp mono">'+top.val.toLocaleString()+'<small> RP</small></div><div class="pl">'+top.e+' '+top.pl+' '+t('pred_hardest')+'</div><div class="cnt">'+t('pred_mp')+' <b class="mono">'+(typeof top.cnt==='number'?top.cnt.toLocaleString():top.cnt)+'</b> '+t('people')+'</div></div>';
+  h+='<div class="pothers">'+rest.map(function(x){return '<div class="po"><div class="e">'+x.e+'</div><div class="pl">'+x.pl+'</div><div class="rp mono">'+x.val.toLocaleString()+'</div><div class="cnt">'+(typeof x.cnt==='number'?x.cnt.toLocaleString():x.cnt)+''+t('people')+'</div></div>';}).join('')+'</div>';
   $('predBox').innerHTML=h;
-}).catch(function(){$('predBox').innerHTML='<div class="loading">取得失敗</div>';loaded.pred=0;});}
+}).catch(function(){$('predBox').innerHTML='<div class="loading">'+t('fail')+'</div>';loaded.pred=0;});}
 
 /* ===== SERVERS ===== */
 var SVCJP={"Origin_login":"EAアカウント ログイン","EA_novafusion":"EAサーバー","ApexOauth_Crossplay":"クロスプレイ認証","Apex_login":"Apexログイン","selfCoreTest":"コア接続","otherPlatforms":"各種ネットワーク"};
-function stColor(s){s=String(s||"").toUpperCase();if(s.indexOf("UP")>=0||s==="OK")return "var(--ok)";if(s.indexOf("SLOW")>=0||s.indexOf("DELAY")>=0)return "var(--warn)";return "var(--down)";}
-function stJP(s){s=String(s||"").toUpperCase();if(s.indexOf("UP")>=0||s==="OK")return "正常";if(s.indexOf("SLOW")>=0||s.indexOf("DELAY")>=0)return "遅延";return "停止";}
+function stKind(s){s=String(s||"").toUpperCase();
+  if(s.indexOf("DOWN")>=0||s.indexOf("OUTAGE")>=0||s.indexOf("OFFLINE")>=0)return "down";
+  if(s.indexOf("SLOW")>=0||s.indexOf("DELAY")>=0||s.indexOf("OVERLOAD")>=0||s.indexOf("HIGH")>=0||s.indexOf("BUSY")>=0)return "slow";
+  return "ok"; /* UP/OK/UNKNOWN/空 は正常寄り（誤検知防止） */ }
+var KIND={ok:{c:"var(--ok)"},slow:{c:"var(--warn)"},down:{c:"var(--down)"}};
+function stColor(k){return (KIND[k]||KIND.ok).c;}
+function stJP(k){return t("st_"+(KIND[k]?k:"ok"));}
+function collectStatus_(node,out){ if(!node||typeof node!=="object")return; if(typeof node.Status==="string"){out.push(node.Status);return;} Object.keys(node).forEach(function(k){collectStatus_(node[k],out);}); }
+function worstKind_(arr){ var w="ok"; arr.forEach(function(s){var k=stKind(s); if(k==="down")w="down"; else if(k==="slow"&&w!=="down")w="slow";}); return w; }
 function loadSrv(){
   gas('servers').then(function(d){
-    var tiles='',worstAll="UP",svcCount=0;
-    Object.keys(d||{}).forEach(function(svc){var regs=d[svc];if(typeof regs!=='object')return;var worst="UP",any=false;
-      Object.keys(regs).forEach(function(rg){var st=regs[rg]&&regs[rg].Status;if(st){any=true;if(String(st).toUpperCase().indexOf("UP")<0){worst=st;if(stJP(st)==="停止")worstAll="DOWN";else if(worstAll==="UP")worstAll="SLOW";}}});
-      if(!any)return;svcCount++;
-      tiles+='<div class="stile"><span class="led" style="background:'+stColor(worst)+';box-shadow:0 0 9px '+stColor(worst)+'"></span><div class="rg">'+esc(SVCJP[svc]||svc.replace(/_/g," "))+'</div><div class="sv">公式サービス</div><div class="st" style="color:'+stColor(worst)+'">'+stJP(worst)+'</div></div>';
+    var tiles='',svcCount=0,nDown=0,nSlow=0;
+    Object.keys(d||{}).forEach(function(svc){
+      var arr=[]; collectStatus_(d[svc],arr); if(!arr.length)return; svcCount++;
+      var k=worstKind_(arr); if(k==="down")nDown++; else if(k==="slow")nSlow++;
+      tiles+='<div class="stile"><span class="led" style="background:'+stColor(k)+';box-shadow:0 0 9px '+stColor(k)+'"></span><div class="rg">'+esc(SVCJP[svc]||svc.replace(/_/g," "))+'</div><div class="sv">'+t('official')+'</div><div class="st" style="color:'+stColor(k)+'">'+stJP(k)+'</div></div>';
     });
-    var bCls=worstAll==="UP"?"ok2":(worstAll==="DOWN"?"down":"warn"),bIc=worstAll==="UP"?"✓":"⚠",bTx=worstAll==="UP"?"すべて正常":"一部で障害が発生中";
-    var banner='<div class="banner '+bCls+'"><div class="big">'+bIc+'</div><div><div class="s">'+bTx+'</div><div class="sub" id="srvSub">'+svcCount+'サービスを確認 ・ 最終確認 たった今</div></div></div>';
-    var legend='<div class="legend"><span><i style="background:var(--ok)"></i>正常</span><span><i style="background:var(--warn)"></i>遅延</span><span><i style="background:var(--down)"></i>停止</span></div>';
-    var hist='<div class="histbar"><div class="hc"><div class="k">全体</div><div class="v" style="color:'+stColor(worstAll)+'">'+stJP(worstAll)+'</div></div><div class="hc"><div class="k">24h 稼働率</div><div class="v mono" id="upv">—</div></div><div class="hc"><div class="k">前回の障害</div><div class="v" id="incv" style="font-size:13px">—</div></div></div>';
-    $('srvBox').innerHTML=banner+hist+legend+'<div class="sgrid">'+tiles+'</div>';
-    gas('history').then(function(hd){if(hd&&hd.ok){if(hd.uptime24h!=null)$('upv').textContent=hd.uptime24h+'%';$('incv').textContent=hd.lastIncident?ago(hd.lastIncident):'なし';}else{$('upv').textContent='計測中';$('incv').textContent='計測中';}}).catch(function(){});
-  }).catch(function(){$('srvBox').innerHTML='<div class="loading">取得失敗</div>';loaded.srv=0;});
+    var overall = nDown>0 ? "down" : (nSlow>0 ? "slow" : "ok");
+    var bCls=overall==="ok"?"ok2":(overall==="down"?"down":"warn"),bIc=overall==="ok"?"✓":"⚠";
+    var bTx=t("b_"+overall);
+    var banner='<div class="banner '+bCls+'"><div class="big">'+bIc+'</div><div><div class="s">'+bTx+'</div><div class="sub">'+svcCount+''+t('srv_checked')+'</div></div></div>';
+    var legend='<div class="legend"><span><i style="background:var(--ok)"></i>'+t('st_ok')+'</span><span><i style="background:var(--warn)"></i>'+t('st_slow')+'</span><span><i style="background:var(--down)"></i>'+t('st_down')+'</span></div>';
+    var hist='<div class="histbar"><div class="hc"><div class="k">'+t('overall')+'</div><div class="v" style="color:'+stColor(overall)+'">'+stJP(overall)+'</div></div><div class="hc"><div class="k">'+t('uptime24')+'</div><div class="v mono" id="upv">—</div></div><div class="hc"><div class="k">'+t('lastinc')+'</div><div class="v" id="incv" style="font-size:13px">—</div></div></div>';
+    $('srvBox').innerHTML=banner+hist+legend+'<div class="sgrid">'+tiles+'</div><div class="note">'+t('note_srv')+'</div>';
+    gas('history').then(function(hd){if(hd&&hd.ok){if(hd.uptime24h!=null)$('upv').textContent=hd.uptime24h+'%';$('incv').textContent=hd.lastIncident?ago(hd.lastIncident):t('none');}else{$('upv').textContent=t('measuring');$('incv').textContent=t('measuring');}}).catch(function(){});
+  }).catch(function(){$('srvBox').innerHTML='<div class="loading">'+t('fail')+'</div>';loaded.srv=0;});
 }
-function ago(iso){var d=new Date(iso),s=Math.floor((Date.now()-d)/1000);if(s<60)return "たった今";if(s<3600)return Math.floor(s/60)+"分前";if(s<86400)return Math.floor(s/3600)+"時間前";return Math.floor(s/86400)+"日前";}
+function ago(iso){var d=new Date(iso),s=Math.floor((Date.now()-d)/1000);if(s<60)return t("ago_now");if(s<3600)return Math.floor(s/60)+t("ago_min");if(s<86400)return Math.floor(s/3600)+t("ago_hour");return Math.floor(s/86400)+t("ago_day");}
 
 /* ===== FIND ===== */
 var RANKTH=[["ルーキー",0],["ブロンズ",1000],["シルバー",3000],["ゴールド",6000],["プラチナ",10000],["ダイヤ",15000],["マスター",21000]];
 function nextRank(rp){for(var i=0;i<RANKTH.length;i++){if(rp<RANKTH[i][1])return {name:RANKTH[i][0],need:RANKTH[i][1]-rp};}return null;}
-function findPlayer(){var name=($('pname').value||'').trim(),plat=$('pplat').value;if(!name){$('findBox').innerHTML='<div class="warnbox">名前を入れてね</div>';return;}
-  $('findBox').innerHTML='<div class="loading">検索中…</div>';
+function findPlayer(){var name=($('pname').value||'').trim(),plat=$('pplat').value;if(!name){$('findBox').innerHTML='<div class="warnbox">'+t('err_name')+'</div>';return;}
+  $('findBox').innerHTML='<div class="loading">'+t('searching')+'</div>';
   gas('player','&player='+encodeURIComponent(name)+'&platform='+plat).then(function(d){
-    if(!d||d.Error||d.error){$('findBox').innerHTML='<div class="warnbox">見つからない / 取得失敗（名前・機種を確認）</div>';return;}
+    if(!d||d.Error||d.error){$('findBox').innerHTML='<div class="warnbox">'+t('err_notfound')+'</div>';return;}
     var g=d.global||{},rt=d.realtime||{},sel=(d.legends&&d.legends.selected)||{},total=d.total||{},rank=g.rank||{};
     var lvl=g.level!=null?g.level:0,rp=rank.rankScore!=null?Number(rank.rankScore):0;
     // computed
@@ -257,31 +336,26 @@ function findPlayer(){var name=($('pname').value||'').trim(),plat=$('pplat').val
     var kd=(kills!=null&&total.deaths&&total.deaths.value)?(kills/Math.max(1,total.deaths.value)).toFixed(2):null;
     var avg=(dmg!=null&&games)?Math.round(dmg/games):null,wr=(wins!=null&&games)?((wins/games*100).toFixed(1)+'%'):null;
     var score=Math.min(100,Math.round(Math.min(lvl/8,45)+Math.min(rp/600,45)+(kd?Math.min(kd*4,10):0)));
-    var verd=score>=80?"ガチ勢":score>=60?"そこそこやり込み勢":score>=40?"そこそこ":score>=20?"カジュアル":"これからの人";
+    var verd=t("verd_"+(score>=80?5:score>=60?4:score>=40?3:score>=20?2:1));
     var nr=nextRank(rp);
     var legs=[];var all=(d.legends&&d.legends.all)||{};Object.keys(all).forEach(function(k){var L=all[k];var kk=null;(L.data||[]).forEach(function(t){if(/kill/i.test(t.key||t.name||''))kk=t.value;});if(kk!=null)legs.push({n:k,v:Number(kk)});});legs.sort(function(a,b){return b.v-a.v;});legs=legs.slice(0,4);var lmax=legs.length?legs[0].v:1;
     var H='<div class="ptop"><div class="gauge" style="--p:'+score+'%"><div class="in"><div class="n mono">'+score+'</div><div class="o">/100</div></div></div>'
-      +'<div class="pwho"><div class="nm">'+esc(g.name||name)+'</div><div class="meta">'+plat+' ・ Lv.'+lvl+(rt.isOnline?' ・ <span class="on">● オンライン</span>':'')+(sel.LegendName?' ・ 使用中 '+esc(sel.LegendName):'')+'</div><div class="verd">「'+verd+'」</div></div></div>'
-      +'<button class="btn x" onclick="share(\'やばさ'+score+'点・適正「'+verd+'」だった\')">𝕏 やばさ'+score+'点をシェア</button>'
-      +'<div class="subtabs"><button class="on" data-p="o" onclick="ftab(this,\'o\')">概要</button><button data-p="l" onclick="ftab(this,\'l\')">レジェンド別</button><button data-p="r" onclick="ftab(this,\'r\')">ランク</button><button data-p="m" onclick="ftab(this,\'m\')">マッチ履歴 ⚠️</button></div>';
+      +'<div class="pwho"><div class="nm">'+esc(g.name||name)+'</div><div class="meta">'+plat+' ・ Lv.'+lvl+(rt.isOnline?' ・ <span class="on">● '+t('online')+'</span>':'')+(sel.LegendName?' ・ '+t('using')+' '+esc(sel.LegendName):'')+'</div><div class="verd">「'+verd+'」</div></div></div>'
+      +'<button class="btn x" onclick="share(shareScore(score,verd))">𝕏 '+t('share')+'</button>'
+      +'<div class="subtabs"><button class="on" data-p="o" onclick="ftab(this,\'o\')">'+t('sub_o')+'</button><button data-p="l" onclick="ftab(this,\'l\')">'+t('sub_l')+'</button><button data-p="r" onclick="ftab(this,\'r\')">'+t('sub_r')+'</button></div>';
     H+='<div class="spane on" id="fp-o"><div class="sgrid2">'
       +'<div class="stat calc"><div class="k">KD</div><div class="v mono">'+(kd||'—')+'</div></div>'
-      +'<div class="stat calc"><div class="k">平均ダメ</div><div class="v mono">'+(avg||'—')+'</div></div>'
-      +'<div class="stat calc"><div class="k">勝率</div><div class="v mono">'+(wr||'—')+'</div></div>'
-      +'<div class="stat"><div class="k">レベル</div><div class="v mono">'+lvl+'</div></div>'
-      +'<div class="stat"><div class="k">総キル</div><div class="v mono">'+(kills!=null?Number(kills).toLocaleString():'—')+'</div></div>'
+      +'<div class="stat calc"><div class="k">'+t('st_avg')+'</div><div class="v mono">'+(avg||'—')+'</div></div>'
+      +'<div class="stat calc"><div class="k">'+t('st_wr')+'</div><div class="v mono">'+(wr||'—')+'</div></div>'
+      +'<div class="stat"><div class="k">'+t('st_lvl')+'</div><div class="v mono">'+lvl+'</div></div>'
+      +'<div class="stat"><div class="k">'+t('st_kills')+'</div><div class="v mono">'+(kills!=null?Number(kills).toLocaleString():'—')+'</div></div>'
       +'<div class="stat"><div class="k">RP</div><div class="v mono">'+(rp?rp.toLocaleString():'—')+'</div></div></div>'
-      +((kd==null||avg==null)?'<div class="note">※KD・平均ダメ・勝率は、本人がそのトラッカーを装備している時だけ取得できます（未装備は「—」）。</div>':'')+'</div>';
-    H+='<div class="spane" id="fp-l">'+(legs.length?legs.map(function(l){return '<div class="leg"><span class="n">'+esc(l.n)+'</span><span class="b"><i style="width:'+Math.round(l.v/lmax*100)+'%"></i></span><span class="v mono">'+l.v.toLocaleString()+'</span></div>';}).join(''):'<div class="note">レジェンド別キルのトラッカー情報がありません（未装備）。</div>')+'</div>';
-    H+='<div class="spane" id="fp-r"><div class="rankcard"><div class="e">🏆</div><div class="r">'+(rank.rankName||'-')+' '+(rank.rankDiv||'')+' ・ <span class="rp mono">'+(rp?rp.toLocaleString():'-')+' RP</span></div>'+(nr?'<div class="bar"><i style="width:60%"></i></div><div class="t">次（'+nr.name+'）まで <b class="mono">'+nr.need.toLocaleString()+' RP</b></div>':'')+'</div><div class="note">※最高到達ランクはAPIで取得できた場合のみ表示されます。</div></div>';
-    H+='<div class="spane" id="fp-m"><div class="warnbox">⚠️ マッチ履歴はAPI仕様上、取得が不安定です。取れない時は表示されません。</div><div id="fp-m-list" class="loading">読み込み中…</div></div>';
+      +((kd==null||avg==null)?'<div class="note">'+t('note_trk')+'</div>':'')+'</div>';
+    H+='<div class="spane" id="fp-l">'+(legs.length?legs.map(function(l){return '<div class="leg"><span class="n">'+esc(l.n)+'</span><span class="b"><i style="width:'+Math.round(l.v/lmax*100)+'%"></i></span><span class="v mono">'+l.v.toLocaleString()+'</span></div>';}).join(''):'<div class="note">'+t('note_leg')+'</div>')+'</div>';
+    H+='<div class="spane" id="fp-r"><div class="rankcard"><div class="e">🏆</div><div class="r">'+(rank.rankName||'-')+' '+(rank.rankDiv||'')+' ・ <span class="rp mono">'+(rp?rp.toLocaleString():'-')+' RP</span></div>'+(nr?'<div class="bar"><i style="width:60%"></i></div><div class="t">'+t('next_a')+rankLabel(nr.name)+t('next_b')+' <b class="mono">'+nr.need.toLocaleString()+' RP</b></div>':'')+'</div><div class="note">'+t('note_rank')+'</div></div>';
+    
     $('findBox').innerHTML=H;
-    gas('matches','&player='+encodeURIComponent(name)+'&platform='+plat).then(function(md){
-      var list=Array.isArray(md)?md:(md&&md.matches)||[];
-      if(!list.length){$('fp-m-list').outerHTML='<div class="note" id="fp-m-list">マッチ履歴は取得できませんでした（API不安定）。</div>';return;}
-      $('fp-m-list').outerHTML='<div id="fp-m-list">'+list.slice(0,8).map(function(m){return '<div class="match"><span class="pl mono">#'+(m.gameData&&m.gameData.placement||m.placement||'-')+'</span><div class="mid"><div class="lg">'+esc((m.legendPlayed||m.legend||'-'))+'</div><div class="sm">'+((m.gameData&&m.gameData.kills)||m.kills||0)+'キル</div></div><span class="tm">'+(m.timestamp?ago(new Date(m.timestamp*1000).toISOString()):'')+'</span></div>';}).join('')+'</div>';
-    }).catch(function(){var e=$('fp-m-list');if(e)e.outerHTML='<div class="note" id="fp-m-list">マッチ履歴は取得できませんでした（API不安定）。</div>';});
-  }).catch(function(){$('findBox').innerHTML='<div class="warnbox">取得失敗（通信エラー）</div>';});
+  }).catch(function(){$('findBox').innerHTML='<div class="warnbox">'+t('err_fail')+'</div>';});
 }
 function ftab(b,p){document.querySelectorAll('#v-find .subtabs button').forEach(function(x){x.classList.remove('on')});b.classList.add('on');document.querySelectorAll('#v-find .spane').forEach(function(x){x.classList.remove('on')});$('fp-'+p).classList.add('on');}
 
@@ -303,7 +377,7 @@ function profile(ans,bank){var ax={AGG:0,POS:0,SUP:0,INFO:0,RNG:0,RISK:0};ans.fo
 function bestList(list,n,worst){var out=list.map(function(t){var tm=0;for(var k in t.sig)tm+=t.sig[k]*t.sig[k];tm=Math.sqrt(tm)||1;var dot=0;for(var k in t.sig)dot+=(t.sig[k]/tm)*(n[k]||0);return {t:t,dot:dot};});out.sort(function(a,b){return worst?a.dot-b.dot:b.dot-a.dot;});return out;}
 var diagState={};
 function openDiag(d){diagState.cur=d;var a=$('diagArea');
-  if(d==='sh'){shStart();}else if(d==='ng'){ngStart();}else if(d==='ub'){ubStart();}else if(d==='ts'){tsStart();}else if(d==='rl'){rlStart();}
+  if(d==='sh'){shStart();}else if(d==='ng'){ngStart();}else if(d==='ub'){ubStart();}else if(d==='ts'){tsStart();}else if(d==='rl'){rlStart();}else if(d==='lk'){lkStart();}else if(d==='du'){duStart();}else if(d==='tr'){trStart();}else if(d==='ga'){gaStart();}else if(d==='pt'){ptStart();}else if(d==='mt'){mtStart();}else if(d==='sp'){spStart();}else if(d==='iq'){iqStart();}
   a.scrollIntoView({behavior:'smooth',block:'start'});}
 
 /* 立ち回り (30Q/13type) */
@@ -366,8 +440,100 @@ function rlStart(){$('diagArea').innerHTML='<div class="res"><div style="font-si
 var spinning=false;
 function spin(){if(spinning)return;spinning=true;$('spinBtn').textContent='🎰 回転中…';for(var i=0;i<3;i++){$('slot'+i).classList.add('spin');$('slot'+i).classList.remove('win');}var pool=LEGENDS.slice(),pick=[];for(var j=0;j<3;j++){pick.push(pool.splice(Math.floor(Math.random()*pool.length),1)[0]);}var tick=setInterval(function(){for(var i=0;i<3;i++){$('slot'+i).querySelector('.nm').textContent=LEGENDS[Math.floor(Math.random()*LEGENDS.length)];}},80);[0,1,2].forEach(function(i){setTimeout(function(){var s=$('slot'+i);s.classList.remove('spin');s.querySelector('.nm').textContent=pick[i];s.classList.add('win');if(i===2){clearInterval(tick);spinning=false;$('spinBtn').textContent='🎰 もう一回';}},900+i*500);});}
 
+/* 今日のラッキーレジェンド */
+var LKMSG=["今日は強気で詰めろ。先手必勝。","引き気味が吉。安置と位置で勝て。","近距離戦が刺さる日。ショットガンを磨け。","索敵を怠るな。情報が命。","漁夫の鬼になれ。タイミングを計れ。","蘇生とカバーで味方を救う日。","エイム絶好調。自分を信じて撃て。","無理は禁物。丁寧に立ち回れ。"];
+function lkStart(){var d=new Date();var seed=d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate();var L=LEGENDS[seed%LEGENDS.length];var msg=LKMSG[seed%LKMSG.length];var ds=d.getFullYear()+'/'+(d.getMonth()+1)+'/'+d.getDate();
+ $('diagArea').innerHTML='<div class="res"><div class="ts">'+ds+' の運勢</div><div class="ic">🍀</div><div class="tn" style="color:#22e3a0">'+L+'</div><div class="desc" style="text-align:center">今日のラッキーレジェンドは <b>'+L+'</b>！<br>'+msg+'</div><button class="btn x" onclick="share(\'今日のラッキーレジェンドは「'+L+'」🍀 '+msg+'\')">𝕏 シェア</button><div class="note" style="text-align:center">毎日変わるよ。また明日チェック！</div></div>';}
+
+/* デュオ相性 */
+function duStart(){$('diagArea').innerHTML='<div class="field"><label>あなたの名前</label><input id="du1" placeholder="プレイヤー1"></div><div class="field"><label>相方の名前</label><input id="du2" placeholder="プレイヤー2"></div><button class="btn primary" onclick="duGo()">💞 相性を見る</button>';}
+function duHash(s){var h=2166136261;for(var i=0;i<s.length;i++){h^=s.charCodeAt(i);h=(h*16777619)>>>0;}return h;}
+function duGo(){var a=($('du1').value||'').trim(),b=($('du2').value||'').trim();if(!a||!b){return;}var nm=[a,b].sort();var pct=duHash(nm[0]+'/'+nm[1])%101;
+ var band=pct>=85?['運命のデュオ','#ff3df2','このコンビ、優勝の匂いしかしない。']:pct>=65?['好相性','#19e3ff','息ぴったり。安定して勝てる。']:pct>=45?['ふつう','#22e3a0','悪くない。連携を詰めれば伸びる。']:pct>=25?['事故多め','#ffc23d','たまに事故るが熱い。声かけ大事。']:['水と油','#ff3d5e','…まあ、楽しければOK！'];
+ $('diagArea').innerHTML='<div class="res"><div class="ts">'+esc(a)+' × '+esc(b)+'</div><div class="ic">🤝</div><div class="tn" style="color:'+band[1]+'">'+pct+'%</div><div class="desc" style="text-align:center"><b style="color:'+band[1]+'">'+band[0]+'</b><br>'+band[2]+'</div><button class="btn x" onclick="share(\''+esc(a)+'と'+esc(b)+'のデュオ相性は'+pct+'%だった！\')">𝕏 シェア</button><button class="btn primary" onclick="openDiag(\'du\')">もう一度</button></div>';}
+
+/* 地雷度（トロール度）診断 */
+var TRQ=[{q:"味方の漁夫(キル横取り)は？",a:[["しない",0],["たまに",1],["常に奪う",2]]},{q:"開幕、味方と別行動",a:[["合わせる",0],["気分で",1],["即単独",2]]},{q:"死んだら？",a:[["落ち着いて待つ",0],["少しイラつく",1],["即抜け/暴言",2]]},{q:"自分のミスを",a:[["認める",0],["流す",1],["味方のせい",2]]},{q:"ピン/コールは",a:[["ちゃんと出す",0],["たまに",1],["無視",2]]},{q:"漁られそうな時",a:[["撤退を提案",0],["様子見",1],["特攻して全滅",2]]},{q:"味方の蘇生は",a:[["最優先",0],["余裕あれば",1],["放置",2]]},{q:"VCで暴言",a:[["言わない",0],["心の中で",1],["普通に言う",2]]},{q:"煽りエモートは",a:[["しない",0],["勝った時だけ",1],["常時連打",2]]},{q:"キャラ被り",a:[["譲る",0],["話し合う",1],["絶対譲らない",2]]},{q:"格下の味方に",a:[["優しく",0],["普通",1],["見下す",2]]},{q:"負けそうな試合",a:[["最後まで全力",0],["集中切れる",1],["即抜け",2]]}];
+var trA,tri;
+function trStart(){trA=new Array(TRQ.length).fill(null);tri=0;trRender();}
+function trRender(){var q=TRQ[tri];$('diagArea').innerHTML='<div class="qnum">Q '+(tri+1)+' / '+TRQ.length+'</div><div class="bar"><i style="width:'+Math.round(tri/TRQ.length*100)+'%"></i></div><div class="q">'+q.q+'</div>'+q.a.map(function(o,i){return '<div class="opt" onclick="trPick('+i+')">'+o[0]+'</div>';}).join('')+'<div class="navrow"><button onclick="openDiag(\'tr\')">最初から</button></div>';}
+function trPick(i){trA[tri]=i;if(tri<TRQ.length-1){tri++;trRender();}else{var pts=0;for(var x=0;x<TRQ.length;x++)pts+=TRQ[x].a[trA[x]][1];var pct=Math.round(pts/(TRQ.length*2)*100);
+ var bands=[[20,'聖人プレイヤー','#22e3a0','味方の鑑。一生分隊を組みたいタイプ。'],[40,'良識派','#19e3ff','安心して背中を預けられる。'],[60,'ふつうの人間','#ffc23d','可もなく不可もなく。たまにやらかす。'],[80,'地雷予備軍','#ff6a1f','…自覚ある？味方が静かに泣いてるかも。'],[101,'大地雷','#ff3d5e','即ブロック案件。一人で野良に還れ。']];
+ var b=bands.find(function(x){return pct<x[0];});
+ $('diagArea').innerHTML='<div class="res"><div class="ts" style="color:var(--down)">地雷度</div><div class="ic">💣</div><div class="tn" style="color:'+b[2]+'">'+pct+'%</div><div class="desc" style="text-align:center"><b style="color:'+b[2]+'">'+b[1]+'</b><br>'+b[3]+'</div><button class="btn x" onclick="share(\'俺の地雷度は'+pct+'%「'+b[1]+'」だった💣\')">𝕏 シェア</button><button class="btn primary" onclick="openDiag(\'tr\')">もう一度</button></div>';}}
+
+/* ゲーマー年齢診断 */
+var GAQ=[{q:"開幕は？",a:[["即ホットドロップ",-2],["様子見",1],["安置までこもる",2]]},{q:"使う武器は",a:[["最強メタ武器",-2],["手に馴染んだ相棒",2]]},{q:"連携は",a:[["VCでワイワイ",-1],["静かに連携",1],["ソロ自走",0]]},{q:"よく遊ぶ時間",a:[["深夜",-2],["夕方",0],["朝/昼",2]]},{q:"負けたら",a:[["即リベンジ",-2],["一旦休憩",1],["今日はもう寝る",2]]},{q:"新シーズンは",a:[["初日に走る",-2],["落ち着いてから",1],["気が向いたら",2]]},{q:"スキン/課金",a:[["全力課金",-1],["たまに",0],["デフォで十分",2]]},{q:"立ち回りは",a:[["とにかく前へ",-2],["状況判断",1],["生存最優先",2]]},{q:"配信/動画",a:[["毎日見る",-1],["たまに",0],["見ない",1]]},{q:"勝ち負けは",a:[["勝ちにこだわる",-1],["楽しければOK",2]]}];
+var gaA,gai;
+function gaStart(){gaA=new Array(GAQ.length).fill(null);gai=0;gaRender();}
+function gaRender(){var q=GAQ[gai];$('diagArea').innerHTML='<div class="qnum">Q '+(gai+1)+' / '+GAQ.length+'</div><div class="bar"><i style="width:'+Math.round(gai/GAQ.length*100)+'%"></i></div><div class="q">'+q.q+'</div>'+q.a.map(function(o,i){return '<div class="opt" onclick="gaPick('+i+')">'+o[0]+'</div>';}).join('')+'<div class="navrow"><button onclick="openDiag(\'ga\')">最初から</button></div>';}
+function gaPick(i){gaA[gai]=i;if(gai<GAQ.length-1){gai++;gaRender();}else{var sum=0;for(var x=0;x<GAQ.length;x++)sum+=GAQ[x].a[gaA[x]][1];var age=Math.max(13,Math.min(68,Math.round(28+sum*1.3)));
+ var fl=age<18?'魂が10代。脳直アグロで一生若い。':age<26?'若手ゲーマー。反射神経で殴るタイプ。':age<36?'脂の乗った中堅。バランス型の安定感。':age<51?'歴戦の大人ゲーマー。落ち着きと判断力が武器。':'仙人。生存と効率を極めた境地。';
+ $('diagArea').innerHTML='<div class="res"><div class="ts">ゲーマー年齢</div><div class="ic">🎂</div><div class="tn" style="color:#ffc23d">'+age+'歳</div><div class="desc" style="text-align:center">'+fl+'</div><button class="btn x" onclick="share(\'俺のApexゲーマー年齢は'+age+'歳だった🎂\')">𝕏 シェア</button><button class="btn primary" onclick="openDiag(\'ga\')">もう一度</button></div>';}}
+
+
+/* パーティ役割診断（3人） */
+var PTQ=[{q:"撃ち合いは？",a:[["自信ある",{AGG:2,RNG:1}],["普通",{}],["苦手…",{AGG:-1,SUP:1}]]},{q:"索敵・情報は？",a:[["自分が取りたい",{INFO:2}],["味方に任せる",{INFO:-1,SUP:1}]]},{q:"指示出しは？",a:[["する派",{POS:1,SUP:1,INFO:1}],["従う派",{POS:-1,AGG:1}]]},{q:"リスクは？",a:[["取りにいく",{AGG:1,RISK:2}],["避けて支える",{RISK:-2,SUP:1}]]},{q:"味方が倒れたら？",a:[["敵に突っ込む",{AGG:2}],["蘇生最優先",{SUP:2}],["位置を整える",{POS:2}]]}];
+var PTROLE=[{n:"前衛アタッカー",e:"⚔️",sig:{AGG:2,RNG:1,RISK:2},d:"先頭で撃ち合う槍。キルで主導権を握る。"},{n:"司令塔(IGL)",e:"🎖️",sig:{INFO:1,POS:2,SUP:1},d:"指示と位置取りでチームを動かす頭脳。"},{n:"索敵(リコン)",e:"📡",sig:{INFO:2,POS:1},d:"情報を取って先手を作る目。"},{n:"サポート",e:"💉",sig:{SUP:2,RISK:-1},d:"蘇生とカバーで全員を支える縁の下。"}];
+var ptNames,ptProf,ptCur,ptQi,ptAns;
+function ptStart(){$('diagArea').innerHTML='<div class="note" style="margin-bottom:10px">3人ぶんの質問に順番に答えると、前衛/IGL/索敵/サポートを重複なしで自動割り当てします。</div><div class="field"><label>プレイヤー1</label><input id="pt0" placeholder="名前(任意)"></div><div class="field"><label>プレイヤー2</label><input id="pt1" placeholder="名前(任意)"></div><div class="field"><label>プレイヤー3</label><input id="pt2" placeholder="名前(任意)"></div><button class="btn primary" onclick="ptBegin()">🎭 診断スタート</button>';}
+function ptBegin(){ptNames=[0,1,2].map(function(i){return (($('pt'+i).value||'').replace(/['"\\]/g,'').trim())||('プレイヤー'+(i+1));});ptProf=[];ptCur=0;ptQi=0;ptAns=new Array(PTQ.length).fill(null);ptRender();}
+function ptRender(){var q=PTQ[ptQi];$('diagArea').innerHTML='<div class="qnum">'+esc(ptNames[ptCur])+' ・ Q '+(ptQi+1)+' / '+PTQ.length+'</div><div class="bar"><i style="width:'+Math.round((ptCur*PTQ.length+ptQi)/(3*PTQ.length)*100)+'%"></i></div><div class="q">'+q.q+'</div>'+q.a.map(function(o,i){return '<div class="opt" onclick="ptPick('+i+')">'+o[0]+'</div>';}).join('')+'<div class="navrow"><button onclick="openDiag(\'pt\')">最初から</button></div>';}
+function ptPick(i){ptAns[ptQi]=i;if(ptQi<PTQ.length-1){ptQi++;ptRender();}else{ptProf[ptCur]=profile(ptAns,PTQ);ptCur++;if(ptCur<3){ptQi=0;ptAns=new Array(PTQ.length).fill(null);ptRender();}else{ptResult();}}}
+function ptDot(n,sig){var tm=0;for(var k in sig)tm+=sig[k]*sig[k];tm=Math.sqrt(tm)||1;var d=0;for(var k in sig)d+=(sig[k]/tm)*(n[k]||0);return d;}
+function ptResult(){var fits=[];for(var p=0;p<3;p++)for(var r=0;r<PTROLE.length;r++)fits.push({p:p,r:r,d:ptDot(ptProf[p],PTROLE[r].sig)});fits.sort(function(a,b){return b.d-a.d;});var aP={},aR={};fits.forEach(function(x){if(aP[x.p]==null&&!aR[x.r]){aP[x.p]=x.r;aR[x.r]=1;}});var res=[];for(var p=0;p<3;p++)res.push({name:ptNames[p],role:PTROLE[aP[p]]});
+ var cards=res.map(function(x){return '<div class="match" style="grid-template-columns:auto 1fr"><span class="pl" style="width:auto;font-size:28px">'+x.role.e+'</span><div class="mid"><div class="lg">'+esc(x.name)+' → '+x.role.n+'</div><div class="sm">'+x.role.d+'</div></div></div>';}).join('');
+ var summary=res.map(function(x){return esc(x.name)+'='+x.role.n;}).join(' / ');
+ $('diagArea').innerHTML='<div class="res"><div class="ic">🎭</div><div class="ts">PARTY ROLES</div><div style="margin:14px 0">'+cards+'</div><button class="btn x" onclick="share(\'うちのパーティ役割診断→ '+summary+'\')">𝕏 シェア</button><button class="btn primary" onclick="openDiag(\'pt\')">もう一度</button></div>';}
+
+
+/* ===== 点数式クイズ共通 ===== */
+var scqA,scqI,scqBank,scqDone;
+function scqRun(bank,done){scqBank=bank;scqDone=done;scqA=new Array(bank.length).fill(null);scqI=0;scqR();}
+function scqR(){var q=scqBank[scqI];$('diagArea').innerHTML='<div class="qnum">Q '+(scqI+1)+' / '+scqBank.length+'</div><div class="bar"><i style="width:'+Math.round(scqI/scqBank.length*100)+'%"></i></div><div class="q">'+q.q+'</div>'+q.a.map(function(o,i){return '<div class="opt" onclick="scqP('+i+')">'+o[0]+'</div>';}).join('')+'<div class="navrow"><button onclick="scqPrev()" style="visibility:'+(scqI>0?'visible':'hidden')+'">← 戻る</button><button onclick="openDiag(diagState.cur)">最初から</button></div>';}
+function scqP(i){scqA[scqI]=i;if(scqI<scqBank.length-1){scqI++;scqR();}else{scqDone(scqA,scqBank);}}
+function scqPrev(){if(scqI>0){scqI--;scqR();}}
+function scqPct(a,bank){var p=0,lo=0,hi=0;bank.forEach(function(q,i){var vs=q.a.map(function(o){return o[1];});lo+=Math.min.apply(null,vs);hi+=Math.max.apply(null,vs);p+=q.a[a[i]][1];});return Math.round((p-lo)/Math.max(1,(hi-lo))*100);}
+function gaugeRes(pct,num,suf,band,ts,shareTxt,code){return '<div class="res"><div class="gauge" style="--p:'+pct+'%"><div class="in"><div class="n mono">'+num+'</div><div class="o">'+suf+'</div></div></div><div class="tn">'+band.n+'</div><div class="ts">'+ts+'</div><div class="desc">'+band.d+'</div><button class="btn x" onclick="share(\''+shareTxt+'\')">𝕏 シェア</button><button class="btn primary" onclick="openDiag(\''+code+'\')">もう一度</button></div>';}
+
+/* 煽り耐性診断 mt */
+var MTQ=[{q:"試合中に暴言を受けた。",a:[["完全スルー",2],["少しイラッとする",1],["言い返す",0],["プレイが乱れる",-1]]},{q:"連敗が続いた時の気分は？",a:[["すぐ切り替える",2],["普通",1],["しばらく引きずる",0]]},{q:"味方の地雷ムーブを見たら？",a:[["フォローに回る",2],["黙って続行",1],["つい指摘する",0],["萎える",-1]]},{q:"理不尽な負け方をした。",a:[["次いこ、で終了",2],["軽く愚痴る",1],["デバイスを握る手に力が入る",-1]]},{q:"煽りエモートをされた。",a:[["何も感じない",2],["ちょっとムカつく",0],["絶対やり返す",-1]]},{q:"VCで責められた。",a:[["冷静に話し合う",2],["スルーする",1],["口論になる",-1]]},{q:"格上に一瞬で溶かされた。",a:[["学びにする",2],["仕方ないと割り切る",1],["萎えて落ちる",-1]]},{q:"自分のミスで全滅させた。",a:[["謝って前を向く",2],["反省して続ける",1],["自己嫌悪で崩れる",-1]]}];
+function mtStart(){scqRun(MTQ,function(a,b){var p=scqPct(a,b);var band=p>=85?{n:"鋼のメンタル 🛡️",d:"煽りも連敗も完全スルー。何があってもプレイが乱れない超安定型。長時間でも崩れない。"}:p>=65?{n:"安定メンタル",d:"多少のことでは動じない。切り替えが早く、波が来てもすぐ立て直せる。"}:p>=45?{n:"普通メンタル",d:"人並みの耐性。調子の波はあるけど、休憩を挟めば持ち直せる。"}:p>=25?{n:"ややティルト気味",d:"イラッとがプレイに出やすいタイプ。深呼吸と短い休憩が効く。"}:{n:"豆腐メンタル 🥲",d:"煽り・連敗でガタガタになりがち。ミュート機能と休憩を全力で活用しよう。"};$('diagArea').innerHTML=gaugeRes(p,p,'/100',band,'MENTAL','Apexの煽り耐性は'+p+'点だった','mt');});}
+
+/* ソロ/パーティ診断 sp */
+var SPQ=[{q:"野良とソロ、好きなのは？",a:[["固定パーティ",2],["その時々",1],["ソロ",0]]},{q:"VCは？",a:[["積極的に話す",2],["最低限",1],["使わない",0]]},{q:"味方が弱い時は？",a:[["カバーして勝たせる",2],["状況を見て動く",1],["自分が無双する",0]]},{q:"連携プレイは？",a:[["大好き",2],["状況による",1],["正直ひとりが楽",0]]},{q:"キャラ選びは？",a:[["チーム編成を重視",2],["バランスを見る",1],["自分の得意優先",0]]},{q:"判断の主導権は？",a:[["味方に合わせる",2],["ケースバイケース",1],["自分主導で動く",0]]},{q:"蘇生・カバーは？",a:[["最優先でやる",2],["余裕があれば",1],["自分の生存優先",0]]},{q:"理想の勝ち方は？",a:[["チームで詰める",2],["状況次第",1],["個人技で割る",0]]}];
+function spStart(){scqRun(SPQ,function(a,b){var p=scqPct(a,b);var v=p>=75?{n:"ガチパーティ向き 🤝",d:"連携前提のムーブが染み付いてる。固定3人で真価を発揮するタイプ。"}:p>=55?{n:"ややパーティ寄り",d:"基本はチーム派。味方を活かしつつ自分も動けるバランス型。"}:p>=40?{n:"オールラウンド",d:"ソロもパーティもこなす万能型。どんな編成でも安定する。"}:p>=25?{n:"ややソロ寄り",d:"個人技で自走しがち。野良でも結果を出せるタイプ。"}:{n:"一匹狼ソロ向き 🦁",d:"自分のペースで戦うのが一番強い。連携は最低限で十分なタイプ。"};var bar='<div style="position:relative;height:14px;border-radius:9px;background:linear-gradient(90deg,#19e3ff,#ff3df2);margin:16px 0 6px"><div style="position:absolute;top:-6px;left:'+p+'%;transform:translateX(-50%);width:0;height:0;border:9px solid transparent;border-top-color:#fff;filter:drop-shadow(0 1px 2px #000)"></div></div><div style="display:flex;justify-content:space-between;font-size:12px;color:var(--sub);margin-bottom:8px"><span>🦁 ソロ</span><span>パーティ度 '+p+'%</span><span>🤝 パーティ</span></div>';$('diagArea').innerHTML='<div class="res"><div class="tn">'+v.n+'</div><div class="ts">SOLO ↔ PARTY</div>'+bar+'<div class="desc">'+v.d+'</div><button class="btn x" onclick="share(\'ソロ/パーティ診断は「'+v.n+'」だった\')">𝕏 シェア</button><button class="btn primary" onclick="openDiag(\'sp\')">もう一度</button></div>';});}
+
+/* 立ち回りIQ iq */
+var IQQ=[{q:"残り2部隊・安置移動中。",a:[["有利ポジを先取り",2],["隠れて漁夫を狙う",1],["正面から撃ち合う",0]]},{q:"味方1人ダウン、敵が近い。",a:[["カバーか引くかを瞬時に判断",2],["とりあえず蘇生",1],["敵に突っ込む",0]]},{q:"体力が赤、近くに敵。",a:[["一旦隠れて回復",2],["回復しながら撃つ",1],["気合で撃ち勝つ",0]]},{q:"高台の敵に射線を取られた。",a:[["別ルートで詰める",2],["無視して安置内へ",1],["正面で撃ち合う",0]]},{q:"終盤・部隊が密集。",a:[["音と位置を確認して動く",2],["先に仕掛ける",1],["とにかく隠れる",0]]},{q:"漁夫のタイミングは？",a:[["双方が削れた頃合いで",2],["最後まで待つ",1],["開幕から介入",0]]},{q:"物資が乏しい序盤。",a:[["安全に漁ってから動く",2],["戦いながら集める",1],["即ファイト",0]]},{q:"不利な3対1を作られた。",a:[["時間稼ぎと位置で凌ぐ",2],["一発逆転を狙う",1],["即特攻",0]]},{q:"味方とはぐれた。",a:[["安全に合流を優先",2],["その場で待つ",1],["単独で暴れる",0]]},{q:"索敵で敵位置が判明。",a:[["回避ルートと有利位置に活かす",2],["即仕掛ける材料にする",1],["特に気にしない",0]]}];
+function iqStart(){scqRun(IQQ,function(a,b){var p=scqPct(a,b);var iq=70+Math.round(p*0.9);var band=iq>=150?{n:"戦術IQ 神域",d:"状況判断・位置取り・引き際まで完璧。脳でも勝てるタイプ。"}:iq>=130?{n:"戦術IQ 高い",d:"理にかなった判断が多い。撃ち合い以外でも差をつけられる。"}:iq>=110?{n:"戦術IQ やや高め",d:"基本はしっかり。あと一歩の判断力で化ける。"}:iq>=90?{n:"戦術IQ 標準",d:"悪くない。漁夫・引き際の練習で伸びしろ大。"}:{n:"戦術IQ 伸びしろ",d:"勢い任せになりがち。安置と位置取りを意識すると激変する。"};$('diagArea').innerHTML=gaugeRes(p,iq,'IQ',band,'TACTICAL IQ','Apexの戦術IQは'+iq+'だった','iq');});}
+
+/* ===== 商品紹介（アフィリエイト） =====
+   ■方式1（おすすめ・出先でも追加可）: GASにproducts機能を入れ、スプレッドシートに
+     カテゴリ/使用プレイヤー/商品名/紹介文/価格/画像URL/リンク/表示 を1行ずつ入力するだけで反映。
+   ■方式2（フォールバック）: GAS未設定 or データ無しのときは下記 PRODUCTS を表示。
+     who:使用者名(任意) / name:商品名 / cat:カテゴリ / img:画像URL(任意・空なら🛒)
+     price:価格(任意) / note:紹介文(任意) / url:アフィリンク("#"なら準備中表示) */
+var PRODUCTS=[
+ {who:"例: プロ選手A",name:"ゲーミングマウス（ここを編集）",cat:"マウス",img:"",price:"¥12,800",note:"ここに紹介文。url にアフィリンクを貼ると購入ボタンが有効になります。",url:"#"},
+ {who:"例: 配信者B",name:"240Hz ゲーミングモニター",cat:"モニター",img:"",price:"¥39,800",note:"FPSはリフレッシュレートが命。ヌルヌルで敵が見やすい。",url:"#"},
+ {who:"",name:"ゲーミングヘッドセット",cat:"ヘッドセット",img:"",price:"¥9,980",note:"足音の定位がはっきり。索敵が変わる。",url:"#"}
+];
+var shopCat="all",SHOPCATS=["all"],SHOPDATA=null;
+function shopFilter(i){shopCat=SHOPCATS[i]||"all";renderShop();}
+function loadShop(){var box=$('shopGrid');if(box)box.innerHTML='<div class="loading">'+t('shop_loading')+'</div>';gas('products').then(function(d){SHOPDATA=(d&&d.ok&&d.items&&d.items.length)?d.items:PRODUCTS;renderShop();}).catch(function(){SHOPDATA=PRODUCTS;loaded.shop=0;renderShop();});}
+function renderShop(){var box=$('shopGrid'),tabs=$('shopTabs');if(!box)return;var SRC=SHOPDATA||PRODUCTS;
+ var cats=[];SRC.forEach(function(p){var c=(p.cat||"").trim();if(c&&cats.indexOf(c)<0)cats.push(c);});
+ SHOPCATS=["all"].concat(cats);if(SHOPCATS.indexOf(shopCat)<0)shopCat="all";
+ if(tabs){tabs.innerHTML=SHOPCATS.map(function(c,i){var lab=(c==="all")?t("shop_all"):c;return '<button class="schip'+(shopCat===c?" on":"")+'" onclick="shopFilter('+i+')">'+esc(lab)+'</button>';}).join("");tabs.style.display=cats.length>1?"flex":"none";}
+ var list=(shopCat==="all")?SRC:SRC.filter(function(p){return (p.cat||"").trim()===shopCat;});
+ if(!list.length){box.innerHTML='<div class="note">'+t('shop_empty')+'</div>';return;}
+ box.innerHTML=list.map(function(p){var thumb=p.img?('<div class="pthumb" style="background-image:url(\''+p.img+'\')"></div>'):('<div class="pthumb ph">🛒</div>');var who=p.who?('<span class="pwho">'+esc(p.who)+'</span>'):'';var price=p.price?('<span class="pprice mono">'+esc(p.price)+'</span>'):'';var dead=(!p.url||p.url==='#');var btn=dead?('<span class="pbtn off">'+t('shop_soon')+'</span>'):('<a class="pbtn" href="'+p.url+'" target="_blank" rel="sponsored nofollow noopener">'+t('shop_buy')+' ↗</a>');return '<div class="pcard">'+thumb+'<div class="pbody"><div class="pcat">'+esc(p.cat||'')+who+'</div><div class="pname">'+esc(p.name||'')+'</div>'+(p.note?'<div class="pnote">'+esc(p.note)+'</div>':'')+'<div class="prow">'+price+btn+'</div></div></div>';}).join('');}
+
+
 /* init */
 fillAds();
+try{var _sl=localStorage.getItem("apexLang");if(_sl)LANG=_sl;}catch(e){}applyStatic();
 (function(){var cv=$('fx'),c=cv.getContext('2d'),w,h,ps=[];function rz(){w=cv.width=innerWidth;h=cv.height=innerHeight;}rz();addEventListener('resize',rz);for(var i=0;i<60;i++)ps.push({x:Math.random()*w,y:Math.random()*h,v:.2+Math.random()*.7,r:Math.random()*1.6+.4,c:Math.random()<.5?'#19e3ff':'#ff3df2'});var rm=matchMedia('(prefers-reduced-motion:reduce)').matches;function lp(){c.clearRect(0,0,w,h);for(var i=0;i<ps.length;i++){var p=ps[i];p.y-=p.v;if(p.y<-5){p.y=h+5;p.x=Math.random()*w;}c.globalAlpha=.45;c.fillStyle=p.c;c.shadowBlur=8;c.shadowColor=p.c;c.beginPath();c.arc(p.x,p.y,p.r,0,7);c.fill();}if(!rm)requestAnimationFrame(lp);}lp();})();
 </script>
 </body>
