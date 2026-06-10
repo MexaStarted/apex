@@ -711,12 +711,13 @@ function dxInjectBtn(){
  var bs=area.querySelectorAll('.btn.x');
  for(var i=0;i<bs.length;i++){var sb=bs[i];if(sb.getAttribute('data-dx'))continue;sb.setAttribute('data-dx','1');
   var oc=sb.getAttribute('onclick')||'';var m=oc.match(/share\('([\s\S]*?)'\s*(?:,\s*(true|false))?\)/);
-  var txt=m?m[1]:'';var noask=!!(m&&m[2]==='true');
+  if(!m)continue;
+  var txt=m[1];var noask=(m[2]==='true');
   sb.removeAttribute('onclick');sb.textContent='🖼️ 画像つきでシェア';
   (function(t,n,btn){
    btn.addEventListener('click',function(){dxShare(t,n);});
    // 画像なしシェア
-   var plain=document.createElement('button');plain.className='btn x';plain.textContent='𝕏 画像なしでシェア';plain.style.marginTop='8px';
+   var plain=document.createElement('button');plain.className='btn x';plain.textContent='𝕏 画像なしでシェア';plain.style.marginTop='8px';plain.setAttribute('data-dx','1');
    plain.addEventListener('click',function(){share(t,n);});
    btn.parentNode.insertBefore(plain,btn.nextSibling);
    // 手順ガイド
