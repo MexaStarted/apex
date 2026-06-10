@@ -596,25 +596,35 @@ function chartPlay(){
 }
 /* ===== データ取得 ===== */
 function setLoading(){['p-sum','p-chart','p-list','p-ins'].forEach(function(id){$g(id).innerHTML='<div class="skel"></div><div class="skel" style="margin-top:10px"></div><div class="skel" style="margin-top:10px"></div>';});}
+function loadFail(msg,detail){
+ var cache=lsGet('dash2cache',null);
+ var extra=detail?'<div class="hint" style="margin-top:6px;word-break:break-all">応答の先頭: '+esc(String(detail).slice(0,140))+'</div>':'';
+ $g('p-sum').innerHTML='<div class="alertbar bad">⚠️ '+msg+'<div class="btnrow"><button class="chip" onclick="loadData(true)">🔄 再試行</button><button class="chip" onclick="window.open(KNOWN_URL+\'?action=dashboard\',\'_blank\')">🔗 GASを直接開いて確認</button></div>'+extra+'<div class="hint" style="margin-top:8px">「GASを直接開く」で <b>{"ok":true,...}</b> のような文字が出れば接続OK（このページの問題）。Googleのログイン画面や「承認が必要」が出る場合は、GASのデプロイ設定「アクセスできるユーザー」を<b>全員</b>にして<b>新しいデプロイ</b>を作り直し、新しいURLに差し替えてください。</div></div>';
+ ['p-chart','p-list','p-ins'].forEach(function(id){$g(id).innerHTML='';});
+ if(cache){D=cache.d;D._dv=deriv(D);try{renderAlerts();renderCharts();renderLists();renderInsights();renderSettings();}catch(e){}$g('cacheage').textContent='⚠️ '+Math.round((Date.now()-cache.t)/6e4)+'分前のキャッシュを下に表示中';}
+}
 function loadData(manual){
  var url=KNOWN_URL;var t0=performance.now();
- if(!D)setLoading();
- fetch(url+(url.indexOf('?')>=0?'&':'?')+'action=dashboard').then(function(r){return r.json();}).then(function(d){
-  if(!d||!d.ok)throw new Error('bad');
+ if(!D&&RETRY===0)setLoading();
+ var timed=new Promise(function(_,rej){setTimeout(function(){rej(new Error('timeout'));},12000);});
+ Promise.race([fetch(url+(url.indexOf('?')>=0?'&':'?')+'action=dashboard'),timed]).then(function(r){return r.text();}).then(function(txt){
+  var d=null;
+  try{d=JSON.parse(txt);}catch(e){
+    if(txt&&txt.charAt(0)==='<'){throw {diag:'GASがJSONではなくHTMLを返しています（ログイン画面/エラーページの可能性大）。',body:txt};}
+    throw {diag:'応答をJSONとして読めませんでした。',body:txt};
+  }
+  if(!d||!d.ok)throw {diag:'GASは応答しましたが ok:true ではありません。GAS側のエラーの可能性。',body:txt};
   FETCH_MS=Math.round(performance.now()-t0);FETCH_AT=Date.now();RETRY=0;
   PREV=D;D=d;D._dv=deriv(d);
   lsSet('dash2cache',{t:Date.now(),d:d});
   pushSnap(d);
-  renderAll();
-  diffFlash();
-  titleBadge();
+  try{renderAll();diffFlash();titleBadge();}catch(re){loadFail('データは取得できましたが表示中にエラー: '+re.message,'');return;}
   if(manual){toast('更新した（'+FETCH_MS+'ms）');vib();}
- }).catch(function(){
+ }).catch(function(err){
   RETRY++;
-  var cache=lsGet('dash2cache',null);
-  if(cache&&!D){D=cache.d;D._dv=deriv(D);renderAll();$g('cacheage').textContent='⚠️オフライン：'+Math.round((Date.now()-cache.t)/6e4)+'分前のキャッシュ表示中';}
-  else if(!D){$g('p-sum').innerHTML='<div class="alertbar bad">読み込み失敗。<button class="chip" onclick="loadData(true)">再試行</button><br><span class="hint">GASのURL/デプロイ設定（全員）を確認。設定タブの疎通テストも使える。</span></div>';}
-  if(RETRY<4)setTimeout(function(){loadData(false);},Math.pow(2,RETRY)*3000);
+  var msg=(err&&err.diag)?err.diag:(err&&err.message==='timeout')?'応答が12秒なくタイムアウト。GASの初回起動が遅い場合もあるので再試行を。':'通信に失敗（ネットワーク/CORS）。';
+  if(RETRY===1&&!(err&&err.diag)){setTimeout(function(){loadData(false);},2500);return;}
+  loadFail(msg,(err&&err.body)||'');
  });
 }
 function renderAll(){
