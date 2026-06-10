@@ -351,6 +351,7 @@
 /* ===== config ===== */
 var APEX_GAS_URL="https://script.google.com/macros/s/AKfycbzYzvrRF2hsaYhPDUOzRQQ_81kgx75P9Qk-0etrbyMbEZInK4CMa2Br9JUnDzixOZybZQ/exec";
 var SHOW_AD=true, SHARE_TAG="APEX激やばツール";
+var ANALYTICS_URL="https://script.google.com/macros/s/AKfycbwSF3v0hCeZb4KpynjfXITY-FGL7lOZSj7vdkIQU85WGswdpnAzaROXV_jyVFXHYn78/exec";  /* デプロイした解析GASのURL */
 /* ===== A8広告ローテーション =====
    各要素 = A8の「300×250バナー」リンクの <a ...><img ...></a> 部分。
    追加方法: A8でバナー素材をコピー → 末尾の <img …0.gif…> は省いてOK → 下に ',' 区切りで足す。
@@ -712,6 +713,30 @@ function dxInjectBtn(){
 }
 function dxSetup(){var area=document.getElementById('diagArea');if(!area||area.getAttribute('data-dxobs'))return;area.setAttribute('data-dxobs','1');try{new MutationObserver(dxInjectBtn).observe(area,{childList:true,subtree:true});}catch(e){}dxInjectBtn();}
 dxSetup();document.addEventListener('DOMContentLoaded',dxSetup);
+
+/* ===== アクセス解析（匿名・1訪問1送信） ===== */
+(function(){
+ var AURL=window.ANALYTICS_URL||'';
+ function uid(){try{var u=localStorage.getItem('apexUid');if(!u){u=Date.now().toString(36)+Math.random().toString(36).slice(2,10);localStorage.setItem('apexUid',u);}return u;}catch(e){return 'anon';}}
+ var AN={id:uid(),t0:new Date().toISOString(),start:Date.now(),ev:[],sent:false};
+ function push(t,v){try{if(AN.ev.length<80)AN.ev.push({t:t,v:(v==null?'':String(v))});}catch(e){}}
+ window.track=push;
+ function ua(){var u=navigator.userAgent||'';return {dev:/iPad|Tablet/.test(u)?'tablet':/Mobi|Android|iPhone/.test(u)?'mobile':'desktop',os:/iPhone|iPad|iPod|iOS/.test(u)?'iOS':/Android/.test(u)?'Android':/Windows/.test(u)?'Windows':/Mac/.test(u)?'Mac':/Linux/.test(u)?'Linux':'other',br:/CriOS/.test(u)?'Chrome':/FxiOS|Firefox/.test(u)?'Firefox':/Edg/.test(u)?'Edge':/Chrome/.test(u)?'Chrome':/Safari/.test(u)?'Safari':'other'};}
+ function wrap(name,fn){if(typeof window[name]==='function'){var _o=window[name];window[name]=function(){try{fn.apply(null,arguments);}catch(e){}return _o.apply(this,arguments);};}}
+ wrap('open_',function(s){push('view',s);});
+ wrap('openDiag',function(c){push('diag',c);});
+ wrap('dxShare',function(){push('share','diag');});
+ wrap('share',function(){push('share','x');});
+ wrap('lfgOpenX',function(){push('recruit','post');});
+ wrap('btStart',function(){push('battle',(window.BT&&BT.mode===3)?'3v3':'1v1');});
+ wrap('budgetRun',function(i){push('gear','budget'+i);});
+ wrap('guideRender',function(){push('gear','guide');});
+ document.addEventListener('click',function(e){try{var a=e.target&&e.target.closest?e.target.closest('a.pbtn,a[rel~="sponsored"]'):null;if(a){var card=a.closest?a.closest('.pcard'):null;var nm=card&&card.querySelector('.pname')?card.querySelector('.pname').textContent:'';var cat=card&&card.querySelector('.pcat')?card.querySelector('.pcat').textContent:'';push('product',(cat?cat+' / ':'')+(nm||'link'));}}catch(err){}},true);
+ function param(k){try{return new URLSearchParams(location.search).get(k)||'';}catch(e){return '';}}
+ function send(){if(AN.sent||!AURL)return;AN.sent=true;var e=ua();var p={id:AN.id,site:'apex',t0:AN.t0,dur:Date.now()-AN.start,ref:document.referrer||'',utm:param('utm'),lang:(window.LANG||'ja'),dev:e.dev,os:e.os,br:e.br,sw:screen.width,sh:screen.height,ev:AN.ev};try{var blob=new Blob([JSON.stringify(p)],{type:'text/plain'});if(navigator.sendBeacon){navigator.sendBeacon(AURL,blob);}else{fetch(AURL,{method:'POST',body:JSON.stringify(p),keepalive:true,mode:'no-cors'});}}catch(e2){}}
+ window.addEventListener('pagehide',send);
+ document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden')send();});
+})();
 
 /* ===== LEADERBOARD ===== */
 function loadLb(){var lg=$('lbLegend').value,pl=$('lbPlat').value;$('lbBox').innerHTML='<div class="loading">読み込み中…</div>';
