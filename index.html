@@ -263,7 +263,7 @@
     <div class="note" data-i18n="diag_jp_note"></div>
     <div class="hubgrid">
       <div class="tile" style="--g:#19e3ff" onclick="openDiag('sh')"><div class="ic">🎯</div><div><div class="nm">立ち回り診断</div><div class="ds">30問・13タイプ</div></div></div>
-      <div class="tile" style="--g:#ff3d5e" onclick="openDiag('ng')"><div class="ic">🚫</div><div><div class="nm">使うな診断</div><div class="ds">激辛で名指し</div></div></div>
+      <div class="tile" style="--g:#ff3d5e" onclick="openDiag('ng')"><div class="ic">🚫</div><div><div class="nm">お前は絶対にこのキャラ使うな！診断</div><div class="ds">激辛で名指し</div></div></div>
       <div class="tile" style="--g:#22e3a0" onclick="openDiag('ub')"><div class="ic">🧭</div><div><div class="nm">使うべきキャラ</div><div class="ds">最適レジェンド</div></div></div>
       <div class="tile" style="--g:#ff6a1f" onclick="openDiag('ts')"><div class="ic">🔥</div><div><div class="nm">強さ診断(激辛)</div><div class="ds">適正ランク判定</div></div></div>
       <div class="tile" style="--g:#c062ff" onclick="openDiag('rl')"><div class="ic">🎰</div><div><div class="nm">ルーレット</div><div class="ds">3人分を抽選</div></div></div>
@@ -336,7 +336,7 @@
     <div class="caption"><h1 data-i18n="cap_gr_h">🧰 デバイス選び</h1><span class="d" data-i18n="cap_gr_d">予算で最適構成／初心者ガイド</span></div>
     <div class="subtabs gtabs"><button class="on" onclick="gearTab(this,'budget')">💰 予算で選ぶ</button><button onclick="gearTab(this,'guide')">🔰 初心者ガイド</button></div>
     <div id="gp-budget" class="gpane on">
-      <div class="budgsel"><button onclick="budgetRun(0,this)">〜2万</button><button class="on" onclick="budgetRun(1,this)">2〜5万</button><button onclick="budgetRun(2,this)">5〜10万</button><button onclick="budgetRun(3,this)">10万〜</button></div>
+      <div class="budgsel"><button onclick="budgetRun(0,this)">〜3万</button><button class="on" onclick="budgetRun(1,this)">3〜6万</button><button onclick="budgetRun(2,this)">6〜12万</button><button onclick="budgetRun(3,this)">12万〜</button></div>
       <div id="budgetOut"></div>
     </div>
     <div id="gp-guide" class="gpane">
@@ -614,17 +614,17 @@ function btDone3(A,B){$('btstat').textContent='● 決着';
 function gearData(){return SHOPDATA||PRODUCTS;}
 function gearEnsure(cb){if(SHOPDATA){cb();return;}gas('products').then(function(d){SHOPDATA=(d&&d.ok&&d.items&&d.items.length)?d.items.concat(PRODUCTS):PRODUCTS;cb();}).catch(function(){SHOPDATA=PRODUCTS;cb();});}
 function priceNum(p){var s=String(p&&p.price||'').replace(/[^0-9]/g,'');return s?parseInt(s,10):999999;}
-function gearPick(keys,cap,cheap){var SRC=gearData();var m=SRC.filter(function(p){if(!p.url||p.url==='#')return false;var txt=(String(p.cat||'')+' '+String(p.name||'')).toLowerCase();return keys.some(function(k){return txt.indexOf(k.toLowerCase())>=0;});});if(!m.length)return null;var under=m.filter(function(p){return priceNum(p)<=cap;});var pool=under.length?under:m;pool.sort(function(a,b){return priceNum(a)-priceNum(b);});return cheap?pool[0]:pool[pool.length-1];}
+function gearPick(keys,cap,cheap,ex){var SRC=gearData();var m=SRC.filter(function(p){if(!p.url||p.url==='#')return false;var txt=(String(p.cat||'')+' '+String(p.name||'')).toLowerCase();if(ex&&ex.some(function(e){return txt.indexOf(e.toLowerCase())>=0;}))return false;return keys.some(function(k){return txt.indexOf(k.toLowerCase())>=0;});});if(!m.length)return null;var under=m.filter(function(p){return priceNum(p)<=cap;});var pool=under.length?under:m;pool.sort(function(a,b){return priceNum(a)-priceNum(b);});return cheap?pool[0]:pool[pool.length-1];}
 function gearCard(p){if(!p)return '<a class="gfind" href="#" onclick="home();open_(\'shop\');return false;">🛒 ショップで探す</a>';var thumb=p.img?('<div class="pthumb"><img src="'+esc(p.img)+'" alt="" loading="lazy" referrerpolicy="no-referrer" data-emoji="'+catIcon(p.cat)+'" onerror="shopImgErr(this)"></div>'):('<div class="pthumb ph">'+catIcon(p.cat)+'</div>');var price=p.price?('<span class="pprice mono">'+esc(p.price)+'</span>'):'';var btn='<a class="pbtn" href="'+p.url+'" target="_blank" rel="sponsored nofollow noopener">'+t('shop_buy')+' ↗</a>';return '<div class="pcard gcard">'+thumb+'<div class="pbody"><div class="pcat">'+esc(p.cat||'')+'</div><div class="pname">'+esc(p.name||'')+'</div>'+(p.note?'<div class="pnote">'+esc(p.note)+'</div>':'')+'<div class="prow">'+price+btn+'</div></div></div>';}
 var BUDGET=[
- {name:'〜2万円：まず始める最小構成',slots:[{l:'モニター',k:['モニター'],cap:16500},{l:'エイム補助',k:['フリーク'],cap:2500},{l:'有線LAN',k:['lan','ケーブル'],cap:2000}]},
- {name:'2〜5万円：標準おすすめ構成',slots:[{l:'モニター',k:['モニター'],cap:23000},{l:'ヘッドセット/イヤホン',k:['ヘッドセット','イヤホン'],cap:15000},{l:'デスク',k:['デスク'],cap:12000},{l:'エイム補助',k:['フリーク'],cap:2500}]},
- {name:'5〜10万円：こだわり構成',slots:[{l:'モニター',k:['モニター'],cap:50000},{l:'ヘッドセット',k:['ヘッドセット'],cap:25000},{l:'コントローラー',k:['コントローラー'],cap:40000},{l:'デスク',k:['デスク'],cap:16000},{l:'エイム補助',k:['フリーク'],cap:3500}]},
- {name:'10万円〜：ガチ全部入り',slots:[{l:'本体',k:['本体'],cap:60000},{l:'モニター',k:['モニター'],cap:50000},{l:'ヘッドセット',k:['ヘッドセット'],cap:30000},{l:'コントローラー',k:['コントローラー'],cap:40000},{l:'デスク',k:['デスク'],cap:36000},{l:'チェア',k:['チェア','椅子','chair','gtracing'],cap:60000}]}
+ {name:'〜3万円：まず始める入門構成',slots:[{l:'モニター',k:['モニター'],cap:16500},{l:'マウス（PC勢）',k:['マウス'],cap:5500,ex:['パッド','pad']},{l:'エイム補助',k:['フリーク'],cap:2500},{l:'有線LAN',k:['lan','ケーブル'],cap:2000}]},
+ {name:'3〜6万円：標準おすすめ構成',slots:[{l:'モニター',k:['モニター'],cap:23000},{l:'マウス（PC勢）',k:['マウス'],cap:13000,ex:['パッド','pad']},{l:'ヘッドセット/イヤホン',k:['ヘッドセット','イヤホン'],cap:15000},{l:'デスク',k:['デスク'],cap:12000}]},
+ {name:'6〜12万円：こだわり構成',slots:[{l:'モニター',k:['モニター'],cap:50000},{l:'マウス（PC勢）',k:['マウス'],cap:20000,ex:['パッド','pad']},{l:'ヘッドセット',k:['ヘッドセット'],cap:25000},{l:'コントローラー（CS勢）',k:['コントローラー'],cap:40000},{l:'デスク',k:['デスク'],cap:16000}]},
+ {name:'12万円〜：ガチ全部入り',slots:[{l:'本体',k:['本体'],cap:60000},{l:'モニター',k:['モニター'],cap:50000},{l:'マウス（PC勢）',k:['マウス'],cap:30000,ex:['パッド','pad']},{l:'ヘッドセット',k:['ヘッドセット'],cap:30000},{l:'コントローラー（CS勢）',k:['コントローラー'],cap:40000},{l:'デスク',k:['デスク'],cap:36000},{l:'チェア',k:['チェア','椅子','chair','gtracing'],cap:60000}]}
 ];
 function budgetRun(i,btn){var bs=document.querySelectorAll('.budgsel button');for(var x=0;x<bs.length;x++)bs[x].classList.remove('on');if(btn)btn.classList.add('on');else if(bs[i])bs[i].classList.add('on');
  var b=BUDGET[i];$('budgetOut').innerHTML='<div class="loading">構成を計算中…</div>';
- gearEnsure(function(){var picks=b.slots.map(function(s){return {l:s.l,p:gearPick(s.k,s.cap,false)};});
+ gearEnsure(function(){var picks=b.slots.map(function(s){return {l:s.l,p:gearPick(s.k,s.cap,false,s.ex)};});
   var total=picks.reduce(function(a,x){return a+(x.p&&priceNum(x.p)<900000?priceNum(x.p):0);},0);
   var H='<div class="gtot">'+b.name+'<br>合計めやす <b class="mono">¥'+total.toLocaleString()+'</b></div>';
   H+=picks.map(function(x){return '<div class="gslot"><div class="gsl">'+esc(x.l)+'</div>'+gearCard(x.p)+'</div>';}).join('');
@@ -633,15 +633,85 @@ function budgetRun(i,btn){var bs=document.querySelectorAll('.budgsel button');fo
 var GEARGUIDE=[
  {l:'① モニター',why:'まずは映像。FPSは144Hz以上の高リフレッシュレートが最優先。ヌルヌル動いて敵に早く気づける。',k:['モニター'],cap:20000},
  {l:'② ヘッドセット / イヤホン',why:'足音と銃声の方向がわかると生存率が激変。最初は有線で十分。',k:['ヘッドセット','イヤホン'],cap:15000},
- {l:'③ コントローラー',why:'純正がヘタったり背面ボタンが欲しくなったら。エイムアシスト勢の生命線。',k:['コントローラー'],cap:40000},
- {l:'④ エイム補助（FPSフリーク）',why:'数千円でコスパ最強。スティックに被せるだけで中距離のエイムが安定。初心者ほど効果大。',k:['フリーク'],cap:3500},
- {l:'⑤ デスク',why:'安定した土台。奥行きがあるとアーム設置や腕の置き場が楽。',k:['デスク'],cap:14000},
- {l:'⑥ チェア',why:'長時間でも姿勢が崩れにくい。集中力＝エイムの安定に直結。',k:['チェア','椅子','chair','gtracing'],cap:60000},
- {l:'⑦ 有線LAN',why:'Wi-Fiより低遅延でpingが安定。ラグ落ち・被弾差を減らす地味な必需品。',k:['lan','ケーブル'],cap:2500}
+ {l:'③ コントローラー（CS勢）',why:'純正がヘタったり背面ボタンが欲しくなったら。エイムアシスト勢の生命線。',k:['コントローラー'],cap:40000},
+ {l:'④ マウス（PC勢）',why:'PCなら軽量マウスがエイムの土台。まずは無線の定番から。握り方（かぶせ/つかみ/つまみ）に合う形状だと安定する。',k:['マウス'],cap:13000,ex:['パッド','pad']},
+ {l:'⑤ エイム補助（FPSフリーク）',why:'数千円でコスパ最強。スティックに被せるだけで中距離のエイムが安定。初心者ほど効果大。',k:['フリーク'],cap:3500},
+ {l:'⑥ デスク',why:'安定した土台。奥行きがあるとアーム設置や腕の置き場が楽。',k:['デスク'],cap:14000},
+ {l:'⑦ チェア',why:'長時間でも姿勢が崩れにくい。集中力＝エイムの安定に直結。',k:['チェア','椅子','chair','gtracing'],cap:60000},
+ {l:'⑧ 有線LAN',why:'Wi-Fiより低遅延でpingが安定。ラグ落ち・被弾差を減らす地味な必需品。',k:['lan','ケーブル'],cap:2500}
 ];
-function guideRender(){$('guideOut').innerHTML='<div class="loading">読み込み中…</div>';gearEnsure(function(){$('guideOut').innerHTML='<div class="gprnote" style="margin-top:0">上から順にそろえればOK。まずは①②から。</div>'+GEARGUIDE.map(function(g){var p=gearPick(g.k,g.cap,true);return '<div class="gstep"><div class="gstepttl">'+g.l+'</div><div class="gwhy">'+g.why+'</div>'+gearCard(p)+'</div>';}).join('')+'<button class="btn" style="width:100%;margin-top:4px" onclick="home();open_(\'shop\')">🛒 ショップで全部見る</button>';});}
+function guideRender(){$('guideOut').innerHTML='<div class="loading">読み込み中…</div>';gearEnsure(function(){$('guideOut').innerHTML='<div class="gprnote" style="margin-top:0">上から順にそろえればOK。まずは①②から。</div>'+GEARGUIDE.map(function(g){var p=gearPick(g.k,g.cap,true,g.ex);return '<div class="gstep"><div class="gstepttl">'+g.l+'</div><div class="gwhy">'+g.why+'</div>'+gearCard(p)+'</div>';}).join('')+'<button class="btn" style="width:100%;margin-top:4px" onclick="home();open_(\'shop\')">🛒 ショップで全部見る</button>';});}
 function gearTab(b,p){var bs=document.querySelectorAll('.gtabs button');for(var i=0;i<bs.length;i++)bs[i].classList.remove('on');b.classList.add('on');var ps=document.querySelectorAll('#v-gear .gpane');for(var j=0;j<ps.length;j++)ps[j].classList.remove('on');$('gp-'+p).classList.add('on');if(p==='guide')guideRender();}
 function gearInit(){budgetRun(1,null);guideRender();}
+
+/* ===== 診断結果カード画像生成 ===== */
+function dxText(el){return el?(el.textContent||'').replace(/\s+/g,' ').trim():'';}
+function dxRR(x,a,b,w,h,r){x.beginPath();x.moveTo(a+r,b);x.arcTo(a+w,b,a+w,b+h,r);x.arcTo(a+w,b+h,a,b+h,r);x.arcTo(a,b+h,a,b,r);x.arcTo(a,b,a+w,b,r);x.closePath();}
+function dxWrap(x,t,maxw){var L=[],cur='';for(var i=0;i<t.length;i++){var ch=t[i];if(ch==='\n'){L.push(cur);cur='';continue;}var test=cur+ch;if(x.measureText(test).width>maxw&&cur){L.push(cur);cur=ch;}else cur=test;}if(cur)L.push(cur);return L;}
+function dxRender(){
+ var area=document.getElementById('diagArea');if(!area)return null;
+ var res=area.querySelector('.res')||area.querySelector('.verdict')||area;
+ var emoji=dxText(res.querySelector('.ic'))||'🎮';
+ var eyebrow=dxText(res.querySelector('.ts'))||dxText(res.querySelector('.lab'))||'診断結果';
+ var tnEl=res.querySelector('.tn')||res.querySelector('.rk');
+ var title=dxText(tnEl)||'結果';
+ var desc=dxText(res.querySelector('.desc'))||dxText(res.querySelector('.cm'))||'';
+ var col='#eaf2ff';try{col=getComputedStyle(tnEl).color||col;}catch(e){}
+ var W=1080,H=1350,c=document.createElement('canvas');c.width=W;c.height=H;var x=c.getContext('2d');
+ var g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,'#0c1430');g.addColorStop(1,'#05070e');x.fillStyle=g;x.fillRect(0,0,W,H);
+ var rg=x.createRadialGradient(W/2,180,0,W/2,180,680);rg.addColorStop(0,'rgba(25,227,255,.20)');rg.addColorStop(1,'rgba(25,227,255,0)');x.fillStyle=rg;x.fillRect(0,0,W,H);
+ for(var i=0;i<70;i++){x.globalAlpha=0.12+Math.random()*0.33;x.fillStyle=i%2?'#19e3ff':'#ff3df2';x.beginPath();x.arc(Math.random()*W,Math.random()*H,1+Math.random()*3,0,7);x.fill();}x.globalAlpha=1;
+ x.strokeStyle='rgba(25,227,255,.28)';x.lineWidth=3;dxRR(x,26,26,W-52,H-52,28);x.stroke();
+ x.textAlign='center';
+ x.fillStyle='#7e8db0';x.font='600 30px "Chakra Petch",sans-serif';x.fillText('APEX 激やばツール ・ 診断',W/2,96);
+ x.fillStyle=col;x.font='700 40px "Chakra Petch",sans-serif';x.fillText(eyebrow.toUpperCase().slice(0,30),W/2,252);
+ x.textBaseline='middle';x.font='190px sans-serif';x.fillText(emoji,W/2,440);x.textBaseline='alphabetic';
+ x.fillStyle=col;var ts=96;x.font='900 '+ts+'px "Zen Kaku Gothic New",sans-serif';var lines=dxWrap(x,title,W-150);
+ if(lines.length>2){ts=68;x.font='900 '+ts+'px "Zen Kaku Gothic New",sans-serif';lines=dxWrap(x,title,W-150);}
+ var ty=620;lines.slice(0,3).forEach(function(ln){x.fillText(ln,W/2,ty);ty+=ts+10;});
+ var by=ty-ts+30,bx=70,bw=W-140;x.font='400 36px "Zen Kaku Gothic New",sans-serif';
+ var dl=dxWrap(x,desc,bw-80).slice(0,6);var bh=40+dl.length*52+24;
+ x.fillStyle='rgba(12,18,30,.92)';dxRR(x,bx,by,bw,bh,18);x.fill();x.strokeStyle='rgba(255,255,255,.10)';x.lineWidth=2;dxRR(x,bx,by,bw,bh,18);x.stroke();
+ x.fillStyle='#eaf2ff';x.textAlign='left';var dy=by+62;dl.forEach(function(ln){x.fillText(ln,bx+38,dy);dy+=52;});x.textAlign='center';
+ x.fillStyle='#eaf2ff';x.font='700 42px "Chakra Petch",sans-serif';x.fillText('▶ mexastarted.github.io',W/2,H-104);
+ x.fillStyle='#7e8db0';x.font='500 30px "Zen Kaku Gothic New",sans-serif';x.fillText('#APEX激やばツール',W/2,H-58);
+ return c;
+}
+function dxFile(canvas){var durl=canvas.toDataURL('image/png');var arr=durl.split(',');var bstr=atob(arr[1]);var n=bstr.length;var u8=new Uint8Array(n);while(n--)u8[n]=bstr.charCodeAt(n);return {file:new File([u8],'apex-result.png',{type:'image/png'}),durl:durl};}
+function dxShow(durl){
+ var ov=document.createElement('div');ov.style.cssText='position:fixed;inset:0;background:rgba(2,5,10,.93);z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:18px;gap:14px';
+ var im=document.createElement('img');im.src=durl;im.style.cssText='max-width:100%;max-height:68vh;border-radius:14px;box-shadow:0 0 44px rgba(25,227,255,.32)';
+ var cap=document.createElement('div');cap.textContent='👆 画像を長押しして保存 → Xに添付して投稿！';cap.style.cssText='color:#eaf2ff;font-size:14px;text-align:center;line-height:1.6';
+ var row=document.createElement('div');row.style.cssText='display:flex;gap:10px';
+ var dlb=document.createElement('a');dlb.href=durl;dlb.download='apex-result.png';dlb.textContent='⬇ 保存';dlb.style.cssText='color:#19e3ff;font-weight:700;text-decoration:none;border:1px solid #1d2740;border-radius:10px;padding:10px 18px';
+ var cl=document.createElement('button');cl.textContent='閉じる';cl.style.cssText='background:none;border:1px solid #1d2740;color:#7e8db0;border-radius:10px;padding:10px 18px;cursor:pointer';
+ cl.onclick=function(){if(ov.parentNode)ov.parentNode.removeChild(ov);};
+ ov.onclick=function(e){if(e.target===ov&&ov.parentNode)ov.parentNode.removeChild(ov);};
+ row.appendChild(dlb);row.appendChild(cl);ov.appendChild(im);ov.appendChild(cap);ov.appendChild(row);document.body.appendChild(ov);
+}
+function dxShare(text,noask){
+ var url=location.href.split('#')[0];
+ var full='【APEX激やばツール】'+(text||'診断やってみた')+(noask?'':' あなたは？')+'\n'+url+'\n#APEX激やばツール';
+ var canvas=null;try{canvas=dxRender();}catch(e){}
+ if(canvas){try{var o=dxFile(canvas);
+   if(navigator.canShare&&navigator.canShare({files:[o.file]})){navigator.share({files:[o.file],text:full}).catch(function(){});return;}
+   dxShow(o.durl);
+ }catch(e){}}
+ openX('https://twitter.com/intent/tweet?text='+encodeURIComponent('【APEX激やばツール】'+(text||'')+(noask?'':' あなたは？'))+'&url='+encodeURIComponent(url)+'&hashtags='+encodeURIComponent('APEX激やばツール'));
+}
+function dxInjectBtn(){
+ var area=document.getElementById('diagArea');if(!area)return;
+ if(!(area.querySelector('.tn')||area.querySelector('.rk')))return;
+ var bs=area.querySelectorAll('.btn.x');
+ for(var i=0;i<bs.length;i++){var sb=bs[i];if(sb.getAttribute('data-dx'))continue;sb.setAttribute('data-dx','1');
+  var oc=sb.getAttribute('onclick')||'';var m=oc.match(/share\('([\s\S]*?)'\s*(?:,\s*(true|false))?\)/);
+  var txt=m?m[1]:'';var noask=!!(m&&m[2]==='true');
+  sb.removeAttribute('onclick');sb.textContent='𝕏 画像つきでシェア';
+  (function(t,n){sb.addEventListener('click',function(){dxShare(t,n);});})(txt,noask);
+ }
+}
+function dxSetup(){var area=document.getElementById('diagArea');if(!area||area.getAttribute('data-dxobs'))return;area.setAttribute('data-dxobs','1');try{new MutationObserver(dxInjectBtn).observe(area,{childList:true,subtree:true});}catch(e){}dxInjectBtn();}
+dxSetup();document.addEventListener('DOMContentLoaded',dxSetup);
 
 /* ===== LEADERBOARD ===== */
 function loadLb(){var lg=$('lbLegend').value,pl=$('lbPlat').value;$('lbBox').innerHTML='<div class="loading">読み込み中…</div>';
@@ -654,7 +724,8 @@ function loadLb(){var lg=$('lbLegend').value,pl=$('lbPlat').value;$('lbBox').inn
 }
 
 /* ===== SHARE ===== */
-function share(txt,noask){var url=location.href.split('#')[0];window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent('【APEX激やばツール】'+txt+(noask?'':' あなたは？'))+'&url='+encodeURIComponent(url)+'&hashtags='+encodeURIComponent(SHARE_TAG),'_blank');}
+function openX(u){try{var w=window.open(u,'_blank','noopener');if(w){return;}}catch(e){}location.href=u;}
+function share(txt,noask){var url=location.href.split('#')[0];openX('https://twitter.com/intent/tweet?text='+encodeURIComponent('【APEX激やばツール】'+txt+(noask?'':' あなたは？'))+'&url='+encodeURIComponent(url)+'&hashtags='+encodeURIComponent(SHARE_TAG));}
 
 /* ===== DIAGNOSES ===== */
 function profile(ans,bank){var ax={AGG:0,POS:0,SUP:0,INFO:0,RNG:0,RISK:0};ans.forEach(function(a,q){var s=bank[q].a[a][1];for(var k in s)ax[k]+=s[k];});var mag=0;for(var k in ax)mag+=ax[k]*ax[k];mag=Math.sqrt(mag)||1;var n={};for(var k in ax)n[k]=ax[k]/mag;return n;}
@@ -806,7 +877,7 @@ function pgShare(){share('罰ゲーム抽選で「'+pgCur+'」が出た 🎲',tr
 function lfgBuild(now){var aim=$('rcAim').value,rank=$('rcRank').value,vc=$('rcVc').value,plat=$('rcPlat').value,num=$('rcNum').value,note=$('rcNote').value.trim();var L=[];L.push('【APEX募集'+(num?' '+num:'')+'】');L.push('🎯 目的：'+aim);if(rank&&rank!=='指定なし')L.push('🏆 ランク帯：'+rank);L.push('🎙 VC：'+vc);if(plat&&plat!=='指定なし')L.push('🎮 環境：'+plat);if(now){var d=new Date();var hm=('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2);L.push('🕒 今から（'+hm+'〜）');}else if(note){L.push('🕒 '+note);}L.push('気軽にリプ・DMください！');return L.join('\n');}
 function recruitGen(){var t=lfgBuild(false);$('rcOut').value=t;$('rcResult').style.display='block';lfgSave(t);renderLfgHist();}
 function lfgNow(){var t=lfgBuild(true);$('rcOut').value=t;$('rcResult').style.display='block';lfgSave(t);renderLfgHist();lfgOpenX(t);}
-function lfgOpenX(t){var url=location.href.split('#')[0];window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(t)+'&url='+encodeURIComponent(url)+'&hashtags='+encodeURIComponent('APEX募集,エーペックス募集'),'_blank');}
+function lfgOpenX(t){var url=location.href.split('#')[0];openX('https://twitter.com/intent/tweet?text='+encodeURIComponent(t)+'&url='+encodeURIComponent(url)+'&hashtags='+encodeURIComponent('APEX募集,エーペックス募集'));}
 function lfgGet(){try{var v=localStorage.getItem('apexLfg');return v?JSON.parse(v):[];}catch(e){return [];}}
 function lfgSave(t){try{var a=lfgGet();if(a[0]===t)return;a.unshift(t);if(a.length>10)a=a.slice(0,10);localStorage.setItem('apexLfg',JSON.stringify(a));}catch(e){}}
 function lfgDel(i){try{var a=lfgGet();a.splice(i,1);localStorage.setItem('apexLfg',JSON.stringify(a));}catch(e){}renderLfgHist();}
