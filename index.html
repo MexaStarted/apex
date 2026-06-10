@@ -142,6 +142,11 @@
 .reco{background:#0c111c;border:1px solid var(--line);color:var(--text);border-radius:999px;padding:8px 13px;font-size:12.5px;font-weight:700;cursor:pointer}
 .reco:hover{border-color:var(--cy);color:var(--cy)}
 .reco.shop{border-color:var(--mg);color:var(--mg)}
+.dxguide{margin-top:12px;text-align:left;background:rgba(8,12,22,.6);border:1px solid var(--line);border-radius:11px;padding:12px 13px}
+.dxguide .t{font-weight:900;font-size:13px;margin-bottom:8px;color:var(--cy)}
+.dxguide ol{margin:0 0 8px 18px;padding:0;font-size:12.5px;line-height:1.9}
+.dxguide ol b{color:var(--text)}
+.dxguide .s{font-size:11px;color:var(--sub);line-height:1.7}
 .btmode{display:flex;gap:8px;margin-bottom:12px}
 .btmode button{flex:1;background:#0c111c;border:1px solid var(--line);color:var(--sub);border-radius:10px;padding:10px;font-family:'Chakra Petch';font-weight:700;cursor:pointer}
 .btmode button.on{border-color:var(--cy);color:var(--cy);box-shadow:0 0 14px rgba(25,227,255,.25)}
@@ -707,8 +712,23 @@ function dxInjectBtn(){
  for(var i=0;i<bs.length;i++){var sb=bs[i];if(sb.getAttribute('data-dx'))continue;sb.setAttribute('data-dx','1');
   var oc=sb.getAttribute('onclick')||'';var m=oc.match(/share\('([\s\S]*?)'\s*(?:,\s*(true|false))?\)/);
   var txt=m?m[1]:'';var noask=!!(m&&m[2]==='true');
-  sb.removeAttribute('onclick');sb.textContent='𝕏 画像つきでシェア';
-  (function(t,n){sb.addEventListener('click',function(){dxShare(t,n);});})(txt,noask);
+  sb.removeAttribute('onclick');sb.textContent='🖼️ 画像つきでシェア';
+  (function(t,n,btn){
+   btn.addEventListener('click',function(){dxShare(t,n);});
+   // 画像なしシェア
+   var plain=document.createElement('button');plain.className='btn x';plain.textContent='𝕏 画像なしでシェア';plain.style.marginTop='8px';
+   plain.addEventListener('click',function(){share(t,n);});
+   btn.parentNode.insertBefore(plain,btn.nextSibling);
+   // 手順ガイド
+   var g=document.createElement('div');g.className='dxguide';
+   g.innerHTML='<div class="t">🖼️ 画像つきシェアの手順</div>'
+    +'<ol><li>「🖼️ 画像つきでシェア」を押す</li>'
+    +'<li>画面下に共有メニューが出る</li>'
+    +'<li>一覧から <b>X</b> を選ぶ</li>'
+    +'<li>結果画像が添付された投稿画面が開くので、そのまま<b>ポスト</b>するだけ</li></ol>'
+    +'<div class="s">※共有メニューが出ない端末（PC等）では画像が表示されるので「⬇保存」→Xで画像を添付して投稿。手早く済ませたい場合は「画像なしでシェア」なら1タップで投稿画面が開きます。</div>';
+   plain.parentNode.insertBefore(g,plain.nextSibling);
+  })(txt,noask,sb);
  }
 }
 function dxSetup(){var area=document.getElementById('diagArea');if(!area||area.getAttribute('data-dxobs'))return;area.setAttribute('data-dxobs','1');try{new MutationObserver(dxInjectBtn).observe(area,{childList:true,subtree:true});}catch(e){}dxInjectBtn();}
