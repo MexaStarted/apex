@@ -147,6 +147,33 @@
 .dxguide ol{margin:0 0 8px 18px;padding:0;font-size:12.5px;line-height:1.9}
 .dxguide ol b{color:var(--text)}
 .dxguide .s{font-size:11px;color:var(--sub);line-height:1.7}
+.reddot{position:absolute;top:10px;right:10px;width:11px;height:11px;border-radius:50%;background:var(--down);box-shadow:0 0 9px var(--down);animation:rdp 1.6s infinite}
+@keyframes rdp{50%{transform:scale(1.25)}}
+.sudate{font-family:'Chakra Petch';font-size:12px;color:var(--cy);letter-spacing:.06em;margin:16px 0 8px}
+.surow{display:flex;gap:10px;align-items:flex-start;background:rgba(12,18,30,.6);border:1px solid var(--line);border-radius:11px;padding:11px 12px;margin-bottom:8px}
+.sutag{flex:none;font-size:10px;font-weight:800;border:1px solid;border-radius:6px;padding:3px 7px;margin-top:1px}
+.subody{min-width:0}
+.sut{font-weight:800;font-size:13.5px;margin-bottom:3px}
+.sux{font-size:12px;color:var(--sub);line-height:1.65}
+.richwrap{margin:14px 0 6px;text-align:left}
+.richttl{font-family:'Chakra Petch';font-size:11px;color:var(--cy);letter-spacing:.07em;margin:13px 0 7px}
+.richp{font-size:12.5px;line-height:1.85;color:var(--text);background:rgba(8,12,22,.55);border:1px solid var(--line);border-radius:10px;padding:11px 12px}
+.richp b{color:var(--warn)}
+.richbars{display:flex;flex-direction:column;gap:6px}
+.rb{display:grid;grid-template-columns:96px 1fr 34px;align-items:center;gap:8px}
+.rbl{font-size:11.5px;color:var(--sub);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rbt{height:11px;border-radius:6px;background:#0b1322;border:1px solid var(--line);overflow:hidden;display:block}
+.rbt i{display:block;height:100%;background:linear-gradient(90deg,var(--cy),var(--mg))}
+.rbv{font-family:'Chakra Petch';font-size:11.5px;color:var(--sub);text-align:right}
+.btnrow2{display:flex;gap:8px;margin-top:12px}
+.btnrow2 .btn{flex:1}
+.sharedby{font-size:11px;color:var(--warn);border:1px solid var(--warn);border-radius:999px;display:inline-block;padding:4px 12px;margin-bottom:12px}
+.myrow{display:flex;align-items:center;gap:6px;margin-bottom:7px}
+.mybody{flex:1;min-width:0;background:#0c111c;border:1px solid var(--line);border-radius:9px;padding:9px 12px;cursor:pointer}
+.mybody:hover{border-color:var(--cy)}
+.myt{font-size:13px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mynum{color:var(--warn);font-family:'Chakra Petch'}
+.myd{font-size:10.5px;color:var(--sub);margin-top:2px}
 .btmode{display:flex;gap:8px;margin-bottom:12px}
 .btmode button{flex:1;background:#0c111c;border:1px solid var(--line);color:var(--sub);border-radius:10px;padding:10px;font-family:'Chakra Petch';font-weight:700;cursor:pointer}
 .btmode button.on{border-color:var(--cy);color:var(--cy);box-shadow:0 0 14px rgba(25,227,255,.25)}
@@ -216,16 +243,19 @@
   <!-- ===== HUB ===== -->
   <div id="home">
     <div class="hubgrid">
-      <div class="tile" style="--g:#19e3ff" onclick="open_('map')"><span class="lv">LIVE</span><div class="ic">🗺️</div><div><div class="nm" data-i18n="tile_map_n">マップ</div><div class="ds" data-i18n="tile_map_d">現在/次・残り時間</div></div></div>
-      <div class="tile" style="--g:#ff4d3d" onclick="open_('pred')"><span class="lv">LIVE</span><div class="ic">👑</div><div><div class="nm" data-i18n="tile_pred_n">プレデター</div><div class="ds" data-i18n="tile_pred_d">到達RPボーダー</div></div></div>
-      <div class="tile" style="--g:#22e3a0" onclick="open_('srv')"><span class="lv">LIVE</span><div class="ic">📡</div><div><div class="nm" data-i18n="tile_srv_n">サーバー</div><div class="ds" data-i18n="tile_srv_d">障害・稼働状況</div></div></div>
-      <div class="tile" style="--g:#ff3df2" onclick="open_('find')"><div class="ic">🔍</div><div><div class="nm" data-i18n="tile_find_n">検索</div><div class="ds" data-i18n="tile_find_d">戦績＋やばさ採点</div></div></div>
-      <div class="tile" style="--g:#c062ff" onclick="open_('diag')"><div class="ic">🧪</div><div><div class="nm" data-i18n="tile_diag_n">診断・あそび</div><div class="ds" data-i18n="tile_diag_d">15診断＋あそび</div></div></div>
-      <div class="tile" style="--g:#ffb02e" onclick="open_('shop')"><div class="ic">🛒</div><div><div class="nm" data-i18n="tile_shop_n">商品紹介</div><div class="ds" data-i18n="tile_shop_d">使用デバイス紹介</div></div></div>
-      <div class="tile" style="--g:#39c6ff" onclick="open_('update')"><span class="lv">NEW</span><div class="ic">🆕</div><div><div class="nm" data-i18n="tile_upd_n">アップデート情報</div><div class="ds" data-i18n="tile_upd_d">公式パッチノート集</div></div></div>
-      <div class="tile" style="--g:#c062ff" onclick="open_('recruit')"><div class="ic">📋</div><div><div class="nm" data-i18n="tile_rc_n">募集テンプレ</div><div class="ds" data-i18n="tile_rc_d">募集文＆X投稿</div></div></div>
-      <div class="tile" style="--g:#ff3d5e" onclick="open_('battle')"><span class="lv">NEW</span><div class="ic">⚔️</div><div><div class="nm" data-i18n="tile_bt_n">対決バトル</div><div class="ds" data-i18n="tile_bt_d">やばさで自動対決</div></div></div>
-      <div class="tile" style="--g:#22e3a0" onclick="open_('gear')"><span class="lv">NEW</span><div class="ic">🧰</div><div><div class="nm" data-i18n="tile_gr_n">デバイス選び</div><div class="ds" data-i18n="tile_gr_d">予算別＆初心者ガイド</div></div></div>
+      <div class="tile" data-feat="map" style="--g:#19e3ff" onclick="open_('map')"><span class="lv">LIVE</span><div class="ic">🗺️</div><div><div class="nm" data-i18n="tile_map_n">マップ</div><div class="ds" data-i18n="tile_map_d">現在/次・残り時間</div></div></div>
+      <div class="tile" data-feat="pred" style="--g:#ff4d3d" onclick="open_('pred')"><span class="lv">LIVE</span><div class="ic">👑</div><div><div class="nm" data-i18n="tile_pred_n">プレデター</div><div class="ds" data-i18n="tile_pred_d">到達RPボーダー</div></div></div>
+      <div class="tile" data-feat="srv" style="--g:#22e3a0" onclick="open_('srv')"><span class="lv">LIVE</span><div class="ic">📡</div><div><div class="nm" data-i18n="tile_srv_n">サーバー</div><div class="ds" data-i18n="tile_srv_d">障害・稼働状況</div></div></div>
+      <div class="tile" data-feat="find" style="--g:#ff3df2" onclick="open_('find')"><div class="ic">🔍</div><div><div class="nm" data-i18n="tile_find_n">検索</div><div class="ds" data-i18n="tile_find_d">戦績＋戦闘力採点</div></div></div>
+      <div class="tile" data-feat="diag" style="--g:#c062ff" onclick="open_('diag')"><div class="ic">🧪</div><div><div class="nm" data-i18n="tile_diag_n">診断・あそび</div><div class="ds" data-i18n="tile_diag_d">15診断＋あそび</div></div></div>
+      <div class="tile" data-feat="shop" style="--g:#ffb02e" onclick="open_('shop')"><div class="ic">🛒</div><div><div class="nm" data-i18n="tile_shop_n">商品紹介</div><div class="ds" data-i18n="tile_shop_d">使用デバイス紹介</div></div></div>
+      <div class="tile" data-feat="update" style="--g:#39c6ff" onclick="open_('update')"><span class="lv">NEW</span><div class="ic">🆕</div><div><div class="nm" data-i18n="tile_upd_n">アップデート情報</div><div class="ds" data-i18n="tile_upd_d">公式パッチノート集</div></div></div>
+      <div class="tile" data-feat="recruit" style="--g:#c062ff" onclick="open_('recruit')"><div class="ic">📋</div><div><div class="nm" data-i18n="tile_rc_n">募集テンプレ</div><div class="ds" data-i18n="tile_rc_d">募集文＆X投稿</div></div></div>
+      <div class="tile" data-feat="battle" style="--g:#ff3d5e" onclick="open_('battle')"><span class="lv">NEW</span><div class="ic">⚔️</div><div><div class="nm" data-i18n="tile_bt_n">対決バトル</div><div class="ds" data-i18n="tile_bt_d">戦闘力で自動対決</div></div></div>
+      <div class="tile" data-feat="gear" style="--g:#22e3a0" onclick="open_('gear')"><span class="lv">NEW</span><div class="ic">🧰</div><div><div class="nm" data-i18n="tile_gr_n">デバイス選び</div><div class="ds" data-i18n="tile_gr_d">予算別＆初心者ガイド</div></div></div>
+      <div class="tile" data-feat="siteupd" style="--g:#ffc23d" onclick="open_('siteupd')"><div class="ic">🔔</div><div><div class="nm" data-i18n="tile_su_n">サイト更新情報</div><div class="ds" data-i18n="tile_su_d">新機能・修正のお知らせ</div></div></div>
+      <div class="tile" data-feat="mypage" style="--g:#5dd0ff" onclick="open_('mypage')"><span class="lv">NEW</span><div class="ic">📊</div><div><div class="nm" data-i18n="tile_my_n">マイページ</div><div class="ds" data-i18n="tile_my_d">診断履歴＆再シェア</div></div></div>
+      <div class="tile" data-feat="card" style="--g:#ff3df2" onclick="open_('card')"><span class="lv">NEW</span><div class="ic">🏷️</div><div><div class="nm" data-i18n="tile_cd_n">プレイヤー名刺メーカー</div><div class="ds" data-i18n="tile_cd_d">戦績入りカード画像を作る</div></div></div>
     </div>
     <div class="ad" id="adHome"></div>
     <footer data-i18n-html="footer">データ：<a href="https://apexlegendsstatus.com" target="_blank" rel="noopener">Data from apexlegendsstatus.com</a>（非公式Apex API）。Apex Legends は Electronic Arts / Respawn の商標です。本サイトは非公式のファン制作ツールです。</footer>
@@ -255,8 +285,9 @@
 
   <!-- ===== FIND ===== -->
   <div class="view" id="v-find"><button class="back" data-i18n="back" onclick="home()">← ホーム</button>
-    <div class="caption"><h1 data-i18n="cap_find_h">🔍 プレイヤー検索</h1><span class="d" data-i18n="cap_find_d">戦績を照会＋やばさを自動採点</span></div>
+    <div class="caption"><h1 data-i18n="cap_find_h">🔍 プレイヤー検索</h1><span class="d" data-i18n="cap_find_d">戦績を照会＋戦闘力を自動採点</span></div>
     <div class="searchbar"><input id="pname" data-i18n-ph="find_ph" placeholder="プレイヤー名（PCはOrigin名）" autocomplete="off"><select id="pplat"><option value="PC">PC</option><option value="PS4">PS</option><option value="X1">Xbox</option><option value="SWITCH">Switch</option></select><button onclick="findPlayer()" data-i18n="find_btn">検索</button></div>
+    <div id="findHist" class="lfghist" style="margin:10px 0 4px"></div>
     <div id="findBox"></div>
     <div class="ad adSlot"></div>
   </div>
@@ -284,6 +315,10 @@
       <div class="tile" style="--g:#22e3a0" onclick="openDiag('nl')"><div class="ic">🔮</div><div><div class="nm">本日の野良運</div><div class="ds">今日の味方運を判定</div></div></div>
       <div class="tile" style="--g:#ff3d5e" onclick="openDiag('bg')"><div class="ic">🤬</div><div><div class="nm">暴言遭遇/民度</div><div class="ds">環境の民度を判定</div></div></div>
       <div class="tile" style="--g:#ff6a1f" onclick="openDiag('pg')"><div class="ic">💀</div><div><div class="nm">罰ゲーム抽選</div><div class="ds">負けたら何する？</div></div></div>
+      <div class="tile" style="--g:#ff7a3d" onclick="openDiag('ag')"><span class="lv">NEW</span><div class="ic">🗣️</div><div><div class="nm">煽り加害度診断</div><div class="ds">自分が煽る側？</div></div></div>
+      <div class="tile" style="--g:#9aa7ff" onclick="openDiag('rip')"><span class="lv">NEW</span><div class="ic">🪦</div><div><div class="nm">エペ走馬灯診断</div><div class="ds">死因TOP3を判定</div></div></div>
+      <div class="tile" style="--g:#ffd23d" onclick="openDiag('kk')"><span class="lv">NEW</span><div class="ic">💸</div><div><div class="nm">課金溶かし度診断</div><div class="ds">生涯課金予測額</div></div></div>
+      <div class="tile" style="--g:#22e3a0" onclick="openDiag('bs')"><span class="lv">NEW</span><div class="ic">📦</div><div><div class="nm">物資ルート診断</div><div class="ds">漁りグセでタイプ分け</div></div></div>
     </div>
     <div id="diagArea" style="margin-top:16px"></div>
     <div class="ad adSlot"></div>
@@ -350,6 +385,25 @@
     <div class="gprnote">※ 商品リンクはアフィリエイト広告（PR）を含みます。価格は変動する場合あり。</div>
     <div class="ad adSlot"></div>
   </div>
+  <div class="view" id="v-siteupd"><button class="back" data-i18n="back" onclick="home()">← ホーム</button>
+    <div class="caption"><h1 data-i18n="cap_su_h">🔔 サイト更新情報</h1><span class="d" data-i18n="cap_su_d">APEX激やばツールの新機能・修正まとめ</span></div>
+    <div id="siteupdList"></div>
+    <div class="ad adSlot"></div>
+  </div>
+  <div class="view" id="v-mypage"><button class="back" data-i18n="back" onclick="home()">← ホーム</button>
+    <div class="caption"><h1 data-i18n="cap_my_h">📊 マイページ</h1><span class="d" data-i18n="cap_my_d">自分の診断履歴。タップで再表示、𝕏で再シェア</span></div>
+    <div id="myHist" class="lfghist" style="margin-top:4px"></div>
+    <div class="ad adSlot"></div>
+  </div>
+  <div class="view" id="v-card"><button class="back" data-i18n="back" onclick="home()">← ホーム</button>
+    <div class="caption"><h1 data-i18n="cap_cd_h">🏷️ プレイヤー名刺メーカー</h1><span class="d" data-i18n="cap_cd_d">戦績＆ランク入りの名刺カード画像を生成</span></div>
+    <div class="note" style="margin-bottom:10px">「ID」とは、Apexの<b>ゲーム内で表示される自分の名前</b>（プレイヤー名）のこと。ロビー画面の左上や、戦績画面に出ている名前をそのまま入力してね（大文字・小文字も正確に）。</div>
+    <div class="field"><label>ID（ゲーム内の名前）</label><input id="cdName" placeholder="例：ApexPlayer123"></div>
+    <div class="field"><label>プラットフォーム</label><select id="cdPlat"><option value="PC">PC</option><option value="PS4">PS</option><option value="X1">Xbox</option></select></div>
+    <button class="btn primary" style="width:100%" onclick="cardMake()">🏷️ 名刺を作る</button>
+    <div id="cdOut" style="margin-top:14px"></div>
+    <div class="ad adSlot"></div>
+  </div>
 
 </div>
 <script>
@@ -377,8 +431,8 @@ function esc(s){return String(s).replace(/[<>&]/g,function(c){return{'<':'&lt;',
 var LANG="ja";
 var T={
 ja:{back:"← ホーム",
- tile_map_n:"マップ",tile_map_d:"現在/次・残り時間",tile_pred_n:"プレデター",tile_pred_d:"到達RPボーダー",tile_srv_n:"サーバー",tile_srv_d:"障害・稼働状況",tile_find_n:"検索",tile_find_d:"戦績＋やばさ採点",tile_diag_n:"診断・あそび",tile_diag_d:"15診断＋あそび",
- cap_map_h:"🗺️ マップ",cap_map_d:"現在と次のマップ・残り時間",cap_pred_h:"👑 プレデター",cap_pred_d:"いまプレデターになるのに必要なRP",cap_srv_h:"📡 サーバー状態",cap_srv_d:"Apex公式サーバーの稼働状況",cap_find_h:"🔍 プレイヤー検索",cap_find_d:"戦績を照会＋やばさを自動採点",cap_diag_h:"🧪 診断・あそび",cap_diag_d:"あなたを分析するミニ診断集",diag_jp_note:"",
+ tile_map_n:"マップ",tile_map_d:"現在/次・残り時間",tile_pred_n:"プレデター",tile_pred_d:"到達RPボーダー",tile_srv_n:"サーバー",tile_srv_d:"障害・稼働状況",tile_find_n:"ユーザーのスタッツ検索",tile_find_d:"IDで戦績チェック＆戦闘力採点",tile_diag_n:"診断・あそび",tile_diag_d:"15診断＋あそび",
+ cap_map_h:"🗺️ マップ",cap_map_d:"現在と次のマップ・残り時間",cap_pred_h:"👑 プレデター",cap_pred_d:"いまプレデターになるのに必要なRP",cap_srv_h:"📡 サーバー状態",cap_srv_d:"Apex公式サーバーの稼働状況",cap_find_h:"🔍 ユーザーのスタッツ検索",cap_find_d:"ユーザーのIDを検索してデータをチェックしよう！戦闘力採点もあるぞ！",cap_diag_h:"🧪 診断・あそび",cap_diag_d:"あなたを分析するミニ診断集",diag_jp_note:"",
  find_ph:"プレイヤー名（PCはOrigin名）",find_btn:"検索",
  footer:'データ：<a href="https://apexlegendsstatus.com" target="_blank" rel="noopener">Data from apexlegendsstatus.com</a>（非公式Apex API）。Apex Legends は Electronic Arts / Respawn の商標です。本サイトは非公式のファン制作ツールです。',
  remain:"残り",nodata:"データなし",fail:"取得失敗",searching:"検索中…",
@@ -388,10 +442,10 @@ ja:{back:"← ホーム",
  st_avg:"平均ダメ",st_wr:"勝率",st_lvl:"レベル",st_kills:"総キル",sub_o:"概要",sub_l:"レジェンド別",sub_r:"ランク",online:"オンライン",using:"使用中",
  verd_5:"ガチ勢",verd_4:"そこそこやり込み勢",verd_3:"そこそこ",verd_2:"カジュアル",verd_1:"これからの人",share:"シェア",
  err_name:"名前を入れてね",err_notfound:"見つからない / 取得失敗（名前・機種を確認）",err_fail:"取得失敗（通信エラー）",
- note_trk:"※KD・平均ダメ・勝率は、本人がそのトラッカーを装備している時だけ取得できます（未装備は「—」）。",note_leg:"レジェンド別キルのトラッカー情報がありません（未装備）。",note_rank:"※最高到達ランクはAPIで取得できた場合のみ表示されます。",next_a:"次（",next_b:"）まで",tile_shop_n:"商品紹介",tile_shop_d:"使用デバイス紹介",cap_shop_h:"🛒 商品紹介",cap_shop_d:"プロ・配信者の使用デバイス",shop_pr:"※PR・アフィリエイトリンクを含みます",shop_buy:"チェックする",shop_soon:"準備中",shop_empty:"まだ商品がありません",shop_all:"すべて",shop_loading:"読み込み中…",shop_refresh:"更新",tile_upd_n:"アップデート情報",tile_upd_d:"公式パッチノート集",cap_upd_h:"🆕 アップデート情報まとめ",cap_upd_d:"公式パッチノートへのリンク集",upd_note:"※リンク先はEA公式（英語）ページです。一番上から常に最新のパッチノートが見られます。",tile_rc_n:"募集テンプレ",tile_rc_d:"募集文＆X投稿",cap_rc_h:"📋 募集テンプレ生成",cap_rc_d:"選ぶだけで募集文＆X投稿",tile_bt_n:"対決バトル",tile_bt_d:"やばさで自動対決",cap_bt_h:"⚔️ 対決バトル",cap_bt_d:"2人 or 3vs3で自動バトル",tile_gr_n:"デバイス選び",tile_gr_d:"予算別＆初心者ガイド",cap_gr_h:"🧰 デバイス選び",cap_gr_d:"予算で最適構成／初心者ガイド"},
+ note_trk:"※KD・平均ダメ・勝率は、本人がそのトラッカーを装備している時だけ取得できます（未装備は「—」）。",note_leg:"レジェンド別キルのトラッカー情報がありません（未装備）。",note_rank:"※最高到達ランクはAPIで取得できた場合のみ表示されます。",next_a:"次（",next_b:"）まで",tile_shop_n:"商品紹介",tile_shop_d:"使用デバイス紹介",cap_shop_h:"🛒 商品紹介",cap_shop_d:"プロ・配信者の使用デバイス",shop_pr:"※PR・アフィリエイトリンクを含みます",shop_buy:"チェックする",shop_soon:"準備中",shop_empty:"まだ商品がありません",shop_all:"すべて",shop_loading:"読み込み中…",shop_refresh:"更新",tile_upd_n:"アップデート情報",tile_upd_d:"公式パッチノート集",cap_upd_h:"🆕 アップデート情報まとめ",cap_upd_d:"公式パッチノートへのリンク集",upd_note:"※リンク先はEA公式（英語）ページです。一番上から常に最新のパッチノートが見られます。",tile_rc_n:"募集テンプレ",tile_rc_d:"募集文＆X投稿",cap_rc_h:"📋 募集テンプレ生成",cap_rc_d:"選ぶだけで募集文＆X投稿",tile_bt_n:"対決バトル",tile_bt_d:"戦闘力で自動対決",cap_bt_h:"⚔️ 対決バトル",cap_bt_d:"2人 or 3vs3で自動バトル",tile_gr_n:"デバイス選び",tile_gr_d:"予算別＆初心者ガイド",cap_gr_h:"🧰 デバイス選び",cap_gr_d:"予算で最適構成／初心者ガイド",tile_su_n:"サイト更新情報",tile_su_d:"新機能・修正のお知らせ",cap_su_h:"🔔 サイト更新情報",cap_su_d:"APEX激やばツールの新機能・修正まとめ",tile_my_n:"マイページ",tile_my_d:"診断履歴＆再シェア",cap_my_h:"📊 マイページ",cap_my_d:"自分の診断履歴。タップで再表示、𝕏で再シェア",tile_cd_n:"プレイヤー名刺メーカー",tile_cd_d:"戦績入りカード画像を作る",cap_cd_h:"🏷️ プレイヤー名刺メーカー",cap_cd_d:"戦績＆ランク入りの名刺カード画像を生成"},
 en:{back:"← Home",
- tile_map_n:"Map",tile_map_d:"Current/next & timer",tile_pred_n:"Predator",tile_pred_d:"RP border",tile_srv_n:"Servers",tile_srv_d:"Status & outages",tile_find_n:"Search",tile_find_d:"Stats & score",tile_diag_n:"Quizzes",tile_diag_d:"15 quizzes + games",
- cap_map_h:"🗺️ Map",cap_map_d:"Current & next maps with timers",cap_pred_h:"👑 Predator",cap_pred_d:"RP needed to hit Predator right now",cap_srv_h:"📡 Server Status",cap_srv_d:"Apex official server status",cap_find_h:"🔍 Player Search",cap_find_d:"Look up stats + auto score",cap_diag_h:"🧪 Quizzes & Fun",cap_diag_d:"Mini quizzes that analyze you",diag_jp_note:"Note: the quizzes are in Japanese only.",
+ tile_map_n:"Map",tile_map_d:"Current/next & timer",tile_pred_n:"Predator",tile_pred_d:"RP border",tile_srv_n:"Servers",tile_srv_d:"Status & outages",tile_find_n:"Stats Search",tile_find_d:"Stats & score",tile_diag_n:"Quizzes",tile_diag_d:"15 quizzes + games",
+ cap_map_h:"🗺️ Map",cap_map_d:"Current & next maps with timers",cap_pred_h:"👑 Predator",cap_pred_d:"RP needed to hit Predator right now",cap_srv_h:"📡 Server Status",cap_srv_d:"Apex official server status",cap_find_h:"🔍 Stats Search",cap_find_d:"Look up stats + auto score",cap_diag_h:"🧪 Quizzes & Fun",cap_diag_d:"Mini quizzes that analyze you",diag_jp_note:"Note: the quizzes are in Japanese only.",
  find_ph:"Player name (PC: Origin/EA name)",find_btn:"Search",
  footer:'Data: <a href="https://apexlegendsstatus.com" target="_blank" rel="noopener">apexlegendsstatus.com</a> (unofficial Apex API). Apex Legends is a trademark of Electronic Arts / Respawn. This is an unofficial fan-made tool.',
  remain:"Left",nodata:"No data",fail:"Failed to load",searching:"Searching…",
@@ -401,12 +455,12 @@ en:{back:"← Home",
  st_avg:"Avg dmg",st_wr:"Win%",st_lvl:"Level",st_kills:"Total kills",sub_o:"Overview",sub_l:"By legend",sub_r:"Rank",online:"Online",using:"Using",
  verd_5:"Hardcore",verd_4:"Pretty dedicated",verd_3:"Average",verd_2:"Casual",verd_1:"Just starting",share:"Share",
  err_name:"Enter a name",err_notfound:"Not found / failed (check name & platform)",err_fail:"Failed (network error)",
- note_trk:"KD, avg damage and win rate are only available when the player has those trackers equipped (— if not).",note_leg:"No per-legend kill tracker data (not equipped).",note_rank:"Peak rank shows only when the API returns it.",next_a:"To ",next_b:"",tile_shop_n:"Gear",tile_shop_d:"Pro gear picks",cap_shop_h:"🛒 Gear",cap_shop_d:"Devices pros & streamers use",shop_pr:"Contains affiliate links (PR)",shop_buy:"Check it",shop_soon:"Coming soon",shop_empty:"No items yet",shop_all:"All",shop_loading:"Loading…",shop_refresh:"Refresh",tile_upd_n:"Updates",tile_upd_d:"Official patch notes",cap_upd_h:"🆕 Update Info",cap_upd_d:"Links to official patch notes",upd_note:"Links go to official EA (English) pages. The top link always shows the latest.",tile_rc_n:"LFG Template",tile_rc_d:"Recruit post & X",cap_rc_h:"📋 LFG Template",cap_rc_d:"Build a recruit post & share",tile_bt_n:"Battle",tile_bt_d:"Auto VS battle",cap_bt_h:"⚔️ Versus",cap_bt_d:"1v1 / 3v3 auto battle",tile_gr_n:"Gear Picker",tile_gr_d:"By budget & beginner guide",cap_gr_h:"🧰 Gear Picker",cap_gr_d:"Best setup by budget / beginner guide"}
+ note_trk:"KD, avg damage and win rate are only available when the player has those trackers equipped (— if not).",note_leg:"No per-legend kill tracker data (not equipped).",note_rank:"Peak rank shows only when the API returns it.",next_a:"To ",next_b:"",tile_shop_n:"Gear",tile_shop_d:"Pro gear picks",cap_shop_h:"🛒 Gear",cap_shop_d:"Devices pros & streamers use",shop_pr:"Contains affiliate links (PR)",shop_buy:"Check it",shop_soon:"Coming soon",shop_empty:"No items yet",shop_all:"All",shop_loading:"Loading…",shop_refresh:"Refresh",tile_upd_n:"Updates",tile_upd_d:"Official patch notes",cap_upd_h:"🆕 Update Info",cap_upd_d:"Links to official patch notes",upd_note:"Links go to official EA (English) pages. The top link always shows the latest.",tile_rc_n:"LFG Template",tile_rc_d:"Recruit post & X",cap_rc_h:"📋 LFG Template",cap_rc_d:"Build a recruit post & share",tile_bt_n:"Battle",tile_bt_d:"Auto VS battle",cap_bt_h:"⚔️ Versus",cap_bt_d:"1v1 / 3v3 auto battle",tile_gr_n:"Gear Picker",tile_gr_d:"By budget & beginner guide",cap_gr_h:"🧰 Gear Picker",cap_gr_d:"Best setup by budget / beginner guide",tile_su_n:"Site Updates",tile_su_d:"New features & fixes",cap_su_h:"🔔 Site Updates",cap_su_d:"What is new in this tool",tile_my_n:"My Page",tile_my_d:"Quiz history & reshare",cap_my_h:"📊 My Page",cap_my_d:"Your quiz history",tile_cd_n:"Player Card Maker",tile_cd_d:"Make a stats card image",cap_cd_h:"🏷️ Player Card Maker",cap_cd_d:"Generate a card with your stats"}
 };
 function t(k){var d=T[LANG]||T.ja;return (d[k]!=null?d[k]:(T.ja[k]!=null?T.ja[k]:k));}
 function rankLabel(n){if(LANG==='ja')return n;return ({"ルーキー":"Rookie","ブロンズ":"Bronze","シルバー":"Silver","ゴールド":"Gold","プラチナ":"Platinum","ダイヤ":"Diamond","マスター":"Master"}[n]||n);}
 function mapName(n){return LANG==='en'?(n||'-'):mj(n);}
-function shareScore(sc,v){return LANG==='en'?('Sus score '+sc+'/100 · "'+v+'"'):('やばさ'+sc+'点・適正「'+v+'」だった');}
+function shareScore(sc,v){return LANG==='en'?('Sus score '+sc+'/100 · "'+v+'"'):('戦闘力'+sc+'点・適正「'+v+'」だった');}
 function applyStatic(){
  document.querySelectorAll('[data-i18n]').forEach(function(el){var v=t(el.getAttribute('data-i18n'));if(v!=null)el.textContent=v;});
  document.querySelectorAll('[data-i18n-html]').forEach(function(el){var v=t(el.getAttribute('data-i18n-html'));if(v!=null)el.innerHTML=v;});
@@ -430,6 +484,10 @@ function open_(sec){$('home').style.display='none';document.querySelectorAll('.v
   if(sec==='recruit')renderLfgHist();
   if(sec==='battle')btInit();
   if(sec==='gear')gearInit();
+  if(sec==='siteupd')renderSiteUpd();
+  if(sec==='mypage')renderMyPage();
+  if(sec==='find')renderFindHist();
+  featMark(sec);
   showAdModal();
 }
 
@@ -505,6 +563,7 @@ function ago(iso){var d=new Date(iso),s=Math.floor((Date.now()-d)/1000);if(s<60)
 var RANKTH=[["ルーキー",0],["ブロンズ",1000],["シルバー",3000],["ゴールド",6000],["プラチナ",10000],["ダイヤ",15000],["マスター",21000]];
 function nextRank(rp){for(var i=0;i<RANKTH.length;i++){if(rp<RANKTH[i][1])return {name:RANKTH[i][0],need:RANKTH[i][1]-rp};}return null;}
 function findPlayer(){var name=($('pname').value||'').trim(),plat=$('pplat').value;if(!name){$('findBox').innerHTML='<div class="warnbox">'+t('err_name')+'</div>';return;}
+  fhSave(name,plat);renderFindHist();
   $('findBox').innerHTML='<div class="loading">'+t('searching')+'</div>';
   gas('player','&player='+encodeURIComponent(name)+'&platform='+plat).then(function(d){
     if(!d||d.Error||d.error){$('findBox').innerHTML='<div class="warnbox">'+t('err_notfound')+'</div>';return;}
@@ -570,7 +629,7 @@ function btStart(){if(BT.timer){clearTimeout(BT.timer);BT.timer=null;}
  var plat=$('btPlat').value,cnt=BT.mode===1?2:6,names=[];
  for(var i=0;i<cnt;i++){var el=$('btP'+i);names.push(el?(el.value||'').trim():'');}
  if(names.some(function(x){return !x;})){$('btArena').innerHTML='<div class="warnbox">全員のIGNを入力してね。</div>';return;}
- $('btArena').innerHTML='<div class="loading">対戦相手のやばさを計測中…</div>';
+ $('btArena').innerHTML='<div class="loading">対戦相手の戦闘力を計測中…</div>';
  Promise.all(names.map(function(n){return btFetch(n,plat);})).then(function(res){
   var bad=res.filter(function(r){return !r.ok;});
   if(bad.length){$('btArena').innerHTML='<div class="warnbox">見つからなかった：'+bad.map(function(b){return esc(b.name);}).join(' / ')+'<br>IGN／プラットフォームを確認してね。</div>';return;}
@@ -578,7 +637,7 @@ function btStart(){if(BT.timer){clearTimeout(BT.timer);BT.timer=null;}
   if(BT.mode===1)bt1v1(units[0],units[1]);else bt3v3(units);
  }).catch(function(){$('btArena').innerHTML='<div class="warnbox">取得失敗（API不安定）。時間をおいて再挑戦してね。</div>';});}
 function bt1v1(A,B){A.hp=A.max;B.hp=B.max;BT.fast=false;
- $('btArena').innerHTML='<div class="btarena"><div class="btbars"><div class="side"><div class="btlab"><span class="nm">'+esc(A.name)+'</span><span class="y">やば'+A.score+'</span></div><div class="bthp"><i class="c" id="bthpA" style="width:100%"></i></div></div><div class="btvs">VS</div><div class="side"><div class="btlab" style="flex-direction:row-reverse"><span class="nm">'+esc(B.name)+'</span><span class="y">やば'+B.score+'</span></div><div class="bthp"><i class="m" id="bthpB" style="width:100%"></i></div></div></div><div class="btfield"><div class="btav" id="btavA">'+A.emoji+'</div><div class="btav" id="btavB">'+B.emoji+'</div></div><div class="btlog" id="btlog">バトル開始！ やばさ '+A.score+' vs '+B.score+'</div><div class="btauto"><span id="btstat">● AUTO BATTLE</span><button class="btskip" onclick="btSkip()">結果まで飛ばす</button></div><div id="btend"></div></div>';
+ $('btArena').innerHTML='<div class="btarena"><div class="btbars"><div class="side"><div class="btlab"><span class="nm">'+esc(A.name)+'</span><span class="y">戦闘力'+A.score+'</span></div><div class="bthp"><i class="c" id="bthpA" style="width:100%"></i></div></div><div class="btvs">VS</div><div class="side"><div class="btlab" style="flex-direction:row-reverse"><span class="nm">'+esc(B.name)+'</span><span class="y">戦闘力'+B.score+'</span></div><div class="bthp"><i class="m" id="bthpB" style="width:100%"></i></div></div></div><div class="btfield"><div class="btav" id="btavA">'+A.emoji+'</div><div class="btav" id="btavB">'+B.emoji+'</div></div><div class="btlog" id="btlog">バトル開始！ 戦闘力 '+A.score+' vs '+B.score+'</div><div class="btauto"><span id="btstat">● AUTO BATTLE</span><button class="btskip" onclick="btSkip()">結果まで飛ばす</button></div><div id="btend"></div></div>';
  var turn=(A.score>=B.score)?0:1;
  function step(){var att=turn===0?A:B,def=turn===0?B:A,dk=turn===0?'B':'A';var h=btHit(att);def.hp=Math.max(0,def.hp-h.dmg);
   var bar=$('bthp'+dk);if(bar)bar.style.width=(def.hp/def.max*100)+'%';btFloat('btav'+dk,h.dmg);btShake('btav'+dk);
@@ -587,7 +646,7 @@ function bt1v1(A,B){A.hp=A.max;B.hp=B.max;BT.fast=false;
   turn=turn?0:1;BT.timer=setTimeout(step,BT.fast?70:850);}
  BT.timer=setTimeout(step,700);}
 function btDone1(win,lose){$('btstat').textContent='● 決着';
- BT.shareTxt='対決バトル '+win.emoji+win.name+'(やば'+win.score+') が '+lose.emoji+lose.name+'(やば'+lose.score+') に勝利！';
+ BT.shareTxt='対決バトル '+win.emoji+win.name+'(戦闘力'+win.score+') が '+lose.emoji+lose.name+'(戦闘力'+lose.score+') に勝利！';
  $('btend').innerHTML='<div class="btwin">'+win.emoji+' '+esc(win.name)+' の勝ち！</div><div style="display:flex;gap:8px"><button class="btn x" onclick="btShare()">𝕏 シェア</button><button class="btn primary" onclick="btStart()">もう一回</button></div>';}
 function bt3v3(arr){arr.forEach(function(u){u.hp=u.max;});BT.fast=false;
  var A=[arr[0],arr[1],arr[2]],B=[arr[3],arr[4],arr[5]];
@@ -596,7 +655,7 @@ function bt3v3(arr){arr.forEach(function(u){u.hp=u.max;});BT.fast=false;
  function tot(t){var s=0,m=0,sc=0;t.forEach(function(u){s+=u.hp;m+=u.max;sc+=u.score;});return {hp:s,max:m,sc:sc};}
  function row(team,cls){return team.map(function(u){return '<div class="btu" id="'+u.id+'"><div class="f">'+u.emoji+'</div><div class="n">'+esc(u.name)+'</div><div class="bthp"><i class="'+cls+'" id="hp'+u.id+'" style="width:100%"></i></div></div>';}).join('');}
  var tA=tot(A),tB=tot(B);
- $('btArena').innerHTML='<div class="btarena"><div class="btteam"><div class="bttl"><span>TEAM 相手</span><span class="tt">合計やば '+tB.sc+'</span></div><div class="bthp" style="margin-bottom:9px"><i class="m" id="thpB" style="width:100%"></i></div><div class="btrow">'+row(B,'m')+'</div></div><div style="text-align:center;margin:8px 0"><span class="btvs" style="display:inline-flex">VS</span></div><div class="btteam"><div class="bttl"><span>TEAM あなた</span><span class="tt">合計やば '+tA.sc+'</span></div><div class="bthp" style="margin-bottom:9px"><i class="c" id="thpA" style="width:100%"></i></div><div class="btrow">'+row(A,'c')+'</div></div><div class="btlog" id="btlog">チーム戦 開始！</div><div class="btauto"><span id="btstat">● AUTO BATTLE</span><button class="btskip" onclick="btSkip()">結果まで飛ばす</button></div><div id="btend"></div></div>';
+ $('btArena').innerHTML='<div class="btarena"><div class="btteam"><div class="bttl"><span>TEAM 相手</span><span class="tt">合計戦闘力 '+tB.sc+'</span></div><div class="bthp" style="margin-bottom:9px"><i class="m" id="thpB" style="width:100%"></i></div><div class="btrow">'+row(B,'m')+'</div></div><div style="text-align:center;margin:8px 0"><span class="btvs" style="display:inline-flex">VS</span></div><div class="btteam"><div class="bttl"><span>TEAM あなた</span><span class="tt">合計戦闘力 '+tA.sc+'</span></div><div class="bthp" style="margin-bottom:9px"><i class="c" id="thpA" style="width:100%"></i></div><div class="btrow">'+row(A,'c')+'</div></div><div class="btlog" id="btlog">チーム戦 開始！</div><div class="btauto"><span id="btstat">● AUTO BATTLE</span><button class="btskip" onclick="btSkip()">結果まで飛ばす</button></div><div id="btend"></div></div>';
  var turn=(tA.sc>=tB.sc)?'A':'B';
  function alive(t){return t.filter(function(u){return u.hp>0;});}
  function refresh(t,tk){var s=tot(t);var bar=$('thp'+tk);if(bar)bar.style.width=(s.hp/s.max*100)+'%';}
@@ -696,7 +755,7 @@ function dxShow(durl){
  row.appendChild(dlb);row.appendChild(cl);ov.appendChild(im);ov.appendChild(cap);ov.appendChild(row);document.body.appendChild(ov);
 }
 function dxShare(text,noask){
- var url=location.href.split('#')[0];
+ var url=location.href.split('#')[0].split('?')[0]+(DIAG_R?'?r='+DIAG_R:'');
  var full='【APEX激やばツール】'+(text||'診断やってみた')+(noask?'':' あなたは？')+'\n'+url+'\n#APEX激やばツール';
  var canvas=null;try{canvas=dxRender();}catch(e){}
  if(canvas){try{var o=dxFile(canvas);
@@ -713,7 +772,7 @@ function dxInjectBtn(){
   var oc=sb.getAttribute('onclick')||'';var m=oc.match(/share\('([\s\S]*?)'\s*(?:,\s*(true|false))?\)/);
   if(!m)continue;
   var txt=m[1];var noask=(m[2]==='true');
-  sb.removeAttribute('onclick');sb.textContent='🖼️ 画像つきでシェア';
+  sb.removeAttribute('onclick');sb.setAttribute('data-sharetxt',txt);sb.textContent='🖼️ 画像つきでシェア';
   (function(t,n,btn){
    btn.addEventListener('click',function(){dxShare(t,n);});
    // 画像なしシェア
@@ -731,9 +790,28 @@ function dxInjectBtn(){
    plain.parentNode.insertBefore(g,plain.nextSibling);
   })(txt,noask,sb);
  }
+ try{dxRichTail(area);}catch(e){}
 }
 function dxSetup(){var area=document.getElementById('diagArea');if(!area||area.getAttribute('data-dxobs'))return;area.setAttribute('data-dxobs','1');try{new MutationObserver(dxInjectBtn).observe(area,{childList:true,subtree:true});}catch(e){}dxInjectBtn();}
 dxSetup();document.addEventListener('DOMContentLoaded',dxSetup);
+document.addEventListener('DOMContentLoaded',refreshDots);setTimeout(function(){try{refreshDots();}catch(e){}},0);
+function restoreFromUrl(){
+ try{
+  var r=new URLSearchParams(location.search).get('r');if(!r)return;
+  var m=r.match(/^([a-z]{2})(\d{1,3})$/);if(!m)return;
+  var code=m[1],pct=Math.max(0,Math.min(100,Number(m[2])));
+  if(!BANDF[code])return;
+  var band=BANDF[code](pct);
+  var num=code==='iq'?(70+Math.round(pct*0.9)):pct;
+  var suf=code==='iq'?'IQ':code==='kk'?'/100':'/100';
+  open_('diag');
+  DIAG_R=code+pct;
+  $('diagArea').innerHTML='<div class="res"><div class="sharedby">🔗 シェアされた診断結果</div><div class="gauge" style="--p:'+pct+'%"><div class="in"><div class="n mono">'+num+'</div><div class="o">'+suf+'</div></div></div><div class="tn">'+band.n+'</div><div class="desc">'+band.d+'</div>'+richBlockG(code,pct,band)+'<button class="btn primary" onclick="openDiag(\''+code+'\')">自分も診断してみる</button>'+recoBlock(code)+'</div>';
+  $('diagArea').scrollIntoView();
+ }catch(e){}
+}
+
+document.addEventListener('DOMContentLoaded',restoreFromUrl);setTimeout(function(){try{restoreFromUrl();}catch(e){}},0);
 
 /* ===== アクセス解析（匿名・1訪問1送信） ===== */
 (function(){
@@ -759,6 +837,620 @@ dxSetup();document.addEventListener('DOMContentLoaded',dxSetup);
  document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden')send();});
 })();
 
+/* ===== サイト更新情報＆赤丸通知 ===== */
+var SITEUPD=[
+ {d:'2026-06-12',tag:'new',f:'diag',t:'新診断を30個一挙追加',x:'クラッチ耐性・引退詐欺・感度迷子・用語汚染度など、別ベクトルの診断30種が登場'},
+ {d:'2026-06-12',tag:'new',f:'find',t:'スタッツ検索に履歴機能',x:'検索した名前を保存。タップでワンタップ再検索できる'},
+ {d:'2026-06-11',tag:'new',f:'diag',t:'新診断4つ追加',x:'煽り加害度/エペ走馬灯/課金溶かし度/物資ルートの4診断が登場'},
+ {d:'2026-06-11',tag:'new',f:'mypage',t:'マイページ追加',x:'自分の診断結果の履歴を保存。あとからワンタップで再シェアできる'},
+ {d:'2026-06-11',tag:'new',f:'card',t:'プレイヤー名刺メーカー追加',x:'ID（ゲーム内の名前）から戦績入りの名刺カード画像を作れる'},
+ {d:'2026-06-11',tag:'kai',f:'diag',t:'診断結果を大幅パワーアップ',x:'全診断の結果に詳細解説＋数値の内訳を追加。結果URLの共有にも対応'},
+ {d:'2026-06-11',tag:'kai',f:'',t:'「やばさ」を「戦闘力」に統一',x:'サイト内の採点の呼び方を戦闘力に統一した'},
+ {d:'2026-06-11',tag:'fix',f:'diag',t:'診断が固まる不具合を修正',x:'最後の質問で動かなくなる問題を直した'},
+ {d:'2026-06-11',tag:'kai',f:'diag',t:'シェアが画像つきに',x:'診断結果を画像つきでXにシェアできるようになった（画像なしも選べる）'},
+ {d:'2026-06-10',tag:'new',f:'battle',t:'対決バトル登場',x:'2人の戦闘力でポケモン風自動バトル。3vs3のチーム戦も'},
+ {d:'2026-06-10',tag:'new',f:'gear',t:'デバイス選び追加',x:'予算別おすすめ構成＆初心者セットアップガイド'},
+ {d:'2026-06-10',tag:'add',f:'shop',t:'マウス14種を追加',x:'Logicool/Razerなどゲーミングマウス＆マウスパッドをショップに追加（全55点に）'},
+ {d:'2026-06-09',tag:'new',f:'recruit',t:'募集テンプレ強化',x:'履歴からワンタップ再投稿＆「⚡今から募集」即X投稿ボタン'},
+ {d:'2026-06-09',tag:'new',f:'diag',t:'診断3つ＋罰ゲーム抽選',x:'味方ガチャ/本日の野良運/民度診断/罰ゲーム抽選を追加'}
+];
+var UPDTAG={new:['新機能','#19e3ff'],add:['追加','#22e3a0'],fix:['修正','#ffc23d'],kai:['改修','#ff3df2']};
+function featSeen(){try{return JSON.parse(localStorage.getItem('apexFeatSeen')||'{}');}catch(e){return {};}}
+function featMark(sec){try{var m=featSeen();m[sec]=new Date().toISOString().slice(0,10);localStorage.setItem('apexFeatSeen',JSON.stringify(m));}catch(e){}refreshDots();}
+function featLatest(){var m={};SITEUPD.forEach(function(u){if(u.f&&(!m[u.f]||u.d>m[u.f]))m[u.f]=u.d;});return m;}
+function refreshDots(){
+ var seen=featSeen(),latest=featLatest();
+ document.querySelectorAll('.tile[data-feat]').forEach(function(t){
+  var f=t.getAttribute('data-feat');
+  var dot=t.querySelector('.reddot');
+  var has=latest[f]&&(!seen[f]||latest[f]>seen[f]);
+  if(f==='siteupd'){var su=seen['siteupd'];has=SITEUPD.length&&(!su||SITEUPD[0].d>su);}
+  if(has&&!dot){var d=document.createElement('span');d.className='reddot';t.appendChild(d);}
+  if(!has&&dot)dot.remove();
+ });
+}
+function renderSiteUpd(){
+ var box=$('siteupdList');if(!box)return;
+ var byDate={};SITEUPD.forEach(function(u){(byDate[u.d]=byDate[u.d]||[]).push(u);});
+ var dates=Object.keys(byDate).sort().reverse();
+ box.innerHTML=dates.map(function(d){
+  return '<div class="sudate">'+d+'</div>'+byDate[d].map(function(u){var tg=UPDTAG[u.tag]||['情報','#7e8db0'];
+   return '<div class="surow"><span class="sutag" style="color:'+tg[1]+';border-color:'+tg[1]+'">'+tg[0]+'</span><div class="subody"><div class="sut">'+u.t+'</div><div class="sux">'+u.x+'</div></div></div>';}).join('');
+ }).join('');
+}
+
+/* ===== リッチ結果エンジン（詳細解説/数値内訳/履歴/URL共有） ===== */
+var DIAG_R='';
+var RICHCAT={mt:['スルー力','切替の早さ','自己コントロール'],iq:['判断力','位置取り','引き際'],mg:['連携','蘇生・支援','コミュ力'],nl:['味方の質','連携の噛み合い','試合運'],bg:['遭遇頻度の低さ','環境の健全さ','自衛スキル'],sp:['単独力','協調性','柔軟さ'],ag:['冷静さ','言葉選び','尊重マインド'],kk:['誘惑耐性','財布のガード','計画性'],sh:['攻め気質','立ち回り','チーム貢献'],ng:['プレイ傾向','相性','適応力'],ub:['攻め適性','支援適性','索敵適性'],tr:['安定行動','協調行動','責任感'],ga:['プレイ歴','熱量','知識'],du:['呼吸の合い方','補完関係','信頼度'],ts:['撃ち合い','継続力','実績']};
+var RICHTX={
+ mt:{hi:'煽りチャットも連敗も、あなたの中では「ただのノイズ」。感情とプレイを切り離せるのは才能で、長時間のランク戦でも判断の質が落ちにくいタイプ。チームに1人いると空気が安定する、いわば精神的アンカー。強いて言えば、我慢しすぎて不満を溜め込む癖だけ注意。限界が来る前に休憩を挟めば、この鋼メンタルはずっと武器になる。',md:'多少の煽りや事故では崩れないが、連敗が続いたり理不尽キルが重なると、じわじわプレイが雑になっていくタイプ。本人は「冷静なつもり」でも、デスログを見返すと無理凸が増えているはず。崩れる前兆（ため息・前のめり・無言化）を自覚して、2連敗したら1回休む——これだけで勝率は目に見えて変わる。',lo:'感情がそのまま手元に出るタイプ。煽られた直後の1戦は、いつもより明らかに判断が荒れている。これは性格の欠陥ではなく「感受性が高い」だけで、対策すれば一番伸びしろがある層。まずVCとチャットのミュートを標準装備に。そして「イラッとしたらその試合は順位だけ狙う」とルール化すると、ティルト被害を最小化できる。'},
+ iq:{hi:'撃ち合いの強さに頼らず、位置・タイミング・引き際で勝ち筋を作れる頭脳派。漁夫の入り方や安置読みなど「戦う前の準備」で差をつけるタイプで、エイムが平凡でも順位が安定するのはこの力のおかげ。あとは判断の言語化（なぜそう動いたか）を意識すると、IGLとしてチームを勝たせる側に回れる。',md:'基本の判断はできているが、「なんとなく」で動いている場面がまだ多いタイプ。特に交戦開始の判断と撤退の判断、この2つの精度を上げるだけで戦績は大きく変わる。試合後に「あのファイト、入るべきだったか？」を1日1回だけ振り返る習慣をつけると、判断が言語化されて一段上に行ける。',lo:'勢いと勘で戦うフィジカル派。それ自体は悪くないが、「なぜ死んだか説明できないデス」が多いうちは、同じ負け方を繰り返してしまう。まずは安置内の高所を取る・体力満タン以外で凸らない・漁夫が来る前提で30秒で終わらせる、の3つだけ意識してみて。判断は知識なので、今からいくらでも伸びる。'},
+ mg:{hi:'蘇生・カバー・声かけが自然にできる、誰もが引き当てたい「当たり野良」。あなたが入ったパーティは事故率が下がり、味方の戦闘力まで引き上がる。マッチングは運だが、あなた自身が「味方の当たり枠」である事実は変わらない。自信を持って、そのプレイを続けてほしい。',md:'基本はできているが、日によってムラがあるタイプ。調子がいい日は神野良、悪い日は無言の置物——心当たりがあるはず。安定して「当たり」側に入るコツは、調子が悪い日ほどピンと蘇生だけは絶対にサボらないこと。撃ち合い以外の貢献は、調子に左右されないから。',lo:'正直に言うと、味方からは「地雷寄り」に見られている可能性がある。でも安心してほしい、地雷の9割は技術ではなく行動の問題。①ピンを押す②勝手に降りない③ダウンしたら状況を伝える——この3つを守るだけで、評価は今日から変わる。伸びしろしかない。'},
+ nl:{hi:'今日のあなたのロビーは当たり日。連携が噛み合い、蘇生が間に合い、漁夫のタイミングまで揃う——こういう日は単純にチャンス。ランクを回すなら今日のうちに盛っておくのが正解。ただし運は有限。3連敗し始めたら、当たり時間帯は終わったと判断して撤退する勇気も大事。',md:'可もなく不可もない平常運転の日。味方ガチャに期待しすぎず、自分がキャリーする前提で立ち回るのが正解。こういう日は、味方依存の構成（援護前提のレジェンド）より、自走できるピックのほうが安定する。',lo:'今日は…そういう日。即抜け、無言凸、棒立ち——役満が揃う日は誰にでもある。大事なのは「今日は野良運が悪い」と認めて深追いしないこと。RPを溶かす前にカジュアルで遊ぶか、いっそ休むのが一番の勝ち筋。明日のロビーは別物だから。'},
+ bg:{hi:'あなたの遭遇している環境はかなり平和。これは運だけでなく、あなた自身が煽りを誘発しない立ち回り（即ピン・即蘇生・無言でも誠実）をしているからでもある。この環境を保つコツは、たまに変なのに当たっても「環境が悪い」と一般化しないこと。',md:'たまに荒れた試合に当たる、ごく平均的な環境。気をつけたいのは、嫌な体験ほど記憶に残るので「最近民度悪いな」と感じやすいこと。実際は10戦中8戦は普通。ミュート機能を覚えておけば、残り2戦も無傷で済む。',lo:'暴言・煽り遭遇率が高めの魔境を生きている。まず大前提として、暴言を吐く側が100%悪い。あなたが対策すべきは心を守る技術だけ：①開幕VCミュートを標準に②チャットは必要時のみ表示③ひどいものは即通報。「言い返して勝つ」より「聞こえない」が最強。'},
+ sp:{hi:'',md:'',lo:''},
+ ag:{hi:'味方がどれだけやらかしても、責める言葉が出ない聖人クラス。あなたの「ドンマイ」「次いこ」で救われている野良が確実にいる。煽り加害度はほぼゼロ——このままでいてほしい。唯一の注意は、我慢を溜めて爆発するパターン。不満は攻撃ではなく提案の形（「次は固まって動こう」）で出せると完璧。',md:'普段は普通だが、連敗時や明らかな地雷に当たった時、ピン連打や強めの言葉がポロッと出るタイプ。本人は指摘のつもりでも、受け手には煽りに聞こえていることがある。怒りが湧いたら「それを言って試合に勝てるか？」と1秒だけ考える癖を。勝てないなら飲み込むのが強い人。',lo:'はっきり言うと、あなたは煽る側に立っている。心当たりのあるピン連打、煽りエモート、戦犯探しチャット——それ、全部相手のメンタルを削って自チームの勝率も下げている。今日からできる対策：①怒りを感じたらVC/チャットを閉じる②指摘は試合後ではなく次の行動の提案で③どうしても無理ならソロモードへ。強い言葉よりも強いプレイで黙らせよう。'},
+ kk:{hi:'スパレジェンドもコレクションイベントも、あなたの財布のガードは破れない。「欲しい」と「買う」の間に冷却期間を置ける、課金コントロールの達人。ゲームへの愛と支出管理が両立できているのは立派。たまのバトルパス程度なら、それは浪費ではなく娯楽費。健全そのもの。',md:'普段は我慢できるのに、限定スキンや推しレジェンドのイベントになると財布が緩むタイプ。「今逃すと二度と手に入らない」が最大の弱点ワード。対策は月の課金上限を先に決めて、超える分は来月の枠から前借りする方式にすること。割れない上限が一つあるだけで、生涯課金額は大きく変わる。',lo:'スパレジェンド検定、合格おめでとう…と言いたいところだが、その調子だと生涯課金額はかなりのものになる。ガチャ的な高揚感が習慣になっている可能性が高い。①課金は必ず翌日に持ち越して判断②金額を時給に換算してみる③「天井までいくら」を先に計算——それでも欲しいなら、それはもう趣味。ただし生活費だけは絶対に守ること。'}
+};
+var BANDF={
+ mt:function(p){return p>=85?{n:"鋼のメンタル 🛡️",d:"煽りも連敗も完全スルー。何があってもプレイが乱れない超安定型。長時間でも崩れない。"}:p>=65?{n:"安定メンタル",d:"多少のことでは動じない。切り替えが早く、波が来てもすぐ立て直せる。"}:p>=45?{n:"普通メンタル",d:"人並みの耐性。調子の波はあるけど、休憩を挟めば持ち直せる。"}:p>=25?{n:"ややティルト気味",d:"イラッとがプレイに出やすいタイプ。深呼吸と短い休憩が効く。"}:{n:"豆腐メンタル 🥲",d:"煽り・連敗でガタガタになりがち。ミュート機能と休憩を全力で活用しよう。"};},
+ mg:function(p){return p>=85?{n:"神野良 👑",d:"誰もが引き当てたい当たり枠。連携・蘇生・声かけ完璧で、味方が一気に勝ちやすくなる。"}:p>=65?{n:"良野良",d:"安定して頼れる味方。基本がしっかりしてて、一緒にいて安心できるタイプ。"}:p>=45?{n:"普通野良",d:"可もなく不可もなく。連携の一歩で当たりに化ける伸びしろあり。"}:p>=25?{n:"不安定野良",d:"日によってムラあり。先走り・無言を減らすとグッと当たりに近づく。"}:{n:"地雷野良 💣",d:"正直、引いたら覚悟がいる枠…。まずは基本の3つから始めよう。"};},
+ nl:function(p){return p>=85?{n:"野良運MAX 🍀",d:"神引きの嵐。今日の味方は当たりだらけ。ランク回すなら今日がチャンス。"}:p>=65?{n:"野良運◎",d:"いい味方に恵まれた一日。連携も決まって気持ちよく回せたはず。"}:p>=45?{n:"野良運 ふつう",d:"可もなく不可もなく。良い時も悪い時もある平常運転。"}:p>=25?{n:"野良運▼",d:"ハズレ寄りの一日…。深追いせず、堅実な立ち回りで耐えよう。"}:{n:"野良運 大凶 💀",d:"地雷祭り…今日はそういう日。一回休憩して出直すのが吉。"};},
+ bg:function(p){return p>=85?{n:"平和な民度 😇",d:"暴言ほぼ無縁の平和な環境。いい味方に恵まれてる。"}:p>=65?{n:"良好な民度",d:"たまにある程度で、概ね健全に回せている。"}:p>=45?{n:"普通の民度",d:"良くも悪くも普通。煽りに当たる日もある。"}:p>=25?{n:"ややギスギス",d:"暴言・煽りに遭遇しがち。ミュートを活用しよう。"}:{n:"魔境 👿",d:"暴言まみれの魔境…。ミュート＆通報を全力活用して、メンタルは自衛を最優先で。"};},
+ iq:function(p){var iq=70+Math.round(p*0.9);return iq>=150?{n:"戦術IQ 神域",d:"状況判断・位置取り・引き際まで完璧。脳でも勝てるタイプ。"}:iq>=130?{n:"戦術IQ 高い",d:"理にかなった判断が多い。撃ち合い以外でも差をつけられる。"}:iq>=110?{n:"戦術IQ やや高め",d:"基本はしっかり。あと一歩の判断力で化ける。"}:iq>=90?{n:"戦術IQ 標準",d:"悪くない。漁夫・引き際の練習で伸びしろ大。"}:{n:"戦術IQ 伸びしろ",d:"勢い任せになりがち。安置と位置取りを意識すると激変する。"};},
+ ag:function(p){return p>=85?{n:"聖人プレイヤー 😇",d:"何があっても味方を責めない。あなたの存在がロビーの平和。"}:p>=65?{n:"紳士・淑女",d:"基本は穏やか。たまの不満も飲み込める大人の対応。"}:p>=45?{n:"普通（時々イラッ）",d:"普段は平和。でも限界を超えるとピンが強くなる日も。"}:p>=25?{n:"プチ加害者 😤",d:"ピン連打・強い言葉がたまに出てる。受け手は煽りと感じてるかも。"}:{n:"煽り加害者 👹",d:"自覚アリでしょ…。その一言、チームの勝率を下げてる。今日から変わろう。"};},
+ kk:function(p){return p>=85?{n:"鉄の財布 🔒",d:"限定スキンの誘惑を完全シャットアウト。課金コントロールの鬼。"}:p>=65?{n:"堅実課金",d:"バトルパス程度の健全な楽しみ方。バランス感覚◎。"}:p>=45?{n:"ときどき爆発",d:"普段は我慢、推しイベントで財布が開くタイプ。"}:p>=25?{n:"スパレジェ予備軍 💸",d:"「限定」に弱い。気づけばポイント購入画面にいる。"}:{n:"課金沼の住人 🕳️",d:"スパレジェ全部見せて？…生涯課金額、ちゃんと計算しよう。"};}
+};
+function richSub(code){
+ var pairs={mt:[window.scqA,window.scqBank],iq:[window.scqA,window.scqBank],mg:[window.scqA,window.scqBank],nl:[window.scqA,window.scqBank],bg:[window.scqA,window.scqBank],sp:[window.scqA,window.scqBank],ag:[window.scqA,window.scqBank],kk:[window.scqA,window.scqBank],sh:[window.shA,window.SHQ],ng:[window.ngA,window.NGQ],ub:[window.ubA,window.UBQ],tr:[window.trA,window.TRQ],ga:[window.gaA,window.GAQ]};
+ var pr=pairs[code];if(!pr||!pr[0]||!pr[1])return null;
+ var a=pr[0],b=pr[1];if(a.length!==b.length||a.some(function(x){return x==null;}))return null;
+ function seg(s,e){var t=0,n=0;for(var i=s;i<e;i++){var L=(b[i].a||[]).length-1;if(L>0){t+=1-(a[i]/L);n++;}}return n?Math.round(t/n*100):50;}
+ var th=Math.ceil(a.length/3);
+ return [seg(0,th),seg(th,th*2),seg(th*2,a.length)];
+}
+function richBlockG(code,pct,band){
+ var cats=RICHCAT[code]||['要素1','要素2','要素3'];
+ var subs=richSub(code);
+ var tx=(RICHTX[code]||{});var t=pct>=65?tx.hi:pct>=40?tx.md:tx.lo;
+ var pctile=Math.max(1,Math.min(99,100-pct+ (pct>=50?-3:3) ));
+ var H='<div class="richwrap">';
+ if(subs){H+='<div class="richttl">📊 内訳スコア</div><div class="richbars">'+subs.map(function(v,i){return '<div class="rb"><span class="rbl">'+cats[i]+'</span><span class="rbt"><i style="width:'+v+'%"></i></span><span class="rbv">'+v+'</span></div>';}).join('')+'</div>';}
+ H+='<div class="richttl">🏅 位置づけ</div><div class="richp">推定で全プレイヤーの<b>上位'+(pct>=50?(100-pctile):pctile)+'%</b>あたり'+(pct>=65?'。かなり上澄みの結果。':pct>=40?'。ちょうどボリュームゾーン。':'。伸びしろは全プレイヤー中トップクラス。')+'</div>';
+ if(!t){t='今回の結果「'+band.n+'」は、'+cats[0]+'・'+cats[1]+'・'+cats[2]+'の3軸であなたの回答を数値化した総合判定。スコア'+pct+'点は'+(pct>=65?'かなり高水準で、この領域はすでにあなたの武器になっている。自覚がなかったなら、それは「自然にできてしまっている」ということ。意識して使えばさらに伸びる':pct>=40?'平均圏内。大崩れはしないが、突き抜けてもいない伸びしろゾーン。3軸のうち一番低い項目を1〜2週間だけ意識して過ごすと、体感できるレベルで変化が出るはず':'伸びしろの塊ゾーン。逆に言えば、ここを少し改善するだけで誰よりも変化を実感できる位置にいる。診断結果は「今のクセ」を映しただけで、固定された性質ではない')+'。同じ診断を時間を置いてもう一度やると、数値の変化＝自分の変化が見えるので、結果をシェアやマイページに残しておくのがおすすめ。フレンドと結果を見せ合えば、お互いのプレイスタイル理解が深まって、パーティの役割分担の話も盛り上がる。';}
+ H+='<div class="richttl">🔎 詳細解説</div><div class="richp">'+t+'</div>';
+ H+='<div class="richttl">✅ 次にやること</div><div class="richp">'+(pct>=65?'①この強みを活かせる役割（'+cats[0]+'系）を担う ②結果をシェアして仲間に布教 ③他の診断で別の側面も見る':pct>=40?'①一番低かった「'+(subs?cats[subs.indexOf(Math.min.apply(null,subs))]:cats[2])+'」を1週間だけ意識 ②もう一度診断して変化を確認 ③関連診断で原因を深掘り':'①今日の1戦だけ、診断で出た弱点を意識してプレイ ②変化があったら再診断 ③結果をシェアして宣言すると続きやすい')+'</div>';
+ H+='<div class="btnrow2"><button class="btn" onclick="copyResUrl()">🔗 結果リンクをコピー</button></div></div>';
+ return H;
+}
+function copyResUrl(){if(!DIAG_R)return;var u=location.href.split('#')[0].split('?')[0]+'?r='+DIAG_R;
+ try{navigator.clipboard.writeText(u).then(function(){alert('結果リンクをコピーした！Xやフレンドに貼ると、相手にも同じ結果画面が表示される');});}catch(e){prompt('このURLをコピー',u);}}
+function diagHistGet(){try{return JSON.parse(localStorage.getItem('apexDiagHist')||'[]');}catch(e){return [];}}
+function diagHistSave(rec){try{var a=diagHistGet();a.unshift(rec);if(a.length>30)a=a.slice(0,30);localStorage.setItem('apexDiagHist',JSON.stringify(a));}catch(e){}}
+
+/* ===== 新診断: 煽り加害度(ag) / 課金溶かし度(kk) / エペ走馬灯(rip) / 物資ルート(bs) ===== */
+var AGQ=[
+{q:"味方が初動で即ダウンした。",a:[["ドンマイ！と声かけ",2],["無言でカバー",1],["心の中で舌打ち",0],["ピンを強めに鳴らす",-1]]},
+{q:"明らかな戦犯ムーブを見た時",a:[["次どうするか提案する",2],["何も言わない",1],["ため息が漏れる",0],["チャットで指摘する",-2]]},
+{q:"煽りエモート、使う？",a:[["使わない",2],["フレンド相手のネタだけ",1],["倒したら基本やる",-2]]},
+{q:"ピン連打、したことある？",a:[["ない",2],["緊急時だけ",1],["イラついた時つい",-2]]},
+{q:"負け試合のチャット欄",a:[["GG・お疲れ系",2],["無言",1],["戦犯探しが始まる",-2]]},
+{q:"味方が物資を先に取った",a:[["どうぞどうぞ",2],["まあいいか",1],["わざと目の前で漁り返す",-1],["ピンで抗議",-2]]},
+{q:"自分が倒した相手に",a:[["何もしない",2],["フィニッシャーだけ",0],["屈伸・射撃を入れる",-2]]},
+{q:"VCで強い口調になること",a:[["まず無い",2],["接戦の興奮でたまに",0],["割とある",-2]]},
+{q:"下手な味方への本音",a:[["昔の自分を見てるよう",2],["何も思わない",1],["正直イライラする",-1],["晒したくなる",-2]]},
+{q:"敵に煽られたら",a:[["スルー",2],["プレイで返す",1],["倍にして煽り返す",-2]]},
+{q:"連敗中の自分",a:[["休憩する",2],["静かになる",0],["口と指が荒れる",-2]]},
+{q:"味方のせいで負けた（と思う）試合後",a:[["切り替えて次",2],["少し引きずる",0],["リザルトでポイント晒す",-2]]}];
+function agStart(){scqRun(AGQ,function(a,b){var p=scqPct(a,b);var band=BANDF.ag(p);$('diagArea').innerHTML=gaugeRes(p,p,'/100',band,'TOXIC METER','煽り加害度診断の結果は「'+band.n+'」（紳士度'+p+'%）だった','ag');});}
+var KKQ=[
+{q:"限定スキンの「残り24時間」表示",a:[["何とも思わない",2],["一応見るだけ",1],["心拍数が上がる",-1],["もう買ってる",-2]]},
+{q:"スパレジェンドの存在",a:[["買う発想がない",2],["1体だけ妥協した",0],["数体いる",-1],["コンプ目標",-2]]},
+{q:"コレクションイベント開催",a:[["スルー",2],["無料分だけ",1],["数パック買う",-1],["スイクン（全部）まで",-2]]},
+{q:"課金の決済方法",a:[["都度チャージで上限管理",2],["残高ある分だけ",1],["クレカ紐付けで即購入",-2]]},
+{q:"推しレジェンドの新スキン",a:[["性能変わらないし",2],["セールなら",0],["推しは別腹",-2]]},
+{q:"バトルパス",a:[["買わない",1],["毎シーズン買う（回収できる）",2],["レベルスキップも買う",-2]]},
+{q:"「天井まであと◯◯円」と考えたこと",a:[["ない",2],["計算したことある",-1],["天井経験者",-2]]},
+{q:"月の課金額、把握してる？",a:[["0円だから明確",2],["だいたい把握",1],["見ないようにしてる",-2]]},
+{q:"ガチャ演出の瞬間",a:[["無",1],["ちょっと楽しい",0],["脳汁が出る",-2]]},
+{q:"友達のレアスキンを見た時",a:[["へー",2],["いいなとは思う",0],["自分も欲しくなって購入",-2]]},
+{q:"「いつか使うかも」でApexコイン余らせてる？",a:[["コイン自体ない",2],["端数だけ",1],["常に万単位である",-2]]},
+{q:"課金を我慢できた最長期間",a:[["ずっと無課金",2],["シーズン単位",1],["イベントごとに陥落",-2]]}];
+function kkStart(){scqRun(KKQ,function(a,b){var p=scqPct(a,b);var band=BANDF.kk(p);
+ var yen=Math.round(Math.pow(100-p,2)*38/1000)*1000;
+ var disp=yen>=10000?(Math.round(yen/10000)+'万'):String(yen);
+ $('diagArea').innerHTML=gaugeRes(p,disp,'円/生涯予測',band,'MONEY METER','課金溶かし度診断：生涯課金予測額は'+disp+'円「'+band.n+'」だった','kk');});}
+/* --- エペ走馬灯（死因TOP3） --- */
+var RIPQ=[
+{q:"戦闘の音が聞こえた。第一声は？",a:[["「漁夫いこ」",{GYO:2}],["「場所だけ把握」",{RING:1}],["「先に物資」",{BUS:2}],["（もう走ってる）",{TAN:2}]]},
+{q:"デスボックスを見つけた",a:[["全部漁りたい",{BUS:2}],["必要な物だけ",{}],["漁ってる敵を狩る",{GYO:2}]]},
+{q:"味方と意見が割れた",a:[["自分のルートで行く",{TAN:2}],["従う",{}],["多数決",{}],["強い方につく",{IKI:1}]]},
+{q:"残り2部隊、安置外にいる",a:[["ファイト音へ寄る",{GYO:1,RING:1}],["最速で安置へ",{}],["ギリまで漁る",{BUS:2,RING:2}]]},
+{q:"高所の敵と目が合った",a:[["登って詰める",{IKI:2}],["射線を切る",{}],["スナイプ合戦",{IKI:1}]]},
+{q:"味方がダウン、敵は2人残り",a:[["蘇生優先",{SOS:2}],["敵を倒してから",{}],["自分も突っ込む",{TAN:1,IKI:1}]]},
+{q:"紫アーマーの敵 vs 白の自分",a:[["腕でカバー",{IKI:2}],["逃げる",{}],["味方を呼ぶ",{}]]},
+{q:"リング収縮アナウンス中",a:[["まだ漁れる",{BUS:2,RING:2}],["即移動",{}],["収縮ギリで漁夫待ち",{GYO:1,RING:1}]]},
+{q:"3パーティの乱戦を発見",a:[["真ん中に降りる",{IKI:2,TAN:1}],["外から削る",{GYO:1}],["離れる",{}]]},
+{q:"自分のポータル/移動スキル",a:[["敵陣ど真ん中へ",{IKI:2}],["退路用",{}],["味方の救出用",{SOS:1}]]},
+{q:"「あと1部隊」での動き",a:[["先に仕掛ける",{IKI:1}],["漁夫位置キープ",{GYO:1}],["ひたすら芋",{RING:1}]]},
+{q:"味方のバナー、敵が見てる",a:[["それでも取りに行く",{SOS:2}],["リスポーン優先で迂回",{}],["諦めて1人で戦う",{TAN:2}]]}];
+var RIPT={GYO:{n:'漁夫凸死',e:'🦅',d:'おいしい場面に吸い寄せられて、三つ巴の真ん中でデスボックスになるタイプ。漁夫は「最後に入った者」が勝つ遊び。あなたは一番乗りしすぎている。入るのは撃ち合いが終わる5秒前、これだけで死因ランキングから消えるはず。音が鳴ったら時計を見る癖をつけよう。'},
+BUS:{n:'物資欲死',e:'📦',d:'「あと1箱だけ」が遺言になりがちなタイプ。金バッグより命のほうが高い。リング収縮中の漁りと、戦闘直後の整理タイムの長さが命取りになっている。漁りは20秒以内・収縮アナウンスが鳴ったら即移動、をルール化すると寿命が倍になる。'},
+TAN:{n:'単独行動死',e:'🐺',d:'気づいたら味方と100m離れている一匹狼タイプ。あなたの腕なら1v1は勝てる、でもApexは常に1v3が起こるゲーム。死因のほとんどは「囲まれ」のはず。せめて射線が通る距離（30m圏内）をキープするだけで、カバーが間に合うようになる。'},
+RING:{n:'リング外死',e:'⭕',d:'安置に焼かれて散るタイプ。原因は欲張り漁りか、ルート計画の甘さ。リングダメージは終盤エグいので「泳ぎ切れる」は幻想。次の安置が出た瞬間にルートを決める、回復は移動しながら、の2点でこの死因は消せる。'},
+IKI:{n:'イキり死',e:'😎',d:'不利対面でも「いける」と思ってしまう自信家タイプ。その勇気は強みだが、アーマー差・人数差・高低差の3条件が揃ったら、それは勇気ではなく献身。1つでも不利なら一回引く——これを覚えるだけで、キル数そのままデス数だけ減る。'},
+SOS:{n:'蘇生中死',e:'💉',d:'仲間思いが命取りになる献身タイプ。その蘇生愛は尊いが、敵前蘇生は2人分のデスボックスを作る行為。蘇生はスモーク・壁・ノックバック後など「3秒の安全」を作ってから。あなたが生きてさえいれば、味方はリスポーンで帰ってくる。'}};
+var ripA,ripI;
+function ripStart(){ripA={};ripI=0;ripR();}
+function ripR(){var q=RIPQ[ripI];$('diagArea').innerHTML='<div class="qnum">Q '+(ripI+1)+' / '+RIPQ.length+'</div><div class="bar"><i style="width:'+Math.round(ripI/RIPQ.length*100)+'%"></i></div><div class="q">'+q.q+'</div>'+q.a.map(function(o,i){return '<div class="opt" onclick="ripP('+i+')">'+o[0]+'</div>';}).join('')+'<div class="navrow"><button onclick="openDiag(\'rip\')">最初から</button></div>';}
+function ripP(i){var w=RIPQ[ripI].a[i][1];for(var k in w){ripA[k]=(ripA[k]||0)+w[k];}
+ if(ripI<RIPQ.length-1){ripI++;ripR();}else{ripDone();}}
+function ripDone(){
+ var keys=Object.keys(RIPT);var tot=0;keys.forEach(function(k){ripA[k]=Math.max(0.5,(ripA[k]||0)+1);tot+=ripA[k];});
+ var rank=keys.slice().sort(function(a,b){return ripA[b]-ripA[a];});
+ var top=RIPT[rank[0]];
+ var pcts={};keys.forEach(function(k){pcts[k]=Math.round(ripA[k]/tot*100);});
+ var bars=rank.slice(0,3).map(function(k,i){var t=RIPT[k];return '<div class="rb"><span class="rbl">'+(i+1)+'位 '+t.e+t.n+'</span><span class="rbt"><i style="width:'+pcts[k]+'%"></i></span><span class="rbv">'+pcts[k]+'%</span></div>';}).join('');
+ var others=rank.slice(3).map(function(k){return RIPT[k].e+RIPT[k].n+' '+pcts[k]+'%';}).join(' ／ ');
+ $('diagArea').innerHTML='<div class="res"><div class="ic">🪦</div><div class="ts" style="color:var(--down)">YOUR CAUSE OF DEATH</div><div class="tn">'+top.e+' '+top.n+'</div><div class="desc">あなたの走馬灯に最も映りそうな死に方。下のTOP3が、あなたのデス傾向の縮図。</div><div class="richwrap"><div class="richttl">⚰️ 死因TOP3</div><div class="richbars">'+bars+'</div><div class="richttl">🔎 第1死因の詳細解説</div><div class="richp">'+top.d+'</div><div class="richttl">📉 その他の死因</div><div class="richp" style="font-size:11.5px">'+others+'</div><div class="richttl">✅ 延命プラン</div><div class="richp">①今日の3戦だけ「'+top.n+'」を意識して封印 ②2位の「'+RIPT[rank[1]].n+'」も死因メモに追加 ③1週間後にもう一度診断して死因が変わったか確認。死因が変わる＝立ち回りが変わった証拠。</div></div><button class="btn x" onclick="share(\'エペ走馬灯診断：俺の死因TOP3は ①'+top.n+'('+pcts[rank[0]]+'%) ②'+RIPT[rank[1]].n+'('+pcts[rank[1]]+'%) ③'+RIPT[rank[2]].n+'('+pcts[rank[2]]+'%) だった🪦\')">𝕏 シェア</button><button class="btn primary" onclick="openDiag(\'rip\')">もう一度</button>'+recoBlock('rip')+'</div>';
+}
+/* --- 物資ルート診断 --- */
+var BSQ=[
+{q:"降下直後、まず向かうのは",a:[["誰も行かない建物",{KAI:2}],["味方と同じ建物",{COL:1}],["敵が降りた場所",{GOU:2}],["激戦区の外周",{HYE:2}]]},
+{q:"漁り方のスタイル",a:[["全部開ける",{COL:2}],["武器と弾だけ高速",{MIN:2}],["箱だけ漁る",{HYE:2}]]},
+{q:"アタッチメント管理",a:[["最適構成まで集める",{COL:2}],["動けば良い",{MIN:2}],["敵から奪う",{GOU:2}]]},
+{q:"戦闘終了後",a:[["即・箱漁り",{HYE:1,GOU:1}],["警戒してから漁る",{KAI:1}],["漁らず移動",{MIN:2}]]},
+{q:"バッグの中身",a:[["常に整理整頓",{COL:2}],["弾とセルだけ",{MIN:2}],["パンパン",{HYE:1}]]},
+{q:"金装備を見つけたら",a:[["味方に報告して分配",{COL:1,KAI:1}],["即自分が使う",{GOU:1}],["売り場みたいに記憶",{HYE:1}]]},
+{q:"物資が薄いエリアに降りた",a:[["奥地へ開拓",{KAI:2}],["敵を倒して調達",{GOU:2}],["最低限で即移動",{MIN:2}]]},
+{q:"理想の物資調達",a:[["デスボックス",{HYE:2,GOU:1}],["未開封の建物",{KAI:2}],["ケアパケ・クラフト",{COL:1,KAI:1}]]},
+{q:"弾の残量",a:[["常に200発以上",{COL:2}],["100あれば十分",{MIN:1}],["切れたら拾う/奪う",{GOU:2}]]},
+{q:"味方が「物資ある？」と聞いてきた",a:[["余剰分を即渡す",{COL:1}],["場所をピンで教える",{KAI:1}],["自分も無い",{MIN:1,GOU:1}]]}];
+var BST={HYE:{n:'ハイエナ型',e:'🦴',d:'他人の戦闘跡こそ最高のショップと知っている効率重視派。リスクを取らずに紫アーマーまで揃える嗅覚は立派な才能。ただし、箱に夢中で漁夫の漁夫に刈られるのが様式美。箱を漁る前に10秒だけ周囲をクリアリング、これでハイエナは無敵になる。'},
+KAI:{n:'開拓型',e:'🧭',d:'人の行かないルートを切り開くフロンティア精神の持ち主。安全に物資を整えチームに地の利をもたらす、玄人の動き。弱点は開拓が快適すぎて戦闘勘が鈍ること。たまにはあえて音の方へ向かい、ファイト感覚を錆びさせないようにしよう。'},
+GOU:{n:'強奪型',e:'⚔️',d:'「物資は地面ではなく敵が持っている」という戦闘民族の思想。初動ファイトで装備を整えるスタイルは、ハマれば最速で最強になれる。ただし初動の運に全てを賭けるため、戦績の分散がとにかく激しい。武器1つ拾ってから殴る、それだけで勝率が跳ねる。'},
+COL:{n:'几帳面コレクター型',e:'🗂️',d:'バッグは常に整頓、アタッチは最適構成、味方の分まで把握済み。チームの兵站を支える補給士官タイプで、終盤の物資切れとは無縁。弱点は漁りに時間をかけすぎて展開に遅れること。「80点の装備で前に出る」勇気を持てば完璧。'},
+MIN:{n:'ミニマリスト型',e:'🍃',d:'武器と弾とセル、それだけあれば戦えるという引き算の美学。漁り時間が短いぶん、移動とポジション取りで常に先手を取れる。ただし終盤の回復切れ・グレ無しが響く場面も。バッグの「あと2枠」だけ保険に使うと、強さがもう一段安定する。'}};
+var bsA,bsI;
+function bsStart(){bsA={};bsI=0;bsR();}
+function bsR(){var q=BSQ[bsI];$('diagArea').innerHTML='<div class="qnum">Q '+(bsI+1)+' / '+BSQ.length+'</div><div class="bar"><i style="width:'+Math.round(bsI/BSQ.length*100)+'%"></i></div><div class="q">'+q.q+'</div>'+q.a.map(function(o,i){return '<div class="opt" onclick="bsP('+i+')">'+o[0]+'</div>';}).join('')+'<div class="navrow"><button onclick="openDiag(\'bs\')">最初から</button></div>';}
+function bsP(i){var w=BSQ[bsI].a[i][1];for(var k in w){bsA[k]=(bsA[k]||0)+w[k];}
+ if(bsI<BSQ.length-1){bsI++;bsR();}else{bsDone();}}
+function bsDone(){
+ var keys=Object.keys(BST);var tot=0;keys.forEach(function(k){bsA[k]=Math.max(0.5,(bsA[k]||0)+1);tot+=bsA[k];});
+ var rank=keys.slice().sort(function(a,b){return bsA[b]-bsA[a];});
+ var top=BST[rank[0]];var match=Math.min(98,Math.round(bsA[rank[0]]/tot*100+45));
+ var bars=rank.map(function(k){var p=Math.round(bsA[k]/tot*100);return '<div class="rb"><span class="rbl">'+BST[k].e+BST[k].n+'</span><span class="rbt"><i style="width:'+p+'%"></i></span><span class="rbv">'+p+'%</span></div>';}).join('');
+ $('diagArea').innerHTML='<div class="res"><div class="ic">'+top.e+'</div><div class="ts">YOUR LOOT STYLE</div><div class="tn">'+top.n+'</div><div class="desc">タイプ一致度 <b style="color:var(--warn)">'+match+'%</b>。あなたの漁りグセから判定した物資調達スタイル。</div><div class="richwrap"><div class="richttl">📊 タイプ別の傾向値</div><div class="richbars">'+bars+'</div><div class="richttl">🔎 詳細解説</div><div class="richp">'+top.d+'</div><div class="richttl">🤝 相性のいい味方</div><div class="richp">'+(rank[0]==='GOU'||rank[0]==='HYE'?'几帳面コレクター型が味方にいると、補給切れの弱点を消してくれる。':'強奪型・ハイエナ型の味方と組むと、物資効率と戦闘力のバランスが取れて噛み合う。')+'パーティで全員同じ型だと物資の偏りや展開の遅れが起きやすいので、診断結果を見せ合って役割を決めるのが強い。</div><div class="richttl">✅ 今日からの最適化</div><div class="richp">'+(rank[0]==='HYE'?'箱前クリアリング10秒の徹底。':rank[0]==='KAI'?'2試合に1回はあえて交戦ルートを選ぶ。':rank[0]==='GOU'?'初動は武器確保→交戦の順を死守。':rank[0]==='COL'?'漁り時間に20秒タイマーを設定。':'回復2枠だけ多めに確保。')+'自分の型の弱点を1つ潰すだけで、平均順位は確実に上がる。</div></div><button class="btn x" onclick="share(\'物資ルート診断：俺は「'+top.n+'」（一致度'+match+'%）だった'+top.e+'\')">𝕏 シェア</button><button class="btn primary" onclick="openDiag(\'bs\')">もう一度</button>'+recoBlock('bs')+'</div>';
+}
+
+/* ===== 汎用リッチ後付け（タイプ型診断すべて） ===== */
+function dxRichTail(area){
+ var res=area.querySelector('.res')||area.querySelector('.verdict');if(!res)return;
+ if(res.getAttribute('data-hist'))return;
+ var tnEl=res.querySelector('.tn')||res.querySelector('.rk');if(!tnEl)return;
+ res.setAttribute('data-hist','1');
+ var title=(tnEl.textContent||'').trim();var code=diagState.cur||'';
+ var shBtn=res.querySelector('[data-sharetxt]');var shTxt=shBtn?shBtn.getAttribute('data-sharetxt'):('診断結果「'+title+'」');
+ if(!res.querySelector('.gauge')){diagHistSave({c:code,n:title,sh:shTxt,t:Date.now()});}
+ if(res.querySelector('.richwrap'))return;
+ var subs=richSub(code);var cats=RICHCAT[code]||['攻め寄り度','慎重さ','チーム寄り度'];
+ var H='<div class="richwrap">';
+ if(subs){
+  var avg=Math.round((subs[0]+subs[1]+subs[2])/3);
+  var strong=cats[subs.indexOf(Math.max.apply(null,subs))],weak=cats[subs.indexOf(Math.min.apply(null,subs))];
+  H+='<div class="richttl">📊 回答から見た傾向値</div><div class="richbars">'+subs.map(function(v,i){return '<div class="rb"><span class="rbl">'+cats[i]+'</span><span class="rbt"><i style="width:'+v+'%"></i></span><span class="rbv">'+v+'</span></div>';}).join('')+'</div>';
+  H+='<div class="richttl">🔎 詳細解説</div><div class="richp">総合バランスは<b>'+avg+'点</b>。3つの軸の中では「'+strong+'」が突出していて、これが「'+title+'」と判定された最大の根拠。逆に「'+weak+'」の数値が一番低く、ここがあなたの伸びしろポイント。タイプ診断は「向いている戦い方」を映す鏡なので、まずは強みの「'+strong+'」を活かせる場面（構成・降下位置・役割）を意図的に増やすのが、一番ラクに勝率を上げる近道。弱みの「'+weak+'」は無理に克服するより、そこが得意な味方と組んで補い合うほうが、Apexというゲームでは合理的。フルパならこの診断を3人でやって、軸のバランスを見比べてみると役割分担が一気に明確になる。</div>';
+  H+='<div class="richttl">✅ 次にやること</div><div class="richp">①今日の試合で「'+strong+'」を活かす行動を最低1回意識する ②「'+weak+'」が得意そうな味方を観察して1つ盗む ③1週間後に再診断して、傾向値の変化を数字で確認する。数字が動けば、それはプレイが変わった証拠。</div>';
+ }else{
+  H+='<div class="richttl">🔎 詳細解説</div><div class="richp">「'+title+'」と判定されたあなたへ。この結果は今のプレイ傾向のスナップショットであって、固定された才能ではない。Apexの上達は「自分のタイプを知る→そのタイプの強みが出る場面を増やす→弱みは味方と補い合う」のサイクルで一気に加速する。まずは上の説明にある強み・注意点を1つずつ、今日の試合で意識してみてほしい。同じ診断を1〜2週間後にもう一度やると、結果の変化＝成長が見えるはず。フレンドにも共有して結果を見せ合えば、パーティ内の役割分担の話が盛り上がるし、お互いのプレイ理解も深まる。診断はネタ半分・気づき半分くらいで使うのがちょうどいい。</div>';
+  H+='<div class="richttl">✅ 次にやること</div><div class="richp">①結果をシェアしてフレンドと見せ合う ②関連する他の診断（下の「あわせて遊ぶ」）で別の側面もチェック ③気が向いたら再診断で変化を確認。</div>';
+ }
+ H+='</div>';
+ var firstBtn=res.querySelector('.btn.x');
+ if(firstBtn){var div=document.createElement('div');div.innerHTML=H;firstBtn.parentNode.insertBefore(div.firstChild,firstBtn);}
+}
+/* ===== マイページ（診断履歴） ===== */
+function renderMyPage(){
+ var box=$('myHist');if(!box)return;
+ var a=diagHistGet();
+ if(!a.length){box.innerHTML='<div class="lfgempty">まだ診断履歴がありません。診断を遊ぶとここに自動保存されます。</div>';return;}
+ box.innerHTML='<div class="lfgttl">診断履歴（最新30件・この端末のみ）</div>'+a.map(function(r,i){
+  var d=new Date(r.t);var ds=(d.getMonth()+1)+'/'+d.getDate()+' '+('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2);
+  var emo=(typeof nEmo==='function')?'':'';
+  return '<div class="myrow"><div class="mybody" onclick="myReopen('+i+')"><div class="myt">'+esc(r.n||'結果')+(r.num!=null?' <span class="mynum">'+esc(String(r.num))+esc(r.suf||'')+'</span>':'')+'</div><div class="myd">'+ds+' ・ '+esc(r.c||'')+'</div></div><button class="lfgx2" onclick="myShare('+i+')">𝕏</button><button class="lfgx2 del" onclick="myDel('+i+')">×</button></div>';
+ }).join('');
+}
+function myShare(i){var r=diagHistGet()[i];if(!r)return;DIAG_R=(r.pct!=null&&BANDF[r.c])?(r.c+r.pct):'';share(r.sh||('診断結果「'+r.n+'」'),false);}
+function myReopen(i){var r=diagHistGet()[i];if(!r)return;
+ if(r.pct!=null&&BANDF[r.c]){var band=BANDF[r.c](r.pct);open_('diag');DIAG_R=r.c+r.pct;
+  $('diagArea').innerHTML='<div class="res"><div class="sharedby">📊 履歴から再表示</div><div class="gauge" style="--p:'+r.pct+'%"><div class="in"><div class="n mono">'+esc(String(r.num))+'</div><div class="o">'+esc(r.suf||'')+'</div></div></div><div class="tn">'+band.n+'</div><div class="desc">'+band.d+'</div>'+richBlockG(r.c,r.pct,band)+'<button class="btn x" onclick="myShare('+i+')">𝕏 シェア</button><button class="btn primary" onclick="openDiag(\''+r.c+'\')">もう一度診断</button>'+recoBlock(r.c)+'</div>';
+  $('diagArea').scrollIntoView();
+ }else{open_('diag');openDiag(r.c);}
+}
+function myDel(i){try{var a=diagHistGet();a.splice(i,1);localStorage.setItem('apexDiagHist',JSON.stringify(a));}catch(e){}renderMyPage();}
+/* ===== プレイヤー名刺メーカー ===== */
+function cardMake(){
+ var name=($('cdName').value||'').trim();var plat=$('cdPlat').value;
+ if(!name){$('cdOut').innerHTML='<div class="warnbox">ID（ゲーム内の名前）を入力してね。</div>';return;}
+ $('cdOut').innerHTML='<div class="loading">戦績を取得中…</div>';
+ btFetch(name,plat).then(function(p){
+  if(!p.ok){$('cdOut').innerHTML='<div class="warnbox">プレイヤーが見つからない。ID（大文字小文字も正確に）とプラットフォームを確認してね。</div>';return;}
+  var c=document.createElement('canvas');c.width=1000;c.height=560;var x=c.getContext('2d');
+  var g=x.createLinearGradient(0,0,1000,560);g.addColorStop(0,'#101b38');g.addColorStop(1,'#06080f');x.fillStyle=g;x.fillRect(0,0,1000,560);
+  x.strokeStyle='rgba(25,227,255,.55)';x.lineWidth=4;x.strokeRect(14,14,972,532);
+  x.strokeStyle='rgba(255,61,242,.35)';x.lineWidth=2;x.strokeRect(26,26,948,508);
+  for(var i=0;i<46;i++){x.globalAlpha=.1+Math.random()*.3;x.fillStyle=i%2?'#19e3ff':'#ff3df2';x.beginPath();x.arc(Math.random()*1000,Math.random()*560,1+Math.random()*2.5,0,7);x.fill();}
+  x.globalAlpha=1;x.textBaseline='alphabetic';
+  x.fillStyle='#7e8db0';x.font='600 26px sans-serif';x.textAlign='left';x.fillText('APEX LEGENDS PLAYER CARD',60,86);
+  x.font='150px sans-serif';x.textAlign='center';x.fillText(p.emoji,170,300);
+  x.fillStyle='#7e8db0';x.font='500 22px sans-serif';x.fillText(p.rankName||'ランク不明',170,352);
+  x.textAlign='left';x.fillStyle='#eaf2ff';x.font='900 64px sans-serif';
+  var nm=p.name.length>14?p.name.slice(0,13)+'…':p.name;x.fillText(nm,320,250);
+  x.fillStyle='#ffc23d';x.font='700 30px sans-serif';x.fillText('戦闘力',320,320);
+  x.fillStyle='#19e3ff';x.font='900 84px sans-serif';x.fillText(String(p.score),440,330);
+  x.fillStyle='#7e8db0';x.font='500 26px sans-serif';
+  x.fillText('RP '+(p.rp||0).toLocaleString()+(p.kd?'   K/D '+p.kd.toFixed(2):''),320,392);
+  x.fillStyle='#eaf2ff';x.font='700 28px sans-serif';x.fillText('▶ mexastarted.github.io',60,498);
+  x.fillStyle='#7e8db0';x.font='500 21px sans-serif';x.textAlign='right';x.fillText('#APEX激やばツール',940,498);
+  var durl=c.toDataURL('image/png');
+  $('cdOut').innerHTML='<img src="'+durl+'" style="width:100%;border-radius:12px;border:1px solid var(--line)"><div class="rcbtns" style="margin-top:10px"><a class="btn" style="text-align:center;text-decoration:none" href="'+durl+'" download="apex-card.png">⬇ 保存</a><button class="btn x" onclick="cardShare()">𝕏 シェア</button></div><div class="note" style="margin-top:8px">プロフィール画像やヘッダー、固定ポストにどうぞ。</div>';
+  window._cardData={durl:durl,name:p.name,score:p.score};
+ });
+}
+function cardShare(){
+ var cd=window._cardData;if(!cd)return;
+ var txt='【APEX激やばツール】プレイヤー名刺を作った！ '+cd.name+'（戦闘力'+cd.score+'）\n'+location.href.split('#')[0].split('?')[0]+'\n#APEX激やばツール';
+ try{var a=cd.durl.split(','),b=atob(a[1]),n=b.length,u=new Uint8Array(n);while(n--)u[n]=b.charCodeAt(n);
+  var file=new File([u],'apex-card.png',{type:'image/png'});
+  if(navigator.canShare&&navigator.canShare({files:[file]})){navigator.share({files:[file],text:txt}).catch(function(){});return;}
+ }catch(e){}
+ openX('https://twitter.com/intent/tweet?text='+encodeURIComponent(txt));
+}
+
+/* ===== スタッツ検索 履歴 ===== */
+function fhGet(){try{return JSON.parse(localStorage.getItem('apexFindHist')||'[]');}catch(e){return [];}}
+function fhSave(name,plat){try{var a=fhGet().filter(function(x){return !(x.n===name&&x.p===plat);});a.unshift({n:name,p:plat});if(a.length>8)a=a.slice(0,8);localStorage.setItem('apexFindHist',JSON.stringify(a));}catch(e){}}
+function fhDel(i){try{var a=fhGet();a.splice(i,1);localStorage.setItem('apexFindHist',JSON.stringify(a));}catch(e){}renderFindHist();}
+function fhGo(i){var r=fhGet()[i];if(!r)return;$('pname').value=r.n;$('pplat').value=r.p;findPlayer();}
+function renderFindHist(){var box=$('findHist');if(!box)return;var a=fhGet();
+ if(!a.length){box.innerHTML='';return;}
+ box.innerHTML='<div class="lfgttl">検索履歴（タップで再検索）</div>'+a.map(function(r,i){return '<div class="lfgrow"><div class="lfgsnip" onclick="fhGo('+i+')">🔍 '+esc(r.n)+'<span style="color:var(--sub)"> ／ '+esc(r.p)+'</span></div><button class="lfgx2 del" onclick="fhDel('+i+')">×</button></div>';}).join('');}
+
+/* ===== 拡張診断30（ファクトリー） ===== */
+var XDIAGS={
+rp:{n:'ロールプレイ度診断',e:'🎭',g:'#c062ff',ds:'なりきってる度',ts:'ROLEPLAY',cat:['なりきり度','セリフ率','世界観愛'],sh:'ロールプレイ度診断は「{B}」（{P}%）だった🎭',Q:[
+['レジェンドのセリフ、つい口に出る？',[['めっちゃ言う',2],['心の中で',1],['言わない',-2]]],
+['スキン選びの基準は',[['キャラのイメージ重視',2],['見やすさ・性能感',-1],['持ってるやつ',-2]]],
+['フィニッシャーは',[['キャラの魂。こだわる',2],['たまに',0],['時間の無駄',-2]]],
+['ストーリーやコミック',[['全部追ってる',2],['有名どころだけ',0],['存在を知らない',-2]]],
+['ボイスライン購入',[['買う',2],['気に入ったら',0],['買わない',-1]]],
+['推しレジェンドの関係性の話',[['何時間でも語れる',2],['少しわかる',0],['興味ない',-2]]],
+['ロード画面のロア',[['読む',2],['たまに',0],['スキップ',-2]]],
+['「自分は◯◯メイン」と名乗る時',[['キャラ愛で選んでる',2],['強さで選んでる',-1]]]],
+B:[[85,'レジェンドの化身 🎭','もはや中の人。キャラ愛がプレイの原動力で、世界観ごとApexを楽しめている最高に幸せな遊び方。'],[65,'なりきり上級者','キャラへの愛着がモチベに直結するタイプ。推しの強化アプデが自分事。'],[45,'ほどほどRP勢','キャラ愛と実利のバランス型。推しはいるが、環境次第で浮気もする。'],[25,'性能重視派','キャラは駒。強いか弱いかで選ぶクレバーなタイプ。'],[0,'完全実利主義 🤖','ロアもセリフも興味なし。勝利だけが目的のマシーン。それはそれで強い。']]},
+cl:{n:'クラッチ耐性診断',e:'🧊',g:'#5dd0ff',ds:'1v3の心拍タイプ',ts:'CLUTCH',cat:['冷静さ','決断力','プレッシャー耐性'],sh:'クラッチ耐性診断は「{B}」（{P}%）だった🧊',Q:[
+['味方全滅、敵3人。第一感情は',[['チャンス',2],['落ち着いて整理',1],['手汗が止まらない',-2]]],
+['最後の1人になった時のエイム',[['普段より良い',2],['変わらない',1],['手が震える',-2]]],
+['観戦されてると',[['燃える',2],['気にならない',1],['プレッシャー',-2]]],
+['残り1v1、体力ミリ',[['先に仕掛ける',2],['有利ポジで待つ',1],['頭が真っ白',-2]]],
+['クラッチ成功経験',[['何度もある',2],['たまに',0],['ほぼない',-2]]],
+['接戦終盤の判断スピード',[['むしろ速くなる',2],['普段通り',1],['固まる',-2]]],
+['心拍数が上がるのは',[['上がるけど集中に変わる',2],['上がって雑になる',-2],['そもそも上がらない',1]]],
+['「頼む、決めてくれ」と言われたら',[['任せろ',2],['プレッシャーやめて',-2]]]],
+B:[[85,'氷の心臓 🧊','人数不利こそ本領。脳が冷えるタイプで、土壇場の集中力は天性のもの。チームの最後の砦。'],[65,'勝負強い','プレッシャー下でも普段の8割は出せる。経験を積むほどクラッチ率が上がる。'],[45,'普通の心臓','勝てる時は勝てる。場数がそのまま耐性になるので、1v1を避けない事が成長の鍵。'],[25,'手汗タイプ 💦','緊張が手元に出る。深呼吸とルーティン（リロード確認等）で固定化すると改善する。'],[0,'心拍200族 💓','最後の1人＝処刑台。でも緊張は本気の証拠。場数で必ず慣れるから大丈夫。']]},
+sj:{n:'責任転嫁度診断',e:'🫵',g:'#ff7a3d',ds:'負けを何のせいにする？',ts:'BLAME METER',cat:['自責思考','分析力','謙虚さ'],sh:'責任転嫁度診断は「{B}」（自責度{P}%）だった🫵',Q:[
+['負けた直後の第一声',[['今のは自分のミス',2],['まあ仕方ない',1],['味方なにしてんの',-2]]],
+['回線・サーバーのせいにする頻度',[['ほぼない',2],['本当にラグい時だけ',1],['よく言う',-2]]],
+['味方ガチャという言葉',[['あまり使わない',2],['たまに',0],['口癖',-2]]],
+['デス後のリプレイ・観戦',[['自分の反省点を探す',2],['敵の動きを見る',1],['味方の戦犯を探す',-2]]],
+['ランクが上がらない理由',[['自分の実力',2],['環境とマッチング',-1],['味方',-2]]],
+['「あの引きは無理」と思う頻度',[['ほぼ自分に原因を見つける',2],['半々',0],['だいたい引きのせい',-2]]],
+['負け配信・負け報告のテンション',[['反省会',2],['ネタにする',1],['愚痴大会',-2]]],
+['チーターに負けた時以外で',[['言い訳しない',2],['多少は言う',-1]]]],
+B:[[85,'求道者 🧘','敗因を100%自分に求める成長マシーン。伸びる人の思考そのもの。ただし自分を責めすぎないことだけ注意。'],[65,'自責寄りの分析家','感情より分析が先に来るタイプ。負けが経験値に変わっている。'],[45,'人並みの言い訳','自分7:環境3くらい。健全。たまの「味方ガチャ」は心の安全弁。'],[25,'転嫁気味 👉','原因の矢印が外に向きがち。1日1個だけ「自分の反省点」を挙げる習慣で激変する。'],[0,'全部味方のせい 🫵','耳が痛いだろうけど、その思考でいる限り上達は止まる。矢印を自分に向けた瞬間から伸び始める。']]},
+kb:{n:'キル集映え度診断',e:'🎬',g:'#ff3df2',ds:'魅せプレイ度',ts:'HIGHLIGHT',cat:['魅せ意識','技術志向','承認欲求'],sh:'キル集映え度診断は「{B}」（映え度{P}%）だった🎬',Q:[
+['クリップ保存ボタン',[['指が覚えてる',2],['たまに押す',0],['使ったことない',-2]]],
+['キルの取り方',[['カッコよく倒したい',2],['倒せれば何でも',-1]]],
+['壁ジャンプ・スライディング撃ち',[['実戦で狙う',2],['できたらラッキー',0],['不要',-2]]],
+['エイムパンチでのけぞる敵に',[['追いレレレで魅せる',2],['普通に撃つ',-1]]],
+['キル集動画',[['作ったことある/作りたい',2],['見る専',0],['興味ない',-2]]],
+['SR・ウィングマン',[['浪漫。使う',2],['強い時だけ',0],['安定武器一択',-2]]],
+['1試合のベストプレイ',[['思い出せる・語れる',2],['なんとなく',0],['覚えてない',-2]]],
+['プレイ中の脳内BGM',[['ある',2],['ない',-1]]]],
+B:[[85,'生まれながらの主役 🎬','常にカメラを意識したプレイ。その美学は観る人を作り、観る人はモチベを作る。動画投稿、向いてる。'],[65,'魅せ寄りプレイヤー','実利8割、魅せ2割の良バランス。たまの神プレイをちゃんと残せるタイプ。'],[45,'たまに映える','基本堅実、ふとした瞬間に映えるプレイが出る。クリップ保存だけ習慣にすると財産になる。'],[25,'実利派','勝ちに不要な動きはしない堅実派。キル集より戦績表で語るタイプ。'],[0,'武骨な仕事人 🔧','映えゼロ、でも確実に仕事する。チームに一人欲しい渋いプロフェッショナル。']]},
+ks:{n:'観戦力診断',e:'🕵️',g:'#22e3a0',ds:'死後に学べてる？',ts:'SPECTATE IQ',cat:['観察眼','学習意欲','切替力'],sh:'観戦力診断は「{B}」（観戦IQ{P}%）だった🕵️',Q:[
+['デスした直後',[['即観戦で敵の動きを見る',2],['味方を観戦',1],['ホーム連打',-2]]],
+['観戦中に見るのは',[['敵の位置取りと判断',2],['味方の生存',1],['スマホ',-2]]],
+['上手い敵に倒されたら',[['動きを盗む',2],['悔しいだけ',-1]]],
+['プロ・配信者の試合',[['立ち回りを分析しながら見る',2],['なんとなく見る',0],['見ない',-1]]],
+['観戦で覚えた技',[['実戦投入したことある',2],['覚えてはいる',0],['特にない',-2]]],
+['味方の戦闘を観戦中',[['位置をピンで支援',2],['静かに祈る',0],['もう萎えてる',-2]]],
+['自分のデス位置',[['毎回原因を言語化',2],['たまに考える',0],['考えない',-2]]],
+['観戦は',[['無料の授業',2],['暇な時間',-2]]]],
+B:[[85,'歩く分析室 🕵️','死すらも教材に変える観戦の達人。1デス＝1学習のサイクルが回っていて、上達速度が人の倍。'],[65,'学べる観戦者','敵の良い動きを素直に盗めるタイプ。あとは「言語化してメモ」まですれば完璧。'],[45,'ながら観戦','見てはいるが流し見気味。「なぜ自分は死んだか」だけ毎回1秒考えると化ける。'],[25,'観戦＝待ち時間','死んだら脳もオフになるタイプ。もったいない！敵の位置取りだけでも見る価値あり。'],[0,'即ホーム族 🏠','デス即退出。気持ちは分かるが、無料の授業を毎回ボイコットしてる状態。1回だけ観戦してみて。']]},
+yo:{n:'陽キャプレイ診断',e:'☀️',g:'#ffc23d',ds:'プレイの社交性',ts:'SOCIAL',cat:['VC積極性','ノリの良さ','巻き込み力'],sh:'陽キャプレイ診断は「{B}」（陽キャ度{P}%）だった☀️',Q:[
+['野良VC',[['即ミュート解除で挨拶',2],['話しかけられたら返す',0],['墓場まで無言',-2]]],
+['ナイスファイトの一言',[['毎回言う',2],['たまに',0],['打てない',-2]]],
+['初対面の野良とフルパ',[['その日のうちに組める',2],['流れ次第',0],['無理',-2]]],
+['エモート',[['踊りがち',2],['たまに',0],['使わない',-1]]],
+['味方の神プレイに',[['全力で褒める',2],['心の中で',0],['無反応',-2]]],
+['配信・グループ参加',[['好き',2],['見る専',0],['ソロが至高',-2]]],
+['負けた後の空気',[['笑いに変える',2],['静かに次へ',0],['お通夜',-2]]],
+['フレンド申請',[['自分から送る',2],['来たら承認',-1]]]],
+B:[[85,'ロビーの太陽 ☀️','あなたがいるだけでパーティが明るくなる人間ビーコン。野良が固定に変わる確率、異常に高い。'],[65,'感じのいい人','無理せず自然に良い空気を作れるタイプ。野良運が良く感じるのは、実はあなたのおかげ。'],[45,'様子見社交派','相手のノリに合わせる適応型。最初の「よろしく」だけ自分から言えると世界が変わる。'],[25,'静かな実力派','喋らないが仕事はする職人。ピンとナイス連打だけで十分伝わってる。'],[0,'孤高の無言僧 🧘','VCは飾り。それも立派なスタイルだが、ピンだけは押そう。それがあなたの言葉だ。']]},
+ya:{n:'初心者への優しさ診断',e:'🧸',g:'#8affd6',ds:'レベル1桁が来た時',ts:'KINDNESS',cat:['寛容さ','教える力','見守り力'],sh:'初心者への優しさ診断は「{B}」（優しさ{P}%）だった🧸',Q:[
+['味方がレベル8だった',[['全力で守る',2],['普通にやる',0],['ため息',-2]]],
+['初心者の明らかなミス',[['ドンマイ＋一言アドバイス',2],['スルー',0],['ピンで圧',-2]]],
+['物資を初心者に',[['良い装備を譲る',2],['早い者勝ち',-1]]],
+['初心者が遠くで漁ってる',[['迎えに行く',2],['ピンで呼ぶ',1],['置いていく',-2]]],
+['「初めてです」と言われたら',[['楽しんでこ！と返す',2],['了解とだけ',0],['無言',-1]]],
+['初心者のせいで負けた',[['誰でも最初はある',2],['少しモヤる',0],['イラつく',-2]]],
+['教えたがり度',[['聞かれたら丁寧に',2],['聞かれても簡潔に',0],['教えない',-1]]],
+['昔の自分を',[['覚えてる。ひどかった',2],['もう忘れた',-1]]]],
+B:[[85,'歩くチュートリアル 🧸','初心者にとって最高の出会い。あなたとマッチした新規は、Apexを続けてくれる。ゲーム界の宝。'],[65,'優しい先輩','基本見守り、要所でフォロー。ちょうどいい距離感の理想の先輩ムーブ。'],[45,'普通の人','余裕がある時は優しい。連敗中は…人間だもの。それで十分。'],[25,'塩対応気味 🧂','悪気はないが新規には冷たく映ってるかも。「ドンマイ」だけでいいから打ってみて。'],[0,'初心者キラー 👿','その態度が新規を辞めさせ、過疎を進め、マッチング品質を下げて自分に返ってくる。優しさは投資。']]},
+yf:{n:'夜更かしエペ診断',e:'🌙',g:'#9aa7ff',ds:'「あと1試合」が何試合続く？',ts:'NIGHT OWL',cat:['自制心','生活防衛力','沼り度の低さ'],sh:'夜更かしエペ診断は「{B}」（健全度{P}%）だった🌙',Q:[
+['「あと1試合」の実際',[['本当に1試合',2],['2〜3試合',0],['朝日を見る',-2]]],
+['負けて終われる？',[['終われる',2],['勝つまでやる',-2]]],
+['平日の最終ログアウト',[['日付が変わる前',2],['1〜2時',-1],['記憶がない',-2]]],
+['寝ようと思った瞬間にフレンドがオン',[['また明日と言える',2],['1試合だけ付き合う',-1],['朝まで',-2]]],
+['翌日に響いた経験',[['ほぼない',2],['たまに',-1],['常に響いてる',-2]]],
+['ランクの「あと少しで昇格」',[['明日やる',2],['今日中に決める',-2]]],
+['目覚ましの数',[['1個',2],['2〜3個',-1],['アラーム軍団',-2]]],
+['「エペは1日◯時間」ルール',[['ある＆守れてる',2],['あるけど形骸化',-1],['ない',-2]]]],
+B:[[85,'鋼の生活リズム 🛏️','エペと生活を完全に両立。負けて終われる胆力は、実はランクのティルト耐性にも直結してる。'],[65,'ほぼ健全','たまに延長するが翌日は立て直せる。理想的な沼との距離感。'],[45,'プチ夜更かし勢','週2〜3で「やっちゃった」が出る。寝る前のランクだけは封印すると幸せになれる。'],[25,'午前3時の住人 🌃','「勝つまで終われない」が生活を侵食中。負けて終わる練習＝メンタルトレと思ってやってみて。'],[0,'朝日と共にドロップ ☀️','もはや昼夜逆転のレジェンド。楽しいのは分かるが、睡眠不足はエイムを確実に下げてる。寝ろ！']]}
+};
+var XDIAGS2={
+rt:{n:'エペ前ルーティン診断',e:'☕',g:'#ffb35d',ds:'儀式・験担ぎ度',ts:'ROUTINE',cat:['準備力','こだわり','ゲン担ぎ度'],sh:'エペ前ルーティン診断は「{B}」（儀式度{P}%）だった☕',Q:[
+['プレイ前の飲み物',[['決まってる',2],['その時の気分',0],['飲まない',-1]]],
+['射撃訓練場',[['毎回入ってから',2],['たまに',0],['直行カジュアル',-2]]],
+['感度・設定の最終確認',[['毎回する',2],['アプデ後だけ',0],['しない',-1]]],
+['開始時刻',[['だいたい同じ時間',2],['バラバラ',-1]]],
+['最初の1試合の意味',[['肩慣らしと割り切る',2],['いきなり全力',-1]]],
+['ゲン担ぎ',[['ある（席・服・曲など）',2],['ちょっとある',1],['ない',-1]]],
+['プレイ環境の整頓',[['配置が完璧に決まってる',2],['だいたい',0],['散らかってる',-2]]],
+['「今日は調子いい日」の判別',[['最初の3戦で分かる',2],['分からない',-1]]]],
+B:[[85,'儀式の求道者 ⛩️','プレイ前の所作が完全に固まってるプロ気質。ルーティンは集中スイッチとして科学的にも有効。本物。'],[65,'こだわり職人','要所の準備は欠かさないタイプ。安定したパフォーマンスの土台ができてる。'],[45,'ゆる儀式勢','なんとなくの流れはある。射撃訓練場1分だけ固定化すると初戦の事故が減る。'],[25,'即降りスタイル','起動→即カジュアル。それも豪快でいいが、初戦の戦績が悪いのは多分そのせい。'],[0,'ノールーティン族 🎲','毎回ぶっつけ本番。逆にそれで戦えてるのは才能だが、ルーティンを1個作るだけで安定度が変わるよ。']]},
+xs:{n:'エペX中毒診断',e:'📱',g:'#5dd0ff',ds:'プレイよりXを見てる説',ts:'SNS ADDICTION',cat:['情報収集力','視聴時間の重さ','現実プレイ率'],sh:'エペX中毒診断は「{B}」（X漬け度{P}%）だった📱',Q:[
+['エペ関連ポストを見る時間',[['プレイ時間より長い',2],['同じくらい',1],['ほぼ見ない',-2]]],
+['キル集・切り抜きを',[['延々と見れる',2],['たまに',0],['見ない',-2]]],
+['プロ・配信者の動向',[['把握してる',2],['有名どころだけ',0],['知らない',-1]]],
+['アプデ情報の入手先',[['Xが最速',2],['ゲーム内',-1],['知らないうちに変わってる',-2]]],
+['エペ垢（観る・呟く用）',[['ある',2],['本垢で呟く',1],['ない',-2]]],
+['「エペやろ」と思ってXを開いて',[['1時間溶けたことある',2],['ない',-2]]],
+['炎上・議論ポスト',[['追ってしまう',2],['見出しだけ',0],['興味ない',-1]]],
+['寝る前のエペ動画',[['毎晩',2],['たまに',0],['見ない',-2]]]],
+B:[[85,'タイムラインの住人 📱','プレイヤーというよりエペ文化の研究者。知識は最強クラス、あとは手を動かすだけ…！'],[65,'情報強者','見る・遊ぶのバランスが取れた理想形。アプデ対応の早さは武器になる。'],[45,'ライト視聴勢','必要な情報だけ取るタイプ。沼に落ちてないのは立派。'],[25,'ゲーム内完結派','Xはほぼ見ない。情報戦でやや出遅れることがあるので、パッチノートだけは読もう。'],[0,'デジタル仙人 🧘','SNSと無縁の純プレイヤー。環境変化に気づくのが遅いのだけ注意。当サイトの更新情報をどうぞ。']]},
+nx:{n:'ながらエペ診断',e:'🍜',g:'#ff7a3d',ds:'並行作業ぐせ',ts:'MULTITASK',cat:['集中力','行儀','本気度'],sh:'ながらエペ診断は「{B}」（集中度{P}%）だった🍜',Q:[
+['プレイ中の飲食',[['しない',2],['飲み物だけ',1],['ラーメン食べながら降下',-2]]],
+['通話しながらの別ゲー・動画',[['しない',2],['待機中だけ',0],['常に何か見てる',-2]]],
+['マッチ待機中',[['設定や戦績を見る',2],['スマホ',-1],['席を立つ',-2]]],
+['ランク中のスマホ通知',[['切ってる',2],['見るだけ',-1],['返信もする',-2]]],
+['「ながら」での戦績',[['明らかに落ちるからやらない',2],['変わらない気がする',-1]]],
+['配信を見ながらプレイ',[['しない',2],['カジュアルなら',0],['ランクでもやる',-2]]],
+['プレイ中の家族・同居人の呼びかけ',[['一区切りまで待ってもらう',1],['聞こえない',-1],['生返事しながら戦う',-2]]],
+['本気の試合の前',[['機内モード級に整える',2],['特に何も',-1]]]],
+B:[[85,'ゾーンの住人 🎯','プレイ中は完全没入。1試合への集中密度が高く、同じプレイ時間でも上達が速いタイプ。'],[65,'ほぼ集中派','基本は没入、待機中だけ息抜き。理想的なメリハリ。'],[45,'ゆるながら勢','カジュアルはながら、ランクは本気の使い分け。それでOK。ランクに混ざらないようにだけ。'],[25,'並行処理マシン 📺','常に何かと並行してる。実は1個に絞った日の戦績、見比べてみて。驚くから。'],[0,'ラーメン降下兵 🍜','箸を持ちながらの降下、味方は気づいてるぞ…。せめてランクの時だけは丼を置こう。']]},
+ix:{n:'引退詐欺診断',e:'🛏️',g:'#c062ff',ds:'何回「やめる」と言った？',ts:'RETIREMENT FRAUD',cat:['発言の重み','依存度の低さ','自己理解'],sh:'引退詐欺診断は「{B}」（引退詐欺度{P}%）だった🛏️',Q:[
+['「もうエペやめる」と言った回数',[['言ったことない',2],['1〜2回',0],['数えきれない',-2]]],
+['宣言後の最短復帰',[['宣言してないから無い',2],['1週間以上は空いた',0],['その日のうち',-2]]],
+['アンインストール経験',[['ない',1],['ある→再インストール済み',-2],['ある→そのまま',2]]],
+['新シーズン開始日',[['つい起動しちゃう',-2],['様子見できる',1]]],
+['「今シーズンは休む」の達成率',[['守れる',2],['半分くらい',0],['0%',-2]]],
+['フレンドの「1試合だけやろ」',[['断れる',2],['断れない',-2]]],
+['引退ポストにいいねが付くと',[['静かに消したくなる',-1],['ポストしない',2]]],
+['本音では',[['一生やる気がする',-1],['いつか卒業できる',1],['もう人生の一部',-2]]]],
+B:[[85,'有言実行の人 🎓','やめると言ったらやめられる稀有な意志力。というか宣言自体しない大人。エペとの距離感が完璧。'],[65,'計画的プレイヤー','休む時は休める。シーズン単位で付き合い方を調整できる賢者。'],[45,'プチ引退経験者','たまの「distance置き」はむしろ健全。戻ってくるのは、ゲームが面白いからだ。'],[25,'引退詐欺常習犯 🌀','「やめる」は、あなたの「また明日」。周りはもう誰も信じてないが、それも愛され芸。'],[0,'永久機関 ♾️','引退発言→翌日ランクの伝説を何度も達成。おめでとう、あなたはもうApexと結婚している。']]},
+bk:{n:'武器浮気度診断',e:'🔫',g:'#ffc23d',ds:'メイン一筋？環境ホッパー？',ts:'WEAPON LOYALTY',cat:['一途さ','習熟度','環境適応の冷静さ'],sh:'武器浮気度診断は「{B}」（一途度{P}%）だった🔫',Q:[
+['メイン武器と呼べる銃',[['何年も同じ',2],['シーズン単位で固定',1],['毎週変わる',-2]]],
+['ナーフされたメイン武器',[['それでも使い続ける',2],['しばらく喪に服す',0],['即乗り換え',-2]]],
+['「今環境最強」と聞いた武器',[['一応試す程度',1],['気にしない',2],['即メイン変更',-2]]],
+['地面に強武器、手元に愛銃',[['拾わない',2],['一応持つ',-1],['即持ち替え',-2]]],
+['リコイル練習',[['同じ銃を延々と',2],['流行りの銃を都度',-1],['しない',0]]],
+['苦手な武器',[['克服したい',1],['使わなければいい',2],['苦手とか考えたことない',-1]]],
+['武器ガチャ（初動）',[['愛銃が出るまで探す',2],['出たもので戦える',-1]]],
+['好きな武器の理由',[['語れる（音・歴史・思い出）',2],['強いから',-2]]]],
+B:[[85,'純愛ガンナー 💍','一つの武器と添い遂げる求道者。その銃の習熟度はもはや身体の一部レベル。ナーフされても愛は不滅。'],[65,'ほぼ一途','メインは固定、サブで微調整。習熟と環境適応のいいとこ取り。'],[45,'ゆる浮気勢','2〜3本をローテ。武器プールが広いのは終盤の物資対応力でもある。'],[25,'環境サーファー 🏄','常に最強武器を渡り歩く合理派。ただし持ち替え直後の練度低下で損してる説。'],[0,'恋多きガンマン 💘','毎週違う銃と恋に落ちる。楽しいが、どの銃も「knowing浅い」状態。1本だけ本命を作ってみない？']]},
+gn:{n:'グレネード人格診断',e:'🧨',g:'#ff3d5e',ds:'投げ物に出る性格',ts:'GRENADE SOUL',cat:['投げ物活用','タイミング','工夫'],sh:'グレネード人格診断は「{B}」（投げ物力{P}%）だった🧨',Q:[
+['グレのインベントリ',[['常に2〜4枠',2],['1枠',0],['持たない',-2]]],
+['遮蔽に隠れた敵',[['即グレで炙る',2],['回り込む',0],['撃ち合いで待つ',-2]]],
+['テルミット',[['ドアやポータルに最高',2],['たまに',0],['使い道が分からない',-2]]],
+['アークスター',[['直当て狙える',2],['牽制用',1],['投げたことない',-2]]],
+['グレの距離感',[['ピン把握済み',2],['だいたい',0],['自爆経験あり',-2]]],
+['蘇生中の敵',[['グレ確定演出',2],['撃ちに行く',-1]]],
+['終盤の安置際',[['グレで圧をかける',2],['撃ち合い一本',-2]]],
+['投げ物のことを',[['第4の武器',2],['枠の無駄',-2]]]],
+B:[[85,'爆発物の芸術家 🎆','グレ1個で戦況を変えられる投げ物マイスター。あなたのグレは「牽制」ではなく「攻撃」になっている。'],[65,'投げ上手','要所でちゃんと刺さる使い方ができてる。アークの直当て練習で芸術家の域へ。'],[45,'普通の投げ手','持ってはいるし投げもする。「蘇生にグレ」「ドアにテルミット」の2点だけ意識すると激変。'],[25,'グレ忘れ族','枠にあるのに使わず死にがち。デスボックスのグレ4個、それ全部チャンスだったんだよ…。'],[0,'素手の哲学者 ✊','投げ物ゼロ主義。銃への信頼は買うが、グレは「拾った瞬間から強い」最コスパ装備。1枠だけでも。']]},
+dr:{n:'ドア戦闘力診断',e:'🚪',g:'#8affd6',ds:'ドアの巧者度',ts:'DOOR MASTER',cat:['ドア技術','駆け引き','建物戦'],sh:'ドア戦闘力診断は「{B}」（ドア力{P}%）だった🚪',Q:[
+['ドア越しの敵と遭遇',[['開閉フェイントで崩す',2],['グレで壊す',1],['正面から開ける',-2]]],
+['リロード中の被弾',[['即ドア閉めて時間作る',2],['走って逃げる',0],['撃ち合い続行',-2]]],
+['ドアブロック（閉じて蘇生）',[['常套手段',2],['たまに',0],['知らなかった',-2]]],
+['敵がドアを押さえてる',[['もう片方の入口へ',2],['殴って壊す',1],['押し合いに参加',-1]]],
+['ドアの破壊',[['状況で使い分け',2],['壊せること知らない',-2]]],
+['建物の入口の数',[['入る前に把握',2],['入ってから',-1]]],
+['ドア前の待ち伏せ',[['得意',2],['されて死にがち',-2]]],
+['ドアとは',[['盾であり武器',2],['ただの出入口',-2]]]],
+B:[[85,'ドアの支配者 🚪','開閉ひとつで撃ち合いの主導権を握る建物戦の達人。あなたの前でドアは盾になり、武器になり、罠になる。'],[65,'扉巧者','基本テクは完備。ドアブロック蘇生まで使えれば支配者の域。'],[45,'普通のドア使い','閉めて回復はできる。次は「開閉フェイント」を1個覚えるだけで建物戦の勝率が変わる。'],[25,'ドア素通り族','ドアの存在を活かせてない。リロード中に一回閉める、それだけで生存率が跳ねる。'],[0,'脳筋オープン勢 💪','全てのドアを正面から開けて、全ての待ち伏せを正面から受けてきた漢。今日からドアはあなたの味方だ。']]},
+ko:{n:'高所執着度診断',e:'🪜',g:'#5dd0ff',ds:'高さへの信仰心',ts:'HIGH GROUND',cat:['ポジション意識','執着の柔軟さ','射線管理'],sh:'高所執着度診断は「{B}」（高所信仰{P}%）だった🪜',Q:[
+['交戦開始、まず考えるのは',[['高所どっち',2],['人数有利',1],['とにかく撃つ',-2]]],
+['高所を取られた状態の撃ち合い',[['一回引いて取り返す',2],['そのまま戦う',-2]]],
+['ジップ・ジャンプタワー',[['高所アクセスとして常に意識',2],['移動手段',0],['あまり乗らない',-1]]],
+['「上を取れ」というコール',[['よく言う',2],['言われたら動く',0],['ピンと来ない',-2]]],
+['高所の弱点（孤立・登り待ち）',[['理解して使ってる',2],['考えたことない',-1]]],
+['屋上での粘り',[['安置次第で即捨てられる',2],['最後まで籠もる',-2]]],
+['レジェンド選び',[['縦移動できる子が好き',1],['関係ない',0]]],
+['見下ろす景色',[['脳汁が出る',2],['特に何も',-1]]]],
+B:[[85,'天空の民 🏔️','常に頭上を制する高所の信者。射線の優位を本能で理解してる。執着しすぎず「捨てる判断」もできれば完成形。'],[65,'高所巧者','取れる時は取る、無理なら作戦変更。柔軟さと意識のバランスが良い。'],[45,'平地の住人','高所の価値は知ってるが優先度低め。「交戦前に3秒だけ上を探す」癖で勝率が変わる。'],[25,'見上げる側の人','いつも上から撃たれてない？それ、偶然じゃないんだ…。次の試合、一回だけ先に登ってみて。'],[0,'地を這う戦士 🐍','重力に忠実なグラウンダー。地上戦の腕は買うが、Apexの弾は上から降ってくることが多いんだ。']]}
+};
+var XDIAGS3={
+kc:{n:'キャラコン願望診断',e:'🏃',g:'#ff3df2',ds:'実用派？魅せ技練習派？',ts:'MOVEMENT',cat:['技術探究心','練習量','実戦投入度'],sh:'キャラコン願望診断は「{B}」（キャラコン欲{P}%）だった🏃',Q:[
+['壁ジャンプ',[['実戦で出せる',2],['訓練場でなら',1],['やったことない',-2]]],
+['スーパーグライド',[['習得済み/練習中',2],['存在は知ってる',0],['何それ',-2]]],
+['動画で凄いキャラコンを見たら',[['即訓練場へ',2],['いいねだけ',0],['興味ない',-2]]],
+['タップストレイフ等の専門用語',[['だいたい分かる',2],['一部',0],['呪文',-2]]],
+['訓練場の滞在時間',[['気づくと1時間',2],['ウォームアップ程度',0],['ほぼ行かない',-2]]],
+['キャラコンの目的',[['生存と撃ち合いに直結',2],['カッコいいから',1],['不要',-2]]],
+['レレレ撃ち',[['幅・速度を意識して使い分け',2],['なんとなく',0],['直立不動',-2]]],
+['移動の最適化',[['スライディング距離まで考える',2],['普通に走る',-1]]]],
+B:[[85,'動きの求道者 🌪️','移動こそ最強の防御と知る者。訓練場の住人にして、その技術は実戦の生存率に確実に変わってる。'],[65,'キャラコン中級者','基本技は実戦投入済み。あとは「撃ちながら動く」の精度を上げれば化ける。'],[45,'興味あり層','憧れはあるけど練習が続かないタイプ。壁ジャン1個だけ、3日続けてみて。世界が変わる。'],[25,'直線移動派','動きはシンプル。実は被弾の多くは「動きの単調さ」が原因。レレレだけでも段違い。'],[0,'置物撃ち職人 🗿','足を止めて撃つ漢気。エイムに自信があるなら尚更、動きを足せば鬼に金棒なんだけどな…！']]},
+sd:{n:'感度迷子診断',e:'🎚️',g:'#ffb35d',ds:'感度沼ハマり度',ts:'SENS WANDERER',cat:['定着度','探究心の暴走','自分軸'],sh:'感度迷子診断は「{B}」（迷子度{P}%）だった🎚️',Q:[
+['今の感度を使ってる期間',[['1年以上',2],['数ヶ月',1],['今週変えた',-2]]],
+['感度を変えた回数（今シーズン）',[['0回',2],['1〜2回',0],['数えられない',-2]]],
+['プロの感度設定',[['参考程度',2],['見たら試したくなる',-1],['即真似する',-2]]],
+['調子が悪い日',[['感度のせいにしない',2],['ちょっと疑う',-1],['即変更',-2]]],
+['詳細設定（反応曲線・デッドゾーン等）',[['理解して固定',2],['いじって沼った',-2],['触ってない',0]]],
+['「神感度」という言葉',[['存在しないと知ってる',2],['探し続けてる',-2]]],
+['感度変更の翌日',[['変えてないから無い',2],['違和感でまた変える',-2]]],
+['エイム不調の原因分析',[['感度以外（疲れ・距離感）を先に疑う',2],['まず感度',-2]]]],
+B:[[85,'感度の悟り 🧘','「神感度は外でなく内にある」と知る者。固定された感度は身体に染み込み、もはや誤差すら補正できる。'],[65,'ほぼ定住民','たまの微調整はあれど軸はブレない。健全な感度ライフ。'],[45,'時々ふらつく','不調が続くと触りたくなる気持ち、分かる。でも「2週間は固定」をルールにすると安定する。'],[25,'感度放浪者 🚶','プロの設定を渡り歩く旅人。どの感度も「慣れる前に出発」してるから永遠に定着しない。'],[0,'完全迷子 🌀','昨日と今日で別の感度。エイムが安定しない最大の原因、それ感度変更そのものです。2週間、何があっても固定！']]},
+fr:{n:'フレンド申請されやすさ診断',e:'💌',g:'#ff8ad0',ds:'野良に好かれるムーブ',ts:'FRIEND MAGNET',cat:['好感ムーブ','貢献の見える化','続けたくなる感'],sh:'フレンド申請されやすさ診断は「{B}」（モテ度{P}%）だった💌',Q:[
+['味方のバナー・蘇生',[['多少のリスクなら取る',2],['安全なら',1],['基本見捨てる',-2]]],
+['物資の分配',[['バッテリー譲りがち',2],['聞かれたら',0],['全部自分の',-2]]],
+['試合後の「ナイス」',[['毎回送る',2],['勝った時だけ',0],['送らない',-2]]],
+['味方の好プレイ',[['ピンやVCで称える',2],['心で思う',0],['スルー',-1]]],
+['自分がキャリーした試合',[['「味方のおかげ」ムーブ',2],['ドヤる',-1]]],
+['負け試合の振る舞い',[['最後まで腐らない',2],['静かになる',0],['即抜け',-2]]],
+['野良からの申請経験',[['よく来る',2],['たまに',0],['来たことない',-2]]],
+['もう一回遊びたいと思われる自信',[['ある',1],['ない',-1]]]],
+B:[[85,'野良界のアイドル 💌','一緒の試合になった人が「また組みたい」と思う人間性。フレンド欄が自然に増えていく人徳タイプ。'],[65,'好かれる味方','基本ムーブに思いやりが乗ってる。申請が来ないのは相手が照れてるだけ。'],[45,'普通の良い人','悪い印象は残さないが、強い印象も残らない。「ナイス」を毎回送るだけで記憶に残る人になれる。'],[25,'記憶に残らない人','悪くないのに無風。蘇生・分配・称賛のどれか1個を意識的にやると世界が変わる。'],[0,'即抜けの人 💨','リザルト画面すら見ずに消える風。その効率主義、ちょっとだけ緩めると、固定メンバーができるかもよ。']]},
+mu:{n:'無言の圧診断',e:'🗿',g:'#9aa7ff',ds:'喋らないのに伝わる存在感',ts:'SILENT AURA',cat:['ピン表現力','行動での会話','信頼の置物感'],sh:'無言の圧診断は「{B}」（無言圧{P}%）だった🗿',Q:[
+['ピンの使い分け',[['敵・物資・移動を完璧に',2],['基本だけ',0],['ほぼ押さない',-2]]],
+['無言で味方を先導',[['ついてこさせられる',2],['たまに',0],['迷子製造機',-2]]],
+['「了解」のピン',[['必ず返す',2],['たまに',0],['既読無視',-2]]],
+['沈黙の意思表示',[['構え・視線・位置で伝える',2],['伝わらない',-1]]],
+['無言でも',[['連携できてると言われる',2],['いないと思われてる',-2]]],
+['VCを使わない理由',[['ピンで十分だから',2],['環境的に無理',1],['面倒',-1]]],
+['危険察知の共有',[['先回りピンで全員生還',2],['自分だけ逃げがち',-2]]],
+['存在感',[['無言なのに頼られる',2],['無言だと空気',-2]]]],
+B:[[85,'寡黙な指揮官 🗿','一言も発さずチームを動かす無言コミュ力の極致。あなたのピンには文脈があり、構えには意思がある。'],[65,'ピン職人','基本の意思疎通は完璧。先回りの危険ピンまでできれば指揮官の域。'],[45,'静かな同行者','ついていくのは上手いが発信が少なめ。「了解ピン」を返すだけで連携感が倍になる。'],[25,'気配薄め','います…よね？くらいの存在感。敵ピン1個から始めよう。それだけで「いる」が伝わる。'],[0,'透明人間 👻','ピンも無し、VCも無し。味方はあなたをNPCだと思ってる可能性すらある。ピンは無料、押そう。']]},
+co:{n:'コーチ適性診断',e:'🎓',g:'#22e3a0',ds:'教えるの向いてる？',ts:'COACHING',cat:['言語化力','寄り添い力','分析の客観性'],sh:'コーチ適性診断は「{B}」（コーチ力{P}%）だった🎓',Q:[
+['自分の上達した過程',[['言語化して説明できる',2],['なんとなく',-1]]],
+['人のプレイを見て',[['改善点が具体的に見える',2],['上手い下手は分かる',0],['分からない',-2]]],
+['アドバイスの仕方',[['1個に絞って伝える',2],['気づいた事を全部',-1],['しない',0]]],
+['できない人の気持ち',[['分かる・思い出せる',2],['正直分からない',-2]]],
+['教えた相手が失敗',[['根気よく待てる',2],['イライラする',-2]]],
+['説明の手段',[['例え話が得意',2],['とにかく実演',1],['「見て盗め」',-1]]],
+['人の成長',[['自分のことより嬉しい',2],['まあ嬉しい',1],['興味ない',-2]]],
+['「教えて」と言われる頻度',[['よくある',2],['たまに',0],['ない',-1]]]],
+B:[[85,'天職コーチ 🎓','技術・言語化・人格の3拍子が揃った教える側の人材。フレンドの初心者を1人育ててみて。多分、天職。'],[65,'頼れる先輩','要点を絞って伝えられる良コーチ気質。「1回に1個だけ」を守れてるのが偉い。'],[45,'教えたがり予備軍','知識はあるが、つい全部言いたくなるタイプ。相手が消化できる量は1個だけ、と覚えておこう。'],[25,'背中で語る派','実演はできるが説明が「こう、シュッと」になりがち。でもそれも一つの教え方。'],[0,'一匹狼の天才肌 🐺','感覚でできてしまうため説明不能。教わる側も大変なので、お互いソロでいよう…！']]},
+nt:{n:'ネタプレイ許容度診断',e:'🤡',g:'#ffc23d',ds:'ガチ⇔エンジョイ計',ts:'FUN METER',cat:['遊び心','勝利への執着の緩さ','ノリ対応力'],sh:'ネタプレイ許容度診断は「{B}」（エンジョイ度{P}%）だった🤡',Q:[
+['味方が全員モザンビーク縛りを提案',[['乗る',2],['カジュアルなら',1],['解散',-2]]],
+['P2020で勝ちに行く動画',[['大好物',2],['見るのは好き',1],['時間の無駄',-2]]],
+['ランク中のネタピック',[['たまには',0],['カジュアルでやれ',-2],['ランクこそ祭り',2]]],
+['負けても楽しかった試合',[['全然ある',2],['たまに',1],['負け＝無価値',-2]]],
+['縛りプレイ（近接のみ等）',[['経験あり',2],['興味はある',0],['意味不明',-2]]],
+['味方のふざけたスキン・エモート',[['ノってあげる',2],['スルー',0],['イラッ',-2]]],
+['Apexをやる理由',[['楽しいから',2],['勝ちたいから',-1],['習慣',0]]],
+['「全力でふざける」という言葉',[['最高',2],['矛盾してる',-2]]]],
+B:[[85,'遊びの天才 🤡','勝敗の外に楽しさを見つけられる人。あなたと遊ぶApexは、ランクポイントより価値がある思い出になる。'],[65,'エンジョイ上手','メリハリ型。ガチる時はガチる、ふざける時は全力。一番ゲームがうまい付き合い方。'],[45,'中間バランサー','どっちのノリにも合わせられる調整役。フルパに1人いると空気が壊れない貴重な存在。'],[25,'ガチ寄り','勝ちにこだわる姿勢は強さの源泉。ただ、たまの縛りプレイは練習として実は超有効だったりする。'],[0,'求道者 ⚔️','全試合が真剣勝負。その姿勢は尊いが、燃え尽きには注意。月1のネタ回は心の整備だと思って。']]},
+kx:{n:'固定パ解散危機診断',e:'💔',g:'#ff3d5e',ds:'チーム不和の火種度',ts:'TEAM CRISIS',cat:['不満の溜めなさ','役割満足度','空気の健全さ'],sh:'固定パ解散危機診断：うちのチームは「{B}」（健全度{P}%）だった💔',Q:[
+['負けた後のVC',[['反省会が建設的',2],['無言になる',-1],['誰かのせい探し',-2]]],
+['言いたいことを',[['その場で言える空気',2],['溜めがち',-2]]],
+['役割（IGL・前衛等）に',[['全員納得してる',2],['なんとなく固定化',0],['不満がある',-2]]],
+['1人だけ上手い/下手',[['気にしない空気',2],['たまにギスる',-1],['常に火種',-2]]],
+['ランク帯の差',[['気にせず楽しい',2],['合わせるのがしんどい',-2]]],
+['遊ぶ頻度の温度差',[['ない・調整できてる',2],['誘う側がいつも同じ',-1],['既読無視が増えた',-2]]],
+['メンバーの陰口',[['一切ない',2],['たまに出る',-2]]],
+['このチームで遊ぶ時間は',[['一番楽しい',2],['義務感が混ざってきた',-2]]]],
+B:[[85,'鉄の絆 🤝','不満を溜めない・役割に納得・温度差なし。解散の気配ゼロの理想チーム。そのまま大事にして。'],[65,'健全なチーム','小さな火種はあれど、ちゃんと話せる空気がある。それが一番の防火設備。'],[45,'平和だけど油断禁物','表面は平和、でも「言えてない事」が少しずつ堆積中かも。月1の雑談会（ゲーム外）が効く。'],[25,'黄色信号 ⚠️','無言の不満・温度差・役割の固定化が見えてる。早めに「最近どう？」の一言を。手遅れになる前に。'],[0,'解散カウントダウン 💔','正直、火種だらけ。でも解散危機の9割は「話せば済むこと」。今夜、勇気を出して雑談から始めよう。']]},
+pn:{n:'パッチノート熟読度診断',e:'📚',g:'#5dd0ff',ds:'アプデ情報への感度',ts:'PATCH READER',cat:['情報の速さ','読み込み深度','実戦反映力'],sh:'パッチノート熟読度診断は「{B}」（熟読度{P}%）だった📚',Q:[
+['新パッチ配信日',[['ノートを当日読む',2],['まとめ動画で',1],['知らずにプレイ',-2]]],
+['武器の数値変更（ダメ・レート）',[['数字まで把握',2],['強い弱いだけ',0],['気にしない',-2]]],
+['パッチ後の環境予想',[['自分なりに立てる',2],['プロの意見待ち',0],['しない',-2]]],
+['隠し変更（サイレント修正）',[['気づく方',2],['言われれば',0],['気づかない',-1]]],
+['メタの変化への対応',[['即構成を調整',2],['数週間後に追従',-1],['ずっと同じ',-2]]],
+['過去のシーズンの変更点',[['だいたい語れる',2],['有名なやつだけ',0],['記憶にない',-2]]],
+['アプデ直後の訓練場',[['変更点を検証しに行く',2],['行かない',-1]]],
+['パッチノートは',[['攻略情報の宝庫',2],['長い',-2]]]],
+B:[[85,'歩くパッチノート 📚','変更の数字まで頭に入った環境分析官。アプデ初週の勝率が高いのは、この情報優位のおかげ。'],[65,'情報感度高め','要点はきっちり押さえるタイプ。検証まですれば分析官の域。'],[45,'まとめ動画勢','効率的ではあるが、他人の解釈込みの情報。一次ソース（当サイトの更新タブにリンクあり）も覗いてみて。'],[25,'気づいたら環境が変わってる人','「あれ、この武器弱くなった？」を体感で知るタイプ。損してるよ！'],[0,'時が止まった戦士 ⏳','3シーズン前の知識で戦う化石ロマン派。せめて武器の強化・弱体だけでも見よう。当サイトで読めるから！']]},
+ma:{n:'マップ愛診断',e:'🗺️',g:'#22e3a0',ds:'マップへの愛着度',ts:'MAP LOVE',cat:['地理の知識','愛着','適応力'],sh:'マップ愛診断は「{B}」（マップ愛{P}%）だった🗺️',Q:[
+['地名',[['全エリア言える',2],['主要どころ',0],['「あの建物のとこ」',-2]]],
+['好きなマップ',[['理由まで語れる',2],['なんとなくある',1],['どれも同じ',-2]]],
+['ローテで嫌いなマップが来た',[['そのマップの楽しみ方を知ってる',2],['休憩する',-1],['文句を言いながらやる',-2]]],
+['初動の降下先',[['マップ毎に複数プラン',2],['毎回同じ',0],['ジャンマス任せ',-2]]],
+['リング収縮の予測',[['地形から読める',2],['なんとなく',0],['考えない',-2]]],
+['ジップ・トライデント等の配置',[['頭に入ってる',2],['一部',0],['毎回新鮮',-2]]],
+['消えた旧マップ',[['思い出を語れる',2],['覚えてない',-1]]],
+['新マップ実装日',[['探索だけで楽しい',2],['覚えるのが苦痛',-2]]]],
+B:[[85,'マップの生き字引 🗺️','地形・地名・物資・動線が頭に完全インストール済み。あなたの「土地勘」はもはや第6のスキル。'],[65,'地理に強い人','主要な知識は完備。リング予測まで読めれば生き字引の域。'],[45,'そこそこ把握勢','よく行くエリアだけ詳しいタイプ。あえて知らないエリアに降りる週を作ると世界が広がる。'],[25,'雰囲気で走る人','地名が出ないとコールも曖昧に。マップを開く回数を倍にするだけで変わる。'],[0,'永遠の観光客 🧳','毎試合が初見プレイの新鮮さ。それも才能だが、せめて今いる場所の名前だけは…！']]},
+as:{n:'競技シーン視聴者診断',e:'🏆',g:'#ffc23d',ds:'ALGS見てる度',ts:'ESPORTS FAN',cat:['視聴量','選手・チーム知識','観戦眼'],sh:'競技シーン視聴者診断は「{B}」（観戦ガチ度{P}%）だった🏆',Q:[
+['ALGS（公式大会）',[['リアタイ視聴',2],['切り抜きで',1],['見たことない',-2]]],
+['推しチーム・選手',[['いる。語れる',2],['なんとなく知ってる',0],['いない',-2]]],
+['競技用語（エッジ・ゾーン等の動き）',[['理解してる',2],['一部',0],['分からない',-2]]],
+['大会の構成・ピック率',[['チェックする',2],['結果だけ',0],['興味ない',-2]]],
+['プロの試合から',[['立ち回りを自分用に翻訳できる',2],['すごいとしか',-1]]],
+['国内・海外の勢力図',[['だいたい分かる',2],['国内だけ',0],['分からない',-2]]],
+['大会期間中の生活',[['スケジュール調整する',2],['暇なら見る',0],['通常運転',-1]]],
+['競技シーンの存在は',[['Apexの華',2],['別ゲー',-2]]]],
+B:[[85,'ALGSの民 🏆','大会と共に生きる競技シーンの住人。観る目が肥えてるぶん、自分の試合の解像度も実は高い。'],[65,'しっかり観戦勢','要所の大会は押さえるファン。プロの動きの「翻訳」までできれば観戦が練習になる。'],[45,'切り抜き視聴勢','ハイライトで楽しむライト層。一度フルマッチを通しで見ると、切り抜きでは見えない駆け引きに痺れるよ。'],[25,'結果だけ知る人','優勝チームだけ知ってるタイプ。推しを1チーム作ると、大会が10倍面白くなる。'],[0,'我が道プレイヤー 🛤️','競技シーンはノータッチ。それも自由だが、プロの動きは無料で最強の教材なんだ…！']]},
+tg:{n:'エペ用語汚染度診断',e:'💬',g:'#c062ff',ds:'日常会話への侵食度',ts:'SLANG LEVEL',cat:['用語の浸透','日常への漏れ','仲間内の通用度'],sh:'エペ用語汚染度診断は「{B}」（汚染度{P}%）だった💬',Q:[
+['日常で「アーマー進化した」的な比喩',[['言う',2],['仲間内なら',1],['言わない',-2]]],
+['疲れた時',[['「ノックされた」と言う',2],['普通に疲れたと言う',-1]]],
+['集合の連絡',[['「ピン刺した」「集合ピン」',2],['普通に住所',-2]]],
+['すごい人を見た時',[['「プレデターやん」',2],['すごいと言う',-1]]],
+['「漁夫る」を日常で',[['使う（順番待ち横入り等）',2],['使わない',-1]]],
+['家族・非ゲーマーへの説明',[['つい用語が出て通じない',2],['翻訳できる',0],['そもそも話さない',-1]]],
+['「最終安置」という言葉を',[['締切や宴会の終盤に使う',2],['使わない',-1]]],
+['自覚',[['もう手遅れ',2],['ちょっとある',0],['ない',-2]]]],
+B:[[85,'歩くエペ用語辞典 💬','日常会話の30%がApex語。家族には通じてないが、仲間内では最高に解像度の高い会話ができる。もう戻れない。'],[65,'かなり浸透','要所でエペ語が漏れ出すタイプ。「ささやき女将」のように自然に翻訳できれば実害なし。'],[45,'仲間内限定','TPOで使い分けできてる健全レベル。ゲーマー同士の合言葉として最高の距離感。'],[25,'たまに出る','ふとした瞬間に「ダウンした」が漏れる程度。まだ社会性は守られている。'],[0,'完全分離型 🎩','ゲームと日常の言語が完全に分かれてる紳士。その切替力、実はすごい才能。']]},
+cp:{n:'ケアパケ運診断',e:'🎁',g:'#8affd6',ds:'物資の引きの強さ',ts:'CARE PACKAGE LUCK',cat:['物資運','引き寄せ行動','運の活かし方'],sh:'ケアパケ運診断は「{B}」（物資運{P}%）だった🎁',Q:[
+['初動の武器運',[['いつも何か揃う',2],['普通',0],['素手スタート常連',-2]]],
+['金アーマー・金バッグ',[['よく見つける',2],['たまに',0],['都市伝説',-2]]],
+['ケアパケの落下位置',[['なぜか近くに来る',2],['普通',0],['敵の目の前にだけ来る',-2]]],
+['レプリケーター',[['欲しい物がよく並ぶ',2],['普通',0],['いつも微妙',-2]]],
+['デスボックス漁り',[['お宝率高い',2],['普通',0],['空き箱専門',-2]]],
+['ケアパケ武器',[['よく拾える',2],['たまに',0],['触ったことすらない',-2]]],
+['「物資運いいね」と言われた事',[['ある',2],['ない',-1]]],
+['運に頼らない工夫（ルート開拓等）',[['してる',2],['運任せ',-1]]]],
+B:[[85,'物資の神の寵児 🎁','金装備があなたを探して落ちてくるレベルの引きの強さ。その運、宝くじにも使お…いやApexに使おう。'],[65,'引き強プレイヤー','体感より上振れ多めの幸運層。運が良い日ほどランクを回すのが正解。'],[45,'平均的な運','上振れも下振れも人並み。だからこそルート知識という「実力の物資運」が差になる。'],[25,'やや不運','素手スタート率高め。でも実は降下位置の競合が原因かも。降りる場所を半径50mズラしてみて。'],[0,'空き箱コレクター 📭','あなたが開ける箱はなぜか空。もはや才能。でも大丈夫、敵を倒せば箱の中身は保証される（戦闘民族の発想）。']]},
+rg:{n:'リング運診断',e:'🌀',g:'#19e3ff',ds:'安置に愛されてる？',ts:'RING LUCK',cat:['安置運','読みの精度','移動の段取り'],sh:'リング運診断は「{B}」（安置運{P}%）だった🌀',Q:[
+['最終安置',[['よく自分側に寄る',2],['普通',0],['毎回マラソン大会',-2]]],
+['今いる場所が次の安置内だった率',[['高い',2],['半々',0],['ほぼ外',-2]]],
+['リング収縮中の被弾',[['ほぼない',2],['たまに',0],['毎試合焼かれてる',-2]]],
+['「神安置」経験',[['よくある',2],['たまに',0],['記憶にない',-2]]],
+['安置予測（地形・偏り）',[['考えて先回り',2],['なんとなく',0],['考えない',-2]]],
+['移動のタイミング',[['収縮前に余裕を持つ',2],['アナウンスで動く',0],['ギリギリ族',-2]]],
+['安置外の戦闘',[['しない主義',2],['たまにやって焼かれる',-2]]],
+['リングに対する感情',[['共存できてる',2],['宿敵',-2]]]],
+B:[[85,'安置の申し子 🌀','リングがあなたを中心に閉じてるのでは？と疑うレベル。だがその「運」、実は早めの移動と位置取りの実力かも。'],[65,'リングと友達','大きく外すことが少ないタイプ。読みと運の好循環ができてる。'],[45,'普通の関係','寄る日も外れる日もある。「収縮の1個前に動く」を徹底すると、運が良くなった気がするはず。'],[25,'マラソンランナー 🏃','毎試合、安置に走らされてる感。それ運じゃなくて、漁りすぎ＆判断の遅れが原因のことが多い…！'],[0,'リングの天敵 🔥','安置はいつも地球の裏側。リングダメージとの生涯戦闘ダメージ、いい勝負してない？移動は資産、覚えよう。']]},
+ce:{n:'チーター遭遇運診断',e:'👻',g:'#ff3d5e',ds:'引き当て体質チェック',ts:'CHEATER LUCK',cat:['遭遇頻度の低さ','見分けの冷静さ','対処の正しさ'],sh:'チーター遭遇運診断は「{B}」（遭遇運{P}%）だった👻',Q:[
+['明らかなチート遭遇頻度',[['ほぼない',2],['月1くらい',0],['毎日のように',-2]]],
+['「今のチートじゃない？」の判定',[['キルカメで冷静に確認',2],['即チート認定',-2]]],
+['上手いだけの人をチート扱い',[['しない',2],['たまに疑う',-1],['よくする',-2]]],
+['通報機能',[['証拠ベースで使う',2],['使ったことない',0],['負けたら押す',-2]]],
+['遭遇後のメンタル',[['切り替えられる',2],['1試合引きずる',-1],['その日終了',-2]]],
+['プレイ時間帯',[['昼〜夜',1],['深夜帯メイン',-1]]],
+['遭遇した時の行動',[['即抜けせず観察→通報',2],['即抜け',-1]]],
+['「最近チーター多い」と',[['あまり感じない',2],['毎日言ってる',-2]]]],
+B:[[85,'クリーンロビーの民 ✨','チーターとほぼ無縁の平和なマッチ運。冷静な判定眼も持ってて、上手い人を疑わない健全さが素敵。'],[65,'平均より平和','たまに当たるが引きずらないタイプ。証拠ベースの通報、正しい市民の行動。'],[45,'普通の遭遇率','月に数回は怪しいのに当たる。キルカメ確認→通報のルーティン化で心の消耗を最小に。'],[25,'引き寄せ気味 🧲','遭遇率高め…時間帯やサーバーの影響かも。深夜帯を避けるだけで体感が変わることがある。'],[0,'チーターホイホイ 👻','あなたのロビーは魔境。お祓いを勧めたいレベルだが、通報の積み重ねがBANに繋がってる。あなたは正義の犠牲者だ。']]}
+};
+/* 統合・ランナー */
+(function(){for(var k in XDIAGS2)XDIAGS[k]=XDIAGS2[k];for(var k2 in XDIAGS3)XDIAGS[k2]=XDIAGS3[k2];})();
+(function(){for(var c in XDIAGS){(function(code,def){
+ BANDF[code]=function(p){for(var i=0;i<def.B.length;i++){if(p>=def.B[i][0])return {n:def.B[i][1],d:def.B[i][2]};}var L=def.B[def.B.length-1];return {n:L[1],d:L[2]};};
+ RICHCAT[code]=def.cat;
+})(c,XDIAGS[c]);}})();
+function xdStart(code){var def=XDIAGS[code];if(!def)return;
+ var bank=def.Q.map(function(x){return {q:x[0],a:x[1]};});
+ scqRun(bank,function(a,b){var p=scqPct(a,b);var band=BANDF[code](p);
+  var sh=def.sh.replace('{B}',band.n).replace('{P}',p);
+  $('diagArea').innerHTML=gaugeRes(p,p,'/100',band,def.ts,sh,code);});}
+function xdTiles(){
+ try{
+  var pg=document.querySelector('[onclick="openDiag(\'pg\')"]');if(!pg||document.getElementById('xdTilesDone'))return;
+  var grid=pg.parentNode;var frag=document.createDocumentFragment();
+  var mark=document.createElement('span');mark.id='xdTilesDone';mark.style.display='none';frag.appendChild(mark);
+  for(var c in XDIAGS){var d=XDIAGS[c];
+   var t=document.createElement('div');t.className='tile';t.style.setProperty('--g',d.g);
+   t.setAttribute('onclick',"openDiag('"+c+"')");
+   t.innerHTML='<span class="lv">NEW</span><div class="ic">'+d.e+'</div><div><div class="nm">'+d.n+'</div><div class="ds">'+d.ds+'</div></div>';
+   frag.appendChild(t);
+  }
+  grid.appendChild(frag);
+ }catch(e){}
+}
+document.addEventListener('DOMContentLoaded',xdTiles);setTimeout(function(){try{xdTiles();}catch(e){}},0);
+
 /* ===== LEADERBOARD ===== */
 function loadLb(){var lg=$('lbLegend').value,pl=$('lbPlat').value;$('lbBox').innerHTML='<div class="loading">読み込み中…</div>';
   gas('leaderboard','&legend='+lg+'&platform='+pl).then(function(d){
@@ -771,14 +1463,14 @@ function loadLb(){var lg=$('lbLegend').value,pl=$('lbPlat').value;$('lbBox').inn
 
 /* ===== SHARE ===== */
 function openX(u){try{var w=window.open(u,'_blank','noopener');if(w){return;}}catch(e){}location.href=u;}
-function share(txt,noask){var url=location.href.split('#')[0];openX('https://twitter.com/intent/tweet?text='+encodeURIComponent('【APEX激やばツール】'+txt+(noask?'':' あなたは？'))+'&url='+encodeURIComponent(url)+'&hashtags='+encodeURIComponent(SHARE_TAG));}
+function share(txt,noask){var url=location.href.split('#')[0].split('?')[0]+(DIAG_R?'?r='+DIAG_R:'');openX('https://twitter.com/intent/tweet?text='+encodeURIComponent('【APEX激やばツール】'+txt+(noask?'':' あなたは？'))+'&url='+encodeURIComponent(url)+'&hashtags='+encodeURIComponent(SHARE_TAG));}
 
 /* ===== DIAGNOSES ===== */
 function profile(ans,bank){var ax={AGG:0,POS:0,SUP:0,INFO:0,RNG:0,RISK:0};ans.forEach(function(a,q){var s=bank[q].a[a][1];for(var k in s)ax[k]+=s[k];});var mag=0;for(var k in ax)mag+=ax[k]*ax[k];mag=Math.sqrt(mag)||1;var n={};for(var k in ax)n[k]=ax[k]/mag;return n;}
 function bestList(list,n,worst){var out=list.map(function(t){var tm=0;for(var k in t.sig)tm+=t.sig[k]*t.sig[k];tm=Math.sqrt(tm)||1;var dot=0;for(var k in t.sig)dot+=(t.sig[k]/tm)*(n[k]||0);return {t:t,dot:dot};});out.sort(function(a,b){return worst?a.dot-b.dot:b.dot-a.dot;});return out;}
 var diagState={};
-function openDiag(d){diagState.cur=d;var a=$('diagArea');
-  if(d==='sh'){shStart();}else if(d==='ng'){ngStart();}else if(d==='ub'){ubStart();}else if(d==='ts'){tsStart();}else if(d==='rl'){rlStart();}else if(d==='lk'){lkStart();}else if(d==='du'){duStart();}else if(d==='tr'){trStart();}else if(d==='ga'){gaStart();}else if(d==='pt'){ptStart();}else if(d==='mt'){mtStart();}else if(d==='sp'){spStart();}else if(d==='iq'){iqStart();}else if(d==='mg'){mgStart();}else if(d==='nl'){nlStart();}else if(d==='bg'){bgStart();}else if(d==='pg'){pgStart();}
+function openDiag(d){diagState.cur=d;DIAG_R='';var a=$('diagArea');
+  if(d==='sh'){shStart();}else if(d==='ng'){ngStart();}else if(d==='ub'){ubStart();}else if(d==='ts'){tsStart();}else if(d==='rl'){rlStart();}else if(d==='lk'){lkStart();}else if(d==='du'){duStart();}else if(d==='tr'){trStart();}else if(d==='ga'){gaStart();}else if(d==='pt'){ptStart();}else if(d==='mt'){mtStart();}else if(d==='sp'){spStart();}else if(d==='iq'){iqStart();}else if(d==='mg'){mgStart();}else if(d==='nl'){nlStart();}else if(d==='bg'){bgStart();}else if(d==='pg'){pgStart();}else if(d==='ag'){agStart();}else if(d==='kk'){kkStart();}else if(d==='rip'){ripStart();}else if(d==='bs'){bsStart();}else if(XDIAGS[d]){xdStart(d);}
   a.scrollIntoView({behavior:'smooth',block:'start'});}
 
 /* 立ち回り (30Q/13type) */
@@ -895,9 +1587,9 @@ function scqR(){var q=scqBank[scqI];$('diagArea').innerHTML='<div class="qnum">Q
 function scqP(i){scqA[scqI]=i;if(scqI<scqBank.length-1){scqI++;scqR();}else{scqDone(scqA,scqBank);}}
 function scqPrev(){if(scqI>0){scqI--;scqR();}}
 function scqPct(a,bank){var p=0,lo=0,hi=0;bank.forEach(function(q,i){var vs=q.a.map(function(o){return o[1];});lo+=Math.min.apply(null,vs);hi+=Math.max.apply(null,vs);p+=q.a[a[i]][1];});return Math.round((p-lo)/Math.max(1,(hi-lo))*100);}
-var RECO=[["sh","🎯","立ち回り診断"],["ts","🔥","強さ診断"],["mg","🎲","味方ガチャ"],["nl","🔮","本日の野良運"],["bg","🤬","民度診断"],["iq","🧠","立ち回りIQ"],["mt","🛡️","煽り耐性"],["tr","💣","地雷度"],["ga","🎂","ゲーマー年齢"],["du","🤝","デュオ相性"],["pg","💀","罰ゲーム抽選"]];
+var RECO=[["sh","🎯","立ち回り診断"],["ts","🔥","強さ診断"],["mg","🎲","味方ガチャ"],["nl","🔮","本日の野良運"],["bg","🤬","民度診断"],["iq","🧠","立ち回りIQ"],["mt","🛡️","煽り耐性"],["tr","💣","地雷度"],["ga","🎂","ゲーマー年齢"],["du","🤝","デュオ相性"],["pg","💀","罰ゲーム抽選"],["ag","🗣️","煽り加害度"],["rip","🪦","エペ走馬灯"],["kk","💸","課金溶かし度"],["bs","📦","物資ルート"]];
 function recoBlock(code){var p=RECO.filter(function(r){return r[0]!==code;});for(var i=p.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=p[i];p[i]=p[j];p[j]=t;}var chips=p.slice(0,2).map(function(r){return '<button class="reco" onclick="openDiag(\''+r[0]+'\')">'+r[1]+' '+r[2]+'</button>';}).join('')+'<button class="reco shop" onclick="home();open_(\'shop\')">🛒 おすすめデバイス</button>';return '<div class="recowrap"><div class="recottl">あわせて遊ぶ</div><div class="recos">'+chips+'</div></div>';}
-function gaugeRes(pct,num,suf,band,ts,shareTxt,code){return '<div class="res"><div class="gauge" style="--p:'+pct+'%"><div class="in"><div class="n mono">'+num+'</div><div class="o">'+suf+'</div></div></div><div class="tn">'+band.n+'</div><div class="ts">'+ts+'</div><div class="desc">'+band.d+'</div><button class="btn x" onclick="share(\''+shareTxt+'\')">𝕏 シェア</button><button class="btn primary" onclick="openDiag(\''+code+'\')">もう一度</button>'+recoBlock(code)+'</div>';}
+function gaugeRes(pct,num,suf,band,ts,shareTxt,code){DIAG_R=code+pct;diagHistSave({c:code,n:band.n,num:num,suf:suf,pct:pct,sh:shareTxt,t:Date.now()});return '<div class="res"><div class="gauge" style="--p:'+pct+'%"><div class="in"><div class="n mono">'+num+'</div><div class="o">'+suf+'</div></div></div><div class="tn">'+band.n+'</div><div class="ts">'+ts+'</div><div class="desc">'+band.d+'</div>'+richBlockG(code,pct,band)+'<button class="btn x" onclick="share(\''+shareTxt+'\')">𝕏 シェア</button><button class="btn primary" onclick="openDiag(\''+code+'\')">もう一度</button>'+recoBlock(code)+'</div>';}
 
 /* 煽り耐性診断 mt */
 var MTQ=[{q:"試合中に暴言を受けた。",a:[["完全スルー",2],["少しイラッとする",1],["言い返す",0],["プレイが乱れる",-1]]},{q:"連敗が続いた時の気分は？",a:[["すぐ切り替える",2],["普通",1],["しばらく引きずる",0]]},{q:"味方の地雷ムーブを見たら？",a:[["フォローに回る",2],["黙って続行",1],["つい指摘する",0],["萎える",-1]]},{q:"理不尽な負け方をした。",a:[["次いこ、で終了",2],["軽く愚痴る",1],["デバイスを握る手に力が入る",-1]]},{q:"煽りエモートをされた。",a:[["何も感じない",2],["ちょっとムカつく",0],["絶対やり返す",-1]]},{q:"VCで責められた。",a:[["冷静に話し合う",2],["スルーする",1],["口論になる",-1]]},{q:"格上に一瞬で溶かされた。",a:[["学びにする",2],["仕方ないと割り切る",1],["萎えて落ちる",-1]]},{q:"自分のミスで全滅させた。",a:[["謝って前を向く",2],["反省して続ける",1],["自己嫌悪で崩れる",-1]]}];
