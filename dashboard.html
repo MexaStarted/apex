@@ -167,7 +167,15 @@ function copyTxt(t){try{navigator.clipboard.writeText(t).then(function(){toast('
 function vib(){try{if(navigator.vibrate)navigator.vibrate(12);}catch(e){}}
 /* trend 派生 */
 function deriv(d){
- var tr=(d.trend||[]).map(function(x){return {date:x.date,v:Number(x.visits)||0,nu:Number(x.nu)||0,ret:Math.max(0,(Number(x.visits)||0)-(Number(x.nu)||0))};});
+ var raw=(d.trend||[]).map(function(x){return {date:String(x.date||'').slice(0,10),v:Number(x.visits)||0,nu:Number(x.nu)||0};});
+ // 日付がISO/重複でもOKにする：正しいyyyy-MM-ddが揃ってなければ「末尾=今日」として連番付与
+ var uniqDates={};raw.forEach(function(r){if(/^\d{4}-\d{2}-\d{2}$/.test(r.date))uniqDates[r.date]=1;});
+ var needFix=(Object.keys(uniqDates).length<raw.length);
+ var tr=raw.map(function(r,i){
+   var dt=r.date;
+   if(needFix){var dd=new Date(Date.now()+9*36e5-(raw.length-1-i)*864e5);dt=dd.toISOString().slice(0,10);}
+   return {date:dt,v:r.v,nu:r.nu,ret:Math.max(0,r.v-r.nu)};
+ });
  var vs=tr.map(function(x){return x.v;});
  var sum=vs.reduce(function(a,b){return a+b;},0);
  var avg=tr.length?sum/tr.length:0;
@@ -603,33 +611,42 @@ function loadFail(msg,detail){
  ['p-chart','p-list','p-ins'].forEach(function(id){$g(id).innerHTML='';});
  if(cache){D=cache.d;D._dv=deriv(D);try{renderAlerts();renderCharts();renderLists();renderInsights();renderSettings();}catch(e){}$g('cacheage').textContent='⚠️ '+Math.round((Date.now()-cache.t)/6e4)+'分前のキャッシュを下に表示中';}
 }
+function applyData(d,manual,t0){
+  if(!d||!d.ok)return false;
+  FETCH_MS=Math.round(performance.now()-t0);FETCH_AT=Date.now();RETRY=0;
+  PREV=D;D=d;D._dv=deriv(d);
+  lsSet('dash2cache',{t:Date.now(),d:d});
+  pushSnap(d);
+  try{renderAll();diffFlash();titleBadge();}catch(re){loadFail('データは取得できましたが表示中にエラー: '+(re&&re.message),'');return true;}
+  if(manual){toast('更新した（'+FETCH_MS+'ms）');vib();}
+  return true;
+}
+function loadJSONP(manual,t0){
+ var url=KNOWN_URL;var cbName='__dash_cb_'+Date.now();var done=false;
+ var sc=document.createElement('script');
+ var timer=setTimeout(function(){if(done)return;done=true;cleanup();afterFail();},13000);
+ function cleanup(){try{delete window[cbName];}catch(e){window[cbName]=undefined;}if(sc.parentNode)sc.parentNode.removeChild(sc);clearTimeout(timer);}
+ function afterFail(){RETRY++;if(RETRY<=2){setTimeout(function(){loadData(false);},2500);}else{loadFail('GASからデータを取得できませんでした（fetch/JSONP両方失敗）。デプロイの「アクセス：全員」とコード更新（JSONP対応のout_関数）を確認してください。','');}}
+ window[cbName]=function(d){if(done)return;done=true;cleanup();if(!applyData(d,manual,t0))loadFail('GASは応答しましたが ok:true ではありません。','');};
+ sc.onerror=function(){if(done)return;done=true;cleanup();afterFail();};
+ sc.src=url+(url.indexOf('?')>=0?'&':'?')+'action=dashboard&callback='+cbName+'&_t='+Date.now();
+ document.body.appendChild(sc);
+}
 function loadData(manual){
  var url=KNOWN_URL;var t0=performance.now();
  if(!D&&RETRY===0)setLoading();
- var cbName='__dash_cb_'+Date.now();
- var done=false;
- var sc=document.createElement('script');
- var timer=setTimeout(function(){ if(done)return; done=true; cleanup(); jsonpFail(); },13000);
- function cleanup(){ try{delete window[cbName];}catch(e){window[cbName]=undefined;} if(sc.parentNode)sc.parentNode.removeChild(sc); clearTimeout(timer); }
- window[cbName]=function(d){ if(done)return; done=true; cleanup();
-   try{
-     if(!d||!d.ok)throw 0;
-     FETCH_MS=Math.round(performance.now()-t0);FETCH_AT=Date.now();RETRY=0;
-     PREV=D;D=d;D._dv=deriv(d);
-     lsSet('dash2cache',{t:Date.now(),d:d});
-     pushSnap(d);
-     try{renderAll();diffFlash();titleBadge();}catch(re){loadFail('データは取得できましたが表示中にエラー: '+(re&&re.message),'');return;}
-     if(manual){toast('更新した（'+FETCH_MS+'ms）');vib();}
-   }catch(e){ loadFail('GASは応答しましたが ok:true ではありません。GAS側のエラーの可能性。',''); }
- };
- function jsonpFail(){
-   RETRY++;
-   if(RETRY<=2){ setTimeout(function(){loadData(false);},2500); return; }
-   loadFail('GASからデータを取得できませんでした（応答なし/タイムアウト/権限）。','');
- }
- sc.onerror=function(){ if(done)return; done=true; cleanup(); jsonpFail(); };
- sc.src=url+(url.indexOf('?')>=0?'&':'?')+'action=dashboard&callback='+cbName+'&_t='+Date.now();
- document.body.appendChild(sc);
+ // まず通常のfetch（CORSが通ればこれで取れる）
+ var ctrl=null;
+ fetch(url+(url.indexOf('?')>=0?'&':'?')+'action=dashboard&_t='+Date.now(),{cache:'no-store'})
+  .then(function(r){return r.text();})
+  .then(function(txt){
+    var d=null;try{d=JSON.parse(txt);}catch(e){throw new Error('parse');}
+    if(!applyData(d,manual,t0)){throw new Error('notok');}
+  })
+  .catch(function(err){
+    // fetchがCORS等で失敗 → JSONPにフォールバック
+    loadJSONP(manual,t0);
+  });
 }
 function renderAll(){
  if(!D)return;
