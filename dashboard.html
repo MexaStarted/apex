@@ -543,7 +543,7 @@ function kpiImage(){
  dl(dataBlob(c.toDataURL('image/png')),'apex-summary.png');
 }
 function dataBlob(durl){var a=durl.split(',');var b=atob(a[1]);var n=b.length;var u=new Uint8Array(n);while(n--)u[n]=b.charCodeAt(n);return new Blob([u],{type:'image/png'});}
-function pingGas(){var t0=performance.now();$g('pingOut').textContent='テスト中…';fetch(KNOWN_URL).then(function(r){return r.json();}).then(function(){$g('pingOut').textContent='✅ 応答OK ('+Math.round(performance.now()-t0)+'ms)';}).catch(function(){$g('pingOut').textContent='❌ 応答なし。デプロイ設定（全員アクセス可）を確認';});}
+function pingGas(){var t0=performance.now();$g('pingOut').textContent='テスト中…';var cb='__ping_'+Date.now();var sc=document.createElement('script');var done=false;var tm=setTimeout(function(){if(done)return;done=true;cl();$g('pingOut').innerHTML='❌ 応答なし（13秒）。<br>デプロイの「アクセスできるユーザー」が<b>全員</b>か確認。違えば新しいデプロイを作り直してURLを更新。';},13000);function cl(){try{delete window[cb];}catch(e){}if(sc.parentNode)sc.parentNode.removeChild(sc);clearTimeout(tm);}window[cb]=function(d){if(done)return;done=true;cl();$g('pingOut').textContent=(d&&d.ok)?('✅ 接続OK ('+Math.round(performance.now()-t0)+'ms)'):'⚠️ 応答はあるがokではない';};sc.onerror=function(){if(done)return;done=true;cl();$g('pingOut').innerHTML='❌ 読み込み失敗。アクセス権限（全員）を確認。';};sc.src=KNOWN_URL+(KNOWN_URL.indexOf('?')>=0?'&':'?')+'callback='+cb+'&_t='+Date.now();document.body.appendChild(sc);}
 function helpMode(){alert('各セクションの見出しタップで開閉。KPIタップ=詳細、長押し=定義。バーの数値タップ=コピー。グラフの点タップ=日別詳細。困ったら設定タブの「データが増えない時」を参照。');}
 /* ===== インタラクション・取得・初期化 ===== */
 function secToggle(h){var sec=h.closest('.sec');sec.classList.toggle('closed');var key='sec_'+(sec.getAttribute('data-sec')||h.textContent.slice(0,6));var st=lsGet('dash2secs',{});st[key]=sec.classList.contains('closed')?1:0;lsSet('dash2secs',st);}
@@ -606,26 +606,30 @@ function loadFail(msg,detail){
 function loadData(manual){
  var url=KNOWN_URL;var t0=performance.now();
  if(!D&&RETRY===0)setLoading();
- var timed=new Promise(function(_,rej){setTimeout(function(){rej(new Error('timeout'));},12000);});
- Promise.race([fetch(url+(url.indexOf('?')>=0?'&':'?')+'action=dashboard'),timed]).then(function(r){return r.text();}).then(function(txt){
-  var d=null;
-  try{d=JSON.parse(txt);}catch(e){
-    if(txt&&txt.charAt(0)==='<'){throw {diag:'GASがJSONではなくHTMLを返しています（ログイン画面/エラーページの可能性大）。',body:txt};}
-    throw {diag:'応答をJSONとして読めませんでした。',body:txt};
-  }
-  if(!d||!d.ok)throw {diag:'GASは応答しましたが ok:true ではありません。GAS側のエラーの可能性。',body:txt};
-  FETCH_MS=Math.round(performance.now()-t0);FETCH_AT=Date.now();RETRY=0;
-  PREV=D;D=d;D._dv=deriv(d);
-  lsSet('dash2cache',{t:Date.now(),d:d});
-  pushSnap(d);
-  try{renderAll();diffFlash();titleBadge();}catch(re){loadFail('データは取得できましたが表示中にエラー: '+re.message,'');return;}
-  if(manual){toast('更新した（'+FETCH_MS+'ms）');vib();}
- }).catch(function(err){
-  RETRY++;
-  var msg=(err&&err.diag)?err.diag:(err&&err.message==='timeout')?'応答が12秒なくタイムアウト。GASの初回起動が遅い場合もあるので再試行を。':'通信に失敗（ネットワーク/CORS）。';
-  if(RETRY===1&&!(err&&err.diag)){setTimeout(function(){loadData(false);},2500);return;}
-  loadFail(msg,(err&&err.body)||'');
- });
+ var cbName='__dash_cb_'+Date.now();
+ var done=false;
+ var sc=document.createElement('script');
+ var timer=setTimeout(function(){ if(done)return; done=true; cleanup(); jsonpFail(); },13000);
+ function cleanup(){ try{delete window[cbName];}catch(e){window[cbName]=undefined;} if(sc.parentNode)sc.parentNode.removeChild(sc); clearTimeout(timer); }
+ window[cbName]=function(d){ if(done)return; done=true; cleanup();
+   try{
+     if(!d||!d.ok)throw 0;
+     FETCH_MS=Math.round(performance.now()-t0);FETCH_AT=Date.now();RETRY=0;
+     PREV=D;D=d;D._dv=deriv(d);
+     lsSet('dash2cache',{t:Date.now(),d:d});
+     pushSnap(d);
+     try{renderAll();diffFlash();titleBadge();}catch(re){loadFail('データは取得できましたが表示中にエラー: '+(re&&re.message),'');return;}
+     if(manual){toast('更新した（'+FETCH_MS+'ms）');vib();}
+   }catch(e){ loadFail('GASは応答しましたが ok:true ではありません。GAS側のエラーの可能性。',''); }
+ };
+ function jsonpFail(){
+   RETRY++;
+   if(RETRY<=2){ setTimeout(function(){loadData(false);},2500); return; }
+   loadFail('GASからデータを取得できませんでした（応答なし/タイムアウト/権限）。','');
+ }
+ sc.onerror=function(){ if(done)return; done=true; cleanup(); jsonpFail(); };
+ sc.src=url+(url.indexOf('?')>=0?'&':'?')+'action=dashboard&callback='+cbName+'&_t='+Date.now();
+ document.body.appendChild(sc);
 }
 function renderAll(){
  if(!D)return;
