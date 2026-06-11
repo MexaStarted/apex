@@ -4,11 +4,25 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>APEX激やばツール｜マップ・プレデター・スタッツ・診断</title>
-<meta name="description" content="Apexのマップローテ・プレデターボーダー・サーバー状態・スタッツ検索・ランキングに加え、立ち回り診断や使うな診断など激やばツールを全部入り。">
+<meta name="description" content="Apexのマップローテ・プレデターボーダー・サーバー状態・スタッツ検索・ランキングに加え、60種以上の診断やショップなど激やばツールを全部入り。">
+<meta property="og:title" content="APEX激やばツール">
+<meta property="og:description" content="マップ/プレデター/サーバー状態/スタッツ検索/60種以上の診断/ショップ 全部入りのApexツール">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://mexastarted.github.io/apex/">
+<meta property="og:image" content="https://mexastarted.github.io/apex/ogp.png">
+<meta property="og:site_name" content="APEX激やばツール">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="APEX激やばツール">
+<meta name="twitter:description" content="60種以上の診断・マップ・プレデター・スタッツ検索 全部入りのApexツール">
+<meta name="twitter:image" content="https://mexastarted.github.io/apex/ogp.png">
+<meta name="theme-color" content="#080b12">
+<link rel="manifest" href="manifest_apex.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Zen+Kaku+Gothic+New:wght@500;700;900&display=swap" rel="stylesheet">
 <style>
   :root{--bg:#06070d;--panel:#0c1018;--panel2:#0b0f18;--line:#1d2740;--text:#e9f3ff;--sub:#7e8db0;--dim:#56607a;--cy:#19e3ff;--mg:#ff3df2;--or:#ff6a1f;--ok:#22e3a0;--warn:#ffc23d;--down:#ff3d5e;--pred:#ff4d3d;--rank:#c062ff;--plat:#39c6ff;}
+  html[data-theme="light"]{--bg:#eef2f8;--panel:#ffffff;--panel2:#f4f7fc;--line:#d6deea;--text:#16243c;--sub:#5a6883;--dim:#8b97ad;--cy:#0a86c7;--mg:#c2187a;--or:#d2530a;--ok:#0d9d6e;--warn:#a07700;--down:#cf2440;}
+  html[data-theme="light"] body{background:#eef2f8}
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
   body{font-family:'Zen Kaku Gothic New',sans-serif;background:var(--bg);color:var(--text);min-height:100dvh;overflow-x:hidden}
   #fx{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5}
@@ -147,6 +161,56 @@
 .dxguide ol{margin:0 0 8px 18px;padding:0;font-size:12.5px;line-height:1.9}
 .dxguide ol b{color:var(--text)}
 .dxguide .s{font-size:11px;color:var(--sub);line-height:1.7}
+/* 診断ハブ */
+.hubbar{margin-bottom:12px}
+.hubsearch{display:flex;gap:8px;margin-bottom:9px}
+.hubsearch input{flex:1;background:var(--panel2);border:1px solid var(--line);color:var(--text);border-radius:11px;padding:11px 13px;font-size:14px}
+.hubrand{flex:none;background:var(--panel2);border:1px solid var(--cy);color:var(--cy);border-radius:11px;padding:0 13px;font-weight:700;font-size:12.5px;cursor:pointer}
+.hubcomp{display:flex;align-items:center;gap:9px;margin-bottom:9px;flex-wrap:wrap}
+.hubcompbar{flex:1;min-width:120px;height:8px;background:var(--panel2);border:1px solid var(--line);border-radius:5px;overflow:hidden}
+.hubcompbar i{display:block;height:100%;background:linear-gradient(90deg,var(--cy),var(--mg))}
+.hubcompt{font-size:11.5px;color:var(--sub);font-family:'Chakra Petch'}
+.hubnext{background:none;border:1px solid var(--warn);color:var(--warn);border-radius:999px;padding:5px 10px;font-size:11px;cursor:pointer}
+.hubdone{color:var(--ok);font-size:11.5px;font-weight:700}
+.hubcats{display:flex;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px}
+.hubcat{flex:none;background:var(--panel2);border:1px solid var(--line);color:var(--sub);border-radius:999px;padding:6px 13px;font-size:12px;cursor:pointer;white-space:nowrap}
+.hubcat.on{border-color:var(--cy);color:var(--cy)}
+.hubtiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.hubtiles .tile{position:relative}
+.favstar{position:absolute;top:6px;right:8px;font-size:15px;color:var(--sub);cursor:pointer;z-index:2;line-height:1}
+.favstar.on{color:var(--warn)}
+.lv.done{background:var(--ok);color:#04130d}
+.lv.new2{background:var(--line);color:var(--sub)}
+/* ショップ */
+.shopctrl{margin-bottom:10px}
+.shopsearch{display:flex;gap:8px}
+.shopsearch input{flex:1;background:var(--panel2);border:1px solid var(--line);color:var(--text);border-radius:11px;padding:10px 13px;font-size:14px}
+.shopsearch select{flex:none;background:var(--panel2);border:1px solid var(--line);color:var(--text);border-radius:11px;padding:0 8px;font-size:12px}
+.pcard{position:relative}
+.pfav{position:absolute;top:7px;right:7px;z-index:3;background:rgba(8,12,22,.7);border:1px solid var(--line);color:#fff;border-radius:50%;width:30px;height:30px;font-size:15px;cursor:pointer;line-height:1}
+.pfav.on{color:var(--down);border-color:var(--down)}
+.shopstrip{margin-bottom:12px}
+.sstl{font-size:11px;color:var(--cy);font-family:'Chakra Petch';margin-bottom:6px}
+.schips{display:flex;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px}
+.sgchip{flex:none;background:var(--panel2);border:1px solid var(--line);color:var(--text);border-radius:999px;padding:6px 11px;font-size:11.5px;cursor:pointer;white-space:nowrap}
+/* 横断検索 */
+.homesearch{position:relative;margin-bottom:14px}
+.homesearch input{width:100%;background:var(--panel2);border:1px solid var(--line);color:var(--text);border-radius:12px;padding:12px 15px;font-size:15px}
+.globalres{position:absolute;left:0;right:0;top:100%;margin-top:6px;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;z-index:40;display:none;box-shadow:0 10px 30px rgba(0,0,0,.4)}
+.globalres.on{display:block}
+.gres{display:flex;align-items:center;gap:11px;padding:11px 13px;cursor:pointer;border-top:1px solid var(--line)}
+.gres:first-child{border-top:none}
+.gres:hover{background:var(--panel2)}
+.gres span{font-size:21px}
+.gres b{font-size:13.5px;display:block}
+.gres small{font-size:11px;color:var(--sub)}
+.gres.none{color:var(--sub);font-size:12px;cursor:default;justify-content:center}
+/* 下部ナビ */
+.botnav{position:fixed;left:0;right:0;bottom:0;z-index:80;background:var(--panel);border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:5px 4px calc(5px + env(safe-area-inset-bottom))}
+.botnav button{flex:1;max-width:110px;background:none;border:none;color:var(--sub);font-family:inherit;font-size:9.5px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;padding:5px 2px;border-radius:10px;min-height:46px}
+.botnav button .bi{font-size:19px}
+.botnav button.on{color:var(--cy);background:rgba(25,227,255,.08)}
+body{padding-bottom:64px!important}
 .srvverd{background:linear-gradient(160deg,rgba(18,24,38,.9),rgba(10,14,22,.9));border:2px solid;border-radius:14px;padding:15px 16px;margin-bottom:14px}
 .srvverd .svh{font-weight:900;font-size:16px;margin-bottom:9px;line-height:1.4}
 .srvverd .svp{font-size:13px;line-height:1.95;color:var(--text)}
@@ -250,10 +314,11 @@
 <body>
 <canvas id="fx"></canvas><div class="scan"></div>
 <div class="shell">
-  <div class="hd"><div class="brand" onclick="home()"><b>APEX</b><i>激やば</i>ツール</div><div style="display:flex;align-items:center;gap:10px"><button class="back" id="langBtn" onclick="toggleLang()" style="font-size:12px;padding:6px 11px">EN</button><div class="live"><span class="d"></span>LIVE</div></div></div>
+  <div class="hd"><div class="brand" onclick="home()"><b>APEX</b><i>激やば</i>ツール</div><div style="display:flex;align-items:center;gap:10px"><button class="back" id="themeBtn" onclick="toggleTheme()" style="font-size:14px;padding:6px 10px" title="テーマ">🌗</button><button class="back" id="langBtn" onclick="toggleLang()" style="font-size:12px;padding:6px 11px">EN</button><div class="live"><span class="d"></span>LIVE</div></div></div>
 
   <!-- ===== HUB ===== -->
   <div id="home">
+    <div class="homesearch"><input id="globalq" placeholder="🔍 機能・診断・商品を検索" oninput="globalSearch(this.value)" autocomplete="off"><div id="globalRes" class="globalres"></div></div>
     <div class="hubgrid">
       <div class="tile" data-feat="map" style="--g:#19e3ff" onclick="open_('map')"><span class="lv">LIVE</span><div class="ic">🗺️</div><div><div class="nm" data-i18n="tile_map_n">マップ</div><div class="ds" data-i18n="tile_map_d">現在/次・残り時間</div></div></div>
       <div class="tile" data-feat="pred" style="--g:#ff4d3d" onclick="open_('pred')"><span class="lv">LIVE</span><div class="ic">👑</div><div><div class="nm" data-i18n="tile_pred_n">プレデター</div><div class="ds" data-i18n="tile_pred_d">到達RPボーダー</div></div></div>
@@ -309,29 +374,7 @@
   <div class="view" id="v-diag"><button class="back" data-i18n="back" onclick="home()">← ホーム</button>
     <div class="caption"><h1 data-i18n="cap_diag_h">🧪 診断・あそび</h1><span class="d" data-i18n="cap_diag_d">あなたを分析するミニ診断集</span></div>
     <div class="note" data-i18n="diag_jp_note"></div>
-    <div class="hubgrid">
-      <div class="tile" style="--g:#19e3ff" onclick="openDiag('sh')"><div class="ic">🎯</div><div><div class="nm">立ち回り診断</div><div class="ds">30問・13タイプ</div></div></div>
-      <div class="tile" style="--g:#ff3d5e" onclick="openDiag('ng')"><div class="ic">🚫</div><div><div class="nm">お前は絶対にこのキャラ使うな！診断</div><div class="ds">激辛で名指し</div></div></div>
-      <div class="tile" style="--g:#22e3a0" onclick="openDiag('ub')"><div class="ic">🧭</div><div><div class="nm">使うべきキャラ</div><div class="ds">最適レジェンド</div></div></div>
-      <div class="tile" style="--g:#ff6a1f" onclick="openDiag('ts')"><div class="ic">🔥</div><div><div class="nm">強さ診断(激辛)</div><div class="ds">適正ランク判定</div></div></div>
-      <div class="tile" style="--g:#c062ff" onclick="openDiag('rl')"><div class="ic">🎰</div><div><div class="nm">ルーレット</div><div class="ds">3人分を抽選</div></div></div>
-      <div class="tile" style="--g:#22e3a0" onclick="openDiag('lk')"><div class="ic">🍀</div><div><div class="nm">今日のラッキー</div><div class="ds">日替わりおすすめ</div></div></div>
-      <div class="tile" style="--g:#ff3df2" onclick="openDiag('du')"><div class="ic">🤝</div><div><div class="nm">デュオ相性</div><div class="ds">2人の相性%</div></div></div>
-      <div class="tile" style="--g:#ff3d5e" onclick="openDiag('tr')"><div class="ic">💣</div><div><div class="nm">地雷度診断</div><div class="ds">トロール度を採点</div></div></div>
-      <div class="tile" style="--g:#ffc23d" onclick="openDiag('ga')"><div class="ic">🎂</div><div><div class="nm">ゲーマー年齢</div><div class="ds">プレイから年齢判定</div></div></div>
-      <div class="tile" style="--g:#39c6ff" onclick="openDiag('pt')"><div class="ic">🎭</div><div><div class="nm">パーティ役割</div><div class="ds">3人で役割分担</div></div></div>
-      <div class="tile" style="--g:#ffc23d" onclick="openDiag('mt')"><div class="ic">🛡️</div><div><div class="nm">煽り耐性</div><div class="ds">メンタル強度を採点</div></div></div>
-      <div class="tile" style="--g:#22e3a0" onclick="openDiag('sp')"><div class="ic">🧭</div><div><div class="nm">ソロ/パーティ</div><div class="ds">向いてる編成判定</div></div></div>
-      <div class="tile" style="--g:#19e3ff" onclick="openDiag('iq')"><div class="ic">🧠</div><div><div class="nm">立ち回りIQ</div><div class="ds">戦術IQテスト</div></div></div>
-      <div class="tile" style="--g:#ff3df2" onclick="openDiag('mg')"><div class="ic">🎲</div><div><div class="nm">味方ガチャ診断</div><div class="ds">神野良？地雷野良？(20問)</div></div></div>
-      <div class="tile" style="--g:#22e3a0" onclick="openDiag('nl')"><div class="ic">🔮</div><div><div class="nm">本日の野良運</div><div class="ds">今日の味方運を判定</div></div></div>
-      <div class="tile" style="--g:#ff3d5e" onclick="openDiag('bg')"><div class="ic">🤬</div><div><div class="nm">暴言遭遇/民度</div><div class="ds">環境の民度を判定</div></div></div>
-      <div class="tile" style="--g:#ff6a1f" onclick="openDiag('pg')"><div class="ic">💀</div><div><div class="nm">罰ゲーム抽選</div><div class="ds">負けたら何する？</div></div></div>
-      <div class="tile" style="--g:#ff7a3d" onclick="openDiag('ag')"><span class="lv">NEW</span><div class="ic">🗣️</div><div><div class="nm">煽り加害度診断</div><div class="ds">自分が煽る側？</div></div></div>
-      <div class="tile" style="--g:#9aa7ff" onclick="openDiag('rip')"><span class="lv">NEW</span><div class="ic">🪦</div><div><div class="nm">エペ走馬灯診断</div><div class="ds">死因TOP3を判定</div></div></div>
-      <div class="tile" style="--g:#ffd23d" onclick="openDiag('kk')"><span class="lv">NEW</span><div class="ic">💸</div><div><div class="nm">課金溶かし度診断</div><div class="ds">生涯課金予測額</div></div></div>
-      <div class="tile" style="--g:#22e3a0" onclick="openDiag('bs')"><span class="lv">NEW</span><div class="ic">📦</div><div><div class="nm">物資ルート診断</div><div class="ds">漁りグセでタイプ分け</div></div></div>
-    </div>
+    <div class="hubgrid"></div>
     <div id="diagArea" style="margin-top:16px"></div>
     <div class="ad adSlot"></div>
   </div>
@@ -487,7 +530,7 @@ function toggleLang(){LANG=(LANG==='ja'?'en':'ja');try{localStorage.setItem('ape
 
 /* ===== nav ===== */
 var loaded={};
-function home(){document.querySelectorAll('.view').forEach(function(v){v.classList.remove('on')});$('home').style.display='block';window.scrollTo(0,0);}
+function home(){document.querySelectorAll('.view').forEach(function(v){v.classList.remove('on')});$('home').style.display='block';window.scrollTo(0,0);try{botnavUpdate();}catch(e){}}
 function open_(sec){$('home').style.display='none';document.querySelectorAll('.view').forEach(function(v){v.classList.remove('on')});$('v-'+sec).classList.add('on');window.scrollTo(0,0);
   if(sec==='map'&&!loaded.map){loaded.map=1;loadMap();}
   if(sec==='pred'&&!loaded.pred){loaded.pred=1;loadPred();}
@@ -498,6 +541,8 @@ function open_(sec){$('home').style.display='none';document.querySelectorAll('.v
   if(sec==='gear')gearInit();
   if(sec==='siteupd')renderSiteUpd();
   if(sec==='mypage')renderMyPage();
+  if(sec==='diag')renderHub();
+  try{botnavUpdate(sec);}catch(e){}
   try{mpCount(sec);}catch(e){}
   if(sec==='find')renderFindHist();
   featMark(sec);
@@ -832,6 +877,7 @@ function dxInjectBtn(){
 function dxSetup(){var area=document.getElementById('diagArea');if(!area||area.getAttribute('data-dxobs'))return;area.setAttribute('data-dxobs','1');try{new MutationObserver(dxInjectBtn).observe(area,{childList:true,subtree:true});}catch(e){}dxInjectBtn();}
 dxSetup();document.addEventListener('DOMContentLoaded',dxSetup);
 document.addEventListener('DOMContentLoaded',refreshDots);setTimeout(function(){try{refreshDots();}catch(e){}},0);
+applyTheme();document.addEventListener('DOMContentLoaded',applyTheme);
 function restoreFromUrl(){
  try{
   var r=new URLSearchParams(location.search).get('r');if(!r)return;
@@ -1841,7 +1887,107 @@ function xdTiles(){
   grid.appendChild(frag);
  }catch(e){}
 }
-document.addEventListener('DOMContentLoaded',xdTiles);setTimeout(function(){try{xdTiles();}catch(e){}},0);
+document.addEventListener('DOMContentLoaded',xdTiles);setTimeout(function(){try{/*xdTiles統合済*/;}catch(e){}},0);
+
+/* ===== 診断ハブ刷新：検索/カテゴリ/コンプ/ランダム/未挑戦 ===== */
+/* 全診断の登録簿（固定診断＋ファクトリーを統合） */
+var DIAGREG={
+ sh:{n:'立ち回り診断',e:'🎯',g:'#19e3ff',cat:'戦闘'},
+ ng:{n:'お前は絶対にこのキャラ使うな！診断',e:'🚫',g:'#ff3d5e',cat:'ネタ'},
+ ub:{n:'使うべきキャラ',e:'🧭',g:'#22e3a0',cat:'戦闘'},
+ ts:{n:'強さ診断(激辛)',e:'🔥',g:'#ff6a1f',cat:'戦闘'},
+ rl:{n:'ルーレット',e:'🎰',g:'#c062ff',cat:'あそび'},
+ lk:{n:'今日のラッキー',e:'🍀',g:'#22e3a0',cat:'運'},
+ du:{n:'デュオ相性',e:'🤝',g:'#ff3df2',cat:'対人'},
+ tr:{n:'地雷度診断',e:'💣',g:'#ff3d5e',cat:'性格'},
+ ga:{n:'ゲーマー年齢',e:'🎂',g:'#ffc23d',cat:'性格'},
+ pt:{n:'パーティ役割',e:'🎭',g:'#39c6ff',cat:'対人'},
+ mt:{n:'煽り耐性',e:'🛡️',g:'#ffc23d',cat:'性格'},
+ sp:{n:'ソロ/パーティ',e:'🧭',g:'#22e3a0',cat:'戦闘'},
+ iq:{n:'立ち回りIQ',e:'🧠',g:'#19e3ff',cat:'戦闘'},
+ mg:{n:'味方ガチャ診断',e:'🎲',g:'#ff3df2',cat:'対人'},
+ nl:{n:'本日の野良運',e:'🔮',g:'#22e3a0',cat:'運'},
+ bg:{n:'暴言遭遇/民度',e:'🤬',g:'#ff3d5e',cat:'対人'},
+ pg:{n:'罰ゲーム抽選',e:'💀',g:'#ff6a1f',cat:'あそび'},
+ ag:{n:'煽り加害度診断',e:'🗣️',g:'#ff7a3d',cat:'性格'},
+ rip:{n:'エペ走馬灯診断',e:'🪦',g:'#9aa7ff',cat:'ネタ'},
+ kk:{n:'課金溶かし度診断',e:'💸',g:'#ffd23d',cat:'生活'},
+ bs:{n:'物資ルート診断',e:'📦',g:'#22e3a0',cat:'戦闘'}
+};
+/* ファクトリー診断もカテゴリ付きで登録 */
+var XDCAT={rp:'性格',cl:'性格',sj:'性格',km:'ネタ',ks:'戦闘',yk:'対人',yf:'対人',yo:'生活',rt:'生活',xc:'生活',ne:'生活',it:'ネタ',wu:'戦闘',gn:'戦闘',da:'戦闘',ta:'戦闘',kc:'戦闘',kd:'戦闘',fr:'対人',mu:'対人',co:'対人',nt:'性格',kp:'対人',pn:'戦闘',ma:'戦闘',al:'生活',yg:'ネタ',cp:'運',rg:'運',ch:'運',sd:'戦闘',kb:'ネタ',yo2:'生活'};
+(function(){try{for(var c in XDIAGS){if(!DIAGREG[c]){var d=XDIAGS[c];DIAGREG[c]={n:d.n,e:d.e,g:d.g,cat:XDCAT[c]||'その他'};}}}catch(e){}})();
+
+var DIAGDONE_KEY='apexDiagDone';
+function diagDone(){try{return JSON.parse(localStorage.getItem(DIAGDONE_KEY)||'{}');}catch(e){return {};}}
+function diagMarkDone(code){try{var m=diagDone();m[code]=Date.now();localStorage.setItem(DIAGDONE_KEY,JSON.stringify(m));}catch(e){}}
+var DIAGFAV_KEY='apexDiagFav';
+function diagFav(){try{return JSON.parse(localStorage.getItem(DIAGFAV_KEY)||'[]');}catch(e){return [];}}
+function diagToggleFav(code,ev){if(ev){ev.stopPropagation();}try{var a=diagFav();var i=a.indexOf(code);if(i>=0)a.splice(i,1);else a.unshift(code);localStorage.setItem(DIAGFAV_KEY,JSON.stringify(a));}catch(e){}renderHub();}
+
+var HUBSTATE={q:'',cat:'all'};
+function hubSetCat(c){HUBSTATE.cat=c;renderHub();}
+function hubSearch(v){HUBSTATE.q=v;renderHub();}
+function diagRandom(){var codes=Object.keys(DIAGREG);var c=codes[Math.floor(Math.random()*codes.length)];openDiag(c);}
+function diagNextNew(){var done=diagDone();var todo=Object.keys(DIAGREG).filter(function(c){return !done[c];});if(!todo.length){alert('全診断コンプ済み！おめでとう🎉');return;}openDiag(todo[Math.floor(Math.random()*todo.length)]);}
+
+function renderHub(){
+ var grid=document.querySelector('#v-diag .hubgrid');if(!grid)return;
+ var all=Object.keys(DIAGREG);
+ var done=diagDone(),fav=diagFav();
+ var total=all.length,doneN=all.filter(function(c){return done[c];}).length;
+ var cats=['all','性格','戦闘','対人','運','生活','ネタ','あそび'];
+ var catLabel={all:'すべて','性格':'性格','戦闘':'戦闘','対人':'対人','運':'運','生活':'生活','ネタ':'ネタ','あそび':'あそび'};
+ var q=(HUBSTATE.q||'').toLowerCase();
+ // ツールバー
+ var tb='<div class="hubbar">'
+  +'<div class="hubsearch"><input id="hubq" placeholder="🔍 診断を探す（全'+total+'種）" value="'+esc(HUBSTATE.q)+'" oninput="hubSearch(this.value)"><button class="hubrand" onclick="diagRandom()">🎲 ランダム</button></div>'
+  +'<div class="hubcomp"><div class="hubcompbar"><i style="width:'+Math.round(doneN/total*100)+'%"></i></div><span class="hubcompt">コンプ '+doneN+'/'+total+'（'+Math.round(doneN/total*100)+'%）</span>'+(doneN<total?'<button class="hubnext" onclick="diagNextNew()">未挑戦をやる →</button>':'<span class="hubdone">🎉 全制覇</span>')+'</div>'
+  +'<div class="hubcats">'+cats.map(function(c){return '<button class="hubcat'+(HUBSTATE.cat===c?' on':'')+'" onclick="hubSetCat(\''+c+'\')">'+catLabel[c]+'</button>';}).join('')+'</div>'
+  +'</div>';
+ // 並び：お気に入り→未挑戦→済
+ var list=all.filter(function(c){
+   var d=DIAGREG[c];
+   if(HUBSTATE.cat!=='all'&&d.cat!==HUBSTATE.cat)return false;
+   if(q&&String(d.n).toLowerCase().indexOf(q)<0&&String(d.cat).indexOf(q)<0)return false;
+   return true;
+ });
+ list.sort(function(a,b){
+   var fa=fav.indexOf(a)>=0?0:1, fb=fav.indexOf(b)>=0?0:1; if(fa!==fb)return fa-fb;
+   var da=done[a]?1:0, db=done[b]?1:0; if(da!==db)return da-db;
+   return 0;
+ });
+ var tiles=list.map(function(c){
+   var d=DIAGREG[c];var isDone=!!done[c],isFav=fav.indexOf(c)>=0;
+   return '<div class="tile" style="--g:'+d.g+'" onclick="openDiag(\''+c+'\')">'
+     +(isDone?'<span class="lv done">済</span>':'<span class="lv new2">未</span>')
+     +'<span class="favstar'+(isFav?' on':'')+'" onclick="diagToggleFav(\''+c+'\',event)">'+(isFav?'★':'☆')+'</span>'
+     +'<div class="ic">'+d.e+'</div><div><div class="nm">'+esc(d.n)+'</div><div class="ds">'+d.cat+'</div></div></div>';
+ }).join('');
+ grid.innerHTML=tb+'<div class="hubtiles">'+(tiles||'<div class="note">該当する診断がありません</div>')+'</div>';
+ var qi=document.getElementById('hubq');if(qi&&document.activeElement!==qi){}
+}
+
+/* ===== テーマ切替（73） ===== */
+function applyTheme(){var th=localStorage.getItem('apexTheme')||'dark';document.documentElement.setAttribute('data-theme',th);var b=document.getElementById('themeBtn');if(b)b.textContent=th==='light'?'🌙':'🌗';}
+function toggleTheme(){var cur=localStorage.getItem('apexTheme')||'dark';localStorage.setItem('apexTheme',cur==='dark'?'light':'dark');applyTheme();}
+/* ===== 横断検索（49） ===== */
+function globalSearch(v){
+ var res=document.getElementById('globalRes');if(!res)return;
+ var q=(v||'').trim().toLowerCase();if(!q){res.innerHTML='';res.classList.remove('on');return;}
+ var hits=[];
+ var feats=[['map','🗺️','マップ','現在/次のマップ'],['pred','👑','プレデター','到達RPボーダー'],['srv','📡','サーバー状態','障害・稼働'],['find','🔍','スタッツ検索','戦績＆戦闘力採点'],['shop','🛒','ショップ','ゲーミングデバイス'],['gear','🧰','デバイス選び','予算別＆ガイド'],['battle','⚔️','対決バトル','戦闘力で自動対決'],['recruit','📋','募集テンプレ','X募集を作成'],['card','🏷️','名刺メーカー','戦績カード画像'],['mypage','📊','マイページ','履歴＆記録'],['siteupd','🔔','更新情報','新機能・修正']];
+ feats.forEach(function(ff){if(ff[2].toLowerCase().indexOf(q)>=0||ff[3].toLowerCase().indexOf(q)>=0)hits.push('<div class="gres" onclick="globalGo(\''+ff[0]+'\')"><span>'+ff[1]+'</span><div><b>'+ff[2]+'</b><small>'+ff[3]+'</small></div></div>');});
+ try{for(var c in DIAGREG){var d=DIAGREG[c];if(String(d.n).toLowerCase().indexOf(q)>=0||String(d.cat).indexOf(q)>=0){hits.push('<div class="gres" onclick="globalGoDiag(\''+c+'\')"><span>'+d.e+'</span><div><b>'+esc(d.n)+'</b><small>診断 ・ '+d.cat+'</small></div></div>');}}}catch(e){}
+ res.innerHTML=hits.length?hits.slice(0,12).join(''):'<div class="gres none">該当なし</div>';
+ res.classList.add('on');
+}
+function globalGo(sec){var r=document.getElementById('globalRes');if(r){r.innerHTML='';r.classList.remove('on');}var q=document.getElementById('globalq');if(q)q.value='';open_(sec);}
+function globalGoDiag(c){var r=document.getElementById('globalRes');if(r){r.innerHTML='';r.classList.remove('on');}var q=document.getElementById('globalq');if(q)q.value='';open_('diag');setTimeout(function(){openDiag(c);},30);}
+/* ===== 下部ナビ：表示制御 ===== */
+function botnavUpdate(sec){try{var bn=document.getElementById('botnav');if(!bn)return;var btns=bn.querySelectorAll('button');var map={home:0,map:1,diag:2,shop:3,mypage:4};btns.forEach(function(b,i){b.classList.remove('on');});var idx=(sec===undefined)?0:map[sec];if(idx!=null)btns[idx].classList.add('on');}catch(e){}}
+/* ===== PWA登録（97） ===== */
+if('serviceWorker' in navigator&&location.protocol==='https:'){try{navigator.serviceWorker.register('sw_apex.js');}catch(e){}}
 
 /* ===== LEADERBOARD ===== */
 function loadLb(){var lg=$('lbLegend').value,pl=$('lbPlat').value;$('lbBox').innerHTML='<div class="loading">読み込み中…</div>';
@@ -1861,7 +2007,7 @@ function share(txt,noask){try{mpShareInc();}catch(e){}var url=location.href.spli
 function profile(ans,bank){var ax={AGG:0,POS:0,SUP:0,INFO:0,RNG:0,RISK:0};ans.forEach(function(a,q){var s=bank[q].a[a][1];for(var k in s)ax[k]+=s[k];});var mag=0;for(var k in ax)mag+=ax[k]*ax[k];mag=Math.sqrt(mag)||1;var n={};for(var k in ax)n[k]=ax[k]/mag;return n;}
 function bestList(list,n,worst){var out=list.map(function(t){var tm=0;for(var k in t.sig)tm+=t.sig[k]*t.sig[k];tm=Math.sqrt(tm)||1;var dot=0;for(var k in t.sig)dot+=(t.sig[k]/tm)*(n[k]||0);return {t:t,dot:dot};});out.sort(function(a,b){return worst?a.dot-b.dot:b.dot-a.dot;});return out;}
 var diagState={};
-function openDiag(d){diagState.cur=d;DIAG_R='';var a=$('diagArea');
+function openDiag(d){diagState.cur=d;DIAG_R='';var a=$('diagArea');try{diagMarkDone(d);}catch(e){}
   if(d==='sh'){shStart();}else if(d==='ng'){ngStart();}else if(d==='ub'){ubStart();}else if(d==='ts'){tsStart();}else if(d==='rl'){rlStart();}else if(d==='lk'){lkStart();}else if(d==='du'){duStart();}else if(d==='tr'){trStart();}else if(d==='ga'){gaStart();}else if(d==='pt'){ptStart();}else if(d==='mt'){mtStart();}else if(d==='sp'){spStart();}else if(d==='iq'){iqStart();}else if(d==='mg'){mgStart();}else if(d==='nl'){nlStart();}else if(d==='bg'){bgStart();}else if(d==='pg'){pgStart();}else if(d==='ag'){agStart();}else if(d==='kk'){kkStart();}else if(d==='rip'){ripStart();}else if(d==='bs'){bsStart();}else if(XDIAGS[d]){xdStart(d);}
   a.scrollIntoView({behavior:'smooth',block:'start'});}
 
@@ -2081,6 +2227,12 @@ var PRODUCTS=[
  {who:"",name:"Logicool G840r XLゲーミングマウスパッド",cat:"マウスパッド",img:"https://thumbnail.image.rakuten.co.jp/@0_mall/logicool/cabinet/prd/g_mice/g840r/g840r_r.jpg?_ex=300x300",price:"¥5,300",note:"XLサイズ・クロス表面・ラバーベースの定番デカパッド。",url:"https://rpx.a8.net/svt/ejp?a8mat=4B5RSB+EV8PMA+2HOM+BWGDT&rakuten=y&a8ejpredirect=https%3A%2F%2Fhb.afl.rakuten.co.jp%2Fhgc%2Fg00tpxd4.2bo11c8e.g00tpxd4.2bo12f79%2Fa26060923721_4B5RSB_EV8PMA_2HOM_BWGDT%3Fpc%3Dhttps%253A%252F%252Fitem.rakuten.co.jp%252Flogicool%252Fg840r%252F%26m%3Dhttp%253A%252F%252Fm.rakuten.co.jp%252Flogicool%252Fi%252F10000517%252F%26rafcid%3Dwsc_i_is_a9f492a7-8ef9-40e2-ab89-4bc43a1ee283"}
 ];
 var shopCat="all",SHOPCATS=["all"],SHOPDATA=null;
+var SHOPQ="",SHOPSORT="default";
+function shopFav(){try{return JSON.parse(localStorage.getItem('apexShopFav')||'[]');}catch(e){return [];}}
+function shopToggleFav(name,ev){if(ev){ev.stopPropagation();ev.preventDefault();}try{var a=shopFav();var i=a.indexOf(name);if(i>=0)a.splice(i,1);else a.unshift(name);localStorage.setItem('apexShopFav',JSON.stringify(a));}catch(e){}renderShop();return false;}
+function shopSearchInput(v){SHOPQ=v;renderShop();}
+function shopSortSet(v){SHOPSORT=v;renderShop();}
+function shopPriceNum(p){var m=String(p||'').replace(/[, ]/g,'').match(/(\d+)/);return m?Number(m[1]):999999;}
 function shopFilter(i){shopCat=SHOPCATS[i]||"all";renderShop();}
 function loadShop(){var box=$('shopGrid');if(box&&!SHOPDATA)box.innerHTML='<div class="loading">'+t('shop_loading')+'</div>';gas('products').then(function(d){SHOPDATA=(d&&d.ok&&d.items&&d.items.length)?d.items.concat(PRODUCTS):PRODUCTS;renderShop();}).catch(function(){if(!SHOPDATA)SHOPDATA=PRODUCTS;renderShop();});}
 function catIcon(c){c=String(c||"").toLowerCase();var M=[["マウスパッド","🟫"],["mousepad","🟫"],["マウス","🖱️"],["mouse","🖱️"],["キーボード","⌨️"],["keyboard","⌨️"],["コントローラ","🎮"],["controller","🎮"],["ゲームパッド","🎮"],["gamepad","🎮"],["パッド","🎮"],["モニター","🖥️"],["ディスプレイ","🖥️"],["monitor","🖥️"],["display","🖥️"],["ヘッドセット","🎧"],["ヘッドホン","🎧"],["ヘッドフォン","🎧"],["イヤホン","🎧"],["イヤフォン","🎧"],["headset","🎧"],["headphone","🎧"],["earphone","🎧"],["チェア","🪑"],["椅子","🪑"],["chair","🪑"],["デスク","🗄️"],["desk","🗄️"],["机","🗄️"],["グローブ","🧤"],["手袋","🧤"],["glove","🧤"],["ルーター","📶"],["回線","📶"],["router","📶"],["lan","📶"],["メモリ","🧠"],["ssd","💾"],["グラボ","🎛️"],["gpu","🎛️"]];for(var i=0;i<M.length;i++){if(c.indexOf(M[i][0])>=0)return M[i][1];}if(c.indexOf("本体")>=0)return "🕹️";if(c.indexOf("周辺")>=0||c.indexOf("ケーブル")>=0)return "🔌";if(c.indexOf("アクセサリ")>=0||c.indexOf("フリーク")>=0)return "🎯";return "🛒";}
@@ -2089,10 +2241,26 @@ function renderShop(){var box=$('shopGrid'),tabs=$('shopTabs');if(!box)return;va
  var cats=[];SRC.forEach(function(p){var c=(p.cat||"").trim();if(c&&cats.indexOf(c)<0)cats.push(c);});
  SHOPCATS=["all"].concat(cats);if(SHOPCATS.indexOf(shopCat)<0)shopCat="all";
  if(tabs){tabs.innerHTML=SHOPCATS.map(function(c,i){var lab=(c==="all")?t("shop_all"):c;return '<button class="schip'+(shopCat===c?" on":"")+'" onclick="shopFilter('+i+')">'+esc(lab)+'</button>';}).join("")+'<button class="schip refresh" title="'+t("shop_refresh")+'" onclick="loadShop()">🔄</button>';tabs.style.display=cats.length>=1?"flex":"none";}
- var list=(shopCat==="all")?SRC:SRC.filter(function(p){return (p.cat||"").trim()===shopCat;});
+ var ctrl=$('shopCtrl');
+ if(!ctrl){var sc=document.createElement('div');sc.id='shopCtrl';sc.className='shopctrl';var tabsEl=$('shopTabs');tabsEl.parentNode.insertBefore(sc,tabsEl);ctrl=sc;}
+ ctrl.innerHTML='<div class="shopsearch"><input id="shopq" placeholder="🔍 商品を探す" value="'+esc(SHOPQ)+'" oninput="shopSearchInput(this.value)"><select onchange="shopSortSet(this.value)"><option value="default"'+(SHOPSORT==='default'?' selected':'')+'>標準</option><option value="plow"'+(SHOPSORT==='plow'?' selected':'')+'>価格が安い順</option><option value="phigh"'+(SHOPSORT==='phigh'?' selected':'')+'>価格が高い順</option><option value="fav"'+(SHOPSORT==='fav'?' selected':'')+'>お気に入り優先</option></select></div>';
+ var list=(shopCat==="all")?SRC.slice():SRC.filter(function(p){return (p.cat||"").trim()===shopCat;});
+ var sq=(SHOPQ||"").toLowerCase();
+ if(sq)list=list.filter(function(p){return (String(p.name||"").toLowerCase().indexOf(sq)>=0)||(String(p.cat||"").toLowerCase().indexOf(sq)>=0)||(String(p.who||"").toLowerCase().indexOf(sq)>=0);});
+ var favL=shopFav();
+ if(SHOPSORT==='plow')list.sort(function(a,b){return shopPriceNum(a.price)-shopPriceNum(b.price);});
+ else if(SHOPSORT==='phigh')list.sort(function(a,b){return shopPriceNum(b.price)-shopPriceNum(a.price);});
+ else if(SHOPSORT==='fav')list.sort(function(a,b){return (favL.indexOf(b.name)>=0?1:0)-(favL.indexOf(a.name)>=0?1:0);});
  if(!list.length){box.innerHTML='<div class="note">'+t('shop_empty')+'</div>';return;}
- box.innerHTML=list.map(function(p){var thumb=p.img?('<div class="pthumb"><img src="'+esc(p.img)+'" alt="" loading="lazy" referrerpolicy="no-referrer" data-emoji="'+catIcon(p.cat)+'" onerror="shopImgErr(this)"></div>'):('<div class="pthumb ph">'+catIcon(p.cat)+'</div>');var who=p.who?('<span class="pwho">'+esc(p.who)+'</span>'):'';var price=p.price?('<span class="pprice mono">'+esc(p.price)+'</span>'):'';var dead=(!p.url||p.url==='#');var btn=dead?('<span class="pbtn off">'+t('shop_soon')+'</span>'):('<a class="pbtn" href="'+p.url+'" target="_blank" rel="sponsored nofollow noopener">'+t('shop_buy')+' ↗</a>');return '<div class="pcard">'+thumb+'<div class="pbody"><div class="pcat">'+esc(p.cat||'')+who+'</div><div class="pname">'+esc(p.name||'')+'</div>'+(p.note?'<div class="pnote">'+esc(p.note)+'</div>':'')+'<div class="prow">'+price+btn+'</div></div></div>';}).join('');
- try{(list||[]).slice(0,12).forEach(function(p){mpProdView(p.name,p.cat);});}catch(e){}}
+ box.innerHTML=list.map(function(p){var isFav=shopFav().indexOf(p.name)>=0;var favBtn='<button class="pfav'+(isFav?' on':'')+'" onclick="return shopToggleFav(\''+String(p.name||'').replace(/\x27/g,'')+'\',event)">'+(isFav?'♥':'♡')+'</button>';var thumb=p.img?('<div class="pthumb"><img src="'+esc(p.img)+'" alt="" loading="lazy" referrerpolicy="no-referrer" data-emoji="'+catIcon(p.cat)+'" onerror="shopImgErr(this)"></div>'):('<div class="pthumb ph">'+catIcon(p.cat)+'</div>');var who=p.who?('<span class="pwho">'+esc(p.who)+'</span>'):'';var price=p.price?('<span class="pprice mono">'+esc(p.price)+'</span>'):'';var dead=(!p.url||p.url==='#');var btn=dead?('<span class="pbtn off">'+t('shop_soon')+'</span>'):('<a class="pbtn" href="'+p.url+'" target="_blank" rel="sponsored nofollow noopener">'+t('shop_buy')+' ↗</a>');return '<div class="pcard">'+favBtn+thumb+'<div class="pbody"><div class="pcat">'+esc(p.cat||'')+who+'</div><div class="pname">'+esc(p.name||'')+'</div>'+(p.note?'<div class="pnote">'+esc(p.note)+'</div>':'')+'<div class="prow">'+price+btn+'</div></div></div>';}).join('');
+ try{(list||[]).slice(0,12).forEach(function(p){mpProdView(p.name,p.cat);});}catch(e){}
+ if(shopCat==='all'&&!sq&&SHOPSORT==='default'){
+  var recent=(function(){try{return JSON.parse(localStorage.getItem('apexProdView')||'[]');}catch(e){return [];}})().slice(0,8);
+  var favNames=shopFav();var chips='';
+  if(favNames.length){chips+='<div class="shopstrip"><div class="sstl">♥ お気に入り</div><div class="schips">'+favNames.slice(0,12).map(function(nm){return '<span class="sgchip" onclick="shopSearchInput(\''+esc(nm).replace(/\x27/g,'')+'\')">'+esc(nm.length>14?nm.slice(0,14)+'…':nm)+'</span>';}).join('')+'</div></div>';}
+  if(recent.length){chips+='<div class="shopstrip"><div class="sstl">👀 最近見た商品</div><div class="schips">'+recent.map(function(r){return '<span class="sgchip" onclick="shopSearchInput(\''+esc(r.n).replace(/\x27/g,'')+'\')">'+esc(String(r.n).length>14?String(r.n).slice(0,14)+'…':r.n)+'</span>';}).join('')+'</div></div>';}
+  if(chips)box.insertAdjacentHTML('afterbegin',chips);
+ }}
 
 
 /* init */
@@ -2107,5 +2275,13 @@ try{var _sl=localStorage.getItem("apexLang");if(_sl)LANG=_sl;}catch(e){}applySta
     <div class="admodalfoot"><span id="adModalTimer">5</span> 秒後に自動で閉じます</div>
   </div>
 </div>
+
+  <div class="botnav" id="botnav">
+    <button onclick="home()"><span class="bi">🏠</span>ホーム</button>
+    <button onclick="open_('map')"><span class="bi">🗺️</span>マップ</button>
+    <button onclick="open_('diag')"><span class="bi">🧪</span>診断</button>
+    <button onclick="open_('shop')"><span class="bi">🛒</span>ショップ</button>
+    <button onclick="open_('mypage')"><span class="bi">📊</span>マイ</button>
+  </div>
 </body>
 </html>
