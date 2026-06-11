@@ -449,7 +449,7 @@ ja:{back:"← ホーム",
  footer:'データ：<a href="https://apexlegendsstatus.com" target="_blank" rel="noopener">Data from apexlegendsstatus.com</a>（非公式Apex API）。Apex Legends は Electronic Arts / Respawn の商標です。本サイトは非公式のファン制作ツールです。',
  remain:"残り",nodata:"データなし",fail:"取得失敗",searching:"検索中…",
  pred_border:"上位ボーダー",pred_hardest:"が現在の最難関",pred_mp:"マスター＋プレデター",people:"人",
- st_ok:"正常",st_slow:"混雑/遅延",st_down:"停止",b_ok:"すべて正常",b_down:"一部サービスで障害",b_slow:"一部が混雑/遅延",official:"公式サービス",srv_checked:"サービスを確認 ・ 最終確認 たった今",overall:"全体",uptime24:"24h 稼働率",lastinc:"前回の障害",measuring:"計測中",none:"なし",note_srv:"※第三者の監視サービスの計測値です。「混雑/遅延」や一部地域の表示でも、実際は普通にプレイできる場合があります。完全な停止は赤で表示。",
+ st_ok:"正常",st_slow:"混雑/遅延",st_down:"停止",b_ok:"すべて正常",b_down:"一部サービスで障害",b_slow:"一部が混雑/遅延",b_minor:"ほぼ正常（表示上の停止あり）",official:"公式サービス",srv_checked:"サービスを確認 ・ 最終確認 たった今",overall:"全体",uptime24:"24h 稼働率",lastinc:"前回の障害",measuring:"計測中",none:"なし",note_srv:"※第三者の監視サービスの計測値です。「混雑/遅延」や一部地域の表示でも、実際は普通にプレイできる場合があります。完全な停止は赤で表示。",
  ago_now:"たった今",ago_min:"分前",ago_hour:"時間前",ago_day:"日前",
  st_avg:"平均ダメ",st_wr:"勝率",st_lvl:"レベル",st_kills:"総キル",sub_o:"概要",sub_l:"レジェンド別",sub_r:"ランク",online:"オンライン",using:"使用中",
  verd_5:"ガチ勢",verd_4:"そこそこやり込み勢",verd_3:"そこそこ",verd_2:"カジュアル",verd_1:"これからの人",share:"シェア",
@@ -462,7 +462,7 @@ en:{back:"← Home",
  footer:'Data: <a href="https://apexlegendsstatus.com" target="_blank" rel="noopener">apexlegendsstatus.com</a> (unofficial Apex API). Apex Legends is a trademark of Electronic Arts / Respawn. This is an unofficial fan-made tool.',
  remain:"Left",nodata:"No data",fail:"Failed to load",searching:"Searching…",
  pred_border:"Top border",pred_hardest:"is currently the hardest",pred_mp:"Master + Predator",people:"players",
- st_ok:"OK",st_slow:"Busy/Slow",st_down:"Down",b_ok:"All systems normal",b_down:"Some services down",b_slow:"Some services busy/slow",official:"Official service",srv_checked:" services checked · just now",overall:"Overall",uptime24:"24h uptime",lastinc:"Last incident",measuring:"Measuring",none:"None",note_srv:"Third-party monitor readings. Busy/slow or single-region flags often still play fine. Only full outages show red.",
+ st_ok:"OK",st_slow:"Busy/Slow",st_down:"Down",b_ok:"All systems normal",b_down:"Some services down",b_slow:"Some services busy/slow",b_minor:"Mostly OK (cosmetic down)",official:"Official service",srv_checked:" services checked · just now",overall:"Overall",uptime24:"24h uptime",lastinc:"Last incident",measuring:"Measuring",none:"None",note_srv:"Third-party monitor readings. Busy/slow or single-region flags often still play fine. Only full outages show red.",
  ago_now:"just now",ago_min:"m ago",ago_hour:"h ago",ago_day:"d ago",
  st_avg:"Avg dmg",st_wr:"Win%",st_lvl:"Level",st_kills:"Total kills",sub_o:"Overview",sub_l:"By legend",sub_r:"Rank",online:"Online",using:"Using",
  verd_5:"Hardcore",verd_4:"Pretty dedicated",verd_3:"Average",verd_2:"Casual",verd_1:"Just starting",share:"Share",
@@ -552,35 +552,44 @@ function stColor(k){return (KIND[k]||KIND.ok).c;}
 function stJP(k){return t("st_"+(KIND[k]?k:"ok"));}
 function collectStatus_(node,out){ if(!node||typeof node!=="object")return; if(typeof node.Status==="string"){out.push(node.Status);return;} Object.keys(node).forEach(function(k){collectStatus_(node[k],out);}); }
 function worstKind_(arr){ var w="ok"; arr.forEach(function(s){var k=stKind(s); if(k==="down")w="down"; else if(k==="slow"&&w!=="down")w="slow";}); return w; }
-function srvVerdict(overall,svcCount,nDown,nSlow,downNames,slowNames){
- var head,col,canPlay,detail;
+function srvVerdict(overall,svcCount,nDown,nSlow,downNames,slowNames,critDown,downKeys){
+ var head,col,detail;
+ var SELFTEST={selfCoreTest:1,otherPlatforms:1};
+ var onlySelf=(downKeys||[]).length>0 && (downKeys||[]).every(function(k){return SELFTEST[k];});
  if(overall==='ok'){
   head='✅ 全サーバー正常 — 普通にプレイできます';col='var(--ok)';
-  detail='現在チェックした'+svcCount+'件すべてのサービスが正常に稼働しています。つまり、ログイン認証、マッチメイキング（マッチング）、ランクマッチ、フレンドやパーティ機能、ストア・課金まわりといった、Apexを遊ぶために必要な仕組みがすべて問題なく動いている状態です。今このタイミングでゲームを起動すれば、いつも通りロビーに入ってマッチを回せますし、ランクやイベントも普通に遊べます。<br><br>もしこの状態で「回線が落ちた」「マッチが見つからない」「ロビーが重い」といった不具合に当たった場合、それはサーバー全体の障害ではなく、あなた個人のネット環境（Wi-Fi・ルーター・回線の混雑）や、端末・ゲーム側の一時的な不調である可能性が高いです。その場合は、①ゲームを再起動する ②ルーターを再起動する ③有線LANに切り替える ④EAアプリやデータの整合性チェックを試す、の順で確認すると改善することが多いです。<br><br>結論として、今はサーバーが安定しているので、ランクを真剣に回したい人にとっては絶好のタイミングです。下の各サービスがすべて緑色なら「全部正常」のサインなので、安心してプレイして大丈夫です。<br><br>なお、この判定はApex公式が公開しているサーバー状態を元に自動で計算しています。表示は数分ごとに更新されるため、もし直前まで障害が出ていた場合でも、復旧すればこの欄も自動的に「正常」に切り替わります。逆にプレイ中に急に不調を感じたら、一度この画面に戻って色を確認すれば、原因が自分側かサーバー側かをすぐ切り分けられます。緑＝安心して突撃、と覚えておけばOKです。';
- }else if(overall==='slow'){
-  head='⚠️ 一部に遅延・不安定 — プレイは可能ですが注意';col='var(--warn)';
-  detail='ゲーム自体はプレイできますが、'+svcCount+'件中'+nSlow+'件のサービスで遅延や不安定さが検知されています'+(slowNames?'（該当：'+slowNames+'）':'')+'。これは「完全に落ちている（障害）」わけではなく、反応が遅い・たまにエラーが出る・マッチングに普段より時間がかかる、といった軽度〜中度の不調を意味します。信号でいえば黄色、ギリギリ機能はしているけれど本調子ではない状態だと考えてください。<br><br>具体的に出やすい症状は、ログインに普段より時間がかかる、ロビーやストアの読み込みが遅い、試合中にラグ（カクつき）が発生する、サーバーとの接続が一瞬切れて「接続が失われました」と表示される、マッチングがなかなか成立しない、などです。これらが起きても、多くはあなたの回線のせいではなくサーバー側の一時的な負荷や不調が原因です。<br><br>今すぐ遊ぶこと自体は可能ですが、RPがかかった大事なランク戦は避けて、カジュアルやミックステープで様子を見るのが無難です。途中で強制切断されるとランクではペナルティやRP損につながるためです。対処としては、①数十分ほど時間を置く ②ゲームとルーターを再起動する ③公式（@PlayApexJP）で告知が出ていないか確認する、がおすすめです。下のサービス一覧で黄色がどれかを見れば、どの機能が不安定なのかが分かります。';
+  detail='現在チェックした'+svcCount+'件すべてのサービスが正常に稼働しています。つまり、ログイン認証、マッチメイキング（マッチング）、ランクマッチ、フレンドやパーティ機能、ストア・課金まわりといった、Apexを遊ぶために必要な仕組みがすべて問題なく動いている状態です。今このタイミングでゲームを起動すれば、いつも通りロビーに入ってマッチを回せますし、ランクやイベントも普通に遊べます。<br><br>もしこの状態で「回線が落ちた」「マッチが見つからない」「ロビーが重い」といった不具合に当たった場合、それはサーバー全体の障害ではなく、あなた個人のネット環境（Wi-Fi・ルーター・回線の混雑）や、端末・ゲーム側の一時的な不調である可能性が高いです。その場合は、①ゲームを再起動する ②ルーターを再起動する ③有線LANに切り替える ④EAアプリでデータの整合性チェックを試す、の順で確認すると改善することが多いです。<br><br>結論として、今はサーバーが安定しているので、ランクを真剣に回したい人にとっては絶好のタイミングです。下の各サービスがすべて緑色なら「全部正常」のサインなので、安心してプレイして大丈夫です。';
+ }else if(overall==='down'){
+  head='🛑 障害発生中 — ログイン系に問題、遊べない可能性大';col='var(--down)';
+  detail='現在'+svcCount+'件中'+nDown+'件のサービスでダウンが検知され、そのうち'+critDown+'件が「ログイン・認証・EAサーバー」といったゲームの根幹サービスです'+(downNames?'（該当：'+downNames+'）':'')+'。根幹が落ちている場合、これはApex（EA/Respawn）側の本物の障害で、あなたのネット環境のせいではありません。<br><br>起こり得る症状は、ログインできない・ロビーから先に進めない・マッチングが終わらない・試合中に全員が切断される・「サーバーに接続できません」と出る、などです。今ゲームを起動しても正常に遊べない可能性が高い状態です。<br><br>この状況で無理にランクを回すのは危険です。試合中に切断されると、自分のせいでなくてもRPを失ったりデサーター（離脱）ペナルティを受ける恐れがあるためです。今できる最善は「復旧を待つ」こと。具体的には、①むやみに再起動やアンインストールを繰り返さない（直りません） ②公式の @PlayApexJP や EA Help の復旧アナウンスを確認する ③30分〜数時間ほど待ってから、この画面で再チェックする、という流れがおすすめです。下の各サービスの色を見れば、どの根幹機能がダメなのかが分かります。緑に戻れば復旧の合図です。';
+ }else if(overall==='minor'){
+  head='🟢 ほぼ正常 — 表示上は一部「停止」ですが、実際は遊べる可能性大';col='var(--warn)';
+  detail='現在'+svcCount+'件中'+nDown+'件が「停止」と表示されていますが、'+(onlySelf?'これは「コア接続（selfCoreTest）」など監視サービス自身の自己テスト項目で、EAの実際のゲームサーバーとは別物です。':'落ちているのはログイン・認証などの根幹サービスではありません。')+'肝心のログイン系・EAサーバーは正常なので、実際にはほぼ普通にプレイできる状態だと考えられます。<br><br>大事なポイント：この状態表示は第三者の監視サービスのデータを使っています。監視対象の中には、もう使われていない古いエンドポイントや、監視側の自己診断項目が混じっていることがあり、それらが実態と関係なく「停止」のまま居座ることがあります。今回の「コア接続」などがまさにそれに当たる可能性が高いです。もし本当に根幹が落ちていれば、そもそもロビーにすら入れないはずなので、あなたが普通に遊べている時点で、その赤は誤検知（または実害のない項目）と判断するのが妥当です。<br><br>結論：実際にプレイできているなら、その体感が正解です。安心して遊んで大丈夫。ただし、もし急にログインできなくなった・マッチングが終わらない等が起きたら、その時は本物の障害かもしれないので、この画面でログイン系（EAアカウントログイン／EAサーバー／認証）の色を確認してください。そこが赤くなったら初めて要注意です。下の一覧で、緑のままの項目が多ければ多いほど安心材料になります。';
  }else{
-  head='🛑 障害発生中 — 今は正常にプレイできない可能性大';col='var(--down)';
-  detail='現在'+svcCount+'件中'+nDown+'件のサービスでダウン（障害）が検知されています'+(downNames?'（該当：'+downNames+'）':'')+'。これはApex（EA/Respawn）側のサーバーで問題が起きている状態であり、あなたのネット環境や端末のせいではありません。信号でいえば赤、今は止まっているサインです。<br><br>起こり得る症状は幅広く、ログインできない・ロビーから先に進めない・マッチングが永遠に終わらない・試合中に自分や全員が切断される・「サーバーに接続できません」と出る・ストアやランク情報が表示されない、などです。今ゲームを起動しても正常に遊べなかったり、途中でエラー終了する可能性が高い状態です。<br><br>この状況で無理にランクを回すのは特に危険です。試合中に切断されると、自分のせいでなくてもRPを失ったり、デサーター（離脱）ペナルティを受ける恐れがあるためです。今できる最善は「復旧を待つ」こと。具体的には、①むやみに再起動やアンインストールを繰り返さない（直りません） ②公式の @PlayApexJP や EA Help の障害・復旧アナウンスを確認する ③30分〜数時間ほど待ってから、もう一度この画面で状態を再チェックする、という流れがおすすめです。下の各サービスの色（緑=正常／黄=遅延／赤=障害）を見れば、どの機能がダメなのかが具体的に分かります。赤が消えて緑に戻れば復旧の合図です。';
+  head='⚠️ 一部に遅延・不安定 — プレイは可能ですが注意';col='var(--warn)';
+  detail='ゲーム自体はプレイできますが、'+svcCount+'件中'+nSlow+'件のサービスで遅延や不安定さが検知されています'+(slowNames?'（該当：'+slowNames+'）':'')+'。これは「完全に落ちている（障害）」わけではなく、反応が遅い・たまにエラーが出る・マッチングに普段より時間がかかる、といった軽度〜中度の不調を意味します。信号でいえば黄色、ギリギリ機能はしているけれど本調子ではない状態です。<br><br>具体的に出やすい症状は、ログインに時間がかかる、ロビーやストアの読み込みが遅い、試合中にラグ（カクつき）が出る、サーバーとの接続が一瞬切れて「接続が失われました」と表示される、マッチングがなかなか成立しない、などです。これらの多くはあなたの回線ではなくサーバー側の一時的な負荷が原因です。<br><br>今すぐ遊ぶこと自体は可能ですが、RPがかかった大事なランク戦は避けて、カジュアルで様子を見るのが無難です。途中で強制切断されるとランクではペナルティやRP損につながるためです。対処は、①数十分ほど時間を置く ②ゲームとルーターを再起動する ③公式（@PlayApexJP）で告知が出ていないか確認する、がおすすめです。下のサービス一覧で黄色がどれかを見れば、どの機能が不安定なのかが分かります。';
  }
- return '<div class="srvverd" style="border-color:'+col+'"><div class="svh" style="color:'+col+'">'+head+'</div><div class="svp">'+detail+'</div><div class="svq"><span style="color:var(--ok)">●正常</span> 普通に遊べる ／ <span style="color:var(--warn)">●遅延</span> 遊べるが不安定 ／ <span style="color:var(--down)">●障害</span> 遊べない可能性大</div></div>';
+ return '<div class="srvverd" style="border-color:'+col+'"><div class="svh" style="color:'+col+'">'+head+'</div><div class="svp">'+detail+'</div><div class="svq"><span style="color:var(--ok)">●正常</span> 普通に遊べる ／ <span style="color:var(--warn)">●遅延/表示上の停止</span> たいてい遊べる ／ <span style="color:var(--down)">●障害(ログイン系)</span> 遊べない可能性大</div></div>';
 }
+
 function loadSrv(){
   gas('servers').then(function(d){
-    var tiles='',svcCount=0,nDown=0,nSlow=0,downNames=[],slowNames=[];
+    var tiles='',svcCount=0,nDown=0,nSlow=0,downNames=[],slowNames=[],downKeys=[],slowKeys=[];
     Object.keys(d||{}).forEach(function(svc){
       var arr=[]; collectStatus_(d[svc],arr); if(!arr.length)return; svcCount++;
-      var k=worstKind_(arr); if(k==="down"){nDown++;downNames.push(SVCJP[svc]||svc);} else if(k==="slow"){nSlow++;slowNames.push(SVCJP[svc]||svc);}
+      var k=worstKind_(arr); if(k==="down"){nDown++;downNames.push(SVCJP[svc]||svc);downKeys.push(svc);} else if(k==="slow"){nSlow++;slowNames.push(SVCJP[svc]||svc);slowKeys.push(svc);}
       tiles+='<div class="stile"><span class="led" style="background:'+stColor(k)+';box-shadow:0 0 9px '+stColor(k)+'"></span><div class="rg">'+esc(SVCJP[svc]||svc.replace(/_/g," "))+'</div><div class="sv">'+t('official')+'</div><div class="st" style="color:'+stColor(k)+'">'+stJP(k)+'</div></div>';
     });
-    var overall = nDown>0 ? "down" : (nSlow>0 ? "slow" : "ok");
-    var bCls=overall==="ok"?"ok2":(overall==="down"?"down":"warn"),bIc=overall==="ok"?"✓":"⚠";
+    var CRIT={Origin_login:1,EA_novafusion:1,ApexOauth_Crossplay:1,Apex_login:1};
+    var critDown=downKeys.filter(function(k){return CRIT[k];}).length;
+    var critSlow=slowKeys.filter(function(k){return CRIT[k];}).length;
+    var overall = critDown>0 ? "down" : ((nDown>0||nSlow>0) ? (critSlow>0?"slow":"minor") : "ok");
+    var bCls=(overall==="ok"||overall==="minor")?"ok2":(overall==="down"?"down":"warn"),bIc=(overall==="ok"||overall==="minor")?"✓":"⚠";
     var bTx=t("b_"+overall);
     var banner='<div class="banner '+bCls+'"><div class="big">'+bIc+'</div><div><div class="s">'+bTx+'</div><div class="sub">'+svcCount+''+t('srv_checked')+'</div></div></div>';
     var legend='<div class="legend"><span><i style="background:var(--ok)"></i>'+t('st_ok')+'</span><span><i style="background:var(--warn)"></i>'+t('st_slow')+'</span><span><i style="background:var(--down)"></i>'+t('st_down')+'</span></div>';
     var hist='<div class="histbar"><div class="hc"><div class="k">'+t('overall')+'</div><div class="v" style="color:'+stColor(overall)+'">'+stJP(overall)+'</div></div><div class="hc"><div class="k">'+t('uptime24')+'</div><div class="v mono" id="upv">—</div></div><div class="hc"><div class="k">'+t('lastinc')+'</div><div class="v" id="incv" style="font-size:13px">—</div></div></div>';
-    var verdict=srvVerdict(overall,svcCount,nDown,nSlow,downNames.join('・'),slowNames.join('・'));
+    var verdict=srvVerdict(overall,svcCount,nDown,nSlow,downNames.join('・'),slowNames.join('・'),critDown,downKeys);
     $('srvBox').innerHTML=verdict+banner+hist+legend+'<div class="sgrid">'+tiles+'</div><div class="note">'+t('note_srv')+'</div>';
     gas('history').then(function(hd){if(hd&&hd.ok){if(hd.uptime24h!=null)$('upv').textContent=hd.uptime24h+'%';$('incv').textContent=hd.lastIncident?ago(hd.lastIncident):t('none');}else{$('upv').textContent=t('measuring');$('incv').textContent=t('measuring');}}).catch(function(){});
   }).catch(function(){$('srvBox').innerHTML='<div class="loading">'+t('fail')+'</div>';loaded.srv=0;});
