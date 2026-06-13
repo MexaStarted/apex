@@ -414,6 +414,17 @@ function renderLists(){
  // テコ入れ候補（クリック0は載らないので少ないもの）
  var low=(d.products||[]).slice(-3).reverse();
  if(low.length)h+='<div class="sec"><h2 onclick="secToggle(this)">🧯 テコ入れ候補 <span class="arr">▼</span></h2><div class="body"><div class="bars">'+low.map(function(x){return '<div class="bar"><div class="bl">'+esc(String(x.k).slice(0,18))+'</div><div class="bt"><i style="width:8%;background:var(--down)"></i></div><div class="bv">'+x.c+'</div></div>';}).join('')+'</div><div class="note">クリックが少ない商品。掲載位置や紹介文の見直し候補（クリック0は集計に出ないためサイト側で確認）。</div></div></div>';
+ // ===== 新パネル/新要素も自動で出る汎用セクション（features：将来ノーメンテ） =====
+ var feats=d.features||[];
+ function fgrp(pre){return feats.filter(function(x){return String(x.k).indexOf(pre+':')===0;}).map(function(x){return {k:String(x.k).slice(pre.length+1)||'(無題)',c:x.c};});}
+ var tapG=fgrp('tap'),shareG=fgrp('share'),gearG=fgrp('gear'),battleG=fgrp('battle'),recruitG=fgrp('recruit');
+ var otherG=feats.filter(function(x){return !/^(view|diag|product|tap|share|gear|battle|recruit):/.test(String(x.k));}).map(function(x){return {k:x.k,c:x.c};});
+ if(tapG.length)    h+=listSec('タップ操作（パネル/ボタン）','👆',tapG,'tapG',{foot:'各パネルやボタンのタップ数。新しいパネルや要素を足すと、ここに自動で出ます'});
+ if(shareG.length)  h+=listSec('シェア（画像/テキスト）','📤',shareG,'shareG',{});
+ if(gearG.length)   h+=listSec('デバイス選び','🖱',gearG,'gearG',{});
+ if(battleG.length) h+=listSec('対決バトル','⚔',battleG,'battleG',{});
+ if(recruitG.length)h+=listSec('募集','📋',recruitG,'recruitG',{});
+ if(otherG.length)  h+=listSec('その他の操作（未分類）','✨',otherG,'otherG',{foot:'まだ分類していない新イベント。今後どんな要素を足してもGAS変更なしでここに出ます'});
  $g('p-list').innerHTML=h;
 }
 /* ===== インサイト・アラート ===== */

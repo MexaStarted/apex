@@ -2106,6 +2106,8 @@ setTimeout(function(){try{var _h=document.getElementById('home');if(_h&&_h.style
  wrap('budgetRun',function(i){push('gear','budget'+i);});
  wrap('guideRender',function(){push('gear','guide');});
  document.addEventListener('click',function(e){try{var a=e.target&&e.target.closest?e.target.closest('a.pbtn,a[rel~="sponsored"]'):null;if(a){var card=a.closest?a.closest('.pcard'):null;var nm=card&&card.querySelector('.pname')?card.querySelector('.pname').textContent:'';var cat=card&&card.querySelector('.pcat')?card.querySelector('.pcat').textContent:'';push('product',(cat?cat+' / ':'')+(nm||'link'));try{mpProdClick(nm||'link',cat);}catch(e){}}}catch(err){}},true);
+ /* 将来ノーメンテ：新パネル/ボタンも自動計測。新要素は data-ev を付けるだけ（無くても.tile/.btnは自動でラベル取得） */
+ document.addEventListener('click',function(e){try{var t=e.target&&e.target.closest?e.target.closest('[data-ev],.tile,.btn,.botnav button'):null;if(!t)return;var lbl=t.getAttribute&&t.getAttribute('data-ev');if(!lbl){var nm=t.querySelector&&t.querySelector('.nm');lbl=((nm?nm.textContent:t.textContent)||'').replace(/\s+/g,' ').trim().slice(0,38);}if(lbl)push('tap',lbl);}catch(x){}},true);
  function param(k){try{return new URLSearchParams(location.search).get(k)||'';}catch(e){return '';}}
  function send(){if(AN.sent||!AURL)return;AN.sent=true;var e=ua();var p={id:AN.id,site:'apex',t0:AN.t0,dur:Date.now()-AN.start,ref:document.referrer||'',utm:param('utm'),lang:(window.LANG||'ja'),dev:e.dev,os:e.os,br:e.br,sw:screen.width,sh:screen.height,ev:AN.ev};try{var blob=new Blob([JSON.stringify(p)],{type:'text/plain'});if(navigator.sendBeacon){navigator.sendBeacon(AURL,blob);}else{fetch(AURL,{method:'POST',body:JSON.stringify(p),keepalive:true,mode:'no-cors'});}}catch(e2){}}
  window.addEventListener('pagehide',send);
