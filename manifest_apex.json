@@ -1,0 +1,21 @@
+{
+  "name": "APEX激やばツール｜プレデターボーダー・サーバー状態・診断",
+  "short_name": "激やばツール",
+  "description": "Apex Legendsのプレデターボーダー・サーバー状態・マップローテ・戦績検索・146種の診断を無料で確認できるツール。",
+  "lang": "ja",
+  "dir": "ltr",
+  "start_url": "/apex/?utm_source=pwa",
+  "scope": "/apex/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#06070d",
+  "theme_color": "#06070d",
+  "categories": ["games", "utilities", "entertainment"],
+  "icons": [
+    { "src": "/apex/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "/apex/favicon-32.png", "sizes": "32x32", "type": "image/png" },
+    { "src": "/apex/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "/apex/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/apex/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

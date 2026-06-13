@@ -1,57 +1,102 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://mexastarted.github.io/apex/</loc>
-    <lastmod>2026-06-11</lastmod>
+    <lastmod>2026-06-13</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
+    <image:image><image:loc>https://mexastarted.github.io/apex/ogp.png</image:loc><image:title>APEX激やばツール</image:title></image:image>
   </url>
   <url>
     <loc>https://mexastarted.github.io/apex/?v=pred</loc>
-    <lastmod>2026-06-11</lastmod>
+    <lastmod>2026-06-13</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://mexastarted.github.io/apex/?v=srv</loc>
-    <lastmod>2026-06-11</lastmod>
+    <lastmod>2026-06-13</lastmod>
     <changefreq>hourly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.9</priority>
   </url>
   <url>
     <loc>https://mexastarted.github.io/apex/?v=map</loc>
-    <lastmod>2026-06-11</lastmod>
+    <lastmod>2026-06-13</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mexastarted.github.io/apex/?v=find</loc>
-    <lastmod>2026-06-11</lastmod>
+    <lastmod>2026-06-13</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mexastarted.github.io/apex/?v=diag</loc>
-    <lastmod>2026-06-11</lastmod>
+    <lastmod>2026-06-13</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://mexastarted.github.io/apex/?v=shop</loc>
-    <lastmod>2026-06-11</lastmod>
+    <loc>https://mexastarted.github.io/apex/?v=gear</loc>
+    <lastmod>2026-06-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mexastarted.github.io/apex/?v=gear</loc>
-    <lastmod>2026-06-11</lastmod>
+    <loc>https://mexastarted.github.io/apex/?v=shop</loc>
+    <lastmod>2026-06-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://mexastarted.github.io/apex/?v=learn</loc>
-    <lastmod>2026-06-11</lastmod>
+    <lastmod>2026-06-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
+  <url>
+    <loc>https://mexastarted.github.io/apex/?v=recruit</loc>
+    <lastmod>2026-06-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://mexastarted.github.io/apex/?v=update</loc>
+    <lastmod>2026-06-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://mexastarted.github.io/apex/?v=links</loc>
+    <lastmod>2026-06-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://mexastarted.github.io/apex/?v=mypage</loc>
+    <lastmod>2026-06-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url><loc>https://mexastarted.github.io/apex/?d=sh</loc><lastmod>2026-06-13</lastmod><changefreq>monthly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://mexastarted.github.io/apex/?d=ts</loc><lastmod>2026-06-13</lastmod><changefreq>monthly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://mexastarted.github.io/apex/?d=mt</loc><lastmod>2026-06-13</lastmod><changefreq>monthly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://mexastarted.github.io/apex/?d=tr</loc><lastmod>2026-06-13</lastmod><changefreq>monthly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://mexastarted.github.io/apex/?d=cary</loc><lastmod>2026-06-13</lastmod><changefreq>monthly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://mexastarted.github.io/apex/?d=endg</loc><lastmod>2026-06-13</lastmod><changefreq>monthly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://mexastarted.github.io/apex/?d=campr</loc><lastmod>2026-06-13</lastmod><changefreq>monthly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://mexastarted.github.io/apex/?d=rush</loc><lastmod>2026-06-13</lastmod><changefreq>monthly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://mexastarted.github.io/apex/?d=lootg</loc><lastmod>2026-06-13</lastmod><changefreq>monthly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://mexastarted.github.io/apex/?d=pingo</loc><lastmod>2026-06-13</lastmod><changefreq>monthly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://mexastarted.github.io/apex/?d=revi</loc><lastmod>2026-06-13</lastmod><changefreq>monthly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://mexastarted.github.io/apex/?d=snip</loc><lastmod>2026-06-13</lastmod><changefreq>monthly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://mexastarted.github.io/apex/?d=sgun</loc><lastmod>2026-06-13</lastmod><changefreq>monthly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://mexastarted.github.io/apex/?d=zone</loc><lastmod>2026-06-13</lastmod><changefreq>monthly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://mexastarted.github.io/apex/?d=solr</loc><lastmod>2026-06-13</lastmod><changefreq>monthly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://mexastarted.github.io/apex/?d=mic</loc><lastmod>2026-06-13</lastmod><changefreq>monthly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://mexastarted.github.io/apex/?d=bait</loc><lastmod>2026-06-13</lastmod><changefreq>monthly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://mexastarted.github.io/apex/?d=skin</loc><lastmod>2026-06-13</lastmod><changefreq>monthly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://mexastarted.github.io/apex/?d=nite</loc><lastmod>2026-06-13</lastmod><changefreq>monthly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://mexastarted.github.io/apex/?d=salt</loc><lastmod>2026-06-13</lastmod><changefreq>monthly</changefreq><priority>0.4</priority></url>
 </urlset>
