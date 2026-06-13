@@ -521,6 +521,11 @@ function renderSettings(){
   +'<div class="field"><label>自動更新間隔</label><select onchange="CFG.autoMin=Number(this.value);saveCfg();setupAuto()"><option value="0"'+(CFG.autoMin===0?' selected':'')+'>OFF</option><option value="1"'+(CFG.autoMin===1?' selected':'')+'>1分</option><option value="5"'+(CFG.autoMin===5?' selected':'')+'>5分</option><option value="10"'+(CFG.autoMin===10?' selected':'')+'>10分</option></select></div>'
   +swRow('変化があればブラウザ通知','notif')
  +'</div></div>';
+ h+='<div class="sec"><h2 onclick="secToggle(this)">🤖 Claude相談用テキスト <span class="bdg">貼って改善相談</span><span class="arr">▼</span></h2><div class="body">'
+  +'<div class="note">下のテキストをコピーしてClaudeに貼ると、今の数字をもとに改善案をもらえます（生JSONより読みやすい整形版）。</div>'
+  +'<div class="btnrow"><button class="btn" onclick="claudeCopy()">📋 コピー</button><button class="btn gray" onclick="claudeTxtDL()">⬇ .txt保存</button><button class="btn gray" onclick="claudeShow()">👁 中身を表示</button></div>'
+  +'<pre id="claudeBox" style="display:none;white-space:pre-wrap;font-size:11.5px;line-height:1.7;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:11px;max-height:340px;overflow:auto;margin-top:10px"></pre>'
+  +'</div></div>';
  h+='<div class="sec"><h2 onclick="secToggle(this)">📦 エクスポート / バックアップ <span class="arr">▼</span></h2><div class="body"><div class="btnrow">'
   +'<button class="btn" onclick="csvDL(\'views\')">画面CSV</button><button class="btn" onclick="csvDL(\'diags\')">診断CSV</button><button class="btn" onclick="csvDL(\'products\')">商品CSV</button><button class="btn" onclick="csvDL(\'trend\')">日次CSV</button>'
   +'<button class="btn" onclick="jsonDL()">全データJSON</button><button class="btn" onclick="kpiImage()">🖼 サマリーPNG</button><button class="btn gray" onclick="window.print()">🖨 印刷/PDF</button>'
@@ -546,6 +551,57 @@ function csvDL(key){
 function jsonDL(){dl(new Blob([JSON.stringify({meta:{at:new Date().toISOString(),fetchMs:FETCH_MS},data:D,cfg:CFG,snaps:snaps()},null,1)],{type:'application/json'}),'apex-dash-backup.json');}
 function importJSON(){var inp=document.createElement('input');inp.type='file';inp.accept='.json';inp.onchange=function(){var f=inp.files[0];if(!f)return;var r=new FileReader();r.onload=function(){try{var j=JSON.parse(r.result);if(j.cfg){CFG=j.cfg;saveCfg();}if(j.snaps)lsSet('dash2snaps',j.snaps);if(j.data){D=j.data;D._dv=deriv(D);renderAll();}toast('読込OK');applyCfg();}catch(e){toast('読込失敗');}};r.readAsText(f);};inp.click();}
 function dl(blob,name){var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();setTimeout(function(){URL.revokeObjectURL(a.href);},5000);}
+/* ===== Claude相談用：整形テキストの書き出し ===== */
+function claudeReport(){
+ var d=D||{},k=d.kpi||{};
+ function kv(arr,n){return (arr||[]).slice(0,n||10).map(function(x){return '  - '+nName(x.k)+': '+x.c;}).join('\n')||'  (なし)';}
+ function envline(a){return (a||[]).map(function(x){return x.k+':'+x.c;}).join(', ')||'-';}
+ var L=[];
+ L.push('# APEX激やばツール アクセス解析レポート');
+ L.push('取得時刻: '+(d.generated?new Date(d.generated).toLocaleString('ja-JP'):'-'));
+ L.push('（このテキストをClaudeに貼って「ここから改善案ちょうだい」と聞けます）');
+ L.push('');
+ L.push('## KPI');
+ L.push('- 今日の訪問: '+(k.todayVisits||0)+'（新規 '+(k.todayNew||0)+' / リピート '+(k.todayReturning||0)+'）');
+ L.push('- 昨日の訪問: '+(k.ydayVisits||0));
+ L.push('- 直近7日: 訪問 '+(k.last7Visits||0)+' / 新規 '+(k.last7New||0));
+ L.push('- 総ユーザー: '+(k.totalUsers||0)+' / WAU '+(k.wau||0)+' / MAU '+(k.mau||0));
+ L.push('- 今日の行動: シェア '+(k.todayShares||0)+' / 診断 '+(k.todayDiag||0)+' / 商品クリック '+(k.todayProductClicks||0));
+ L.push('- 平均滞在: '+(k.avgDurSec||0)+'秒');
+ L.push('');
+ L.push('## 14日トレンド（日付: 訪問(新規)）');
+ L.push((d.trend||[]).map(function(t){return '  '+t.date+': '+t.visits+'('+t.nu+')';}).join('\n')||'  (なし)');
+ L.push('');
+ L.push('## 画面（よく見られた順）');L.push(kv(d.views,12));
+ L.push('## 診断（人気順）');L.push(kv(d.diags,12));
+ L.push('## 流入元');L.push(kv(d.referrers,10));
+ L.push('## 商品クリック');L.push(kv(d.products,12));
+ L.push('');
+ var feats=d.features||[];
+ function fgrp(pre){return feats.filter(function(x){return String(x.k).indexOf(pre+':')===0;}).map(function(x){return '  - '+String(x.k).slice(pre.length+1)+': '+x.c;}).join('\n');}
+ L.push('## 操作イベント（パネル/ボタン等）');
+ var any=false;
+ [['tap','タップ操作'],['share','シェア'],['gear','デバイス選び'],['battle','バトル'],['recruit','募集']].forEach(function(p){var s=fgrp(p[0]);if(s){any=true;L.push('### '+p[1]);L.push(s);}});
+ var other=feats.filter(function(x){return !/^(view|diag|product|tap|share|gear|battle|recruit):/.test(String(x.k));});
+ if(other.length){any=true;L.push('### その他');L.push(other.map(function(x){return '  - '+x.k+': '+x.c;}).join('\n'));}
+ if(!any)L.push('  (まだ操作イベントのデータがありません)');
+ L.push('');
+ var e=d.env||{};var hr=d.hourly||[];var peak=hr.length?hr.indexOf(Math.max.apply(null,hr)):-1;
+ L.push('## 環境・時間帯');
+ L.push('- デバイス: '+envline(e.dev));
+ L.push('- OS: '+envline(e.os));
+ L.push('- ブラウザ: '+envline(e.br));
+ L.push('- 言語: '+envline(e.lang));
+ L.push('- アクセス最多: '+(peak>=0?peak+'時台':'-'));
+ var he=d.health||{};
+ L.push('');
+ L.push('## 集計の健全性');
+ L.push('- 最終集計: '+(he.lastFlush||'-')+' / 未処理ログ: '+(he.pendingRaw||0)+' / 受信ログ行数: '+(he.rawRows||0));
+ return L.join('\n');
+}
+function claudeCopy(){copyTxt(claudeReport());}
+function claudeTxtDL(){dl(new Blob([claudeReport()],{type:'text/plain;charset=utf-8'}),'apex-analytics-report.txt');}
+function claudeShow(){var el=$g('claudeBox');if(!el)return;if(el.style.display==='none'||!el.style.display){el.textContent=claudeReport();el.style.display='block';}else{el.style.display='none';}}
 function kpiImage(){
  var k=D.kpi||{},dv=D._dv;
  var c=document.createElement('canvas');c.width=1080;c.height=1080;var x=c.getContext('2d');
