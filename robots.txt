@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://mexastarted.github.io/apex/sitemap.xml

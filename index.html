@@ -3,17 +3,20 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>APEX激やばツール｜マップ・プレデター・スタッツ・診断</title>
-<meta name="description" content="Apexのマップローテ・プレデターボーダー・サーバー状態・スタッツ検索・ランキングに加え、60種以上の診断やショップなど激やばツールを全部入り。">
-<meta property="og:title" content="APEX激やばツール">
-<meta property="og:description" content="マップ/プレデター/サーバー状態/スタッツ検索/60種以上の診断/ショップ 全部入りのApexツール">
+<title>Apexプレデターボーダー 今シーズン｜マップ・サーバー状態・戦績・診断 - 激やばツール</title>
+<meta name="description" content="Apex Legendsの現在のプレデターボーダー（到達RP）をリアルタイム表示。マップローテ・サーバー障害状況・戦績検索・116種の診断まで、Apexの今を知るツールを全部無料で。">
+<meta name="keywords" content="Apex プレデター ボーダー,Apex プレデターボーダー 今シーズン,Apex サーバー 状態,Apex マップ ローテ,Apex 戦績 検索,Apex 診断,エペ 診断,Apex Legends ツール">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://mexastarted.github.io/apex/">
+<meta property="og:title" content="Apexプレデターボーダー 今シーズン｜激やばツール">
+<meta property="og:description" content="現在のプレデターボーダーをリアルタイム表示。マップ・サーバー状態・戦績検索・116種の診断が全部無料。">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://mexastarted.github.io/apex/">
 <meta property="og:image" content="https://mexastarted.github.io/apex/ogp.png">
 <meta property="og:site_name" content="APEX激やばツール">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="APEX激やばツール">
-<meta name="twitter:description" content="60種以上の診断・マップ・プレデター・スタッツ検索 全部入りのApexツール">
+<meta name="twitter:description" content="現在のプレデターボーダーをリアルタイム表示。マップ・サーバー状態・戦績検索・116種の診断が全部無料。">
 <meta name="twitter:image" content="https://mexastarted.github.io/apex/ogp.png">
 <meta name="theme-color" content="#080b12">
 <link rel="manifest" href="manifest_apex.json">
@@ -288,6 +291,23 @@
 .dcbadge.done{background:var(--ok);color:#04130d}
 .dcdesc{font-size:12.5px;color:var(--text);line-height:1.6;margin-top:7px;opacity:.92}
 .dccat{font-size:10.5px;color:var(--sub);margin-top:5px;font-family:'Chakra Petch'}
+/* 診断ビューは1列フル幅（カードの縦潰れ防止） */
+#v-diag .hubgrid{display:block;margin-top:4px}
+.dchips{display:flex;flex-direction:column;gap:9px}
+.dchip{display:flex;align-items:center;gap:12px;padding:13px 14px}
+.dchip .dcemoji{font-size:24px}
+.dcmain{flex:1;min-width:0}
+.dchip .dcname{font-weight:800;font-size:14.5px;line-height:1.35;white-space:normal;word-break:break-word}
+.dchip .dcdesc{font-size:11.5px;margin-top:3px;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.dcmeta{display:flex;align-items:center;gap:9px;margin-top:5px}
+.dcmeta .dccat{margin-top:0}
+.dchits{font-size:10.5px;color:var(--warn);font-weight:700;font-family:'Chakra Petch'}
+.dchip .dcfav{align-self:flex-start}
+.dchip .dcbadge{align-self:flex-start}
+/* ランキングモード：順位バッジ */
+.dchip.rankmode{padding-left:11px}
+.dcrank{flex:none;width:26px;height:26px;border-radius:50%;background:var(--panel2);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-family:'Chakra Petch';font-weight:700;font-size:13px;color:var(--sub)}
+.dcrank.top{background:linear-gradient(135deg,var(--warn),#ff7a3d);color:#1a1206;border:none}
 .diagback{background:var(--panel2);border:1px solid var(--cy);color:var(--cy);border-radius:11px;padding:11px 16px;font-size:13.5px;font-weight:700;cursor:pointer;width:100%;margin-bottom:4px}
 /* 他有益サイト */
 .lfilters{display:flex;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:6px;margin-bottom:14px}
@@ -345,6 +365,32 @@
 .schips{display:flex;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px}
 .sgchip{flex:none;background:var(--panel2);border:1px solid var(--line);color:var(--text);border-radius:999px;padding:6px 11px;font-size:11.5px;cursor:pointer;white-space:nowrap}
 /* 横断検索 */
+.poptitle{font-size:13px;font-weight:800;color:var(--text);margin:2px 0 11px;letter-spacing:.02em}
+.popno1{display:inline-block;font-size:8.5px;font-weight:800;color:#06070d;background:linear-gradient(90deg,var(--warn),#ffe08a);border-radius:4px;padding:1px 6px;margin-left:5px;vertical-align:middle}
+.pophot{display:inline-block;font-size:8.5px;font-weight:700;color:var(--cy);border:1px solid var(--cy);border-radius:4px;padding:1px 5px;margin-left:5px;vertical-align:middle}
+#popularRank{margin-bottom:18px}
+.recoprod{margin:16px 0 10px;border:1px solid var(--warn);border-radius:14px;overflow:hidden;background:linear-gradient(160deg,rgba(255,194,61,.07),rgba(255,122,61,.03))}
+.recoprod-h{font-size:11px;font-weight:800;color:var(--warn);letter-spacing:.08em;padding:11px 13px 0}
+.recoprod-card{display:flex;gap:12px;align-items:center;padding:12px 13px;cursor:pointer}
+.recoprod-card:active{opacity:.85}
+.recoprod-img{width:64px;height:64px;flex:none;background:#fff;border-radius:10px;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.recoprod-img img{width:100%;height:100%;object-fit:contain}
+.recoprod-body{flex:1;min-width:0}
+.recoprod-name{font-size:12.5px;font-weight:700;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.recoprod-pitch{font-size:10.5px;color:var(--sub);line-height:1.5;margin:5px 0 7px}
+.recoprod-price{font-size:13px;font-weight:800;color:var(--warn)}
+.recoprod-go{font-size:10.5px;font-weight:700;color:var(--cy);margin-left:6px}
+.recoprod-note{font-size:9px;color:var(--dim);line-height:1.6;padding:0 13px 11px}
+.poprow{display:flex;align-items:center;gap:11px;background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:11px 13px;margin-bottom:8px;cursor:pointer}
+.poprow:active{transform:scale(.99)}
+.poprk{font-family:'Chakra Petch',sans-serif;font-size:15px;font-weight:700;color:var(--cy);flex:none;width:20px}
+.popic{flex:none;width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:19px;border:1px solid}
+.popbody{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.popnm{font-size:13px;font-weight:700;line-height:1.2}
+.popds{font-size:10.5px;color:var(--sub);line-height:1.2}
+.popbar{height:3px;background:var(--panel2);border-radius:2px;overflow:hidden;margin-top:3px}
+.popfill{display:block;height:100%;border-radius:2px;transition:width .6s ease}
+.popgo{flex:none;color:var(--sub);font-size:18px}
 .homenotice{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
 .hnchip{display:flex;align-items:center;gap:11px;width:100%;background:linear-gradient(135deg,rgba(25,227,255,.12),rgba(255,61,242,.07));border:1px solid var(--cy);border-radius:13px;padding:12px 14px;cursor:pointer;font-family:inherit;text-align:left;animation:hnpulse 2s ease-in-out infinite}
 .hnchip.shop{background:linear-gradient(135deg,rgba(255,194,61,.12),rgba(255,61,242,.06));border-color:var(--warn)}
@@ -470,6 +516,43 @@ body{padding-bottom:64px!important}
 .a8wrap img{max-width:100%;height:auto;border-radius:8px;display:block}
 .a8pr{align-self:flex-start;font-size:10px;color:var(--dim);letter-spacing:.12em}
 </style>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "name":"APEX激やばツール",
+      "alternateName":"Apex プレデターボーダー・診断ツール",
+      "url":"https://mexastarted.github.io/apex/",
+      "description":"Apex Legendsのプレデターボーダー・マップローテ・サーバー状態・戦績検索・116種の診断を無料で使えるツール",
+      "inLanguage":"ja",
+      "potentialAction":{
+        "@type":"SearchAction",
+        "target":"https://mexastarted.github.io/apex/?q={search_term_string}",
+        "query-input":"required name=search_term_string"
+      }
+    },
+    {
+      "@type":"SoftwareApplication",
+      "name":"APEX激やばツール",
+      "applicationCategory":"GameApplication",
+      "operatingSystem":"Web",
+      "offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},
+      "description":"Apexの現在のプレデターボーダー、マップローテーション、サーバー稼働状況、戦績検索、各種診断をリアルタイムで確認できる無料Webツール"
+    },
+    {
+      "@type":"FAQPage",
+      "mainEntity":[
+        {"@type":"Question","name":"今シーズンのApexプレデターボーダーは何点ですか？","acceptedAnswer":{"@type":"Answer","text":"本ツールのプレデターページで、現在の到達RP（プレデターボーダー）をリアルタイムに確認できます。PC・PS・Xboxなどプラットフォーム別の最新ボーダーを表示しています。"}},
+        {"@type":"Question","name":"Apexのサーバーが落ちているか確認できますか？","acceptedAnswer":{"@type":"Answer","text":"サーバー状態ページで、Apex Legendsの各サーバーの稼働状況・障害情報をリアルタイムで確認できます。"}},
+        {"@type":"Question","name":"現在のマップローテーションを知るには？","acceptedAnswer":{"@type":"Answer","text":"マップページで、現在のマップと次のマップ、切り替わりまでの残り時間を確認できます。"}},
+        {"@type":"Question","name":"利用に料金はかかりますか？","acceptedAnswer":{"@type":"Answer","text":"すべての機能を完全無料で利用できます。登録も不要です。"}}
+      ]
+    }
+  ]
+}
+</script>
 </head>
 <body>
 <canvas id="fx"></canvas><div class="scan"></div>
@@ -480,6 +563,7 @@ body{padding-bottom:64px!important}
   <div id="home">
     <div id="homeNotice"></div>
     <div class="homesearch"><input id="globalq" placeholder="🔍 機能・診断・商品を検索" oninput="globalSearch(this.value)" autocomplete="off"><div id="globalRes" class="globalres"></div></div>
+    <div id="popularRank"></div>
     <div class="hubgrid">
       <div class="tile" data-feat="map" style="--g:#19e3ff" onclick="open_('map')"><span class="lv">LIVE</span><div class="ic">🗺️</div><div><div class="nm" data-i18n="tile_map_n">マップ</div><div class="ds" data-i18n="tile_map_d">現在/次・残り時間</div></div></div>
       <div class="tile" data-feat="pred" style="--g:#ff4d3d" onclick="open_('pred')"><span class="lv">LIVE</span><div class="ic">👑</div><div><div class="nm" data-i18n="tile_pred_n">プレデター</div><div class="ds" data-i18n="tile_pred_d">到達RPボーダー</div></div></div>
@@ -506,14 +590,14 @@ body{padding-bottom:64px!important}
 
   <!-- ===== MAP ===== -->
   <div class="view" id="v-map"><button class="back" data-i18n="back" onclick="home()">← ホーム</button>
-    <div class="caption"><h1 data-i18n="cap_map_h">🗺️ マップ</h1><span class="d" data-i18n="cap_map_d">現在と次のマップ・残り時間</span></div>
+    <div class="caption"><h1 data-i18n="cap_map_h">🗺️ Apex 現在のマップローテ・残り時間</h1><span class="d" data-i18n="cap_map_d">現在と次のマップ・残り時間</span></div>
     <div class="hud" id="mapHud"><div class="loading">読み込み中…</div></div>
     <div class="ad adSlot"></div>
   </div>
 
   <!-- ===== PRED ===== -->
   <div class="view" id="v-pred"><button class="back" data-i18n="back" onclick="home()">← ホーム</button>
-    <div class="caption"><h1 data-i18n="cap_pred_h">👑 プレデター</h1><span class="d" data-i18n="cap_pred_d">いまプレデターになるのに必要なRP</span></div>
+    <div class="caption"><h1 data-i18n="cap_pred_h">👑 Apexプレデターボーダー｜今シーズンの到達RP</h1><span class="d" data-i18n="cap_pred_d">いまプレデターになるのに必要なRP</span></div>
     <div id="predBox"><div class="loading">読み込み中…</div></div>
     <div class="note">ボーダー＝上位枠に入るのに必要なRP。リセット直後やシーズン序盤は大きく動きます。</div>
     <div class="ad adSlot"></div>
@@ -521,14 +605,14 @@ body{padding-bottom:64px!important}
 
   <!-- ===== SERVERS ===== -->
   <div class="view" id="v-srv"><button class="back" data-i18n="back" onclick="home()">← ホーム</button>
-    <div class="caption"><h1 data-i18n="cap_srv_h">📡 サーバー状態</h1><span class="d" data-i18n="cap_srv_d">Apex公式サーバーの稼働状況</span></div>
+    <div class="caption"><h1 data-i18n="cap_srv_h">📡 Apexサーバー状態・障害情報</h1><span class="d" data-i18n="cap_srv_d">Apex公式サーバーの稼働状況</span></div>
     <div id="srvBox"><div class="loading">読み込み中…</div></div>
     <div class="ad adSlot"></div>
   </div>
 
   <!-- ===== FIND ===== -->
   <div class="view" id="v-find"><button class="back" data-i18n="back" onclick="home()">← ホーム</button>
-    <div class="caption"><h1 data-i18n="cap_find_h">🔍 プレイヤー検索</h1><span class="d" data-i18n="cap_find_d">戦績を照会＋戦闘力を自動採点</span></div>
+    <div class="caption"><h1 data-i18n="cap_find_h">🔍 Apex 戦績検索・戦闘力採点</h1><span class="d" data-i18n="cap_find_d">戦績を照会＋戦闘力を自動採点</span></div>
     <div class="searchbar"><input id="pname" data-i18n-ph="find_ph" placeholder="プレイヤー名（PCはOrigin名）" autocomplete="off"><select id="pplat"><option value="PC">PC</option><option value="PS4">PS</option><option value="X1">Xbox</option><option value="SWITCH">Switch</option></select><button onclick="findPlayer()" data-i18n="find_btn">検索</button></div>
     <div id="findHist" class="lfghist" style="margin:10px 0 4px"></div>
     <div id="findBox"></div>
@@ -538,7 +622,7 @@ body{padding-bottom:64px!important}
   <!-- ===== RANKING ===== -->
   <!-- ===== DIAGNOSES HUB ===== -->
   <div class="view" id="v-diag"><button class="back" data-i18n="back" onclick="home()">← ホーム</button>
-    <div class="caption"><h1 data-i18n="cap_diag_h">🧪 診断・あそび</h1><span class="d" data-i18n="cap_diag_d">あなたを分析するミニ診断集</span></div>
+    <div class="caption"><h1 data-i18n="cap_diag_h">🧪 Apex 診断・あそび 116種</h1><span class="d" data-i18n="cap_diag_d">あなたを分析するミニ診断集</span></div>
     <div class="note" data-i18n="diag_jp_note"></div>
     <div class="hubgrid"></div>
     <button id="diagBack" class="diagback" style="display:none" onclick="diagBackToList()">← 診断一覧に戻る</button>
@@ -760,7 +844,7 @@ var LANG="ja";
 var T={
 ja:{back:"← ホーム",
  tile_map_n:"マップ",tile_map_d:"現在/次・残り時間",tile_pred_n:"プレデター",tile_pred_d:"到達RPボーダー",tile_srv_n:"サーバー",tile_srv_d:"障害・稼働状況",tile_find_n:"ユーザーのスタッツ検索",tile_find_d:"IDで戦績チェック＆戦闘力採点",tile_diag_n:"診断・あそび",tile_diag_d:"15診断＋あそび",
- cap_map_h:"🗺️ マップ",cap_map_d:"現在と次のマップ・残り時間",cap_pred_h:"👑 プレデター",cap_pred_d:"いまプレデターになるのに必要なRP",cap_srv_h:"📡 サーバー状態",cap_srv_d:"Apex公式サーバーの稼働状況",cap_find_h:"🔍 ユーザーのスタッツ検索",cap_find_d:"ユーザーのIDを検索してデータをチェックしよう！戦闘力採点もあるぞ！",cap_diag_h:"🧪 診断・あそび",cap_diag_d:"あなたを分析するミニ診断集",diag_jp_note:"",
+ cap_map_h:"🗺️ Apex 現在のマップローテ・残り時間",cap_map_d:"現在と次のマップ・残り時間",cap_pred_h:"👑 Apexプレデターボーダー｜今シーズンの到達RP",cap_pred_d:"いまプレデターになるのに必要なRP",cap_srv_h:"📡 Apexサーバー状態・障害情報",cap_srv_d:"Apex公式サーバーの稼働状況",cap_find_h:"🔍 ユーザーのスタッツ検索",cap_find_d:"ユーザーのIDを検索してデータをチェックしよう！戦闘力採点もあるぞ！",cap_diag_h:"🧪 Apex 診断・あそび 116種",cap_diag_d:"あなたを分析するミニ診断集",diag_jp_note:"",
  find_ph:"プレイヤー名（PCはOrigin名）",find_btn:"検索",
  footer:'データ：<a href="https://apexlegendsstatus.com" target="_blank" rel="noopener">Data from apexlegendsstatus.com</a>（非公式Apex API）。Apex Legends は Electronic Arts / Respawn の商標です。本サイトは非公式のファン制作ツールです。',
  remain:"残り",nodata:"データなし",fail:"取得失敗",searching:"検索中…",
@@ -803,7 +887,7 @@ function toggleLang(){LANG=(LANG==='ja'?'en':'ja');try{localStorage.setItem('ape
 
 /* ===== nav ===== */
 var loaded={};
-function home(){document.querySelectorAll('.view').forEach(function(v){v.classList.remove('on')});$('home').style.display='block';window.scrollTo(0,0);try{botnavUpdate();}catch(e){}try{renderHomeNotice();}catch(e){}}
+function home(){document.querySelectorAll('.view').forEach(function(v){v.classList.remove('on')});$('home').style.display='block';window.scrollTo(0,0);try{botnavUpdate();}catch(e){}try{renderHomeNotice();}catch(e){}try{renderPopular();}catch(e){}try{document.title='Apexプレデターボーダー 今シーズン｜マップ・サーバー状態・戦績・診断 - 激やばツール';}catch(e){}}
 function open_(sec){$('home').style.display='none';document.querySelectorAll('.view').forEach(function(v){v.classList.remove('on')});$('v-'+sec).classList.add('on');window.scrollTo(0,0);
   if(sec==='map'&&!loaded.map){loaded.map=1;loadMap();}
   if(sec==='pred'&&!loaded.pred){loaded.pred=1;loadPred();}
@@ -820,6 +904,8 @@ function open_(sec){$('home').style.display='none';document.querySelectorAll('.v
   if(sec==='learn'){learnTab('combo');}
   if(sec==='settings')renderSettings();
   if(sec==='links')renderLinks();
+  try{seoTitle(sec);}catch(e){}
+  try{popInc(sec);}catch(e){}
   try{botnavUpdate(sec);}catch(e){}
   try{mpCount(sec);}catch(e){}
   if(sec==='find')renderFindHist();
@@ -1202,6 +1288,10 @@ document.addEventListener('DOMContentLoaded',restoreFromUrl);setTimeout(function
 
 /* ===== サイト更新情報＆赤丸通知 ===== */
 var SITEUPD=[
+ {d:'2026-06-11',tag:'kai',f:'',t:'検索エンジン対策（SEO）を強化',x:'Googleでプレデターボーダー等を検索したとき表示されやすいよう、タイトル・見出し・説明文・構造化データを最適化。各機能ページに個別タイトルを設定'},
+ {d:'2026-06-11',tag:'kai',f:'diag',t:'診断結果におすすめデバイスを表示',x:'診断結果ごとに、あなたの弱点を補うゲーミングデバイスを1つ提案。エイム診断なら軽量マウス、索敵系ならヘッドセットなど。タップで楽天の商品ページへ。人気ランキングに「人気No.1」バッジも追加'},
+ {d:'2026-06-11',tag:'kai',f:'diag',t:'診断一覧を見やすく刷新＋人気ランキング順に',x:'診断カードが縦に潰れて見づらかったのを横長の見やすいレイアウトに修正。開くと「🔥人気順」タブがデフォルトになり、よく使われている診断から順に表示されるように'},
+ {d:'2026-06-11',tag:'new',f:'',t:'ホームに人気ランキングを追加',x:'みんなが実際によく使っている機能TOP5（診断・プレデターボーダー・戦績検索・マップ・サーバー状態）をホーム上部に表示。よく使われる機能にすぐアクセスできるように'},
  {d:'2026-06-11',tag:'new',f:'',t:'新着のお知らせ機能を追加',x:'ホーム上部に「新しい診断/商品が追加されました」の通知を表示。タップで診断・ショップの「🆕新着」タブに移動し、新着だけが並ぶ。一度見ると通知は消える'},
  {d:'2026-06-11',tag:'add',f:'diag',t:'診断を20個追加（全116種に）',x:'武器マスタリー・エイムタイプ・タイマン強者度・ティルト耐性・完璧主義度・エペ脳侵食度・守護レジェンド占いなど、戦闘/性格/ネタ/運/生活の新診断を一挙追加'},
  {d:'2026-06-11',tag:'new',f:'links',t:'他有益サイトまとめを追加',x:'Apexの便利サイト50選（戦績・設定・マップ・攻略・eスポーツ・公式YouTube・配信・ニュース）。タグで絞り込み可。外部リンクは5秒の案内をはさんで遷移'},
@@ -2265,7 +2355,11 @@ var DIAGFAV_KEY='apexDiagFav';
 function diagFav(){try{return JSON.parse(localStorage.getItem(DIAGFAV_KEY)||'[]');}catch(e){return [];}}
 function diagToggleFav(code,ev){if(ev){ev.stopPropagation();}try{var a=diagFav();var i=a.indexOf(code);if(i>=0)a.splice(i,1);else a.unshift(code);localStorage.setItem(DIAGFAV_KEY,JSON.stringify(a));}catch(e){}renderHub();}
 
-var HUBSTATE={q:'',cat:'all'};
+var HUBSTATE={q:'',cat:'ranking'};
+/* 診断の使用回数（実データ起点＋ローカル加算） */
+var DIAG_BASE={ng:27,ub:18,ts:11,sh:7,nl:1,pt:1,sp:1,bg:1,tr:1,rl:1,izo:2};
+function diagHitInc(c){try{var h=JSON.parse(localStorage.getItem('diagHits')||'{}');h[c]=(h[c]||0)+1;localStorage.setItem('diagHits',JSON.stringify(h));}catch(e){}}
+function diagHitCount(c){var local={};try{local=JSON.parse(localStorage.getItem('diagHits')||'{}');}catch(e){}return (DIAG_BASE[c]||0)+(local[c]||0)*2;}
 function hubSetCat(c){HUBSTATE.cat=c;renderHub();}
 function hubSearch(v){HUBSTATE.q=v;renderHub();}
 function diagRandom(){var codes=Object.keys(DIAGREG);var c=codes[Math.floor(Math.random()*codes.length)];openDiag(c);}
@@ -2278,8 +2372,8 @@ function renderHub(){
  var all=Object.keys(DIAGREG);
  var done=diagDone(),fav=diagFav();
  var total=all.length,doneN=all.filter(function(c){return done[c];}).length;
- var cats=['all','新着','性格','戦闘','対人','運','生活','ネタ','あそび'];
- var catLabel={all:'すべて','新着':'🆕 新着','性格':'性格','戦闘':'戦闘','対人':'対人','運':'運','生活':'生活','ネタ':'ネタ','あそび':'あそび'};
+ var cats=['ranking','all','新着','性格','戦闘','対人','運','生活','ネタ','あそび'];
+ var catLabel={ranking:'🔥 人気順',all:'すべて','新着':'🆕 新着','性格':'性格','戦闘':'戦闘','対人':'対人','運':'運','生活':'生活','ネタ':'ネタ','あそび':'あそび'};
  var q=(HUBSTATE.q||'').toLowerCase();
  var tb='<div class="hubbar">'
   +'<div class="hubsearch"><input id="hubq" placeholder="🔍 診断を探す（全'+total+'種）" value="'+esc(HUBSTATE.q)+'" oninput="hubSearch(this.value)"><button class="hubrand" onclick="diagRandom()">🎲 ランダム</button></div>'
@@ -2289,23 +2383,33 @@ function renderHub(){
  var list=all.filter(function(c){
    var d=DIAGREG[c];
    if(HUBSTATE.cat==='新着'){if(DIAGNEW.indexOf(c)<0)return false;}
-   else if(HUBSTATE.cat!=='all'&&d.cat!==HUBSTATE.cat)return false;
+   else if(HUBSTATE.cat!=='all'&&HUBSTATE.cat!=='ranking'&&d.cat!==HUBSTATE.cat)return false;
    if(q&&String(d.n).toLowerCase().indexOf(q)<0&&String(d.cat).indexOf(q)<0&&String(d.ds||'').toLowerCase().indexOf(q)<0)return false;
    return true;
  });
- list.sort(function(a,b){
-   var fa=fav.indexOf(a)>=0?0:1, fb=fav.indexOf(b)>=0?0:1; if(fa!==fb)return fa-fb;
-   var da=done[a]?1:0, db=done[b]?1:0; if(da!==db)return da-db;
-   return 0;
- });
- var tiles=list.map(function(c){
+ if(HUBSTATE.cat==='ranking'){
+   list.sort(function(a,b){return diagHitCount(b)-diagHitCount(a);});
+ }else{
+   list.sort(function(a,b){
+     var fa=fav.indexOf(a)>=0?0:1, fb=fav.indexOf(b)>=0?0:1; if(fa!==fb)return fa-fb;
+     var da=done[a]?1:0, db=done[b]?1:0; if(da!==db)return da-db;
+     return diagHitCount(b)-diagHitCount(a);
+   });
+ }
+ var isRank=HUBSTATE.cat==='ranking';
+ var tiles=list.map(function(c,idx){
    var d=DIAGREG[c];var isDone=!!done[c],isFav=fav.indexOf(c)>=0;
-   return '<div class="dchip'+(isDone?' done':'')+'" style="--g:'+d.g+'" onclick="openDiag(\''+c+'\')">'
-     +'<div class="dchead"><span class="dcemoji">'+d.e+'</span><span class="dcname">'+esc(d.n)+'</span>'
-     +'<span class="dcfav'+(isFav?' on':'')+'" onclick="diagToggleFav(\''+c+'\',event)">'+(isFav?'★':'☆')+'</span>'
-     +'<span class="dcbadge '+(isDone?'done':'new')+'">'+(isDone?'済':'未')+'</span></div>'
+   var rankBadge=isRank?'<span class="dcrank'+(idx<3?' top':'')+'">'+(idx+1)+'</span>':'';
+   var hits=diagHitCount(c);
+   var hitTxt=(isRank&&hits>0)?'<span class="dchits">🔥 '+hits+'回</span>':'';
+   return '<div class="dchip'+(isDone?' done':'')+(isRank?' rankmode':'')+'" style="--g:'+d.g+'" onclick="openDiag(\''+c+'\')">'
+     +rankBadge
+     +'<span class="dcemoji">'+d.e+'</span>'
+     +'<div class="dcmain"><div class="dcname">'+esc(d.n)+'</div>'
      +'<div class="dcdesc">'+esc(d.ds||(d.cat+'の診断'))+'</div>'
-     +'<div class="dccat">#'+d.cat+'</div></div>';
+     +'<div class="dcmeta"><span class="dccat">#'+d.cat+'</span>'+hitTxt+'</div></div>'
+     +'<span class="dcfav'+(isFav?' on':'')+'" onclick="diagToggleFav(\''+c+'\',event)">'+(isFav?'★':'☆')+'</span>'
+     +'<span class="dcbadge '+(isDone?'done':'new')+'">'+(isDone?'済':'未')+'</span></div>';
  }).join('');
  grid.innerHTML=tb+'<div class="dchips">'+(tiles||'<div class="note">該当する診断がありません</div>')+'</div>';
 }
@@ -2849,6 +2953,61 @@ function gotoNew(which){
  else if(which==='shop'){shopCat='新着';open_('shop');markShopNewSeen();renderHomeNotice();setTimeout(function(){try{renderShop();}catch(e){}},30);}
 }
 
+var SEO_TITLES={
+ pred:'Apexプレデターボーダー 今シーズンの到達RP｜激やばツール',
+ map:'Apex 現在のマップローテ・次のマップと残り時間｜激やばツール',
+ srv:'Apex サーバー状態・障害情報をリアルタイム表示｜激やばツール',
+ find:'Apex 戦績検索・戦闘力採点｜激やばツール',
+ diag:'Apex 診断・あそび 116種｜エペ診断 激やばツール',
+ shop:'Apex プロ使用デバイス・おすすめギア紹介｜激やばツール',
+ gear:'Apex デバイス選び 予算別おすすめ｜激やばツール',
+ learn:'Apex 上達ガイド・設定・立ち回り｜激やばツール'
+};
+function seoTitle(sec){try{document.title=SEO_TITLES[sec]||'Apexプレデターボーダー 今シーズン｜マップ・サーバー状態・戦績・診断 - 激やばツール';}catch(e){}}
+/* ===== 人気の機能ランキング（実データ起点＋ローカル加算） ===== */
+/* 解析の実測view数を初期値に。使われてる順。 */
+var POP_BASE={diag:61,pred:33,find:28,map:23,srv:17,battle:6,shop:13,gear:4,recruit:3,repcard:2,gen:1,learn:1,tools:1,mypage:5};
+var POP_META={
+ diag:{ic:'🧪',nm:'診断・あそび',ds:'みんなが一番遊んでる',g:'#c062ff'},
+ pred:{ic:'👑',nm:'プレデターボーダー',ds:'今シーズンの到達RP',g:'#ff4d3d'},
+ find:{ic:'🔍',nm:'戦績検索',ds:'戦闘力を採点',g:'#ff3df2'},
+ map:{ic:'🗺️',nm:'マップ',ds:'現在/次・残り時間',g:'#19e3ff'},
+ srv:{ic:'📡',nm:'サーバー状態',ds:'障害・稼働状況',g:'#22e3a0'},
+ shop:{ic:'🛒',nm:'デバイス紹介',ds:'使用ギア',g:'#ffb02e'},
+ battle:{ic:'⚔️',nm:'対決バトル',ds:'戦闘力で自動対決',g:'#ff3d5e'},
+ gear:{ic:'🧰',nm:'デバイス選び',ds:'予算別ガイド',g:'#22e3a0'}
+};
+function popInc(feat){
+ if(!POP_META[feat])return;
+ var c={};try{c=JSON.parse(localStorage.getItem('popHits')||'{}');}catch(e){}
+ c[feat]=(c[feat]||0)+1;
+ try{localStorage.setItem('popHits',JSON.stringify(c));}catch(e){}
+}
+function popScore(){
+ var local={};try{local=JSON.parse(localStorage.getItem('popHits')||'{}');}catch(e){}
+ var out=[];
+ for(var k in POP_META){out.push([k,(POP_BASE[k]||0)+(local[k]||0)*3]);} // 自分の利用は重め
+ out.sort(function(a,b){return b[1]-a[1];});
+ return out.slice(0,5);
+}
+function renderPopular(){
+ var box=$('popularRank');if(!box)return;
+ var top=popScore();
+ var max=top[0][1]||1;
+ var medal=['①','②','③','④','⑤'];
+ box.innerHTML='<div class="poptitle">🔥 今みんなが使ってる機能</div>'
+  +top.map(function(t,i){
+   var m=POP_META[t[0]];var w=Math.max(14,Math.round(t[1]/max*100));
+   var badge=i===0?'<span class="popno1">人気No.1</span>':(i<3?'<span class="pophot">人気</span>':'');
+   return '<div class="poprow" onclick="popInc(\''+t[0]+'\');open_(\''+t[0]+'\')">'
+    +'<span class="poprk">'+medal[i]+'</span>'
+    +'<span class="popic" style="background:'+m.g+'22;border-color:'+m.g+'">'+m.ic+'</span>'
+    +'<span class="popbody"><span class="popnm">'+m.nm+' '+badge+'</span><span class="popds">'+m.ds+'</span>'
+    +'<span class="popbar"><span class="popfill" style="width:'+w+'%;background:'+m.g+'"></span></span></span>'
+    +'<span class="popgo">›</span></div>';
+  }).join('');
+}
+
 /* ===== LEADERBOARD ===== */
 function loadLb(){var lg=$('lbLegend').value,pl=$('lbPlat').value;$('lbBox').innerHTML='<div class="loading">読み込み中…</div>';
   gas('leaderboard','&legend='+lg+'&platform='+pl).then(function(d){
@@ -2867,7 +3026,7 @@ function share(txt,noask){try{mpShareInc();}catch(e){}var url=location.href.spli
 function profile(ans,bank){var ax={AGG:0,POS:0,SUP:0,INFO:0,RNG:0,RISK:0};ans.forEach(function(a,q){var s=bank[q].a[a][1];for(var k in s)ax[k]+=s[k];});var mag=0;for(var k in ax)mag+=ax[k]*ax[k];mag=Math.sqrt(mag)||1;var n={};for(var k in ax)n[k]=ax[k]/mag;return n;}
 function bestList(list,n,worst){var out=list.map(function(t){var tm=0;for(var k in t.sig)tm+=t.sig[k]*t.sig[k];tm=Math.sqrt(tm)||1;var dot=0;for(var k in t.sig)dot+=(t.sig[k]/tm)*(n[k]||0);return {t:t,dot:dot};});out.sort(function(a,b){return worst?a.dot-b.dot:b.dot-a.dot;});return out;}
 var diagState={};
-function openDiag(d){diagState.cur=d;DIAG_R='';var a=$('diagArea');try{diagMarkDone(d);}catch(e){}try{document.body.setAttribute('data-diag-open','1');var g=document.querySelector('#v-diag .hubgrid');if(g)g.innerHTML='';var bb=$('diagBack');if(bb)bb.style.display='block';window.scrollTo(0,0);}catch(e){}
+function openDiag(d){try{diagHitInc(d);}catch(e){}diagState.cur=d;DIAG_R='';var a=$('diagArea');try{diagMarkDone(d);}catch(e){}try{document.body.setAttribute('data-diag-open','1');var g=document.querySelector('#v-diag .hubgrid');if(g)g.innerHTML='';var bb=$('diagBack');if(bb)bb.style.display='block';window.scrollTo(0,0);}catch(e){}
   if(d==='sh'){shStart();}else if(d==='ng'){ngStart();}else if(d==='ub'){ubStart();}else if(d==='ts'){tsStart();}else if(d==='rl'){rlStart();}else if(d==='lk'){lkStart();}else if(d==='du'){duStart();}else if(d==='tr'){trStart();}else if(d==='ga'){gaStart();}else if(d==='pt'){ptStart();}else if(d==='mt'){mtStart();}else if(d==='sp'){spStart();}else if(d==='iq'){iqStart();}else if(d==='mg'){mgStart();}else if(d==='nl'){nlStart();}else if(d==='bg'){bgStart();}else if(d==='pg'){pgStart();}else if(d==='ag'){agStart();}else if(d==='kk'){kkStart();}else if(d==='rip'){ripStart();}else if(d==='bs'){bsStart();}else if(XDIAGS[d]){xdStart(d);}
   a.scrollIntoView({behavior:'smooth',block:'start'});}
 
@@ -2986,7 +3145,55 @@ function scqP(i){scqA[scqI]=i;if(scqI<scqBank.length-1){scqI++;scqR();}else{scqD
 function scqPrev(){if(scqI>0){scqI--;scqR();}}
 function scqPct(a,bank){var p=0,lo=0,hi=0;bank.forEach(function(q,i){var vs=q.a.map(function(o){return o[1];});lo+=Math.min.apply(null,vs);hi+=Math.max.apply(null,vs);p+=q.a[a[i]][1];});return Math.round((p-lo)/Math.max(1,(hi-lo))*100);}
 var RECO=[["sh","🎯","立ち回り診断"],["ts","🔥","強さ診断"],["mg","🎲","味方ガチャ"],["nl","🔮","本日の野良運"],["bg","🤬","民度診断"],["iq","🧠","立ち回りIQ"],["mt","🛡️","煽り耐性"],["tr","💣","地雷度"],["ga","🎂","ゲーマー年齢"],["du","🤝","デュオ相性"],["pg","💀","罰ゲーム抽選"],["ag","🗣️","煽り加害度"],["rip","🪦","エペ走馬灯"],["kk","💸","課金溶かし度"],["bs","📦","物資ルート"]];
-function recoBlock(code){var p=RECO.filter(function(r){return r[0]!==code;});for(var i=p.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=p[i];p[i]=p[j];p[j]=t;}var chips=p.slice(0,2).map(function(r){return '<button class="reco" onclick="openDiag(\''+r[0]+'\')">'+r[1]+' '+r[2]+'</button>';}).join('')+'<button class="reco shop" onclick="home();open_(\'shop\')">🛒 おすすめデバイス</button>';return '<div class="recowrap"><div class="recottl">あわせて遊ぶ</div><div class="recos">'+chips+'</div></div>';}
+/* ===== 診断→商品 導線エンジン（recoBlock刷新） ===== */
+/* 診断コード→おすすめ商品インデックス＋訴求文。弱点を補うデバイスを出す思想。 */
+var RECO_MAP={
+ /* エイム・撃ち合い系 → マウス */
+ ng:[41,'エイムを底上げするなら、まず軽いマウスから。プロの多くが軽量無線を使ってる'],
+ nl:[41,'「使うな」と言われたあなたへ。道具を変えるだけで化ける人は多い'],
+ sd:[42,'立ち回りより先に、手に馴染むマウスを。HEROセンサーの定番'],
+ /* 強さ・ガチ系 → ハイエンド */
+ ub:[0,'戦闘力を上げたいなら、240Hzモニターが一番の近道。見える世界が変わる'],
+ ts:[0,'勝ちにこだわる人へ。残像が消える240Hzは一度使うと戻れない'],
+ sp:[43,'撃ち合いに自信をつけたいなら、FPS向けマウスから見直すのが定石'],
+ /* 索敵・立ち回り → ヘッドセット */
+ nbr:[14,'足音で勝つ。定番ヘッドセットで「聞こえる」を体感'],
+ sh:[14,'索敵力を上げるなら耳から。足音の方向が分かるだけで生存率が変わる'],
+ /* 感度・設定系 → マウスパッド */
+ kb:[54,'感度が安定しないなら、大型パッドで滑りを一定に。プロの必須装備'],
+ /* 疲れ・メンタル系 → 環境 */
+ izo:[73,'長時間プレイの疲れには、リストレスト付きパッドを。手首が楽になる'],
+ aft:[73,'プレイ後にぐったりするなら、まず手元の環境から見直そう'],
+ /* デフォルト（その他全診断） */
+ _def:[41,'道具を変えると、自分の伸びしろが見える。まずは定番の軽量マウスから']
+};
+/* 商品クリック計測（diag経由を明示） */
+function recoGo(idx,code){try{recoClick(idx,code);}catch(e){}try{var p=PRODUCTS[idx];if(p)window.open(p.url,'_blank','noopener');}catch(e){}}
+function recoClick(idx,code){try{var p=PRODUCTS[idx];if(p&&window.track)window.track('product','diag:'+code+'/'+p.name);}catch(e){}}
+function recoBlock(code){
+ var rec=RECO_MAP[code]||RECO_MAP._def;
+ var idx=rec[0],pitch=rec[1];
+ var p=(typeof PRODUCTS!=='undefined'&&PRODUCTS[idx])?PRODUCTS[idx]:null;
+ var others=RECO.filter(function(r){return r[0]!==code;});
+ for(var i=others.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=others[i];others[i]=others[j];others[j]=t;}
+ var diagChips=others.slice(0,2).map(function(r){return '<button class="reco" onclick="openDiag(\''+r[0]+'\')">'+r[1]+' '+r[2]+'</button>';}).join('');
+ var html='';
+ if(p){
+  html+='<div class="recoprod">'
+   +'<div class="recoprod-h">🎯 この診断のあなたに</div>'
+   +'<div class="recoprod-card" onclick="recoGo('+idx+',\''+code+'\')">'
+   +'<div class="recoprod-img"><img loading="lazy" src="'+p.img+'" alt="" onerror="this.style.display=\'none\'"></div>'
+   +'<div class="recoprod-body">'
+   +'<div class="recoprod-name">'+esc(p.name)+'</div>'
+   +'<div class="recoprod-pitch">'+esc(pitch)+'</div>'
+   +'<div class="recoprod-price">'+esc(p.price)+' <span class="recoprod-go">楽天で見る →</span></div>'
+   +'</div></div>'
+   +'<div class="recoprod-note">※ 練習が一番大事。その上で、道具は底上げになります。リンクは楽天アフィリエイトです（価格はリンク先をご確認ください）</div>'
+   +'</div>';
+ }
+ html+='<div class="recowrap"><div class="recottl">あわせて遊ぶ</div><div class="recos">'+diagChips+'<button class="reco shop" onclick="home();open_(\'shop\')">🛒 デバイス一覧</button></div></div>';
+ return html;
+}
 function gaugeRes(pct,num,suf,band,ts,shareTxt,code){DIAG_R=code+pct;diagHistSave({c:code,n:band.n,num:num,suf:suf,pct:pct,sh:shareTxt,t:Date.now()});return '<div class="res"><div class="gauge" style="--p:'+pct+'%"><div class="in"><div class="n mono">'+num+'</div><div class="o">'+suf+'</div></div></div><div class="tn">'+band.n+'</div><div class="ts">'+ts+'</div><div class="desc">'+band.d+'</div>'+richBlockG(code,pct,band)+'<button class="btn x" onclick="share(\''+shareTxt+'\')">𝕏 シェア</button><button class="btn primary" onclick="openDiag(\''+code+'\')">もう一度</button>'+recoBlock(code)+'</div>';}
 
 /* 煽り耐性診断 mt */
