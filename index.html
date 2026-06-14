@@ -2032,41 +2032,99 @@ function ago(iso){var d=new Date(iso),s=Math.floor((Date.now()-d)/1000);if(s<60)
 /* ===== FIND ===== */
 var RANKTH=[["ルーキー",0],["ブロンズ",1000],["シルバー",3000],["ゴールド",6000],["プラチナ",10000],["ダイヤ",15000],["マスター",21000]];
 function nextRank(rp){for(var i=0;i<RANKTH.length;i++){if(rp<RANKTH[i][1])return {name:RANKTH[i][0],need:RANKTH[i][1]-rp};}return null;}
+var findLast=null,findAutoT=null,FIND_TAB='o';
 function findPlayer(){var name=($('pname').value||'').trim(),plat=$('pplat').value;if(!name){$('findBox').innerHTML='<div class="warnbox">'+t('err_name')+'</div>';return;}
-  fhSave(name,plat);renderFindHist();
+  fhSave(name,plat);renderFindHist();findLast={name:name,plat:plat};FIND_TAB='o';
   $('findBox').innerHTML='<div class="loading">'+t('searching')+'</div>';
+  if(findAutoT){clearTimeout(findAutoT);findAutoT=null;}
   gas('player','&player='+encodeURIComponent(name)+'&platform='+plat).then(function(d){
     if(!d||d.Error||d.error){$('findBox').innerHTML='<div class="warnbox">'+t('err_notfound')+'</div>';return;}
-    var g=d.global||{},rt=d.realtime||{},sel=(d.legends&&d.legends.selected)||{},total=d.total||{},rank=g.rank||{};
-    var lvl=g.level!=null?g.level:0,rp=rank.rankScore!=null?Number(rank.rankScore):0;
-    // computed
-    var kills=(total.kills&&total.kills.value)||null,dmg=(total.damage&&total.damage.value)||null,wins=(total.wins&&total.wins.value)||null,games=(total.games_played&&total.games_played.value)||null;
-    var kd=(kills!=null&&total.deaths&&total.deaths.value)?(kills/Math.max(1,total.deaths.value)).toFixed(2):null;
-    var avg=(dmg!=null&&games)?Math.round(dmg/games):null,wr=(wins!=null&&games)?((wins/games*100).toFixed(1)+'%'):null;
-    var score=Math.min(100,Math.round(Math.min(lvl/8,45)+Math.min(rp/600,45)+(kd?Math.min(kd*4,10):0)));
-    var verd=t("verd_"+(score>=80?5:score>=60?4:score>=40?3:score>=20?2:1));
-    var nr=nextRank(rp);
-    var legs=[];var all=(d.legends&&d.legends.all)||{};Object.keys(all).forEach(function(k){var L=all[k];var kk=null;(L.data||[]).forEach(function(t){if(/kill/i.test(t.key||t.name||''))kk=t.value;});if(kk!=null)legs.push({n:k,v:Number(kk)});});legs.sort(function(a,b){return b.v-a.v;});legs=legs.slice(0,4);var lmax=legs.length?legs[0].v:1;
-    var H='<div class="ptop"><div class="gauge" style="--p:'+score+'%"><div class="in"><div class="n mono">'+score+'</div><div class="o">/100</div></div></div>'
-      +'<div class="pwho"><div class="nm">'+esc(g.name||name)+'</div><div class="meta">'+plat+' ・ Lv.'+lvl+(rt.isOnline?' ・ <span class="on">● '+t('online')+'</span>':'')+(sel.LegendName?' ・ '+t('using')+' '+esc(sel.LegendName):'')+'</div><div class="verd">「'+verd+'」</div></div></div>'
-      +'<button class="btn x" onclick="share(shareScore(score,verd))">𝕏 '+t('share')+'</button>'
-      +'<a class="findgear" href="?v=gear" onclick="open_(\'gear\');return false;" data-ev="戦績→デバイス">🎯 戦闘力を上げる“勝てる”おすすめデバイスを見る →</a>'
-      +'<div class="subtabs"><button class="on" data-p="o" onclick="ftab(this,\'o\')">'+t('sub_o')+'</button><button data-p="l" onclick="ftab(this,\'l\')">'+t('sub_l')+'</button><button data-p="r" onclick="ftab(this,\'r\')">'+t('sub_r')+'</button></div>';
-    H+='<div class="spane on" id="fp-o"><div class="sgrid2">'
-      +'<div class="stat calc"><div class="k">KD</div><div class="v mono">'+(kd||'—')+'</div></div>'
-      +'<div class="stat calc"><div class="k">'+t('st_avg')+'</div><div class="v mono">'+(avg||'—')+'</div></div>'
-      +'<div class="stat calc"><div class="k">'+t('st_wr')+'</div><div class="v mono">'+(wr||'—')+'</div></div>'
-      +'<div class="stat"><div class="k">'+t('st_lvl')+'</div><div class="v mono">'+lvl+'</div></div>'
-      +'<div class="stat"><div class="k">'+t('st_kills')+'</div><div class="v mono">'+(kills!=null?Number(kills).toLocaleString():'—')+'</div></div>'
-      +'<div class="stat"><div class="k">RP</div><div class="v mono">'+(rp?rp.toLocaleString():'—')+'</div></div></div>'
-      +((kd==null||avg==null)?'<div class="note">'+t('note_trk')+'</div>':'')+'</div>';
-    H+='<div class="spane" id="fp-l">'+(legs.length?legs.map(function(l){return '<div class="leg"><span class="n">'+esc(l.n)+'</span><span class="b"><i style="width:'+Math.round(l.v/lmax*100)+'%"></i></span><span class="v mono">'+l.v.toLocaleString()+'</span></div>';}).join(''):'<div class="note">'+t('note_leg')+'</div>')+'</div>';
-    H+='<div class="spane" id="fp-r"><div class="rankcard"><div class="e">🏆</div><div class="r">'+(rank.rankName||'-')+' '+(rank.rankDiv||'')+' ・ <span class="rp mono">'+(rp?rp.toLocaleString():'-')+' RP</span></div>'+(nr?'<div class="bar"><i style="width:60%"></i></div><div class="t">'+t('next_a')+rankLabel(nr.name)+t('next_b')+' <b class="mono">'+nr.need.toLocaleString()+' RP</b></div>':'')+'</div><div class="note">'+t('note_rank')+'</div></div>';
-    
-    $('findBox').innerHTML=H;
+    findRender(d,name,plat);
   }).catch(function(){$('findBox').innerHTML='<div class="warnbox">'+t('err_fail')+'</div>';});
 }
-function ftab(b,p){document.querySelectorAll('#v-find .subtabs button').forEach(function(x){x.classList.remove('on')});b.classList.add('on');document.querySelectorAll('#v-find .spane').forEach(function(x){x.classList.remove('on')});$('fp-'+p).classList.add('on');}
+function findRefresh(){
+  if(!findLast)return;var btn=$('findRefBtn');if(btn){btn.disabled=true;btn.textContent='更新中…';}
+  gas('player','&player='+encodeURIComponent(findLast.name)+'&platform='+findLast.plat).then(function(d){
+    if(d&&!d.Error&&!d.error)findRender(d,findLast.name,findLast.plat);
+    var b=$('findRefBtn');if(b){b.disabled=false;b.textContent='🔄 最新に更新';}
+  }).catch(function(){var b=$('findRefBtn');if(b){b.disabled=false;b.textContent='🔄 最新に更新';}});
+}
+function findSilentRefresh(){
+  if(!findLast)return;
+  gas('player','&player='+encodeURIComponent(findLast.name)+'&platform='+findLast.plat).then(function(d){
+    if(d&&!d.Error&&!d.error)findRender(d,findLast.name,findLast.plat);
+  }).catch(function(){});
+}
+/* 各レジェンドの装備トラッカーを横断集計（EAは装備中トラッカーしか返さないので、合算で少しでも埋める） */
+function findAgg(d){
+  var sum={kills:0,damage:0,wins:0,games:0,deaths:0,headshots:0},seen={};
+  var all=(d.legends&&d.legends.all)||{};
+  Object.keys(all).forEach(function(k){(all[k].data||[]).forEach(function(it){
+    var key=String((it&&(it.key||it.name))||'').toLowerCase();var v=Number(it&&it.value);if(isNaN(v))return;
+    var cat=null;
+    if(/death/.test(key))cat='deaths';
+    else if(/headshot/.test(key))cat='headshots';
+    else if(/damage|dmg/.test(key))cat='damage';
+    else if(/win/.test(key))cat='wins';
+    else if(/game|match|played/.test(key))cat='games';
+    else if(/kill/.test(key))cat='kills';
+    if(cat){sum[cat]+=v;seen[cat]=true;}
+  });});
+  var tot=d.total||{},out={};
+  ['kills','damage','wins','games','deaths','headshots'].forEach(function(c){
+    var tk=(c==='games')?'games_played':c;
+    var tv=(tot[tk]&&tot[tk].value!=null)?Number(tot[tk].value):NaN;
+    out[c]=(!isNaN(tv))?tv:(seen[c]?sum[c]:null);
+  });
+  return out;
+}
+function findRender(d,name,plat){
+  var g=d.global||{},rt=d.realtime||{},sel=(d.legends&&d.legends.selected)||{},rank=g.rank||{},arena=g.arena||{};
+  var lvl=g.level!=null?g.level:0,rp=rank.rankScore!=null?Number(rank.rankScore):0;
+  var A=findAgg(d);var kills=A.kills,dmg=A.damage,wins=A.wins,games=A.games,deaths=A.deaths,hs=A.headshots;
+  var kd=(kills!=null&&deaths!=null&&deaths>0)?(kills/deaths).toFixed(2):null;
+  var avg=(dmg!=null&&games)?Math.round(dmg/games):null,wr=(wins!=null&&games)?((wins/games*100).toFixed(1)+'%'):null;
+  var score=Math.min(100,Math.round(Math.min(lvl/8,45)+Math.min(rp/600,45)+(kd?Math.min(kd*4,10):0)));
+  var verd=t("verd_"+(score>=80?5:score>=60?4:score>=40?3:score>=20?2:1));
+  var nr=nextRank(rp);
+  var rrj=frRankJP(rank.rankName,rank.rankDiv);var rankDisp=rrj?rrj.name:((rank.rankName||'-')+(rank.rankDiv?(' '+rank.rankDiv):''));
+  var arrj=frRankJP(arena.rankName,arena.rankDiv);var arenaDisp=arena.rankName?((arrj?arrj.name:arena.rankName)+(arena.rankScore!=null?(' ('+Number(arena.rankScore).toLocaleString()+')'):'')):'';
+  /* レジェンド別の装備トラッカー（als同様の細かいデータ） */
+  var legCards=[];var all=(d.legends&&d.legends.all)||{};
+  Object.keys(all).forEach(function(k){var ds=(all[k].data||[]).filter(function(it){return it&&it.value!=null;});if(!ds.length)return;
+    var kk=0;ds.forEach(function(it){if(/kill/i.test(it.key||it.name||''))kk=Number(it.value)||kk;});
+    legCards.push({n:k,kk:kk,stats:ds.slice(0,5)});});
+  legCards.sort(function(a,b){return (b.kk||0)-(a.kk||0);});legCards=legCards.slice(0,6);
+  var lmax=legCards.length?(Math.max.apply(null,legCards.map(function(x){return x.kk||0;}))||1):1;
+  function nfmt(v){v=Number(v);return isNaN(v)?'—':v.toLocaleString();}
+  var H='<div class="ptop"><div class="gauge" style="--p:'+score+'%"><div class="in"><div class="n mono">'+score+'</div><div class="o">/100</div></div></div>'
+    +'<div class="pwho"><div class="nm">'+esc(g.name||name)+'</div><div class="meta">'+plat+' ・ Lv.'+lvl+(rt.isOnline?' ・ <span class="on">● '+t('online')+'</span>':'')+(sel.LegendName?' ・ '+t('using')+' '+esc(sel.LegendName):'')+'</div><div class="verd">「'+verd+'」</div></div></div>'
+    +'<div style="display:flex;gap:8px;flex-wrap:wrap">'
+    +'<button class="btn x" type="button" onclick="share(shareScore(score,verd))" style="flex:1">𝕏 '+t('share')+'</button>'
+    +'<button class="btn" type="button" id="findRefBtn" onclick="findRefresh()" style="flex:1">🔄 最新に更新</button></div>'
+    +'<div class="note" style="margin-top:6px">※戦績はals提供。直前のプレイ分は反映に数分かかることがあります（🔄で取り直し）。</div>'
+    +'<a class="findgear" href="?v=gear" onclick="open_(\'gear\');return false;" data-ev="戦績→デバイス">🎯 戦闘力を上げる“勝てる”おすすめデバイスを見る →</a>'
+    +'<div class="subtabs"><button class="'+(FIND_TAB==='o'?'on':'')+'" data-p="o" onclick="ftab(this,\'o\')">'+t('sub_o')+'</button><button class="'+(FIND_TAB==='l'?'on':'')+'" data-p="l" onclick="ftab(this,\'l\')">'+t('sub_l')+'</button><button class="'+(FIND_TAB==='r'?'on':'')+'" data-p="r" onclick="ftab(this,\'r\')">'+t('sub_r')+'</button></div>';
+  H+='<div class="spane'+(FIND_TAB==='o'?' on':'')+'" id="fp-o"><div class="sgrid2">'
+    +'<div class="stat calc"><div class="k">KD</div><div class="v mono">'+(kd||'—')+'</div></div>'
+    +'<div class="stat calc"><div class="k">'+t('st_avg')+'</div><div class="v mono">'+(avg||'—')+'</div></div>'
+    +'<div class="stat calc"><div class="k">'+t('st_wr')+'</div><div class="v mono">'+(wr||'—')+'</div></div>'
+    +'<div class="stat"><div class="k">'+t('st_lvl')+'</div><div class="v mono">'+lvl+'</div></div>'
+    +'<div class="stat"><div class="k">'+t('st_kills')+'</div><div class="v mono">'+(kills!=null?nfmt(kills):'—')+'</div></div>'
+    +'<div class="stat"><div class="k">RP</div><div class="v mono">'+(rp?rp.toLocaleString():'—')+'</div></div></div>'
+    +'<div class="note" style="margin-top:8px">※ KD・平均ダメージ・勝率・総キルは、EAが「相手が<b>装備中のトラッカー</b>」しか公開しないため、設定していない相手は「—」になります（あなたのせいでもバグでもありません）。レジェンド別タブに、取得できた範囲のデータを出しています。</div></div>';
+  H+='<div class="spane'+(FIND_TAB==='l'?' on':'')+'" id="fp-l">'+(legCards.length?legCards.map(function(l){
+      var bar='<div class="leg"><span class="n">'+esc(l.n)+'</span><span class="b"><i style="width:'+Math.round((l.kk||0)/lmax*100)+'%"></i></span><span class="v mono">'+nfmt(l.kk)+'</span></div>';
+      var sub=l.stats.map(function(it){return '<span style="display:inline-block;margin:2px 8px 2px 0;font-size:11px;color:var(--sub)">'+esc(it.name||it.key||'')+': <b class="mono" style="color:var(--ink)">'+nfmt(it.value)+'</b></span>';}).join('');
+      return '<div style="margin-bottom:8px">'+bar+'<div style="padding:2px 2px 0">'+sub+'</div></div>';
+    }).join(''):'<div class="note">'+t('note_leg')+'</div>')+'</div>';
+  H+='<div class="spane'+(FIND_TAB==='r'?' on':'')+'" id="fp-r"><div class="rankcard"><div class="e">🏆</div><div class="r">'+rankDisp+' ・ <span class="rp mono">'+(rp?rp.toLocaleString():'-')+' RP</span></div>'+(nr?'<div class="bar"><i style="width:60%"></i></div><div class="t">'+t('next_a')+rankLabel(nr.name)+t('next_b')+' <b class="mono">'+nr.need.toLocaleString()+' RP</b></div>':'')+'</div>'
+    +(arenaDisp?'<div class="rankcard" style="margin-top:8px"><div class="e">⚔️</div><div class="r">アリーナ：'+esc(arenaDisp)+'</div></div>':'')
+    +'<div class="note">'+t('note_rank')+'</div>'
+    +'<div class="note" style="margin-top:6px">※「最高ランク（自己ベスト）」はalsが独自に貯めてる履歴で、1回のAPIには含まれません。表示したい場合は当サイトで履歴を貯める機能が別途必要です。</div></div>';
+  $('findBox').innerHTML=H;
+}
+function ftab(b,p){FIND_TAB=p;document.querySelectorAll('#v-find .subtabs button').forEach(function(x){x.classList.remove('on')});b.classList.add('on');document.querySelectorAll('#v-find .spane').forEach(function(x){x.classList.remove('on')});$('fp-'+p).classList.add('on');}
 
 /* ===== 対決バトル ===== */
 var BT={mode:1,timer:null,fast:false,shareTxt:''};
@@ -2325,6 +2383,7 @@ setTimeout(function(){try{var _h=document.getElementById('home');if(_h&&_h.style
 
 /* ===== サイト更新情報＆赤丸通知 ===== */
 var SITEUPD=[
+ {d:'2026-06-14',tag:'fix',f:'find',t:'戦績検索で取得できるデータを大幅増＋鮮度対応',x:'①各レジェンドの装備トラッカーを横断集計して、KD/ダメ/勝率/総キルを可能な限り表示（EAは装備中トラッカーしか公開しないため、空欄の理由も明記）②レジェンド別の細かいデータ＆アリーナランクも表示 ③「🔄最新に更新」ボタンを追加（alsの更新を取り直せる）'},
  {d:'2026-06-14',tag:'new',f:'frank',t:'検索履歴＆アプリ内で完結する登録フロー',x:'①取得できなかった人はカード化しないように変更 ②検索履歴ボタンを追加（最大50件・ワンタップでPS等の情報ごと再検索）③出ない時はals.comを行き来せず、アプリ内のモーダルで「登録リクエスト→数分待つ→再取得」まで完結できるように'},
  {d:'2026-06-14',tag:'new',f:'frank',t:'取得できない時の手順モーダルを追加',x:'プレイヤーが出ない時、「どうして出ないか」と直し方を4ステップでやさしく案内するモーダルを表示。als.comを開く→検索→数分待って再取得、を誰でも追えるように図解'},
  {d:'2026-06-14',tag:'fix',f:'frank',t:'見つからない時の案内を改善',x:'名前で取得できない人には、ワンタップでals.comに登録（数分で名前検索できるように）できる案内を表示。基本は名前だけでOK'},
