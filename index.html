@@ -1314,6 +1314,7 @@ body{padding-bottom:64px!important}
   .pwtry{display:block;width:100%;text-align:center;text-decoration:none;background:#ff2b46;color:#fff;font-weight:900;font-size:15px;padding:13px;border:2.5px solid #1a140c;border-radius:9px;box-shadow:3px 3px 0 #1a140c}
   .pwrga{color:#ff2b2b;font-weight:900;display:inline-block;text-shadow:0 0 7px #ff3b3b,0 0 15px #ff2b46;animation:pwrga 1s ease-in-out infinite}
   @keyframes pwrga{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.frhint{font-size:11px;color:#8a7a55;margin:6px 2px 2px;line-height:1.5}
 </style>
 <script type="application/ld+json">
 {
@@ -1528,7 +1529,8 @@ body{padding-bottom:64px!important}
   <!-- ===== FRIEND RANK ===== -->
   <div class="view" id="v-frank"><button class="back" onclick="home()">← ホーム</button>
     <div class="caption"><h2>👥 プレイヤーウォッチ</h2><span class="d">気になるプレイヤーを登録→“今オンラインか”＆現在ランクを一目で</span></div>
-    <div class="searchbar"><input id="frIgn" placeholder="プレイヤーのID（PCはOrigin名）" autocomplete="off"><select id="frPlat"><option value="PC">PC</option><option value="PS">PS</option><option value="Xbox">Xbox</option><option value="Switch">Switch</option></select><button onclick="frAdd()">＋追加</button></div>
+    <div class="searchbar"><input id="frIgn" placeholder="名前 / UID / als.comのURL" autocomplete="off"><select id="frPlat"><option value="PC">PC</option><option value="PS">PS</option><option value="Xbox">Xbox</option><option value="Switch">Switch</option></select><button onclick="frAdd()">＋追加</button></div>
+    <div class="frhint">名前で出ない人は、apexlegendsstatus.com のプロフィールURL（または UID）を貼ればOK。PCはOrigin名。</div>
     <div class="frbar"><div class="frtabs"><button class="frtab on" data-t="cards" onclick="frTab('cards')">🪪 カード</button><button class="frtab" data-t="rank" onclick="frTab('rank')">🏆 ランキング</button></div><button class="btn x" id="frRefreshBtn" onclick="frRefresh()">↻ 全員更新</button></div>
     <div id="frBox"></div>
     <div id="frDetail"></div>
@@ -2292,6 +2294,9 @@ setTimeout(function(){try{var _h=document.getElementById('home');if(_h&&_h.style
 
 /* ===== サイト更新情報＆赤丸通知 ===== */
 var SITEUPD=[
+ {d:'2026-06-14',tag:'fix',f:'frank',t:'UID/URLでプレイヤー追加に対応',x:'名前で見つからない人（未インデックス等）を、apexlegendsstatus.comのプロフィールURLやUIDを貼って追加できるように。GAS側もUID照会に対応'},
+ {d:'2026-06-14',tag:'fix',f:'frank',t:'プレイヤーウォッチのランクに段位を表示',x:'「プラチナ」だけでなく「プラチナ2」のように段位(1〜4)まで表示。APIの正式ランク優先、取れない時はRP推定にフォールバック'},
+ {d:'2026-06-14',tag:'fix',f:'tools',t:'シーズン残り日数を修正',x:'スプリット2切替日が古かった（6/16→6/23に修正）。残り日数が正しく表示されるように。シーズン終了は8/4のまま'},
  {d:'2026-06-14',tag:'fix',f:'frank',t:'プレイヤーウォッチの取得を強化',x:'選んだ環境で見つからない時、他の環境(PC/PS/Xbox/Switch)も自動で試して取得。見つかった環境にカード表示も自動補正。PS/XboxのIDが出ない問題に対応'},
  {d:'2026-06-14',tag:'new',f:'all',t:'全機能に操作チュートリアルを追加',x:'各機能を初めて開いた時、広告(5秒)のあとに操作説明（4〜6ページ）を表示。次回以降は出ない。frankの広告二重表示も解消'},
  {d:'2026-06-14',tag:'fix',f:'frank',t:'プレイヤーウォッチ告知を正しく修正',x:'サイトを開いた時（ホーム）に新機能開放演出＋説明を表示→画面に入ると広告→操作チュートリアル。利用データもダッシュボードに計測'},
@@ -3723,10 +3728,10 @@ function repShare(){var d=window._repData;if(!d)return;var txt='【APEX激やば
 /* シーズン日程（手動更新：新シーズン時にここだけ書き換え） */
 var SEASON={
  num:29,name:'Overclocked',
- start:'2026-05-05T18:00:00Z',
- end:'2026-08-04T18:00:00Z',
+ start:'2026-05-05T17:00:00Z',
+ end:'2026-08-04T17:00:00Z',
  splitName:'スプリット2',
- split:'2026-06-16T18:00:00Z'
+ split:'2026-06-23T17:00:00Z'
 };
 function fmtRemain(ms){
  if(ms<0)return {d:0,h:0,m:0,over:true};
@@ -3888,8 +3893,19 @@ function rpRank(rp){rp=Number(rp)||0;
  if(rp>=3000)return {name:'シルバー',emoji:'🐺'};
  if(rp>=1000)return {name:'ブロンズ',emoji:'🐢'};
  return {name:'ルーキー',emoji:'🐣'};}
+/* APIの正式ランク(rankName)＋段位(rankDiv)を日本語表記に。例: Platinum/2 → プラチナ2 */
+function frRankJP(rankName,rankDiv){
+ var raw=String(rankName||''),n=raw.toLowerCase();
+ if(/pred/.test(n)||raw.indexOf('プレデ')>=0)return {name:'プレデター',emoji:'👹'};
+ var tiers=[['master','マスター','👺'],['diamond','ダイヤ','🐲'],['platinum','プラチナ','🦅'],['gold','ゴールド','🦁'],['silver','シルバー','🐺'],['bronze','ブロンズ','🐢'],['rookie','ルーキー','🐣']];
+ for(var i=0;i<tiers.length;i++){if(n.indexOf(tiers[i][0])>=0){
+  var d=Number(rankDiv);var div=(tiers[i][0]==='master'||!d)?'':(' '+d);
+  return {name:tiers[i][1]+div,emoji:tiers[i][2]};
+ }}
+ return null;
+}
 function frApiToUi(ap){return ap==='PS4'?'PS':ap==='X1'?'Xbox':ap==='SWITCH'?'Switch':'PC';}
-function frFetchApi(ign,apiPlat){return gas('player','&player='+encodeURIComponent(ign)+'&platform='+apiPlat).then(function(d){
+function frStatsFrom(d,fallbackName,apiPlat){
  if(!d||d.Error||d.error)return {ok:false};
  var g=d.global||{},rt=d.realtime||{},sel=(d.legends&&d.legends.selected)||{},total=d.total||{},rank=g.rank||{};
  var lvl=g.level!=null?g.level:0,rp=rank.rankScore!=null?Number(rank.rankScore):0;
@@ -3900,11 +3916,13 @@ function frFetchApi(ign,apiPlat){return gas('player','&player='+encodeURICompone
  var online=!!(rt.isOnline),inGame=!!(rt.isInGame);
  var state=inGame?'match':(online?'lobby':'off');
  var legend=rt.selectedLegend||sel.LegendName||'';
- var isPred=/pred/i.test(rank.rankName||'')||(rank.rankName||'').indexOf('プレデ')>=0;
- var rr=isPred?{name:'プレデター',emoji:'👹'}:rpRank(rp);
- return {ok:true,name:g.name||ign,lvl:lvl,rp:rp,rankName:rr.name,rankDiv:'',emoji:rr.emoji,apiRank:rank.rankName||'',score:score,kd:kd,avg:avg,wr:wr,kills:kills,
-  online:online,inGame:inGame,state:state,legend:legend,canJoin:!!rt.canJoin,partyFull:!!rt.partyFull,lobbyState:rt.lobbyState||'',apiPlat:apiPlat};
-},function(){return {ok:false};});}
+ var rr=frRankJP(rank.rankName,rank.rankDiv)||rpRank(rp);
+ var pf=g.platform?String(g.platform).toUpperCase():apiPlat;
+ return {ok:true,name:g.name||fallbackName||'',uid:(g.uid!=null?String(g.uid):''),lvl:lvl,rp:rp,rankName:rr.name,rankDiv:(rank.rankDiv!=null?rank.rankDiv:''),emoji:rr.emoji,apiRank:rank.rankName||'',score:score,kd:kd,avg:avg,wr:wr,kills:kills,
+  online:online,inGame:inGame,state:state,legend:legend,canJoin:!!rt.canJoin,partyFull:!!rt.partyFull,lobbyState:rt.lobbyState||'',apiPlat:pf};
+}
+function frFetchApi(ign,apiPlat){return gas('player','&player='+encodeURIComponent(ign)+'&platform='+apiPlat).then(function(d){return frStatsFrom(d,ign,apiPlat);},function(){return {ok:false};});}
+function frFetchUid(uid,apiPlat){return gas('player','&uid='+encodeURIComponent(uid)+'&platform='+apiPlat).then(function(d){return frStatsFrom(d,'',apiPlat);},function(){return {ok:false};});}
 /* 選択した環境を最優先に、ダメなら他環境も自動で試す（PS/Xboxの名前解決ゆれ・選択ミス対策） */
 function frFetch(ign,plat){
  var prim=frPlatApi(plat),order=[prim];['PC','PS4','X1','SWITCH'].forEach(function(p){if(p!==prim)order.push(p);});
@@ -3912,14 +3930,42 @@ function frFetch(ign,plat){
  function step(){return frFetchApi(ign,order[i]).then(function(r){if(r.ok)return r;i++;return i<order.length?step():{ok:false};});}
  return step();
 }
+/* 入力を判定: als.comのURL / 純粋なUID / 名前 */
+function frParseInput(raw){
+ raw=String(raw||'').trim();
+ var m=raw.match(/\/uid\/([A-Za-z0-9]+)\/(\d{5,})/i);   // als.com のプロフィールURL
+ if(m)return {uid:m[2],plat:frApiToUi(m[1].toUpperCase())};
+ if(/^\d{10,}$/.test(raw))return {uid:raw};              // 純粋なUID（長い数字）
+ return {ign:raw};
+}
+/* エントリ（名前 or UID）を取得 */
+function frFetchEntry(m){
+ if(m&&m.uid)return frFetchUid(m.uid,frPlatApi(m.plat));
+ return frFetch(m.ign,m.plat);
+}
 function frAdd(){
- var ign=($('frIgn').value||'').trim(),plat=$('frPlat').value;
- if(!ign){toast2('IDを入力してね');return;}
+ var raw=($('frIgn').value||'').trim();
+ if(!raw){toast2('ID / UID / als.comのURL を入力してね');return;}
+ var selPlat=$('frPlat').value;
+ var parsed=frParseInput(raw);
  var a=frGet();
  if(a.length>=20){toast2('登録は20人まで');return;}
- if(a.some(function(x){return x.ign.toLowerCase()===ign.toLowerCase()&&x.plat===plat;})){toast2('もう追加済みだよ');return;}
- $('frIgn').value='';a.push({ign:ign,plat:plat,data:null,t:0});frSave(a);frRender();pwTrack('add');
- frFetch(ign,plat).then(function(p){var arr=frGet();for(var i=0;i<arr.length;i++){if(arr[i].ign===ign&&arr[i].plat===plat){arr[i].data=p.ok?p:{ok:false};arr[i].t=Date.now();if(p.ok&&p.apiPlat)arr[i].plat=frApiToUi(p.apiPlat);}}frSave(arr);frRender();});
+ var entry;
+ if(parsed.uid){
+  if(a.some(function(x){return x.uid&&x.uid===parsed.uid;})){toast2('もう追加済みだよ');return;}
+  entry={ign:'取得中…',plat:(parsed.plat||selPlat),uid:parsed.uid,data:null,t:0};
+ }else{
+  if(a.some(function(x){return !x.uid&&x.ign.toLowerCase()===parsed.ign.toLowerCase()&&x.plat===selPlat;})){toast2('もう追加済みだよ');return;}
+  entry={ign:parsed.ign,plat:selPlat,data:null,t:0};
+ }
+ $('frIgn').value='';a.push(entry);frSave(a);frRender();pwTrack('add');
+ var idx=a.length-1;
+ frFetchEntry(entry).then(function(p){
+  var arr=frGet();if(!arr[idx])return;
+  arr[idx].data=p.ok?p:{ok:false};arr[idx].t=Date.now();
+  if(p.ok){if(p.name)arr[idx].ign=p.name;if(p.apiPlat)arr[idx].plat=frApiToUi(p.apiPlat);if(p.uid)arr[idx].uid=p.uid;}
+  frSave(arr);frRender();
+ });
 }
 function frDel(i){var a=frGet();a.splice(i,1);frSave(a);frRender();pwTrack('del');}
 function frRefresh(){
@@ -3927,7 +3973,7 @@ function frRefresh(){
  pwTrack('refresh');
  var btn=$('frRefreshBtn');if(btn){btn.disabled=true;btn.textContent='更新中…';}
  var done=0;
- a.forEach(function(m,idx){frFetch(m.ign,m.plat).then(function(p){a[idx].data=p.ok?p:{ok:false};a[idx].t=Date.now();if(p.ok&&p.apiPlat)a[idx].plat=frApiToUi(p.apiPlat);done++;if(done===a.length){frSave(a);frRender();if(btn){btn.disabled=false;btn.textContent='↻ 全員更新';}}});});
+ a.forEach(function(m,idx){frFetchEntry(m).then(function(p){a[idx].data=p.ok?p:{ok:false};a[idx].t=Date.now();if(p.ok){if(p.apiPlat)a[idx].plat=frApiToUi(p.apiPlat);if(m.uid&&p.name)a[idx].ign=p.name;}done++;if(done===a.length){frSave(a);frRender();if(btn){btn.disabled=false;btn.textContent='↻ 全員更新';}}});});
 }
 var FR_TAB='cards';var FR_MAP=null;var FR_CUR=-1;var FR_CD=null;
 function frMapFetch(){try{gas('map').then(function(d){if(d&&d.ranked&&d.ranked.current&&typeof mapName==='function')FR_MAP=mapName(d.ranked.current.map);}).catch(function(){});}catch(e){}}
@@ -3988,7 +4034,7 @@ function frRenderDetail(m){
   +'<div style="padding:0 15px 16px"><button class="btn primary" type="button" style="width:100%" onclick="frReload(FR_CUR)">↻ 最新に更新</button></div>';
  det.classList.add('on');
 }
-function frReload(i){var a=frGet();var m=a[i];if(!m)return;var det=$('frDetailBody');if(det){det.innerHTML='<div class="loading" style="padding:24px;text-align:center">更新中…</div>';det.classList.add('on');}frFetch(m.ign,m.plat).then(function(p){var arr=frGet();arr[i].data=p.ok?p:{ok:false};arr[i].t=Date.now();if(p.ok&&p.apiPlat)arr[i].plat=frApiToUi(p.apiPlat);frSave(arr);frRender();frRenderDetail(arr[i]);});}
+function frReload(i){var a=frGet();var m=a[i];if(!m)return;var det=$('frDetailBody');if(det){det.innerHTML='<div class="loading" style="padding:24px;text-align:center">更新中…</div>';det.classList.add('on');}frFetchEntry(m).then(function(p){var arr=frGet();arr[i].data=p.ok?p:{ok:false};arr[i].t=Date.now();if(p.ok){if(p.apiPlat)arr[i].plat=frApiToUi(p.apiPlat);if(m.uid&&p.name)arr[i].ign=p.name;}frSave(arr);frRender();frRenderDetail(arr[i]);});}
 
 /* === プレイヤーウォッチ 初回イントロ（①演出→②説明→③/④広告→⑤操作チュートリアル→⑥操作可） === */
 var PW_T=[];function pwClr(){PW_T.forEach(clearTimeout);PW_T=[];}
