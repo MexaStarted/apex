@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>APEX 生データ取得（開発用）</title>
+<style>
+  :root{--bg:#0d1018;--card:#161b27;--line:rgba(212,175,55,.25);--gold:#e7c45f;--ink:#e9eef6;--sub:#9fb0c8;--cy:#19e3ff}
+  *{box-sizing:border-box}
+  body{margin:0;background:linear-gradient(180deg,#0d1018,#080a10);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;line-height:1.6;padding:16px}
+  .wrap{max-width:760px;margin:0 auto}
+  h1{font-size:18px;color:var(--gold);margin:6px 0 2px}
+  .lead{font-size:12.5px;color:var(--sub);margin-bottom:16px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:14px}
+  label{display:block;font-size:12px;color:var(--sub);margin:8px 0 4px}
+  input,select{width:100%;padding:11px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:#0e1320;color:var(--ink);font-size:15px}
+  .row{display:flex;gap:8px}
+  .row>div{flex:1}
+  .or{text-align:center;color:var(--sub);font-size:11px;margin:10px 0}
+  button{cursor:pointer;border:none;border-radius:10px;font-weight:800;font-size:15px;padding:13px}
+  .go{width:100%;background:linear-gradient(180deg,#e7c45f,#caa23a);color:#241a06;margin-top:12px}
+  .copy{background:var(--cy);color:#04222b;width:100%;margin-top:10px}
+  .copy:disabled{opacity:.4}
+  textarea{width:100%;height:340px;margin-top:10px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:#0a0e18;color:#bfe;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11.5px;padding:10px;white-space:pre}
+  .sum{font-size:13px;background:#0e1320;border:1px solid var(--line);border-radius:10px;padding:10px;margin-top:10px;display:none}
+  .sum b{color:var(--gold)}
+  .err{color:#ff8a8a;font-size:13px;margin-top:8px;display:none}
+  .note{font-size:11.5px;color:var(--sub);margin-top:8px}
+  .hint{font-size:11px;color:#7d8aa0;margin-top:4px}
+  .badge{display:inline-block;font-size:11px;background:#241a06;color:var(--gold);padding:2px 8px;border-radius:6px;margin-left:6px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🧬 APEX 生データ取得 <span class="badge">開発用</span></h1>
+  <div class="lead">本体アプリと同じAPI（GAS）を叩いて、戻ってきた<b>生のJSON</b>をそのまま表示・コピーするだけのページです。プレイヤーを取得して、下のボックスの中身をコピーして貼ってください。</div>
+
+  <div class="card">
+    <label>プレイヤー名（PCはOrigin/EA名）</label>
+    <input id="name" placeholder="例: lunhhs" autocomplete="off">
+    <label>プラットフォーム</label>
+    <select id="plat">
+      <option value="PC">PC</option>
+      <option value="PS4" selected>PS</option>
+      <option value="X1">Xbox</option>
+      <option value="SWITCH">Switch</option>
+    </select>
+    <div class="hint">PS=PS4 / Xbox=X1 として送信されます（本体と同じ）。</div>
+
+    <div class="or">― または UID で直接取得（名前で出ない人向け） ―</div>
+    <label>UID（数字のみ。空なら名前で取得）</label>
+    <input id="uid" placeholder="例: 1349688339210890800" inputmode="numeric" autocomplete="off">
+
+    <button class="go" id="goBtn" onclick="run()">取得する</button>
+    <div class="err" id="err"></div>
+    <div class="sum" id="sum"></div>
+  </div>
+
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <b style="font-size:13px">生JSON（このまま貼ってください）</b>
+    </div>
+    <button class="copy" id="copyBtn" onclick="copyAll()" disabled>📋 全部コピー</button>
+    <textarea id="out" readonly placeholder="ここに取得した生データが入ります…"></textarea>
+    <div class="note">※コピーが効かない場合は、ボックス内を長押し→全選択→コピーでもOKです。</div>
+  </div>
+
+  <div class="note">このページは開発・確認用です。本体サイトとは別ファイルなので、確認が終わったら消してOK。検索エンジンには登録されない設定（noindex）にしています。</div>
+</div>
+
+<script>
+var GAS="https://script.google.com/macros/s/AKfycbzYzvrRF2hsaYhPDUOzRQQ_81kgx75P9Qk-0etrbyMbEZInK4CMa2Br9JUnDzixOZybZQ/exec";
+function $(id){return document.getElementById(id);}
+function showErr(m){var e=$('err');e.textContent=m;e.style.display=m?'block':'none';}
+function run(){
+  showErr('');$('sum').style.display='none';
+  var name=($('name').value||'').trim();
+  var uid=($('uid').value||'').replace(/[^0-9]/g,'');
+  var plat=$('plat').value;
+  if(!name&&!uid){showErr('プレイヤー名 か UID のどちらかを入れてね');return;}
+  var url=GAS+"?type=player&platform="+encodeURIComponent(plat)+(uid?("&uid="+encodeURIComponent(uid)):("&player="+encodeURIComponent(name)));
+  var btn=$('goBtn');btn.disabled=true;btn.textContent='取得中…';
+  $('out').value='';$('copyBtn').disabled=true;
+  fetch(url,{cache:"no-store"}).then(function(r){return r.text();}).then(function(txt){
+    btn.disabled=false;btn.textContent='取得する';
+    $('out').value=txt;
+    $('copyBtn').disabled=!txt;
+    // 軽い要約（取れていれば）
+    try{
+      var d=JSON.parse(txt);
+      if(d&&(d.error||d.Error)){showErr('APIエラー: '+(d.error||d.Error)+'（このJSONもそのまま貼ってOK）');}
+      var g=(d&&d.global)||{},rk=(g.rank)||{},rt=(d&&d.realtime)||{};
+      var leg=(d&&d.legends&&d.legends.selected&&d.legends.selected.LegendName)||(rt.selectedLegend)||'-';
+      var s='<b>名前</b>: '+(g.name||'-')+' ／ <b>Lv</b>: '+(g.level!=null?g.level:'-')
+        +'<br><b>ランク</b>: '+(rk.rankName||'-')+' '+(rk.rankDiv||'')+' ／ '+(rk.rankScore!=null?rk.rankScore+' RP':'-')
+        +'<br><b>選択中レジェンド</b>: '+leg
+        +'<br><b>含まれるキー</b>: '+Object.keys(d||{}).join(', ');
+      var sm=$('sum');sm.innerHTML=s;sm.style.display='block';
+    }catch(e){ showErr('JSONとして読めませんでした（でも中身はそのまま貼ってOK）'); }
+  }).catch(function(){
+    btn.disabled=false;btn.textContent='取得する';
+    showErr('取得に失敗（通信エラー）。少し待って再度お試しを。');
+  });
+}
+function copyAll(){
+  var ta=$('out');if(!ta.value)return;
+  try{
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(ta.value).then(function(){flash();},function(){fallbackCopy(ta);});
+    }else{fallbackCopy(ta);}
+  }catch(e){fallbackCopy(ta);}
+}
+function fallbackCopy(ta){ta.focus();ta.select();ta.setSelectionRange(0,ta.value.length);try{document.execCommand('copy');flash();}catch(e){}}
+function flash(){var b=$('copyBtn');var o=b.textContent;b.textContent='✓ コピーした！';setTimeout(function(){b.textContent=o;},1400);}
+</script>
+</body>
+</html>
