@@ -63,6 +63,90 @@
   .mono{font-family:'Chakra Petch',monospace;font-variant-numeric:tabular-nums}
   .shell{position:relative;z-index:3;max-width:900px;margin:0 auto;padding:16px 14px 70px}
   a{color:var(--cy)}
+  .findgear{display:block;margin:10px 0 2px;padding:12px 14px;border-radius:11px;text-align:center;text-decoration:none;font-weight:800;font-size:13.5px;color:#04121a;background:linear-gradient(135deg,#ffd76a,#ff9d3d);box-shadow:0 4px 14px rgba(255,160,60,.28)}
+  .findgear:active{transform:translateY(1px)}
+  .frbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:10px 0 12px}
+  .frtabs{display:flex;gap:6px}
+  .frtab{background:rgba(255,255,255,.06);border:1px solid var(--line);color:var(--sub);border-radius:9px;padding:7px 12px;font-size:12.5px;font-weight:700;cursor:pointer}
+  .frtab.on{background:linear-gradient(135deg,#ffe08a,#d9a528);color:#241a10;border-color:transparent}
+  .frempty{color:var(--sub);font-size:13px;line-height:1.8;background:rgba(255,255,255,.03);border:1px dashed var(--line);border-radius:12px;padding:16px}
+  .frgrid{display:grid;grid-template-columns:1fr;gap:11px}
+  .fc{position:relative;display:flex;align-items:center;gap:13px;border-radius:9px;padding:14px 15px;overflow:hidden;cursor:pointer;background:linear-gradient(150deg,#241a10,#15100a);border:1px solid rgba(206,170,104,.3);transition:.15s}
+  .fc:active{transform:translateY(1px)}
+  .fc::after{content:"";position:absolute;top:0;left:-55%;width:45%;height:100%;background:linear-gradient(105deg,transparent,rgba(240,217,168,.14),transparent);animation:frShine 6s linear infinite}
+  @keyframes frShine{0%{left:-55%}55%{left:135%}100%{left:135%}}
+  .fc.load,.fc.off2{opacity:.7}
+  .fc .em{position:relative;font-size:38px;line-height:1;flex:none;width:46px;text-align:center;filter:drop-shadow(0 2px 5px rgba(0,0,0,.5))}
+  .fc .mid{position:relative;flex:1;min-width:0}
+  .fc .nm{font-size:15px;font-weight:800;color:#f7efe0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .fc .rk{font-family:Georgia,'Times New Roman',serif;font-size:12.5px;color:#f0d9a8;margin-top:2px;letter-spacing:.03em}
+  .fc .pzr{margin-top:6px}
+  .fc .right{position:relative;flex:none;text-align:right}
+  .fc .rpv{font-size:18px;font-weight:800;color:#fff;line-height:1}
+  .fc .rpl{font-size:9px;color:#bda788;letter-spacing:.1em;margin-top:2px}
+  .fc .arr{position:relative;color:#9c8a66;font-size:16px;flex:none;margin-left:2px}
+  .fc .del{position:absolute;top:8px;right:9px;width:26px;height:26px;border-radius:8px;background:rgba(0,0,0,.45);color:#e8b4b4;border:1px solid rgba(255,120,120,.3);font-size:13px;z-index:3;cursor:pointer}.fc .del:active{background:rgba(180,40,40,.5)}
+  .fpz{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;font-weight:700;padding:2px 9px;border-radius:999px;white-space:nowrap}
+  .fpz .dot{width:7px;height:7px;border-radius:50%}
+  .fpz.match{color:#ffb38a;background:rgba(255,120,60,.16)}.fpz.match .dot{background:#ff7a3c;box-shadow:0 0 6px #ff7a3c;animation:frBl 1.1s infinite}
+  .fpz.lobby{color:#7df0c2;background:rgba(57,230,160,.14)}.fpz.lobby .dot{background:#39e6a0;box-shadow:0 0 6px #39e6a0}
+  .fpz.off{color:#9aa3b2;background:rgba(150,160,175,.12)}.fpz.off .dot{background:#6b7585}
+  @keyframes frBl{50%{opacity:.35}}
+  /* オンライン目玉 */
+  .fon{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:900;letter-spacing:.05em;padding:3px 10px;border-radius:999px;white-space:nowrap;margin-top:6px}
+  .fon .dot{width:8px;height:8px;border-radius:50%}
+  .fon small{font-weight:700;font-size:9.5px;opacity:.85;letter-spacing:0}
+  .fon.on{color:#0a2417;background:linear-gradient(135deg,#5bf0a8,#23c878);box-shadow:0 0 14px rgba(57,230,160,.5)}
+  .fon.on .dot{background:#0a2417;animation:frBl 1s infinite}
+  .fon.off{color:#9aa3b2;background:rgba(150,160,175,.14);border:1px solid rgba(150,160,175,.25)}
+  .fon.off .dot{background:#6b7585}
+  .fc.fonline{border-color:rgba(57,230,160,.55);box-shadow:0 0 0 1px rgba(57,230,160,.25) inset,0 4px 16px rgba(57,230,160,.12)}
+  .fc.foffline{opacity:.82}
+  .frrow.onrow{border-color:rgba(57,230,160,.45)}
+  .fronbig{display:flex;align-items:center;justify-content:center;gap:9px;font-size:16px;font-weight:900;letter-spacing:.04em;padding:13px}
+  .fronbig .dot{width:11px;height:11px;border-radius:50%}
+  .fronbig small{font-weight:700;font-size:11px;opacity:.8;margin-left:2px}
+  .fronbig.on{color:#0a2417;background:linear-gradient(135deg,#5bf0a8,#23c878)}.fronbig.on .dot{background:#0a2417;animation:frBl 1s infinite}
+  .fronbig.off{color:#aab3c2;background:rgba(120,130,145,.18)}.fronbig.off .dot{background:#717b8a}
+  .frrkttl{font-weight:800;font-size:14px;margin:2px 2px 11px;color:var(--text)}
+  .frrow{display:flex;align-items:center;gap:11px;background:linear-gradient(150deg,#241a10,#15100a);border:1px solid rgba(206,170,104,.26);border-radius:9px;padding:11px 13px;margin-bottom:8px;cursor:pointer}
+  .frrow:active{transform:translateY(1px)}
+  .frrk{font-size:16px;font-weight:800;min-width:26px;text-align:center;color:#f0d9a8}
+  .frrow .fre{font-size:23px}
+  .frbody{flex:1;min-width:0}.frbody b{font-size:13.5px;color:#f7efe0}.frbody small{display:block;font-size:11px;color:#bda788;margin-top:1px}
+  .frrp{font-size:16px;font-weight:800;color:#fff;text-align:right}.frrp span{display:block;font-size:9px;color:#bda788;font-weight:600}
+  /* フレンド詳細モーダル */
+  .frov{position:fixed;inset:0;background:rgba(4,5,9,.86);display:none;align-items:flex-start;justify-content:center;z-index:1000;padding:20px 12px;overflow:auto}
+  .frov.on{display:flex}
+  .frmo{width:100%;max-width:440px;border-radius:10px;overflow:hidden;background:linear-gradient(170deg,#2a1e11,#140d06);border:1px solid rgba(206,170,104,.45);box-shadow:0 24px 60px rgba(0,0,0,.6);animation:frPop .22s ease}
+  @keyframes frPop{from{transform:translateY(14px);opacity:0}to{transform:none;opacity:1}}
+  .frmoh{display:flex;align-items:center;justify-content:space-between;padding:13px 15px;border-bottom:1px solid rgba(206,170,104,.2)}
+  .frmoh b{font-size:15px;color:#f7efe0}.frmoh .frx{background:none;border:none;color:#bda788;font-size:20px;cursor:pointer;line-height:1}
+  .frgate{padding:18px 15px 16px;text-align:center}
+  .fradbox{position:relative;border:1px dashed rgba(206,170,104,.45);border-radius:10px;background:rgba(255,255,255,.03);padding:12px;min-height:90px;display:flex;align-items:center;justify-content:center}
+  .fradbox .tag{position:absolute;top:7px;left:9px;font-size:9px;letter-spacing:.14em;color:#9c8a66}
+  .frcd{margin-top:14px;display:flex;align-items:center;justify-content:center;gap:9px;color:#d8c79e;font-size:12px}
+  .frcdn{font-family:Georgia,serif;font-weight:700;font-size:15px;color:#241a10;background:linear-gradient(135deg,#ffe08a,#d9a528);width:30px;height:30px;border-radius:50%;display:grid;place-items:center}
+  .frcdbar{height:4px;border-radius:3px;background:rgba(255,255,255,.1);margin-top:12px;overflow:hidden}
+  .frcdbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#ffe08a,#d9a528);transition:width 1s linear}
+  .frdet{display:none}.frdet.on{display:block}
+  .frhero{text-align:center;padding:18px 14px 14px;background:linear-gradient(170deg,rgba(206,170,104,.14),transparent)}
+  .frhero .em{font-size:58px;line-height:1;filter:drop-shadow(0 3px 8px rgba(0,0,0,.5))}
+  .frhero .rk{font-family:Georgia,serif;font-size:20px;font-weight:700;color:#f7efe0;margin-top:6px}
+  .frhero .rp{font-size:14px;color:#f0d9a8;font-weight:700;margin-top:3px}
+  .frhero .pzr{margin-top:7px}
+  .frsec{margin:14px 15px 0}
+  .frsec .st{font-size:10.5px;letter-spacing:.1em;color:#9c8a66;margin-bottom:8px;border-bottom:1px solid rgba(206,170,104,.18);padding-bottom:5px}
+  .frnow{display:flex;flex-direction:column;gap:8px}
+  .frnl{display:flex;align-items:flex-start;gap:9px;font-size:13px;color:#ecdfc7;line-height:1.5}
+  .frnl .ic{font-size:15px;width:20px;text-align:center;flex:none}.frnl b{color:#fff}
+  .frnl .est{font-size:10px;color:#9c8a66;margin-left:4px}
+  .frkv2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .frkv{display:flex;flex-direction:column;background:rgba(255,255,255,.04);border:1px solid rgba(206,170,104,.16);border-radius:7px;padding:9px 11px}
+  .frkv .k{font-size:10px;color:#bda788}.frkv .v{font-size:16px;font-weight:800;color:#f7efe0;margin-top:2px}
+  .frraw .frrr{display:flex;justify-content:space-between;font-size:11.5px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+  .frraw .rk2{color:#9aa3b2}.frraw .rv{color:#e7dcc4;font-family:'SF Mono',ui-monospace,monospace}
+  .frmnote{font-size:10px;color:#8b7d5e;margin:12px 15px 0;line-height:1.6}
   .seolead{font-size:12.5px;color:var(--sub);line-height:1.85;margin:-4px 2px 14px;max-width:74ch}.seolead strong{color:var(--text);font-weight:700}
   .sitefoot{position:relative;z-index:3;content-visibility:auto;contain-intrinsic-size:auto 600px;max-width:900px;margin:34px auto 0;padding:22px 16px 96px;border-top:1px solid rgba(206,170,104,.18);color:#9aa3b8;font-size:12.5px;line-height:1.9}
   .sitefoot h2{font-family:Georgia,'Times New Roman',serif;font-size:14px;color:#d4af6a;margin:0 0 8px;font-weight:700;letter-spacing:.02em}
@@ -1150,6 +1234,86 @@ body{padding-bottom:64px!important}
 .a8wrap{display:flex;flex-direction:column;align-items:center;gap:4px}
 .a8wrap img{max-width:100%;height:auto;border-radius:8px;display:block}
 .a8pr{align-self:flex-start;font-size:10px;color:var(--dim);letter-spacing:.12em}
+  /* ===== プレイヤーウォッチ 初回イントロ（演出→説明→広告→操作チュートリアル） ===== */
+  .pwfx{position:fixed;inset:0;z-index:11000;display:none;overflow:hidden;background:#070203}
+  .pwfx.on{display:block}
+  .pwfxw{position:absolute;inset:0}
+  .pwfxw.shake{animation:pwshk .1s infinite}.pwfxw.shakehard{animation:pwshk2 .08s infinite}
+  @keyframes pwshk{0%,100%{transform:translate(0,0)}25%{transform:translate(-2px,1px)}50%{transform:translate(2px,-1px)}75%{transform:translate(-1px,-1px)}}
+  @keyframes pwshk2{0%,100%{transform:translate(0,0)}25%{transform:translate(-5px,2px)}50%{transform:translate(5px,-3px)}75%{transform:translate(-3px,-2px)}}
+  .pwbg{position:absolute;inset:0;background:radial-gradient(circle at 50% 44%,rgba(150,10,18,.42),rgba(12,2,4,.97) 72%);opacity:0;transition:opacity .25s}
+  .pwfx.lit .pwbg{opacity:1}
+  .pwalert{position:absolute;inset:0;background:radial-gradient(circle at 50% 45%,rgba(255,40,48,.16),transparent 60%);opacity:0}
+  .pwfx.lit .pwalert{opacity:1;animation:pwal 1.1s ease-in-out infinite}@keyframes pwal{50%{opacity:.45}}
+  .pwscan{position:absolute;inset:0;opacity:0;background:repeating-linear-gradient(0deg,rgba(255,60,60,.06) 0 2px,transparent 2px 4px);mix-blend-mode:screen}
+  .pwfx.lit .pwscan{opacity:1;animation:pwscan 6s linear infinite}@keyframes pwscan{to{background-position:0 200px}}
+  .pwcol{position:absolute;top:-110%;writing-mode:vertical-rl;font-family:monospace;font-size:16px;letter-spacing:2px;color:#ff4747;text-shadow:0 0 6px #ff2b2b,0 0 14px rgba(255,40,40,.6);opacity:.9;animation:pwcol linear infinite}
+  .pwcol .hd{color:#ffd9d9;text-shadow:0 0 10px #fff,0 0 16px #ff5a5a}
+  @keyframes pwcol{0%{transform:translateY(0)}100%{transform:translateY(235vh)}}
+  .pwbolt{position:absolute;top:-6%;width:13px;height:116%;background:#ffdede;clip-path:polygon(43% 0,63% 0,49% 35%,71% 35%,29% 100%,46% 53%,25% 53%);filter:drop-shadow(0 0 8px #ff3b3b) drop-shadow(0 0 18px #ff2b2b);opacity:0}
+  .pwfx.lit .pwbolt{animation:pwboltk 1.7s linear infinite}
+  @keyframes pwboltk{0%,14%,18%,100%{opacity:0}15%{opacity:.9}16%{opacity:.2}17%{opacity:.7}}
+  .pwflash{position:absolute;inset:0;background:#ffecec;opacity:0;pointer-events:none}
+  .pwflash.hit{animation:pwfl .5s ease-out}@keyframes pwfl{0%{opacity:.9}100%{opacity:0}}
+  .pwframe{position:absolute;inset:8px;border:2px solid #ff2b46;border-radius:4px;opacity:0;box-shadow:0 0 26px rgba(255,43,70,.6) inset}
+  .pwfx.lit .pwframe{animation:pwwf 1s infinite}@keyframes pwwf{0%,100%{opacity:.16}50%{opacity:.85}}
+  .pwcorner{position:absolute;width:26px;height:26px;border:2px solid #ff3b46;opacity:0}
+  .pwfx.lit .pwcorner{opacity:.7}
+  .pwcorner.tl{top:14px;left:14px;border-right:0;border-bottom:0}.pwcorner.br{bottom:14px;right:14px;border-left:0;border-top:0}
+  .pwcut{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;opacity:0;transition:opacity .25s;padding:22px}
+  .pwcut.show{opacity:1}
+  .pwcut .warn{font-family:'SF Mono',monospace;font-size:13px;letter-spacing:.24em;color:#ff5a5a;font-weight:800;margin-bottom:13px;text-shadow:0 0 12px #ff2b2b}
+  .pwcut .ttl{position:relative;font-size:38px;font-weight:900;color:#fff0f0;letter-spacing:.04em;text-shadow:0 0 12px #ff3b3b,0 0 30px #c8102e,0 4px 14px #000;animation:pwcin .45s ease}
+  .pwcut .ttl::before,.pwcut .ttl::after{content:attr(data-t);position:absolute;top:0;left:0;right:0;text-align:center}
+  .pwcut .ttl::before{color:#ff2bd0;animation:pwg1 .2s infinite}.pwcut .ttl::after{color:#ff5a5a;animation:pwg2 .22s infinite}
+  @keyframes pwcin{from{transform:scale(.62);opacity:0}to{transform:scale(1);opacity:1}}
+  @keyframes pwg1{0%,100%{transform:translate(-2px,0);opacity:.5}50%{transform:translate(2px,1px);opacity:.45}}
+  @keyframes pwg2{0%,100%{transform:translate(2px,0);opacity:.5}50%{transform:translate(-2px,-1px);opacity:.45}}
+  .pwcut .subt{font-size:12.5px;color:#ffd2d2;margin-top:10px;font-family:'SF Mono',monospace;animation:pwcin .5s ease .1s both}
+  .pwcut .fn{margin-top:17px;font-size:21px;font-weight:900;color:#ff6a6a;text-shadow:0 0 14px rgba(255,60,60,.6);animation:pwcin .5s ease .2s both}
+  .pwcut .fd{margin-top:9px;font-size:13px;line-height:1.7;color:#f0dede;max-width:300px;animation:pwcin .5s ease .32s both}
+  .pwtap{position:absolute;bottom:30px;left:0;right:0;text-align:center;font-size:12px;color:#c89a9a;font-family:'SF Mono',monospace;animation:pwbl 1.3s infinite;display:none}
+  @keyframes pwbl{50%{opacity:.4}}
+  /* イントロのモーダル（説明／広告／チュートリアル共通） */
+  .pwov{position:fixed;inset:0;z-index:11050;display:none;align-items:center;justify-content:center;background:rgba(3,3,6,.86);padding:18px}
+  .pwov.on{display:flex}
+  .pwexp{width:100%;max-width:420px;border-radius:14px;overflow:hidden;position:relative;background:linear-gradient(170deg,#1d0e12,#0c0608);border:1px solid rgba(255,70,80,.4);box-shadow:0 18px 50px rgba(0,0,0,.6);animation:pwpop .25s ease}
+  @keyframes pwpop{from{transform:translateY(16px);opacity:0}to{transform:none;opacity:1}}
+  .pwexp .hd{padding:24px 22px 6px;text-align:center}
+  .pwexp .hd .em{font-size:48px}
+  .pwexp .hd .t{font-size:22px;font-weight:900;color:#fff;margin-top:8px}
+  .pwexp .hd .t b{color:#ff6a6a}
+  .pwexp .bd{padding:6px 22px 14px;font-size:13.5px;line-height:2;color:#e9d8d8;text-align:left}
+  .pwexp .bd .hi{color:#ff5a5a;font-weight:900;text-shadow:0 0 8px rgba(255,60,60,.5)}
+  .pwexpf{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:2px 18px 20px}
+  .pwexpd{display:flex;gap:6px}.pwexpd i{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.25)}.pwexpd i.on{background:#ff5a5a;width:18px;border-radius:4px}
+  .pwnb2{background:rgba(255,255,255,.1);border:none;border-radius:9px;color:#cdd7e6;font-weight:800;font-size:13px;padding:11px 16px;cursor:pointer}
+  .pwbtn{display:block;width:100%;text-align:center;border:none;border-radius:11px;padding:14px;font-weight:900;font-size:15px;cursor:pointer;background:linear-gradient(135deg,#ff4d4d,#b3001b);color:#fff;text-decoration:none}
+  .pwbtn:active{transform:translateY(1px)}
+  /* 広告ゲート */
+  .pwadbox{position:relative;margin:16px;border:1px dashed rgba(255,80,80,.4);border-radius:10px;background:rgba(255,255,255,.03);padding:12px;min-height:96px;display:flex;align-items:center;justify-content:center}
+  .pwadbox .tag{position:absolute;top:7px;left:9px;font-size:9px;letter-spacing:.14em;color:#b58a8a}
+  .pwcd{display:flex;align-items:center;justify-content:center;gap:9px;color:#e7c9c9;font-size:12px;margin:0 16px}
+  .pwcdn{font-family:Georgia,serif;font-weight:700;font-size:15px;color:#fff;background:linear-gradient(135deg,#ff4d4d,#b3001b);width:30px;height:30px;border-radius:50%;display:grid;place-items:center}
+  .pwcdbar{height:4px;border-radius:3px;background:rgba(255,255,255,.1);margin:12px 16px 0;overflow:hidden}
+  .pwcdbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#ff4d4d,#b3001b);transition:width 1s linear}
+  /* 操作チュートリアル（漫画コマ） */
+  .pwtut{width:100%;max-width:420px;border-radius:6px;overflow:hidden;position:relative;background:#f4efe4;color:#1a140c;border:3px solid #1a140c;box-shadow:0 18px 50px rgba(0,0,0,.6);animation:pwpop .25s ease}
+  .pwtut::before{content:"";position:absolute;inset:0;background-image:radial-gradient(#0000000d 1px,transparent 1.4px);background-size:7px 7px;pointer-events:none}
+  .pwtut .pg{padding:16px 16px 12px;min-height:320px;position:relative}
+  .pwmp{position:relative;background:#fff;border:2.5px solid #1a140c;border-radius:3px;padding:12px 13px;margin-bottom:11px;box-shadow:3px 3px 0 #1a140c}
+  .pwmp.tilt{transform:rotate(-.8deg)}.pwmp.tilt2{transform:rotate(.7deg)}
+  .pwmt{display:flex;align-items:center;gap:11px}.pwmt .em{font-size:38px;line-height:1}.pwmt .t{font-size:18px;font-weight:900;line-height:1.25}
+  .pwml{font-size:13px;line-height:1.9;font-weight:600}
+  .pwst{display:flex;gap:9px;align-items:flex-start;margin-bottom:8px}
+  .pwst .n{flex:none;width:23px;height:23px;border-radius:50%;background:#1a140c;color:#ffd76a;display:grid;place-items:center;font-size:12px;font-weight:900}
+  .pwbub{position:relative;background:#fff;border:2.5px solid #1a140c;border-radius:16px;padding:11px 14px;font-size:13px;font-weight:700;line-height:1.7;box-shadow:3px 3px 0 #1a140c}
+  .pwfoot{display:flex;align-items:center;justify-content:space-between;padding:11px 16px;border-top:3px solid #1a140c;background:#ece4d4}
+  .pwdots{display:flex;gap:6px}.pwdots i{width:8px;height:8px;border-radius:50%;background:#1a140c33;border:1.5px solid #1a140c}.pwdots i.on{background:#ff2b46}
+  .pwnb{border:2.5px solid #1a140c;border-radius:7px;padding:8px 15px;font-weight:900;font-size:13px;cursor:pointer;box-shadow:2px 2px 0 #1a140c;background:#fff;color:#1a140c}.pwnb.next{background:#ffd24a}
+  .pwtry{display:block;width:100%;text-align:center;text-decoration:none;background:#ff2b46;color:#fff;font-weight:900;font-size:15px;padding:13px;border:2.5px solid #1a140c;border-radius:9px;box-shadow:3px 3px 0 #1a140c}
+  .pwrga{color:#ff2b2b;font-weight:900;display:inline-block;text-shadow:0 0 7px #ff3b3b,0 0 15px #ff2b46;animation:pwrga 1s ease-in-out infinite}
+  @keyframes pwrga{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 </style>
 <script type="application/ld+json">
 {
@@ -1306,6 +1470,7 @@ body{padding-bottom:64px!important}
       <div class="tile" data-feat="pred" style="--g:#ff4d3d" onclick="open_('pred')"><span class="lv">LIVE</span><div class="ic">👑</div><div><div class="nm" data-i18n="tile_pred_n">プレデター</div><div class="ds" data-i18n="tile_pred_d">到達RPボーダー</div></div></div>
       <div class="tile" data-feat="srv" style="--g:#22e3a0" onclick="open_('srv')"><span class="lv">LIVE</span><div class="ic">📡</div><div><div class="nm" data-i18n="tile_srv_n">サーバー</div><div class="ds" data-i18n="tile_srv_d">障害・稼働状況</div></div></div>
       <div class="tile" data-feat="find" style="--g:#ff3df2" onclick="open_('find')"><div class="ic">🔍</div><div><div class="nm" data-i18n="tile_find_n">検索</div><div class="ds" data-i18n="tile_find_d">戦績＋戦闘力採点</div></div></div>
+      <div class="tile" data-feat="frank" style="--g:#5dd0ff" onclick="open_('frank')"><span class="lv">NEW</span><div class="ic">👥</div><div><div class="nm">プレイヤーウォッチ</div><div class="ds">推し・フレンドの現在ランク＆オンライン状況</div></div></div>
       <div class="tile" data-feat="diag" style="--g:#c062ff" onclick="open_('diag')"><div class="ic">🧪</div><div><div class="nm" data-i18n="tile_diag_n">診断・あそび</div><div class="ds" data-i18n="tile_diag_d">15診断＋あそび</div></div></div>
       <div class="tile" data-feat="gen" style="--g:#ff7a3d" onclick="open_('gen')"><span class="lv">NEW</span><div class="ic">🎲</div><div><div class="nm">ジェネレーター</div><div class="ds">言い訳・やめます・あるある</div></div></div>
       <div class="tile" data-feat="repcard" style="--g:#ffd23d" onclick="open_('repcard')"><span class="lv">NEW</span><div class="ic">📋</div><div><div class="nm">Apex通信簿</div><div class="ds">総合レポート画像を生成</div></div></div>
@@ -1360,8 +1525,15 @@ body{padding-bottom:64px!important}
     <div class="ad adSlot"></div>
   </div>
 
-  <!-- ===== RANKING ===== -->
-  <!-- ===== DIAGNOSES HUB ===== -->
+  <!-- ===== FRIEND RANK ===== -->
+  <div class="view" id="v-frank"><button class="back" onclick="home()">← ホーム</button>
+    <div class="caption"><h2>👥 プレイヤーウォッチ</h2><span class="d">気になるプレイヤーを登録→“今オンラインか”＆現在ランクを一目で</span></div>
+    <div class="searchbar"><input id="frIgn" placeholder="プレイヤーのID（PCはOrigin名）" autocomplete="off"><select id="frPlat"><option value="PC">PC</option><option value="PS">PS</option><option value="Xbox">Xbox</option><option value="Switch">Switch</option></select><button onclick="frAdd()">＋追加</button></div>
+    <div class="frbar"><div class="frtabs"><button class="frtab on" data-t="cards" onclick="frTab('cards')">🪪 カード</button><button class="frtab" data-t="rank" onclick="frTab('rank')">🏆 ランキング</button></div><button class="btn x" id="frRefreshBtn" onclick="frRefresh()">↻ 全員更新</button></div>
+    <div id="frBox"></div>
+    <div id="frDetail"></div>
+  </div>
+
   <div class="view" id="v-diag"><button class="back" data-i18n="back" onclick="home()">← ホーム</button>
     <div class="caption"><h2 data-i18n="cap_diag_h">🧪 Apex 診断・あそび 146種</h2><span class="d" data-i18n="cap_diag_d">あなたを分析するミニ診断集</span></div>
     <div class="note" data-i18n="diag_jp_note"></div>
@@ -1716,6 +1888,7 @@ function open_(sec){$('home').style.display='none';document.querySelectorAll('.v
   if(sec==='learn'){learnTab('combo');}
   if(sec==='settings')renderSettings();
   if(sec==='links')renderLinks();
+  if(sec==='frank'){frRender();frMapFetch();setTimeout(pwIntroMaybe,260);}
   try{seoTitle(sec);}catch(e){}
   try{pushUrl(sec);}catch(e){}
   try{popInc(sec);}catch(e){}
@@ -1843,6 +2016,7 @@ function findPlayer(){var name=($('pname').value||'').trim(),plat=$('pplat').val
     var H='<div class="ptop"><div class="gauge" style="--p:'+score+'%"><div class="in"><div class="n mono">'+score+'</div><div class="o">/100</div></div></div>'
       +'<div class="pwho"><div class="nm">'+esc(g.name||name)+'</div><div class="meta">'+plat+' ・ Lv.'+lvl+(rt.isOnline?' ・ <span class="on">● '+t('online')+'</span>':'')+(sel.LegendName?' ・ '+t('using')+' '+esc(sel.LegendName):'')+'</div><div class="verd">「'+verd+'」</div></div></div>'
       +'<button class="btn x" onclick="share(shareScore(score,verd))">𝕏 '+t('share')+'</button>'
+      +'<a class="findgear" href="?v=gear" onclick="open_(\'gear\');return false;" data-ev="戦績→デバイス">🎯 戦闘力を上げる“勝てる”おすすめデバイスを見る →</a>'
       +'<div class="subtabs"><button class="on" data-p="o" onclick="ftab(this,\'o\')">'+t('sub_o')+'</button><button data-p="l" onclick="ftab(this,\'l\')">'+t('sub_l')+'</button><button data-p="r" onclick="ftab(this,\'r\')">'+t('sub_r')+'</button></div>';
     H+='<div class="spane on" id="fp-o"><div class="sgrid2">'
       +'<div class="stat calc"><div class="k">KD</div><div class="v mono">'+(kd||'—')+'</div></div>'
@@ -2105,7 +2279,7 @@ setTimeout(function(){try{var _h=document.getElementById('home');if(_h&&_h.style
  wrap('btStart',function(){push('battle',(window.BT&&BT.mode===3)?'3v3':'1v1');});
  wrap('budgetRun',function(i){push('gear','budget'+i);});
  wrap('guideRender',function(){push('gear','guide');});
- document.addEventListener('click',function(e){try{var a=e.target&&e.target.closest?e.target.closest('a.pbtn,a[rel~="sponsored"]'):null;if(a){var card=a.closest?a.closest('.pcard'):null;var nm=card&&card.querySelector('.pname')?card.querySelector('.pname').textContent:'';var cat=card&&card.querySelector('.pcat')?card.querySelector('.pcat').textContent:'';push('product',(cat?cat+' / ':'')+(nm||'link'));try{mpProdClick(nm||'link',cat);}catch(e){}}}catch(err){}},true);
+ document.addEventListener('click',function(e){try{var a=e.target&&e.target.closest?e.target.closest('a.pbtn,a[rel~="sponsored"]'):null;if(a){var card=a.closest?a.closest('.pcard'):null;var nm=card&&card.querySelector('.pname')?card.querySelector('.pname').textContent:'';var cat=card&&card.querySelector('.pcat')?card.querySelector('.pcat').textContent:'';var href=(a.getAttribute&&a.getAttribute('href'))||'';var host=href.replace(/^https?:\/\//,'').split('/')[0];push('product',(cat?cat+' / ':'')+(nm||host||'link'));try{mpProdClick(nm||host||'link',cat);}catch(e){}}}catch(err){}},true);
  /* 将来ノーメンテ：新パネル/ボタンも自動計測。新要素は data-ev を付けるだけ（無くても.tile/.btnは自動でラベル取得） */
  document.addEventListener('click',function(e){try{var t=e.target&&e.target.closest?e.target.closest('[data-ev],.tile,.btn,.botnav button'):null;if(!t)return;var lbl=t.getAttribute&&t.getAttribute('data-ev');if(!lbl){var nm=t.querySelector&&t.querySelector('.nm');lbl=((nm?nm.textContent:t.textContent)||'').replace(/\s+/g,' ').trim().slice(0,38);}if(lbl)push('tap',lbl);}catch(x){}},true);
  function param(k){try{return new URLSearchParams(location.search).get(k)||'';}catch(e){return '';}}
@@ -2116,6 +2290,11 @@ setTimeout(function(){try{var _h=document.getElementById('home');if(_h&&_h.style
 
 /* ===== サイト更新情報＆赤丸通知 ===== */
 var SITEUPD=[
+ {d:'2026-06-14',tag:'new',f:'frank',t:'プレイヤーウォッチ 初回イントロ演出を実装',x:'初めて画面に入ると「開放演出（赤データストリーム）→新機能の説明→広告(5秒)→操作チュートリアル」を順に表示。次回からは出ない'},
+ {d:'2026-06-14',tag:'kai',f:'frank',t:'「プレイヤーウォッチ」に進化',x:'パネル名を刷新（推し・配信者・プロも登録OK）。現在RPからランクを判定して表示。最大の目玉として“今オンラインかどうか”を緑で大きく強調表示'},
+ {d:'2026-06-14',tag:'kai',f:'frank',t:'フレンドのランク確認を大幅強化',x:'カードをゴールド・メゾン調に刷新＋現在の状態（ランク中/ロビー/オフライン）表示。タップで詳細モーダルを開き、使用レジェンド・プレイ中マップ(推定)・パーティ状況・戦績などリアルタイム全データを表示'},
+ {d:'2026-06-14',tag:'new',f:'frank',t:'フレンドのランク確認を追加',x:'フレンドのIDを追加してカード管理→タップで戦績＆現在ランクをデカ表示。タブでRP順ランキング、ワンタップ全員更新に対応'},
+ {d:'2026-06-14',tag:'kai',f:'find',t:'戦績結果からデバイス提案を追加',x:'戦闘力の採点結果に「勝てるおすすめデバイスを見る」導線を追加。クリック計測も改善'},
  {d:'2026-06-11',tag:'kai',f:'',t:'SEO全面強化（検索で見つかりやすく）',x:'構造化データを大幅追加（障害お知らせ・ボーダーDataset・FAQ拡張・パンくず等）、各画面を個別URL化して検索エンジンが辿れるように、フッターのリンク網・noscript・OG/Twitter画像・favicon・サイトマップ拡張・表示速度の最適化までまとめて対応'},
  {d:'2026-06-11',tag:'new',f:'diag',t:'診断を30種類どっさり追加（全146種）',x:'キャンパー度・脳筋ラッシュ度・漁りガメ度・グレ職人度・蘇生信頼度・終盤強者度ほか30種を追加。戦闘/性格/対人/運/生活と幅広く、結果はもちろん高級メゾン仕様'},
  {d:'2026-06-11',tag:'kai',f:'',t:'伝説パネルを灼熱の炎と黒い雷の装飾に',x:'ホーム最上段の「世界を救って伝説になる」パネルを、燃え上がる炎と黒い稲妻が走る演出に変更'},
@@ -3693,6 +3872,175 @@ function renderTeam(){
  box.innerHTML=a.length?a.map(function(m,i){return '<div class="coderow"><div class="codebody"><div class="codeign">🎮 '+esc(m.ign)+' <span class="codeplat">'+esc(m.plat)+'</span></div></div><button class="lfgx2 del" onclick="teamDel('+i+')">×</button></div>';}).join(''):'<div class="lfgempty">固定パのメンバー（最大5人）を登録すると、全員の戦闘力をまとめて比較できる。</div>';
  var btn=$('teamFetchBtn');if(btn)btn.style.display=a.length?'block':'none';
 }
+/* --- プレイヤーウォッチ --- */
+function frGet(){try{return JSON.parse(localStorage.getItem('apexFriends')||'[]');}catch(e){return [];}}
+function frSave(a){try{localStorage.setItem('apexFriends',JSON.stringify(a));}catch(e){}}
+function frPlatApi(p){return p==='PC'?'PC':p==='PS'?'PS4':p==='Xbox'?'X1':p==='Switch'?'SWITCH':'PC';}
+function rpRank(rp){rp=Number(rp)||0;
+ if(rp>=18200)return {name:'マスター',emoji:'👺'};
+ if(rp>=12800)return {name:'ダイヤ',emoji:'🐲'};
+ if(rp>=8600)return {name:'プラチナ',emoji:'🦅'};
+ if(rp>=5400)return {name:'ゴールド',emoji:'🦁'};
+ if(rp>=3000)return {name:'シルバー',emoji:'🐺'};
+ if(rp>=1000)return {name:'ブロンズ',emoji:'🐢'};
+ return {name:'ルーキー',emoji:'🐣'};}
+function frFetch(ign,plat){return gas('player','&player='+encodeURIComponent(ign)+'&platform='+frPlatApi(plat)).then(function(d){
+ if(!d||d.Error||d.error)return {ok:false};
+ var g=d.global||{},rt=d.realtime||{},sel=(d.legends&&d.legends.selected)||{},total=d.total||{},rank=g.rank||{};
+ var lvl=g.level!=null?g.level:0,rp=rank.rankScore!=null?Number(rank.rankScore):0;
+ var kills=(total.kills&&total.kills.value)||null,dmg=(total.damage&&total.damage.value)||null,wins=(total.wins&&total.wins.value)||null,games=(total.games_played&&total.games_played.value)||null;
+ var kd=(kills!=null&&total.deaths&&total.deaths.value)?(kills/Math.max(1,total.deaths.value)).toFixed(2):null;
+ var avg=(dmg!=null&&games)?Math.round(dmg/games):null,wr=(wins!=null&&games)?((wins/games*100).toFixed(1)+'%'):null;
+ var score=Math.min(100,Math.round(Math.min(lvl/8,45)+Math.min(rp/600,45)+(kd?Math.min(kd*4,10):0)));
+ var online=!!(rt.isOnline),inGame=!!(rt.isInGame);
+ var state=inGame?'match':(online?'lobby':'off');
+ var legend=rt.selectedLegend||sel.LegendName||'';
+ var isPred=/pred/i.test(rank.rankName||'')||(rank.rankName||'').indexOf('プレデ')>=0;
+ var rr=isPred?{name:'プレデター',emoji:'👹'}:rpRank(rp);
+ return {ok:true,name:g.name||ign,lvl:lvl,rp:rp,rankName:rr.name,rankDiv:'',emoji:rr.emoji,apiRank:rank.rankName||'',score:score,kd:kd,avg:avg,wr:wr,kills:kills,
+  online:online,inGame:inGame,state:state,legend:legend,canJoin:!!rt.canJoin,partyFull:!!rt.partyFull,lobbyState:rt.lobbyState||''};
+},function(){return {ok:false};});}
+function frAdd(){
+ var ign=($('frIgn').value||'').trim(),plat=$('frPlat').value;
+ if(!ign){toast2('IDを入力してね');return;}
+ var a=frGet();
+ if(a.length>=20){toast2('登録は20人まで');return;}
+ if(a.some(function(x){return x.ign.toLowerCase()===ign.toLowerCase()&&x.plat===plat;})){toast2('もう追加済みだよ');return;}
+ $('frIgn').value='';a.push({ign:ign,plat:plat,data:null,t:0});frSave(a);frRender();
+ frFetch(ign,plat).then(function(p){var arr=frGet();for(var i=0;i<arr.length;i++){if(arr[i].ign===ign&&arr[i].plat===plat){arr[i].data=p.ok?p:{ok:false};arr[i].t=Date.now();}}frSave(arr);frRender();});
+}
+function frDel(i){var a=frGet();a.splice(i,1);frSave(a);frRender();}
+function frRefresh(){
+ var a=frGet();if(!a.length){toast2('先にフレンドを追加してね');return;}
+ var btn=$('frRefreshBtn');if(btn){btn.disabled=true;btn.textContent='更新中…';}
+ var done=0;
+ a.forEach(function(m,idx){frFetch(m.ign,m.plat).then(function(p){a[idx].data=p.ok?p:{ok:false};a[idx].t=Date.now();done++;if(done===a.length){frSave(a);frRender();if(btn){btn.disabled=false;btn.textContent='↻ 全員更新';}}});});
+}
+var FR_TAB='cards';var FR_MAP=null;var FR_CUR=-1;var FR_CD=null;
+function frMapFetch(){try{gas('map').then(function(d){if(d&&d.ranked&&d.ranked.current&&typeof mapName==='function')FR_MAP=mapName(d.ranked.current.map);}).catch(function(){});}catch(e){}}
+function frTab(tab){FR_TAB=tab;var bs=document.querySelectorAll('#v-frank .frtab');for(var i=0;i<bs.length;i++){bs[i].classList.toggle('on',bs[i].getAttribute('data-t')===tab);}frRender();}
+function frPz(st){if(st==='match')return '<span class="fpz match"><span class="dot"></span>ランク中</span>';if(st==='lobby')return '<span class="fpz lobby"><span class="dot"></span>ロビー</span>';return '<span class="fpz off"><span class="dot"></span>オフライン</span>';}
+function frOnBadge(st){if(st==='match')return '<span class="fon on"><span class="dot"></span>ONLINE<small>ランク中</small></span>';if(st==='lobby')return '<span class="fon on"><span class="dot"></span>ONLINE<small>ロビー</small></span>';return '<span class="fon off"><span class="dot"></span>OFFLINE</span>';}
+function frRender(){
+ var box=$('frBox');if(!box)return;var a=frGet();
+ if(!a.length){box.innerHTML='<div class="frempty">推し・フレンド・プロ・配信者…気になるプレイヤーのIDを入力して「＋追加」。<b>今オンラインか</b>と現在ランクが一目でわかる。カードをタップでリアルタイム詳細、タブでRPランキング。</div>';return;}
+ if(FR_TAB==='rank'){
+  var ranked=a.map(function(m,i){return {m:m,i:i};}).filter(function(o){return o.m.data&&o.m.data.ok;}).sort(function(x,y){return (y.m.data.rp||0)-(x.m.data.rp||0);});
+  var miss=a.filter(function(m){return !(m.data&&m.data.ok);});
+  box.innerHTML='<div class="frrkttl">🏆 プレイヤーRPランキング</div>'+(ranked.length?ranked.map(function(o,i){var p=o.m.data;var md=i===0?'🥇':i===1?'🥈':i===2?'🥉':(i+1)+'';return '<div class="frrow'+(p.online?' onrow':'')+'" onclick="frShow('+o.i+')"><span class="frrk">'+md+'</span><span class="fre">'+p.emoji+'</span><div class="frbody"><b>'+esc(p.name)+'</b><small>'+esc(p.rankName||'-')+'</small></div>'+frOnBadge(p.state)+'<div class="frrp mono">'+(p.rp||0).toLocaleString()+'<span>RP</span></div></div>';}).join(''):'<div class="note">取得できたデータがまだないよ。「↻ 全員更新」を押してね。</div>')+(miss.length?'<div class="note">取得できず: '+miss.map(function(m){return esc(m.ign);}).join(', ')+'</div>':'');
+ }else{
+  box.innerHTML='<div class="frgrid">'+a.map(function(m,i){var p=m.data;
+   if(!p)return '<div class="fc load"><div class="em">⏳</div><div class="mid"><div class="nm">'+esc(m.ign)+'</div><div class="rk">取得中…</div></div></div>';
+   if(!p.ok)return '<div class="fc off2" onclick="frShow('+i+')"><button class="del" onclick="frDel('+i+');event.stopPropagation();return false;" aria-label="削除">🗑️</button><div class="em">❓</div><div class="mid"><div class="nm">'+esc(m.ign)+'</div><div class="rk">取得できず（タップで再試行）</div></div></div>';
+   return '<div class="fc'+(p.online?' fonline':' foffline')+'" onclick="frShow('+i+')"><button class="del" onclick="frDel('+i+');event.stopPropagation();return false;" aria-label="削除">🗑️</button><div class="em">'+p.emoji+'</div><div class="mid"><div class="nm">'+esc(p.name)+'</div><div class="rk">'+esc(p.rankName||'-')+'</div>'+frOnBadge(p.state)+'</div><div class="right"><div class="rpv mono">'+(p.rp||0).toLocaleString()+'</div><div class="rpl">RP</div></div><div class="arr">›</div></div>';
+  }).join('')+'</div>';
+ }
+}
+function frShow(i){
+ var a=frGet();var m=a[i];if(!m)return;FR_CUR=i;
+ var ov=$('frModal');if(!ov)return;
+ var nm=$('frModName');if(nm)nm.textContent=m.ign+' ・ '+m.plat;
+ var gate=$('frGate'),det=$('frDetailBody');det.classList.remove('on');det.innerHTML='';
+ ov.classList.add('on');
+ if(typeof SHOW_AD!=='undefined'&&SHOW_AD){
+  gate.style.display='block';
+  var ad=$('frAdBox');if(ad){try{ad.innerHTML='<div class="a8wrap">'+adHtml_()+'</div>';}catch(e){ad.innerHTML='';}}
+  var n=5;$('frCdNum').textContent=n;$('frCdBar').style.width='0%';setTimeout(function(){var b=$('frCdBar');if(b)b.style.width='100%';},40);
+  clearInterval(FR_CD);FR_CD=setInterval(function(){n--;var c=$('frCdNum');if(c)c.textContent=(n>0?n:0);if(n<=0){clearInterval(FR_CD);FR_CD=null;gate.style.display='none';frRenderDetail(m);}},1000);
+ }else{gate.style.display='none';frRenderDetail(m);}
+}
+function frCloseMod(){if(FR_CD){clearInterval(FR_CD);FR_CD=null;}var ov=$('frModal');if(ov)ov.classList.remove('on');}
+function frkv(k,v){return '<div class="frkv"><span class="k">'+k+'</span><span class="v">'+v+'</span></div>';}
+function frrr(k,v){return '<div class="frrr"><span class="rk2">'+esc(k)+'</span><span class="rv">'+esc(v)+'</span></div>';}
+function frRenderDetail(m){
+ var p=m.data,det=$('frDetailBody');if(!det)return;
+ if(!p||!p.ok){det.innerHTML='<div class="warnbox" style="margin:14px">データを取得できませんでした。IDとプラットフォームを確認して、もう一度試してください。</div>';det.classList.add('on');return;}
+ var now;
+ if(p.state==='match'){
+  var mp=(FR_MAP?esc(FR_MAP)+'・トリオ':'ランク・トリオ');
+  now='<div class="frnl"><span class="ic">🎮</span><div><b>'+mp+'</b> をプレイ中<span class="est">（マップは現在のランクローテから推定）</span></div></div>'
+   +(p.legend?'<div class="frnl"><span class="ic">🦸</span>使用レジェンド：<b>'+esc(p.legend)+'</b></div>':'')
+   +'<div class="frnl"><span class="ic">🚪</span>パーティ：<b>'+(p.partyFull?'満員':'空きあり')+'</b> ／ '+(p.canJoin?'参加可':'参加不可')+'</div>';
+ }else if(p.state==='lobby'){
+  now='<div class="frnl"><span class="ic">🛋️</span><b>ロビーで待機中</b></div>'
+   +(p.legend?'<div class="frnl"><span class="ic">🦸</span>選択中：<b>'+esc(p.legend)+'</b></div>':'')
+   +'<div class="frnl"><span class="ic">🚪</span>パーティ：<b>'+(p.partyFull?'満員':'空きあり')+'</b> ／ '+(p.canJoin?'参加可（誘える）':'参加不可')+'</div>';
+ }else{now='<div class="frnl"><span class="ic">🌙</span><b>現在オフライン</b></div>';}
+ det.innerHTML='<div class="fronbig '+(p.online?'on':'off')+'"><span class="dot"></span>'+(p.online?'いま オンライン':'いま オフライン')+(p.online?'<small>'+(p.state==='match'?'ランク中':'ロビー')+'</small>':'')+'</div>'
+  +'<div class="frhero"><div class="em">'+p.emoji+'</div><div class="rk">'+esc(p.rankName||'-')+'</div><div class="rp">'+(p.rp||0).toLocaleString()+' RP</div></div>'
+  +'<div class="frsec"><div class="st">いま何してる</div><div class="frnow">'+now+'</div></div>'
+  +'<div class="frsec"><div class="st">戦績スタッツ</div><div class="frkv2">'+frkv('レベル',(p.lvl||0))+frkv('KD',(p.kd||'—'))+frkv('平均ダメージ',(p.avg||'—'))+frkv('勝率',(p.wr||'—'))+frkv('総キル',(p.kills!=null?Number(p.kills).toLocaleString():'—'))+frkv('戦闘力',(p.score||0))+'</div></div>'
+  +'<div class="frsec"><div class="st">リアルタイム生データ</div><div class="frraw">'+frrr('オンライン',p.online?'はい':'いいえ')+frrr('ゲーム中',p.inGame?'はい':'いいえ')+frrr('状態',p.state==='match'?'マッチ中':p.state==='lobby'?'ロビー':'オフライン')+frrr('ロビー状態',p.lobbyState||'—')+frrr('パーティ満員',p.partyFull?'はい':'いいえ')+frrr('参加可否',p.canJoin?'参加可':'不可')+frrr('使用レジェンド',p.legend||'—')+frrr('API判定ランク',p.apiRank||'—')+'</div></div>'
+  +'<div class="frmnote">※プレイ中のマップ/モードはAPIが直接返さないため、現在のランクローテから推定表示しています。オンライン状態・使用レジェンド・パーティ状況は実データです。</div>'
+  +'<div style="padding:0 15px 16px"><button class="btn primary" type="button" style="width:100%" onclick="frReload(FR_CUR)">↻ 最新に更新</button></div>';
+ det.classList.add('on');
+}
+function frReload(i){var a=frGet();var m=a[i];if(!m)return;var det=$('frDetailBody');if(det){det.innerHTML='<div class="loading" style="padding:24px;text-align:center">更新中…</div>';det.classList.add('on');}frFetch(m.ign,m.plat).then(function(p){var arr=frGet();arr[i].data=p.ok?p:{ok:false};arr[i].t=Date.now();frSave(arr);frRender();frRenderDetail(arr[i]);});}
+
+/* === プレイヤーウォッチ 初回イントロ（①演出→②説明→③/④広告→⑤操作チュートリアル→⑥操作可） === */
+var PW_T=[];function pwClr(){PW_T.forEach(clearTimeout);PW_T=[];}
+function pwIntroMaybe(){try{if(localStorage.getItem('apexPwIntroV1'))return;}catch(e){return;}pwFxPlay();}
+function pwFxPlay(){
+ pwClr();
+ var fx=$('pwFx'),w=$('pwFxW'),layer=$('pwLayer'),cut=$('pwCut'),flash=$('pwFlash'),tap=$('pwTap');
+ if(!fx)return;
+ fx.className='pwfx on';w.className='pwfxw';cut.classList.remove('show');tap.style.display='none';
+ var chars='ｱｲｳｴｵｶｷｸｹｺ01ﾊﾋﾌﾍﾎ10ﾐﾑﾒﾓ7ﾗﾘﾙ0',h='';
+ for(var c=0;c<8;c++){var s='';for(var k=0;k<26;k++){var ch=chars.charAt(Math.floor(Math.random()*chars.length));s+=(k===0?'<span class="hd">'+ch+'</span>':ch);}h+='<div class="pwcol" style="left:'+(4+c*12)+'%;animation-duration:'+(1.4+Math.random()*1.2).toFixed(2)+'s;animation-delay:'+(Math.random()*1.2).toFixed(2)+'s">'+s+'</div>';}
+ for(var i=0;i<4;i++)h+='<div class="pwbolt" style="left:'+(10+Math.random()*80)+'%;animation-delay:'+(Math.random()*1.6).toFixed(2)+'s"></div>';
+ layer.innerHTML=h;
+ if(navigator.vibrate){try{navigator.vibrate([60,40,60,40,60,40,40,40,220]);}catch(e){}}
+ PW_T.push(setTimeout(function(){fx.classList.add('lit');w.classList.add('shake');},40));
+ PW_T.push(setTimeout(function(){flash.classList.remove('hit');void flash.offsetWidth;flash.classList.add('hit');w.classList.remove('shake');w.classList.add('shakehard');PW_T.push(setTimeout(function(){w.classList.remove('shakehard');w.classList.add('shake');},360));},1250));
+ PW_T.push(setTimeout(function(){cut.classList.add('show');tap.style.display='block';},1670));
+ fx.onclick=function(){pwClr();fx.className='pwfx';w.className='pwfxw';pwExplain();};
+}
+var PW_EXP=[
+ {em:'👁️',t:'プレイヤーウォッチ とは？',h:'登録した相手の<span class="hi">“今のランク”</span>と<span class="hi">“今オンラインか”</span>が、いつでも一目でわかる新機能。<br><br>フレンドはもちろん、<b>推しの配信者・プロ</b>も登録OK。'},
+ {em:'⚡',t:'何ができる？',h:'<b class="hi">✓ 今オンラインか</b>（ランク中 / ロビー / オフライン）<br>✓ 現在ランク・RP・使用レジェンド<br>✓ プレイ中の状況（マップ推定など）<br>✓ 登録した全員を<b>RP順ランキング</b>'},
+ {em:'🔥',t:'こんな人におすすめ',h:'・<b>推しが今INしてる？</b>がすぐ分かる<br>・固定パの強さを比べたい<br>・仲間内で自分が何位か知りたい'}
+];
+var pwExpP=0;
+function pwExplain(){pwExpP=0;$('pwOv').classList.add('on');pwExpRender();}
+function pwExpRender(){
+ var pg=PW_EXP[pwExpP],last=pwExpP===PW_EXP.length-1;
+ var dots='';for(var i=0;i<PW_EXP.length;i++)dots+='<i class="'+(i===pwExpP?'on':'')+'"></i>';
+ $('pwOvBox').innerHTML='<div class="pwexp"><div class="hd"><div class="em">'+pg.em+'</div><div class="t">'+pg.t+'</div></div>'
+  +'<div class="bd">'+pg.h+'</div>'
+  +'<div class="pwexpf"><div class="pwexpd">'+dots+'</div>'
+   +(last?'<button class="pwbtn" type="button" style="width:auto;padding:11px 20px" onclick="pwAd()">使い方を見る →</button>':'<div style="display:flex;gap:8px">'+(pwExpP>0?'<button class="pwnb2" type="button" onclick="pwExpNav(-1)">← 戻る</button>':'')+'<button class="pwbtn" type="button" style="width:auto;padding:11px 20px" onclick="pwExpNav(1)">次へ →</button></div>')
+  +'</div></div>';
+}
+function pwExpNav(d){var np=pwExpP+d;if(np<0||np>=PW_EXP.length)return;pwExpP=np;pwExpRender();}
+var pwAdInt=null;
+function pwAd(){
+ var box=$('pwOvBox');if(!box)return;
+ if(typeof SHOW_AD==='undefined'||!SHOW_AD){pwTut(0);return;}
+ var adHtml='';try{adHtml='<div class="a8wrap">'+adHtml_()+'</div>';}catch(e){adHtml='';}
+ box.innerHTML='<div class="pwexp"><div class="pwadbox"><span class="tag">SPONSORED</span><div>'+adHtml+'</div></div><div class="pwcd"><span class="pwcdn" id="pwCdN">5</span><span>続行まで…</span></div><div class="pwcdbar"><i id="pwCdB"></i></div><div class="act" id="pwAdAct" style="opacity:.4;pointer-events:none"><button class="pwbtn" type="button" onclick="pwTut(0)">操作説明へ →</button></div></div>';
+ setTimeout(function(){var b=$('pwCdB');if(b)b.style.width='100%';},40);
+ var n=5;if(pwAdInt){clearInterval(pwAdInt);}
+ pwAdInt=setInterval(function(){n--;var c=$('pwCdN');if(c)c.textContent=(n>0?n:0);if(n<=0){clearInterval(pwAdInt);pwAdInt=null;var a=$('pwAdAct');if(a){a.style.opacity='1';a.style.pointerEvents='auto';}}},1000);
+}
+var PW_TUT=[
+ {em:'➕',t:'① プレイヤーを追加・削除',ps:[{type:'st',n:'1',h:'<b>ID</b>とプラットフォームを選んで<b>「＋追加」</b>。カードになって並ぶ（最大20人）。'},{type:'st',n:'2',h:'いらない相手はカードの<b>🗑️ゴミ箱</b>をタップで削除。入れ替え自由！'}]},
+ {em:'🪪',t:'② カードをタップで全部わかる',ps:[{type:'st',n:'1',h:'カードを<b>タップ</b>→<b>今オンラインか</b>・現在ランク・RP・使用レジェンド・プレイ中の状況・戦績まで表示。'},{type:'bub',h:'※カードを開くと5秒の広告が入るよ。'}]},
+ {em:'🏆',t:'③ ランキング＆更新',ps:[{type:'st',n:'1',h:'<b>ランキングタブ</b>で登録した全員を<b>RP順</b>に自動ランク付け。'},{type:'st',n:'2',h:'<b>「↻全員更新」</b>で最新化。毎日開いて差をチェック！'}]}
+];
+function pwTut(p){
+ $('pwOv').classList.add('on');var box=$('pwOvBox');if(!box)return;
+ var pg=PW_TUT[p],last=p===PW_TUT.length-1;
+ var body=pg.ps.map(function(x,i){if(x.type==='bub')return '<div class="pwbub">'+x.h+'</div>';return '<div class="pwmp '+(i%2?'tilt2':'tilt')+'"><div class="pwst"><span class="n">'+x.n+'</span><div class="pwml">'+x.h+'</div></div></div>';}).join('');
+ var dots='';for(var i=0;i<PW_TUT.length;i++)dots+='<i class="'+(i===p?'on':'')+'"></i>';
+ box.innerHTML='<div class="pwtut"><div class="pg"><div class="pwmp" style="box-shadow:4px 4px 0 #1a140c"><div class="pwmt"><span class="em">'+pg.em+'</span><span class="t">'+pg.t+'</span></div></div>'+body+'</div>'
+  +'<div class="pwfoot"><div class="pwdots">'+dots+'</div>'
+   +(last?'<button class="pwnb" type="button" onclick="pwTut('+(p-1)+')">← 戻る</button>':'<div style="display:flex;gap:8px">'+(p>0?'<button class="pwnb" type="button" onclick="pwTut('+(p-1)+')">← 戻る</button>':'')+'<button class="pwnb next" type="button" onclick="pwTut('+(p+1)+')">次へ →</button></div>')
+  +'</div>'
+  +(last?'<div style="padding:12px 16px 16px"><button class="pwtry" type="button" onclick="pwDone()">▶ 試しに使ってみる</button></div>':'')
+  +'</div>';
+}
+function pwDone(){try{localStorage.setItem('apexPwIntroV1','1');}catch(e){}$('pwOv').classList.remove('on');var f=$('frIgn');if(f){try{f.focus();}catch(e){}}}
+
 /* --- 今プレイ中ステータス共有 --- */
 function statusGen(){
  var aim=$('stAim')?$('stAim').value:'',rank=$('stRank')?$('stRank').value:'',vc=$('stVc')?$('stVc').value:'',num=$('stNum')?$('stNum').value:'';
@@ -4606,5 +4954,33 @@ try{var _sl=localStorage.getItem("apexLang");if(_sl)LANG=_sl;}catch(e){}applySta
       </ul>
     </div>
   </noscript>
+
+  <div class="pwfx" id="pwFx"><div class="pwfxw" id="pwFxW">
+    <div class="pwbg"></div><div class="pwalert"></div><div class="pwscan"></div>
+    <div class="pwlayer" id="pwLayer"></div>
+    <div class="pwflash" id="pwFlash"></div>
+    <div class="pwframe"></div><div class="pwcorner tl"></div><div class="pwcorner br"></div>
+    <div class="pwcut" id="pwCut">
+      <div class="warn">&gt; DECRYPTING…</div>
+      <div class="ttl" data-t="UNLOCKED">UNLOCKED</div>
+      <div class="subt">暗号を解読 ・ 新機能を展開</div>
+      <div class="fn">👁️ プレイヤーウォッチ</div>
+      <div class="fd">登録した相手の“今のランク”と“今オンラインか”が、いつでも分かる新機能。</div>
+    </div>
+    <div class="pwtap" id="pwTap">_ TAP TO CONTINUE ▶</div>
+  </div></div>
+  <div class="pwov" id="pwOv"><div id="pwOvBox"></div></div>
+
+  <div class="frov" id="frModal">
+    <div class="frmo">
+      <div class="frmoh"><b id="frModName">—</b><button class="frx" type="button" onclick="frCloseMod()">×</button></div>
+      <div class="frgate" id="frGate">
+        <div class="fradbox"><span class="tag">SPONSORED</span><div class="frad" id="frAdBox"></div></div>
+        <div class="frcd"><span class="frcdn" id="frCdNum">5</span><span>データ表示まで…</span></div>
+        <div class="frcdbar"><i id="frCdBar"></i></div>
+      </div>
+      <div class="frdet" id="frDetailBody"></div>
+    </div>
+  </div>
 </body>
 </html>
