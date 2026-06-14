@@ -1870,7 +1870,7 @@ function grandOpen(){
   setTimeout(function(){c.classList.remove('go');f.classList.remove('go');},1700);
  }catch(e){}
 }
-function home(){document.querySelectorAll('.view').forEach(function(v){v.classList.remove('on')});$('home').style.display='block';window.scrollTo(0,0);try{botnavUpdate();}catch(e){}try{renderHomeNotice();}catch(e){}try{renderPopular();}catch(e){}try{document.title='Apexプレデターボーダー 今シーズン｜マップ・サーバー状態・戦績・診断 - 激やばツール';}catch(e){}try{seoApply('');}catch(e){}try{pushUrl('');}catch(e){}try{var _h=$('home');if(_h){_h.classList.remove('vltopen');void _h.offsetWidth;_h.classList.add('vltopen');setTimeout(function(){_h.classList.remove('vltopen');},1500);}}catch(e){}}
+function home(){document.querySelectorAll('.view').forEach(function(v){v.classList.remove('on')});$('home').style.display='block';window.scrollTo(0,0);try{botnavUpdate();}catch(e){}try{renderHomeNotice();}catch(e){}try{renderPopular();}catch(e){}try{document.title='Apexプレデターボーダー 今シーズン｜マップ・サーバー状態・戦績・診断 - 激やばツール';}catch(e){}try{seoApply('');}catch(e){}try{pushUrl('');}catch(e){}try{var _h=$('home');if(_h){_h.classList.remove('vltopen');void _h.offsetWidth;_h.classList.add('vltopen');setTimeout(function(){_h.classList.remove('vltopen');},1500);}}catch(e){}try{setTimeout(pwHomeIntroMaybe,500);}catch(e){}}
 function open_(sec){$('home').style.display='none';document.querySelectorAll('.view').forEach(function(v){v.classList.remove('on')});$('v-'+sec).classList.add('on');window.scrollTo(0,0);
   if(sec==='map'&&!loaded.map){loaded.map=1;loadMap();}
   if(sec==='pred'&&!loaded.pred){loaded.pred=1;loadPred();}
@@ -1888,7 +1888,7 @@ function open_(sec){$('home').style.display='none';document.querySelectorAll('.v
   if(sec==='learn'){learnTab('combo');}
   if(sec==='settings')renderSettings();
   if(sec==='links')renderLinks();
-  if(sec==='frank'){frRender();frMapFetch();setTimeout(pwIntroMaybe,260);}
+  if(sec==='frank'){frRender();frMapFetch();setTimeout(pwScreenIntroMaybe,260);}
   try{seoTitle(sec);}catch(e){}
   try{pushUrl(sec);}catch(e){}
   try{popInc(sec);}catch(e){}
@@ -2260,6 +2260,7 @@ function restoreFromUrl(){
 }
 
 document.addEventListener('DOMContentLoaded',restoreFromUrl);setTimeout(function(){try{restoreFromUrl();}catch(e){}},0);
+document.addEventListener('DOMContentLoaded',function(){setTimeout(function(){try{pwHomeIntroMaybe();}catch(e){}},1800);});
 setTimeout(function(){try{var _h=document.getElementById('home');if(_h&&_h.style.display!=='none'){_h.classList.add('vltopen');setTimeout(function(){_h.classList.remove('vltopen');},1500);}}catch(e){}},260);
 
 /* ===== アクセス解析（匿名・1訪問1送信） ===== */
@@ -2290,7 +2291,7 @@ setTimeout(function(){try{var _h=document.getElementById('home');if(_h&&_h.style
 
 /* ===== サイト更新情報＆赤丸通知 ===== */
 var SITEUPD=[
- {d:'2026-06-14',tag:'new',f:'frank',t:'プレイヤーウォッチ 初回イントロ演出を実装',x:'初めて画面に入ると「開放演出（赤データストリーム）→新機能の説明→広告(5秒)→操作チュートリアル」を順に表示。次回からは出ない'},
+ {d:'2026-06-14',tag:'fix',f:'frank',t:'プレイヤーウォッチ告知を正しく修正',x:'サイトを開いた時（ホーム）に新機能開放演出＋説明を表示→画面に入ると広告→操作チュートリアル。利用データもダッシュボードに計測'},
  {d:'2026-06-14',tag:'kai',f:'frank',t:'「プレイヤーウォッチ」に進化',x:'パネル名を刷新（推し・配信者・プロも登録OK）。現在RPからランクを判定して表示。最大の目玉として“今オンラインかどうか”を緑で大きく強調表示'},
  {d:'2026-06-14',tag:'kai',f:'frank',t:'フレンドのランク確認を大幅強化',x:'カードをゴールド・メゾン調に刷新＋現在の状態（ランク中/ロビー/オフライン）表示。タップで詳細モーダルを開き、使用レジェンド・プレイ中マップ(推定)・パーティ状況・戦績などリアルタイム全データを表示'},
  {d:'2026-06-14',tag:'new',f:'frank',t:'フレンドのランク確認を追加',x:'フレンドのIDを追加してカード管理→タップで戦績＆現在ランクをデカ表示。タブでRP順ランキング、ワンタップ全員更新に対応'},
@@ -3906,19 +3907,20 @@ function frAdd(){
  var a=frGet();
  if(a.length>=20){toast2('登録は20人まで');return;}
  if(a.some(function(x){return x.ign.toLowerCase()===ign.toLowerCase()&&x.plat===plat;})){toast2('もう追加済みだよ');return;}
- $('frIgn').value='';a.push({ign:ign,plat:plat,data:null,t:0});frSave(a);frRender();
+ $('frIgn').value='';a.push({ign:ign,plat:plat,data:null,t:0});frSave(a);frRender();pwTrack('add');
  frFetch(ign,plat).then(function(p){var arr=frGet();for(var i=0;i<arr.length;i++){if(arr[i].ign===ign&&arr[i].plat===plat){arr[i].data=p.ok?p:{ok:false};arr[i].t=Date.now();}}frSave(arr);frRender();});
 }
-function frDel(i){var a=frGet();a.splice(i,1);frSave(a);frRender();}
+function frDel(i){var a=frGet();a.splice(i,1);frSave(a);frRender();pwTrack('del');}
 function frRefresh(){
  var a=frGet();if(!a.length){toast2('先にフレンドを追加してね');return;}
+ pwTrack('refresh');
  var btn=$('frRefreshBtn');if(btn){btn.disabled=true;btn.textContent='更新中…';}
  var done=0;
  a.forEach(function(m,idx){frFetch(m.ign,m.plat).then(function(p){a[idx].data=p.ok?p:{ok:false};a[idx].t=Date.now();done++;if(done===a.length){frSave(a);frRender();if(btn){btn.disabled=false;btn.textContent='↻ 全員更新';}}});});
 }
 var FR_TAB='cards';var FR_MAP=null;var FR_CUR=-1;var FR_CD=null;
 function frMapFetch(){try{gas('map').then(function(d){if(d&&d.ranked&&d.ranked.current&&typeof mapName==='function')FR_MAP=mapName(d.ranked.current.map);}).catch(function(){});}catch(e){}}
-function frTab(tab){FR_TAB=tab;var bs=document.querySelectorAll('#v-frank .frtab');for(var i=0;i<bs.length;i++){bs[i].classList.toggle('on',bs[i].getAttribute('data-t')===tab);}frRender();}
+function frTab(tab){FR_TAB=tab;pwTrack('tab_'+tab);var bs=document.querySelectorAll('#v-frank .frtab');for(var i=0;i<bs.length;i++){bs[i].classList.toggle('on',bs[i].getAttribute('data-t')===tab);}frRender();}
 function frPz(st){if(st==='match')return '<span class="fpz match"><span class="dot"></span>ランク中</span>';if(st==='lobby')return '<span class="fpz lobby"><span class="dot"></span>ロビー</span>';return '<span class="fpz off"><span class="dot"></span>オフライン</span>';}
 function frOnBadge(st){if(st==='match')return '<span class="fon on"><span class="dot"></span>ONLINE<small>ランク中</small></span>';if(st==='lobby')return '<span class="fon on"><span class="dot"></span>ONLINE<small>ロビー</small></span>';return '<span class="fon off"><span class="dot"></span>OFFLINE</span>';}
 function frRender(){
@@ -3937,7 +3939,7 @@ function frRender(){
  }
 }
 function frShow(i){
- var a=frGet();var m=a[i];if(!m)return;FR_CUR=i;
+ var a=frGet();var m=a[i];if(!m)return;FR_CUR=i;pwTrack('card');
  var ov=$('frModal');if(!ov)return;
  var nm=$('frModName');if(nm)nm.textContent=m.ign+' ・ '+m.plat;
  var gate=$('frGate'),det=$('frDetailBody');det.classList.remove('on');det.innerHTML='';
@@ -3979,7 +3981,27 @@ function frReload(i){var a=frGet();var m=a[i];if(!m)return;var det=$('frDetailBo
 
 /* === プレイヤーウォッチ 初回イントロ（①演出→②説明→③/④広告→⑤操作チュートリアル→⑥操作可） === */
 var PW_T=[];function pwClr(){PW_T.forEach(clearTimeout);PW_T=[];}
-function pwIntroMaybe(){try{if(localStorage.getItem('apexPwIntroV1'))return;}catch(e){return;}pwFxPlay();}
+function pwTrack(a){try{if(window.track)window.track('pw',a);}catch(e){}}
+var pwHomeFired=false;
+/* ①②：ホームを開いた時（=サイト訪問）に1回だけ → 開放演出 → 説明モーダル */
+function pwHomeIntroMaybe(){
+ try{if(localStorage.getItem('apexPwHomeV1'))return;}catch(e){return;}
+ if(pwHomeFired)return;
+ if(document.querySelector('.view.on'))return;            // 他画面（ディープリンク等）では出さない
+ var hm=$('home');if(hm&&hm.style.display==='none')return;  // ホーム表示中のみ
+ pwHomeFired=true;pwTrack('intro_start');pwFxPlay();
+}
+/* ④⑤：プレイヤーウォッチ画面に初めて入った時に1回だけ → 広告 → 操作チュートリアル */
+function pwScreenIntroMaybe(){
+ try{if(localStorage.getItem('apexPwScreenV1'))return;}catch(e){return;}
+ pwAd();
+}
+/* ②説明モーダルを読み終え「さっそく見る」→ ③初遷移（フラグ確定して画面へ） */
+function pwHomeGo(){
+ try{localStorage.setItem('apexPwHomeV1','1');}catch(e){}
+ pwTrack('intro_explained');$('pwOv').classList.remove('on');
+ try{if(typeof open_==='function')open_('frank');}catch(e){}
+}
 function pwFxPlay(){
  pwClr();
  var fx=$('pwFx'),w=$('pwFxW'),layer=$('pwLayer'),cut=$('pwCut'),flash=$('pwFlash'),tap=$('pwTap');
@@ -4008,7 +4030,7 @@ function pwExpRender(){
  $('pwOvBox').innerHTML='<div class="pwexp"><div class="hd"><div class="em">'+pg.em+'</div><div class="t">'+pg.t+'</div></div>'
   +'<div class="bd">'+pg.h+'</div>'
   +'<div class="pwexpf"><div class="pwexpd">'+dots+'</div>'
-   +(last?'<button class="pwbtn" type="button" style="width:auto;padding:11px 20px" onclick="pwAd()">使い方を見る →</button>':'<div style="display:flex;gap:8px">'+(pwExpP>0?'<button class="pwnb2" type="button" onclick="pwExpNav(-1)">← 戻る</button>':'')+'<button class="pwbtn" type="button" style="width:auto;padding:11px 20px" onclick="pwExpNav(1)">次へ →</button></div>')
+   +(last?'<button class="pwbtn" type="button" style="width:auto;padding:11px 20px" onclick="pwHomeGo()">さっそく見る →</button>':'<div style="display:flex;gap:8px">'+(pwExpP>0?'<button class="pwnb2" type="button" onclick="pwExpNav(-1)">← 戻る</button>':'')+'<button class="pwbtn" type="button" style="width:auto;padding:11px 20px" onclick="pwExpNav(1)">次へ →</button></div>')
   +'</div></div>';
 }
 function pwExpNav(d){var np=pwExpP+d;if(np<0||np>=PW_EXP.length)return;pwExpP=np;pwExpRender();}
@@ -4039,7 +4061,7 @@ function pwTut(p){
   +(last?'<div style="padding:12px 16px 16px"><button class="pwtry" type="button" onclick="pwDone()">▶ 試しに使ってみる</button></div>':'')
   +'</div>';
 }
-function pwDone(){try{localStorage.setItem('apexPwIntroV1','1');}catch(e){}$('pwOv').classList.remove('on');var f=$('frIgn');if(f){try{f.focus();}catch(e){}}}
+function pwDone(){try{localStorage.setItem('apexPwScreenV1','1');}catch(e){}pwTrack('intro_done');$('pwOv').classList.remove('on');var f=$('frIgn');if(f){try{f.focus();}catch(e){}}}
 
 /* --- 今プレイ中ステータス共有 --- */
 function statusGen(){

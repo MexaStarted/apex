@@ -158,8 +158,8 @@ function arrowMk(a,b){return a>b?'▲':a<b?'▼':'－';}
 function jstDate(off){var d=new Date(Date.now()+9*36e5+(off||0)*864e5);return d.toISOString().slice(0,10);}
 function wd(dateStr){return new Date(dateStr+'T00:00:00+09:00').getDay();}
 var WDN=['日','月','火','水','木','金','土'];
-var NAMEMAP={map:'マップ',pred:'プレデター',srv:'サーバー',find:'プレイヤー検索',diag:'診断ハブ',shop:'ショップ',update:'アップデート',recruit:'募集テンプレ',battle:'対決バトル',gear:'デバイス選び',sh:'立ち回り診断',ng:'使うな診断',ub:'使うべきキャラ',ts:'強さ診断',rl:'ルーレット',lk:'今日のラッキー',du:'デュオ相性',tr:'地雷度',ga:'ゲーマー年齢',pt:'パーティ役割',mt:'煽り耐性',sp:'ソロパ診断',iq:'立ち回りIQ',mg:'味方ガチャ',nl:'本日の野良運',bg:'民度診断',pg:'罰ゲーム'};
-var EMOMAP={map:'🗺️',pred:'👑',srv:'📡',find:'🔍',diag:'🧪',shop:'🛒',update:'🆕',recruit:'📋',battle:'⚔️',gear:'🧰',sh:'🎯',ng:'🚫',ub:'🧭',ts:'🔥',rl:'🎰',lk:'🍀',du:'🤝',tr:'💣',ga:'🎂',pt:'🎭',mt:'🛡️',sp:'🦁',iq:'🧠',mg:'🎲',nl:'🔮',bg:'🤬',pg:'💀'};
+var NAMEMAP={map:'マップ',pred:'プレデター',srv:'サーバー',find:'プレイヤー検索',diag:'診断ハブ',shop:'ショップ',update:'アップデート',recruit:'募集テンプレ',battle:'対決バトル',gear:'デバイス選び',sh:'立ち回り診断',ng:'使うな診断',ub:'使うべきキャラ',ts:'強さ診断',rl:'ルーレット',lk:'今日のラッキー',du:'デュオ相性',tr:'地雷度',ga:'ゲーマー年齢',pt:'パーティ役割',mt:'煽り耐性',sp:'ソロパ診断',iq:'立ち回りIQ',mg:'味方ガチャ',nl:'本日の野良運',bg:'民度診断',pg:'罰ゲーム',frank:'プレイヤーウォッチ'};
+var EMOMAP={map:'🗺️',pred:'👑',srv:'📡',find:'🔍',diag:'🧪',shop:'🛒',update:'🆕',recruit:'📋',battle:'⚔️',gear:'🧰',sh:'🎯',ng:'🚫',ub:'🧭',ts:'🔥',rl:'🎰',lk:'🍀',du:'🤝',tr:'💣',ga:'🎂',pt:'🎭',mt:'🛡️',sp:'🦁',iq:'🧠',mg:'🎲',nl:'🔮',bg:'🤬',pg:'💀',frank:'👁️'};
 function nName(k){return NAMEMAP[k]||k;}
 function nEmo(k){return EMOMAP[k]||'▫️';}
 function toast(t){var e=document.createElement('div');e.className='toast';e.textContent=t;document.body.appendChild(e);setTimeout(function(){e.remove();},2200);}
