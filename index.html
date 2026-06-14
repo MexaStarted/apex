@@ -144,6 +144,17 @@
 .frmh b{font-size:15px;color:#f0d9a8}
 .frshareurl{width:100%;padding:11px;border-radius:9px;border:1px solid rgba(255,255,255,.14);background:#0e1320;color:#bfe;font-size:11.5px;font-family:ui-monospace,Menlo,Consolas,monospace;word-break:break-all}
 .frimpsel{width:100%;padding:11px 12px;border-radius:9px;border:1px solid rgba(255,255,255,.14);background:#0e1320;color:#e9eef6;font-size:14px}
+.frsort{display:flex;gap:6px;align-items:center;margin:0 0 11px;flex-wrap:wrap}
+.frsortlbl{font-size:11px;color:#bda788;margin-right:1px}
+.frsortchip{background:rgba(255,255,255,.05);border:1px solid rgba(206,170,104,.3);color:#bda788;border-radius:999px;padding:5px 12px;font-size:11.5px;font-weight:700;cursor:pointer}
+.frsortchip.on{background:linear-gradient(135deg,#ffe08a,#d9a528);color:#241a10;border-color:transparent}
+.frpr{position:relative;border:1px dashed rgba(126,224,160,.35);background:rgba(126,224,160,.05);border-radius:11px;padding:10px;margin:2px 0}
+.frprtag{display:inline-block;font-size:9px;font-weight:800;color:#7ee0b0;border:1px solid rgba(126,224,160,.35);border-radius:5px;padding:1px 6px;margin-bottom:6px}
+.frhdup{font-size:9.5px;color:#ffb38a;background:rgba(255,120,60,.14);border:1px solid rgba(255,150,90,.3);border-radius:6px;padding:1px 6px;font-weight:800;margin-right:6px;flex:none;white-space:nowrap}
+.frqr{margin-top:10px;text-align:center}
+.frqrttl{font-size:11px;color:#bda788;margin-bottom:6px}
+.frqrimg{display:inline-block;background:#fff;padding:8px;border-radius:10px;max-width:210px}
+.frqrimg svg{width:100%;height:auto;display:block}
   /* フレンド詳細モーダル */
   .frov{position:fixed;inset:0;background:rgba(4,5,9,.86);display:none;align-items:flex-start;justify-content:center;z-index:1000;padding:20px 12px;overflow:auto}
   .frov.on{display:flex}
@@ -1505,6 +1516,7 @@ body{padding-bottom:64px!important}
   ]
 }
 </script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
 </head>
 <body>
 <canvas id="fx"></canvas><div class="scan"></div>
@@ -2161,6 +2173,21 @@ function findRankBadges(d){
 }
 function nfmt(v){v=Number(v);return isNaN(v)?'—':v.toLocaleString();}
 function findCopyRaw(){if(!FIND_RAW){toast2('先に検索してね');return;}try{navigator.clipboard.writeText(JSON.stringify(FIND_RAW));toast2('生データをコピーした！チャットに貼ってね');}catch(e){toast2('コピーできなかった');}}
+function frWatchFromFind(){
+ if(!FIND_RAW||!findLast){toast2('先にプレイヤーを検索してね');return;}
+ var apiPlat=String((FIND_RAW.global&&FIND_RAW.global.platform)||findLast.plat||'PC').toUpperCase();
+ var stat=frStatsFrom(FIND_RAW,findLast.name,apiPlat);
+ var uid=(FIND_RAW.global&&FIND_RAW.global.uid!=null)?String(FIND_RAW.global.uid):((stat&&stat.uid)||'');
+ var plat=(stat&&stat.apiPlat)?frApiToUi(stat.apiPlat):frApiToUi(apiPlat);
+ var name=((stat&&stat.name)||findLast.name||'プレイヤー');
+ var a=frGet(),ln=frListName(frActiveId());
+ if(a.length>=20){toast2('「'+ln+'」は20人まで。別リストに切り替えてね');return;}
+ if(uid&&a.some(function(x){return x.uid&&x.uid===uid;})){toast2('「'+ln+'」にもう追加済みだよ');return;}
+ if(!uid&&a.some(function(x){return !x.uid&&String(x.ign).toLowerCase()===name.toLowerCase()&&x.plat===plat;})){toast2('「'+ln+'」にもう追加済みだよ');return;}
+ a.push({ign:name,plat:plat,uid:uid,data:(stat&&stat.ok?stat:{ok:false}),t:Date.now()});
+ frSave(a);try{pwTrack('add_from_find');}catch(e){}
+ toast2('「'+ln+'」にウォッチ追加した！👁');
+}
 function findSpark(hist){
   if(!hist||hist.length<2)return '<div class="note">RPの推移グラフは、検索するほど線になります（今は'+((hist&&hist.length)||0)+'点）。</div>';
   var vals=hist.map(function(x){return x.rp;}),mn=Math.min.apply(null,vals),mx=Math.max.apply(null,vals),rng=(mx-mn)||1,W=300,Hh=80,n=vals.length;
@@ -2209,6 +2236,7 @@ function findRender(d,name,plat){
     +'<div class="pwho"><div class="nm">'+esc(g.name||name)+(g.tag?' <span style="font-size:11px;color:var(--sub)">['+esc(g.tag)+']</span>':'')+'</div><div class="meta">'+plat+' ・ Lv.'+lvl+(prestige?' <span style="color:#e7c45f">★'+prestige+'</span>':'')+(rt.isOnline?' ・ <span class="on">● '+t('online')+'</span>':'')+(sel.LegendName?' ・ '+t('using')+' '+esc(sel.LegendName):'')+'</div><div class="verd">「'+verd+'」</div></div></div>'
     +'<div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn x" type="button" onclick="share(shareScore(score,verd))" style="flex:1">𝕏 '+t('share')+'</button>'
     +'<button class="btn" type="button" id="findRefBtn" onclick="findRefresh()" style="flex:1">🔄 最新に更新</button></div>'
+    +'<button class="btn primary" type="button" onclick="frWatchFromFind()" style="width:100%;margin-top:8px">👁 ウォッチに追加</button>'
     +'<div class="note" style="margin-top:6px">※戦績はals提供。直前のプレイ分は数分後に反映（🔄で取り直し）。</div>'
     +'<a class="findgear" href="?v=gear" onclick="open_(\'gear\');return false;" data-ev="戦績→デバイス">🎯 戦闘力を上げる“勝てる”おすすめデバイスを見る →</a>'
     +'<div class="subtabs"><button class="'+(FIND_TAB==='o'?'on':'')+'" data-p="o" onclick="ftab(this,\'o\')">概要</button><button class="'+(FIND_TAB==='l'?'on':'')+'" data-p="l" onclick="ftab(this,\'l\')">レジェンド別</button><button class="'+(FIND_TAB==='a'?'on':'')+'" data-p="a" onclick="ftab(this,\'a\')">📊 解析</button><button class="'+(FIND_TAB==='r'?'on':'')+'" data-p="r" onclick="ftab(this,\'r\')">ランク</button></div>';
@@ -2519,6 +2547,8 @@ setTimeout(function(){try{var _h=document.getElementById('home');if(_h&&_h.style
 
 /* ===== サイト更新情報＆赤丸通知 ===== */
 var SITEUPD=[
+ {d:'2026-06-15',tag:'new',f:'frank',t:'詳細にランク連動ギア＋戦績検索からウォッチ追加',x:'①プレイヤー詳細に、そのランク帯に合わせたおすすめデバイス（PR）を表示②戦績検索の結果画面から「👁 ウォッチに追加」でワンタップ登録（今選んでいるリストへ・重複や20人上限も自動チェック）'},
+ {d:'2026-06-15',tag:'new',f:'frank',t:'並び替え・重複検出・おすすめ枠・共有QR',x:'①カードを並び替え（RP／オンライン／追加／名前）②同じ人が複数リストにいると「⚠重複」表示③カード・ランキングの中間におすすめギア枠（PR）④共有モーダルにQRコード（対面・配信で見せる用）'},
  {d:'2026-06-15',tag:'new',f:'frank',t:'ウォッチリストのリンク共有＆ボタン改善',x:'①リストをリンク1本に埋め込んで共有（サーバー不要・UIDは36進数化＋名前省略で20人でも約500文字＝Xにも余裕で投稿可）。コピー／X／他アプリ共有に対応 ②共有リンクを開くと「どのリストに上書きする？」（既定サブ＝マイを保護）で取り込み→自動で最新ステータス更新 ③全員更新ボタンを小型化し、カード/ランキングの変な折返しを解消'},
  {d:'2026-06-15',tag:'new',f:'frank',t:'プレイヤーウォッチに複数リスト＆見やすさ改善',x:'①マイウォッチリスト＋サブリスト1〜5（名前変更可）を新設。開くとまずリスト選択ホーム→選ぶと従来のウォッチ画面。リストごとに20人まで②カード/ランキングを2行に整理し、オンライン状態をコンパクト表示にして見やすく'},
  {d:'2026-06-14',tag:'fix',f:'all',t:'セキュリティ強化＆戦績の改善',x:'①入力のXSS対策を強化（属性・onclick両対応のエスケープ）②戦績の「次のランク」を実際のランクから正しく算出（旧式RPの誤表示を廃止）③解析タブ拡張：レジェンド別ダメージ／シーズン別キル推移／武器ダメージ／アリーナ詳細 ④データ中継(GAS)側もキー保護・エラー秘匿・URL検証・レート制限で堅牢化'},
@@ -4235,12 +4265,27 @@ function frPz(st){if(st==='match')return '<span class="fpz match"><span class="d
 function frOnBadge(st){if(st==='match')return '<span class="fon on"><span class="dot"></span>ONLINE<small>ランク中</small></span>';if(st==='lobby')return '<span class="fon on"><span class="dot"></span>ONLINE<small>ロビー</small></span>';return '<span class="fon off"><span class="dot"></span>OFFLINE</span>';}
 function frDot(st){if(st==='match')return '<span class="fdot m">● ランク中</span>';if(st==='lobby')return '<span class="fdot l">● ロビー</span>';return '<span class="fdot o">● オフライン</span>';}
 var FR_VIEW='home';
+var FR_SORT='rp',FR_GEAR_RDY=false;
+function frGearEnsure(){if(FR_GEAR_RDY)return;if(typeof gearEnsure!=='function'){FR_GEAR_RDY=true;return;}try{gearEnsure(function(){FR_GEAR_RDY=true;try{frRender();}catch(e){}});}catch(e){FR_GEAR_RDY=true;}}
+function frSortIdx(a){
+ var arr=a.map(function(m,i){return {m:m,i:i};});
+ if(FR_SORT==='name'){arr.sort(function(x,y){return String((x.m.data&&x.m.data.name)||x.m.ign||'').localeCompare(String((y.m.data&&y.m.data.name)||y.m.ign||''),'ja');});}
+ else if(FR_SORT==='online'){var rk={match:0,lobby:1,off:2};arr.sort(function(x,y){function sc(o){return (o.m.data&&o.m.data.ok)?(rk[o.m.data.state]==null?3:rk[o.m.data.state]):4;}var d=sc(x)-sc(y);if(d)return d;return ((y.m.data&&y.m.data.rp)||0)-((x.m.data&&x.m.data.rp)||0);});}
+ else if(FR_SORT==='rp'){arr.sort(function(x,y){return ((y.m.data&&y.m.data.rp)||0)-((x.m.data&&x.m.data.rp)||0);});}
+ return arr;
+}
+function frSetSort(s){FR_SORT=s;frRender();}
+function frSortBar(){var defs=[['rp','RP'],['online','オンライン'],['added','追加'],['name','名前']];return '<div class="frsort"><span class="frsortlbl">並び替え</span>'+defs.map(function(d){return '<button class="frsortchip'+(FR_SORT===d[0]?' on':'')+'" type="button" onclick="frSetSort(\''+d[0]+'\')">'+d[1]+'</button>';}).join('')+'</div>';}
+function frDupUids(){var o=frListsGet(),seen={},dup={};FR_LIST_IDS.forEach(function(id){var L=o.lists[id];if(!L)return;(L.players||[]).forEach(function(p){if(!p.uid)return;if(seen[p.uid])dup[p.uid]=true;else seen[p.uid]=true;});});return dup;}
+function frListDupCount(id,dup){var o=frListsGet(),L=o.lists[id];if(!L)return 0;var c=0;(L.players||[]).forEach(function(p){if(p.uid&&dup[p.uid])c++;});return c;}
+function frPrSlot(keys,cap){if(typeof gearPick!=='function'||typeof gearCard!=='function')return '';try{var p=gearPick(keys,cap||999999,false,null);if(!p)return '';return '<div class="frpr"><span class="frprtag">PR</span>'+gearCard(p)+'</div>';}catch(e){return '';}}
+function frRenderQr(url){var box=$('frQrBox');if(!box)return;try{if(typeof qrcode==='undefined'){box.innerHTML='';return;}var q=qrcode(0,'L');q.addData(url);q.make();box.innerHTML='<div class="frqrttl">📱 対面・配信で見せる用QR</div><div class="frqrimg">'+q.createSvgTag({cellSize:3,margin:2})+'</div>';}catch(e){box.innerHTML='';}}
 function frOpen(){FR_VIEW='home';frHome();var h=$('frHome'),w=$('frWatch');if(h)h.style.display='block';if(w)w.style.display='none';frMapFetch();}
 function frHome(){
- var box=$('frHome');if(!box)return;var o=frListsGet();
+ var box=$('frHome');if(!box)return;var o=frListsGet();var dup=frDupUids();
  var html='<div class="frhhint">ウォッチリストを選んでね。リストごとに最大20人まで登録できます。</div><div class="frhlists">';
  FR_LIST_IDS.forEach(function(id){
-  var L=o.lists[id]||{name:id,players:[]};var ps=L.players||[];
+  var L=o.lists[id]||{name:id,players:[]};var ps=L.players||[];var dc=frListDupCount(id,dup);
   var ok=ps.filter(function(p){return p.data&&p.data.ok;});
   var onCnt=ok.filter(function(p){return p.data.online;}).length;
   var top=ok.slice().sort(function(a,b){return (b.data.rp||0)-(a.data.rp||0);})[0];
@@ -4248,12 +4293,13 @@ function frHome(){
   html+='<div class="frhcard'+(id==='main'?' main':'')+'" onclick="frPickList(\''+id+'\')">'
    +'<div class="frhic">'+(id==='main'?'👑':'📋')+'</div>'
    +'<div class="frhmid"><div class="frhn">'+esc(L.name)+'</div><div class="frhs">'+sub+'</div></div>'
+   +(dc?'<span class="frhdup">⚠重複'+dc+'</span>':'')
    +(id!=='main'?'<button class="frhren" type="button" onclick="frRenameList(\''+id+'\');event.stopPropagation();return false;" aria-label="名前変更">✏️</button>':'')
    +'<div class="frharr">›</div></div>';
  });
  html+='</div>';box.innerHTML=html;
 }
-function frPickList(id){frListSetActive(id);FR_VIEW='watch';var h=$('frHome'),w=$('frWatch');if(h)h.style.display='none';if(w)w.style.display='block';var n=$('frListName');if(n)n.textContent=frListName(id);FR_TAB='cards';var bs=document.querySelectorAll('#v-frank .frtab');for(var i=0;i<bs.length;i++){bs[i].classList.toggle('on',bs[i].getAttribute('data-t')==='cards');}frRender();pwTrack('list_'+id);}
+function frPickList(id){frListSetActive(id);FR_VIEW='watch';var h=$('frHome'),w=$('frWatch');if(h)h.style.display='none';if(w)w.style.display='block';var n=$('frListName');if(n)n.textContent=frListName(id);FR_TAB='cards';var bs=document.querySelectorAll('#v-frank .frtab');for(var i=0;i<bs.length;i++){bs[i].classList.toggle('on',bs[i].getAttribute('data-t')==='cards');}frGearEnsure();frRender();pwTrack('list_'+id);}
 function frBackHome(){frOpen();}
 function frRenameList(id){var cur=frListName(id);var nm=prompt('リスト名を変更（20文字まで）',cur);if(nm==null)return;nm=String(nm).trim().slice(0,20);if(!nm)return;frListRename(id,nm);frHome();}
 /* ===== リスト共有（リンク埋め込み・サーバー不要） ===== */
@@ -4266,7 +4312,7 @@ function frSharePayload(){
  var o=frListsGet(),id=frActiveId(),L=o.lists[id]||{name:'',players:[]};
  var toks=(L.players||[]).slice(0,20).map(function(p){
   var pc=FR_PLATC[p.plat]||'P';
-  if(p.uid&&/^\d{3,}$/.test(p.uid)){var b=frB36(p.uid);if(b)return pc+'u'+b;}
+  if(p.uid&&/^\d+$/.test(p.uid)){var bb=frB36(p.uid);if(bb&&frUnB36(bb)===p.uid)return pc+'u'+bb;if(p.uid.length<=22)return pc+'d'+p.uid;}
   return pc+'n'+String(p.ign||'').slice(0,32);
  }).filter(Boolean);
  return frB64uEnc('1'+String(L.name||'').slice(0,20)+'\t'+toks.join('\n'));
@@ -4279,6 +4325,7 @@ function frShareDecode(code){
   (body?body.split('\n'):[]).slice(0,20).forEach(function(tk){
    if(!tk)return;var pc=tk.charAt(0),ty=tk.charAt(1),val=tk.slice(2),plat=FR_PLATR[pc];if(!plat)return;
    if(ty==='u'){var uid=frUnB36(val);if(uid)players.push({ign:'',plat:plat,uid:uid,data:null,t:0});}
+   else if(ty==='d'){if(/^\d+$/.test(val))players.push({ign:'',plat:plat,uid:val,data:null,t:0});}
    else if(ty==='n'){var nm=String(val).slice(0,32);if(nm)players.push({ign:nm,plat:plat,uid:'',data:null,t:0});}
   });
   return players.length?{name:name||'共有リスト',players:players}:null;
@@ -4294,8 +4341,10 @@ function frShareOpen(){
   +'<div class="note" style="margin:2px 2px 10px;font-size:11px">リンク長：'+url.length+'文字</div>'
   +'<button class="btn" type="button" onclick="frShareCopy()" style="width:100%;margin-top:0">📋 リンクをコピー</button>'
   +'<button class="btn x" type="button" onclick="frShareX()" style="width:100%">𝕏 でシェア</button>'
-  +(navigator.share?'<button class="btn ghost" type="button" onclick="frShareNative()" style="width:100%">📱 他のアプリで共有</button>':'');
- $('frShareOv').classList.add('on');
+  +(navigator.share?'<button class="btn ghost" type="button" onclick="frShareNative()" style="width:100%">📱 他のアプリで共有</button>':'')
+  +'<div class="frqr" id="frQrBox"></div>'
+  +(FR_GEAR_RDY?frPrSlot(['ヘッドセット','マウス'],15000):'');
+ $('frShareOv').classList.add('on');frRenderQr(url);
 }
 function frShareClose(){$('frShareOv').classList.remove('on');}
 function frShareCopy(){var u=frShareUrl();try{navigator.clipboard.writeText(u).then(function(){toast2('リンクをコピーした！');},function(){frShareCopyFb();});}catch(e){frShareCopyFb();}}
@@ -4341,13 +4390,20 @@ function frRender(){
  if(FR_TAB==='rank'){
   var ranked=a.map(function(m,i){return {m:m,i:i};}).filter(function(o){return o.m.data&&o.m.data.ok;}).sort(function(x,y){return (y.m.data.rp||0)-(x.m.data.rp||0);});
   var miss=a.filter(function(m){return !(m.data&&m.data.ok);});
-  box.innerHTML='<div class="frrkttl">🏆 プレイヤーRPランキング</div>'+(ranked.length?ranked.map(function(o,i){var p=o.m.data;var md=i===0?'🥇':i===1?'🥈':i===2?'🥉':(i+1)+'';return '<div class="frrow'+(p.online?' onrow':'')+'" onclick="frShow('+o.i+')"><span class="frrk">'+md+'</span><span class="fre">'+p.emoji+'</span><div class="frbody"><b>'+esc(p.name)+'</b><small>'+esc(p.rankName||'-')+' '+frDot(p.state)+'</small></div><div class="frrp mono">'+(p.rp||0).toLocaleString()+'<span>RP</span></div></div>';}).join(''):'<div class="note">取得できたデータがまだないよ。「↻ 全員更新」を押してね。</div>')+(miss.length?'<div class="note">取得できず: '+miss.map(function(m){return esc(m.ign);}).join(', ')+'</div>':'');
+  var rows=ranked.map(function(o,i){var p=o.m.data;var md=i===0?'🥇':i===1?'🥈':i===2?'🥉':(i+1)+'';return '<div class="frrow'+(p.online?' onrow':'')+'" onclick="frShow('+o.i+')"><span class="frrk">'+md+'</span><span class="fre">'+p.emoji+'</span><div class="frbody"><b>'+esc(p.name)+'</b><small>'+esc(p.rankName||'-')+' '+frDot(p.state)+'</small></div><div class="frrp mono">'+(p.rp||0).toLocaleString()+'<span>RP</span></div></div>';});
+  var prR=FR_GEAR_RDY?frPrSlot(['モニター','マウス'],40000):'';
+  if(prR&&rows.length>=2)rows.splice(Math.floor(rows.length/2),0,prR);else if(prR&&rows.length)rows.push(prR);
+  box.innerHTML='<div class="frrkttl">🏆 プレイヤーRPランキング</div>'+(ranked.length?rows.join(''):'<div class="note">取得できたデータがまだないよ。「↻ 全員更新」を押してね。</div>')+(miss.length?'<div class="note">取得できず: '+miss.map(function(m){return esc(m.ign);}).join(', ')+'</div>':'');
  }else{
-  box.innerHTML='<div class="frgrid">'+a.map(function(m,i){var p=m.data;
+  var sorted=frSortIdx(a);
+  var cards=sorted.map(function(o){var i=o.i,m=o.m,p=m.data;
    if(!p)return '<div class="fc load"><div class="em">⏳</div><div class="mid"><div class="nm">'+esc(m.ign)+'</div><div class="rk">取得中…</div></div></div>';
    if(!p.ok)return '<div class="fc off2" onclick="frShow('+i+')"><button class="del" onclick="frDel('+i+');event.stopPropagation();return false;" aria-label="削除">🗑️</button><div class="em">❓</div><div class="mid"><div class="nm">'+esc(m.ign)+'</div><div class="rk">取得できず（タップで対処法）</div></div></div>';
    return '<div class="fc'+(p.online?' fonline':' foffline')+'" onclick="frShow('+i+')"><button class="del" onclick="frDel('+i+');event.stopPropagation();return false;" aria-label="削除">🗑️</button><div class="em">'+p.emoji+'</div><div class="mid"><div class="nm">'+esc(p.name)+'</div><div class="rk">'+esc(p.rankName||'-')+' '+frDot(p.state)+'</div></div><div class="right"><div class="rpv mono">'+(p.rp||0).toLocaleString()+'</div><div class="rpl">RP</div></div><div class="arr">›</div></div>';
-  }).join('')+'</div>';
+  });
+  var prC=FR_GEAR_RDY?frPrSlot(['マウス','ゲーミング'],20000):'';
+  if(prC&&cards.length>=2)cards.splice(Math.floor(cards.length/2),0,prC);else if(prC&&cards.length)cards.push(prC);
+  box.innerHTML=frSortBar()+'<div class="frgrid">'+cards.join('')+'</div>';
  }
 }
 function frShow(i){
@@ -4366,6 +4422,34 @@ function frShow(i){
 function frCloseMod(){if(FR_CD){clearInterval(FR_CD);FR_CD=null;}var ov=$('frModal');if(ov)ov.classList.remove('on');}
 function frkv(k,v){return '<div class="frkv"><span class="k">'+k+'</span><span class="v">'+v+'</span></div>';}
 function frrr(k,v){return '<div class="frrr"><span class="rk2">'+esc(k)+'</span><span class="rv">'+esc(v)+'</span></div>';}
+var FR_RANKGEAR={
+ pred:{label:'プレデ・マスター帯の鉄板機材',k:['マウス','ゲーミング'],cap:30000,cheap:false},
+ master:{label:'マスター帯の鉄板機材',k:['マウス','ゲーミング'],cap:30000,cheap:false},
+ dia:{label:'ダイヤ帯の人気デバイス',k:['マウス','ゲーミング'],cap:22000,cheap:false},
+ plat:{label:'プラチナ帯の人気デバイス',k:['マウス','ゲーミング'],cap:15000,cheap:false},
+ gold:{label:'まず揃えたい入門デバイス',k:['マウス','ゲーミング'],cap:9000,cheap:true},
+ silver:{label:'まず揃えたい入門デバイス',k:['マウス','ゲーミング'],cap:8000,cheap:true},
+ bronze:{label:'まず揃えたい入門デバイス',k:['マウス','ゲーミング'],cap:7000,cheap:true},
+ rookie:{label:'まず揃えたい入門デバイス',k:['マウス','ゲーミング'],cap:7000,cheap:true},
+ def:{label:'人気のゲーミングデバイス',k:['マウス','ゲーミング'],cap:15000,cheap:false}
+};
+function frTierOf(p){var n=String((p&&p.apiRank)||'').toLowerCase(),jp=String((p&&p.rankName)||'');
+ if(/pred/.test(n)||jp.indexOf('プレデ')>=0)return 'pred';
+ if(n.indexOf('master')>=0||jp.indexOf('マスター')>=0)return 'master';
+ if(n.indexOf('diamond')>=0||jp.indexOf('ダイヤ')>=0)return 'dia';
+ if(n.indexOf('platinum')>=0||jp.indexOf('プラチナ')>=0)return 'plat';
+ if(n.indexOf('gold')>=0||jp.indexOf('ゴールド')>=0)return 'gold';
+ if(n.indexOf('silver')>=0||jp.indexOf('シルバー')>=0)return 'silver';
+ if(n.indexOf('bronze')>=0||jp.indexOf('ブロンズ')>=0)return 'bronze';
+ return 'rookie';
+}
+function frDetailGear(p){
+ if(!FR_GEAR_RDY||typeof gearPick!=='function'||typeof gearCard!=='function')return '';
+ var conf=FR_RANKGEAR[frTierOf(p)]||FR_RANKGEAR.def,prod=null;
+ try{prod=gearPick(conf.k,conf.cap,conf.cheap,null);}catch(e){}
+ if(!prod)return '';
+ return '<div class="frsec"><div class="st">🎯 '+conf.label+' <span class="frprtag">PR</span></div><div style="padding:0 15px 4px">'+gearCard(prod)+'</div></div>';
+}
 function frRenderDetail(m){
  var p=m.data,det=$('frDetailBody');if(!det)return;
  if(!p||!p.ok){det.innerHTML='<div class="frfail">'
@@ -4393,6 +4477,7 @@ function frRenderDetail(m){
   +'<div class="frsec"><div class="st">戦績スタッツ</div><div class="frkv2">'+frkv('レベル',(p.lvl||0))+frkv('KD',(p.kd||'—'))+frkv('平均ダメージ',(p.avg||'—'))+frkv('勝率',(p.wr||'—'))+frkv('総キル',(p.kills!=null?Number(p.kills).toLocaleString():'—'))+frkv('戦闘力',(p.score||0))+'</div></div>'
   +'<div class="frsec"><div class="st">リアルタイム生データ</div><div class="frraw">'+frrr('オンライン',p.online?'はい':'いいえ')+frrr('ゲーム中',p.inGame?'はい':'いいえ')+frrr('状態',p.state==='match'?'マッチ中':p.state==='lobby'?'ロビー':'オフライン')+frrr('ロビー状態',p.lobbyState||'—')+frrr('パーティ満員',p.partyFull?'はい':'いいえ')+frrr('参加可否',p.canJoin?'参加可':'不可')+frrr('使用レジェンド',p.legend||'—')+frrr('API判定ランク',p.apiRank||'—')+'</div></div>'
   +'<div class="frmnote">※プレイ中のマップ/モードはAPIが直接返さないため、現在のランクローテから推定表示しています。オンライン状態・使用レジェンド・パーティ状況は実データです。</div>'
+  +frDetailGear(p)
   +'<div style="padding:0 15px 16px"><button class="btn primary" type="button" style="width:100%" onclick="frReload(FR_CUR)">↻ 最新に更新</button></div>';
  det.classList.add('on');
 }
