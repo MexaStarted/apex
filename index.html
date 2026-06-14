@@ -1888,7 +1888,7 @@ function open_(sec){$('home').style.display='none';document.querySelectorAll('.v
   if(sec==='learn'){learnTab('combo');}
   if(sec==='settings')renderSettings();
   if(sec==='links')renderLinks();
-  if(sec==='frank'){frRender();frMapFetch();setTimeout(pwScreenIntroMaybe,260);}
+  if(sec==='frank'){frRender();frMapFetch();}
   try{seoTitle(sec);}catch(e){}
   try{pushUrl(sec);}catch(e){}
   try{popInc(sec);}catch(e){}
@@ -1897,6 +1897,7 @@ function open_(sec){$('home').style.display='none';document.querySelectorAll('.v
   if(sec==='find')renderFindHist();
   featMark(sec);
   showAdModal();
+  try{tutMaybe(sec);}catch(e){}
   try{var _vv=document.getElementById('v-'+sec);if(_vv){_vv.classList.remove('vltopen');void _vv.offsetWidth;_vv.classList.add('vltopen');setTimeout(function(){_vv.classList.remove('vltopen');},1500);}}catch(e){}
 }
 
@@ -1905,7 +1906,7 @@ function adHtml_(){if(!A8ADS.length)return '<iframe src="ad-rect.html" width="30
 function fillAds(){if(!SHOW_AD)return;var slots=[];var h=$('adHome');if(h)slots.push(h);document.querySelectorAll('.adSlot').forEach(function(a){slots.push(a);});slots.forEach(function(s){s.innerHTML='<div class="a8wrap">'+adHtml_()+'</div>';});}
 var adModalT=null,adModalCD=null,adModalLocked=false;
 function showAdModal(){if(!SHOW_AD)return;var m=$('adModal');if(!m)return;var ad=m.querySelector('.admodalad');if(ad)ad.innerHTML='<div class="a8wrap">'+adHtml_()+'</div>';m.classList.add('show');m.classList.add('locked');adModalLocked=true;var n=5,el=$('adModalTimer');if(el)el.textContent=n;adModalCD=setInterval(function(){n--;if(el)el.textContent=(n>0?n:0);if(n<=0&&adModalCD){clearInterval(adModalCD);adModalCD=null;}},1000);adModalT=setTimeout(function(){adModalLocked=false;closeAdModal(true);},5000);}
-function closeAdModal(force){if(adModalLocked&&!force)return;var m=$('adModal');if(m){m.classList.remove('show');m.classList.remove('locked');}if(adModalT){clearTimeout(adModalT);adModalT=null;}if(adModalCD){clearInterval(adModalCD);adModalCD=null;}adModalLocked=false;}
+function closeAdModal(force){if(adModalLocked&&!force)return;var m=$('adModal');if(m){m.classList.remove('show');m.classList.remove('locked');}if(adModalT){clearTimeout(adModalT);adModalT=null;}if(adModalCD){clearInterval(adModalCD);adModalCD=null;}adModalLocked=false;try{tutFirePending();}catch(e){}}
 
 /* ===== MAP ===== */
 var MAPS={"World's Edge":{c:"#e8632f",i:"🌋",j:"ワールズエッジ"},"Storm Point":{c:"#2fae8e",i:"🏝️",j:"ストームポイント"},"Olympus":{c:"#36c3c8",i:"☁️",j:"オリンパス"},"Broken Moon":{c:"#8a6cff",i:"🌙",j:"ブロークンムーン"},"Kings Canyon":{c:"#d9a23c",i:"🏜️",j:"キングスキャニオン"},"E-District":{c:"#ff4fa3",i:"🌃",j:"Eディストリクト"}};
@@ -2291,6 +2292,8 @@ setTimeout(function(){try{var _h=document.getElementById('home');if(_h&&_h.style
 
 /* ===== サイト更新情報＆赤丸通知 ===== */
 var SITEUPD=[
+ {d:'2026-06-14',tag:'fix',f:'frank',t:'プレイヤーウォッチの取得を強化',x:'選んだ環境で見つからない時、他の環境(PC/PS/Xbox/Switch)も自動で試して取得。見つかった環境にカード表示も自動補正。PS/XboxのIDが出ない問題に対応'},
+ {d:'2026-06-14',tag:'new',f:'all',t:'全機能に操作チュートリアルを追加',x:'各機能を初めて開いた時、広告(5秒)のあとに操作説明（4〜6ページ）を表示。次回以降は出ない。frankの広告二重表示も解消'},
  {d:'2026-06-14',tag:'fix',f:'frank',t:'プレイヤーウォッチ告知を正しく修正',x:'サイトを開いた時（ホーム）に新機能開放演出＋説明を表示→画面に入ると広告→操作チュートリアル。利用データもダッシュボードに計測'},
  {d:'2026-06-14',tag:'kai',f:'frank',t:'「プレイヤーウォッチ」に進化',x:'パネル名を刷新（推し・配信者・プロも登録OK）。現在RPからランクを判定して表示。最大の目玉として“今オンラインかどうか”を緑で大きく強調表示'},
  {d:'2026-06-14',tag:'kai',f:'frank',t:'フレンドのランク確認を大幅強化',x:'カードをゴールド・メゾン調に刷新＋現在の状態（ランク中/ロビー/オフライン）表示。タップで詳細モーダルを開き、使用レジェンド・プレイ中マップ(推定)・パーティ状況・戦績などリアルタイム全データを表示'},
@@ -3885,7 +3888,8 @@ function rpRank(rp){rp=Number(rp)||0;
  if(rp>=3000)return {name:'シルバー',emoji:'🐺'};
  if(rp>=1000)return {name:'ブロンズ',emoji:'🐢'};
  return {name:'ルーキー',emoji:'🐣'};}
-function frFetch(ign,plat){return gas('player','&player='+encodeURIComponent(ign)+'&platform='+frPlatApi(plat)).then(function(d){
+function frApiToUi(ap){return ap==='PS4'?'PS':ap==='X1'?'Xbox':ap==='SWITCH'?'Switch':'PC';}
+function frFetchApi(ign,apiPlat){return gas('player','&player='+encodeURIComponent(ign)+'&platform='+apiPlat).then(function(d){
  if(!d||d.Error||d.error)return {ok:false};
  var g=d.global||{},rt=d.realtime||{},sel=(d.legends&&d.legends.selected)||{},total=d.total||{},rank=g.rank||{};
  var lvl=g.level!=null?g.level:0,rp=rank.rankScore!=null?Number(rank.rankScore):0;
@@ -3899,8 +3903,15 @@ function frFetch(ign,plat){return gas('player','&player='+encodeURIComponent(ign
  var isPred=/pred/i.test(rank.rankName||'')||(rank.rankName||'').indexOf('プレデ')>=0;
  var rr=isPred?{name:'プレデター',emoji:'👹'}:rpRank(rp);
  return {ok:true,name:g.name||ign,lvl:lvl,rp:rp,rankName:rr.name,rankDiv:'',emoji:rr.emoji,apiRank:rank.rankName||'',score:score,kd:kd,avg:avg,wr:wr,kills:kills,
-  online:online,inGame:inGame,state:state,legend:legend,canJoin:!!rt.canJoin,partyFull:!!rt.partyFull,lobbyState:rt.lobbyState||''};
+  online:online,inGame:inGame,state:state,legend:legend,canJoin:!!rt.canJoin,partyFull:!!rt.partyFull,lobbyState:rt.lobbyState||'',apiPlat:apiPlat};
 },function(){return {ok:false};});}
+/* 選択した環境を最優先に、ダメなら他環境も自動で試す（PS/Xboxの名前解決ゆれ・選択ミス対策） */
+function frFetch(ign,plat){
+ var prim=frPlatApi(plat),order=[prim];['PC','PS4','X1','SWITCH'].forEach(function(p){if(p!==prim)order.push(p);});
+ var i=0;
+ function step(){return frFetchApi(ign,order[i]).then(function(r){if(r.ok)return r;i++;return i<order.length?step():{ok:false};});}
+ return step();
+}
 function frAdd(){
  var ign=($('frIgn').value||'').trim(),plat=$('frPlat').value;
  if(!ign){toast2('IDを入力してね');return;}
@@ -3908,7 +3919,7 @@ function frAdd(){
  if(a.length>=20){toast2('登録は20人まで');return;}
  if(a.some(function(x){return x.ign.toLowerCase()===ign.toLowerCase()&&x.plat===plat;})){toast2('もう追加済みだよ');return;}
  $('frIgn').value='';a.push({ign:ign,plat:plat,data:null,t:0});frSave(a);frRender();pwTrack('add');
- frFetch(ign,plat).then(function(p){var arr=frGet();for(var i=0;i<arr.length;i++){if(arr[i].ign===ign&&arr[i].plat===plat){arr[i].data=p.ok?p:{ok:false};arr[i].t=Date.now();}}frSave(arr);frRender();});
+ frFetch(ign,plat).then(function(p){var arr=frGet();for(var i=0;i<arr.length;i++){if(arr[i].ign===ign&&arr[i].plat===plat){arr[i].data=p.ok?p:{ok:false};arr[i].t=Date.now();if(p.ok&&p.apiPlat)arr[i].plat=frApiToUi(p.apiPlat);}}frSave(arr);frRender();});
 }
 function frDel(i){var a=frGet();a.splice(i,1);frSave(a);frRender();pwTrack('del');}
 function frRefresh(){
@@ -3916,7 +3927,7 @@ function frRefresh(){
  pwTrack('refresh');
  var btn=$('frRefreshBtn');if(btn){btn.disabled=true;btn.textContent='更新中…';}
  var done=0;
- a.forEach(function(m,idx){frFetch(m.ign,m.plat).then(function(p){a[idx].data=p.ok?p:{ok:false};a[idx].t=Date.now();done++;if(done===a.length){frSave(a);frRender();if(btn){btn.disabled=false;btn.textContent='↻ 全員更新';}}});});
+ a.forEach(function(m,idx){frFetch(m.ign,m.plat).then(function(p){a[idx].data=p.ok?p:{ok:false};a[idx].t=Date.now();if(p.ok&&p.apiPlat)a[idx].plat=frApiToUi(p.apiPlat);done++;if(done===a.length){frSave(a);frRender();if(btn){btn.disabled=false;btn.textContent='↻ 全員更新';}}});});
 }
 var FR_TAB='cards';var FR_MAP=null;var FR_CUR=-1;var FR_CD=null;
 function frMapFetch(){try{gas('map').then(function(d){if(d&&d.ranked&&d.ranked.current&&typeof mapName==='function')FR_MAP=mapName(d.ranked.current.map);}).catch(function(){});}catch(e){}}
@@ -3977,30 +3988,41 @@ function frRenderDetail(m){
   +'<div style="padding:0 15px 16px"><button class="btn primary" type="button" style="width:100%" onclick="frReload(FR_CUR)">↻ 最新に更新</button></div>';
  det.classList.add('on');
 }
-function frReload(i){var a=frGet();var m=a[i];if(!m)return;var det=$('frDetailBody');if(det){det.innerHTML='<div class="loading" style="padding:24px;text-align:center">更新中…</div>';det.classList.add('on');}frFetch(m.ign,m.plat).then(function(p){var arr=frGet();arr[i].data=p.ok?p:{ok:false};arr[i].t=Date.now();frSave(arr);frRender();frRenderDetail(arr[i]);});}
+function frReload(i){var a=frGet();var m=a[i];if(!m)return;var det=$('frDetailBody');if(det){det.innerHTML='<div class="loading" style="padding:24px;text-align:center">更新中…</div>';det.classList.add('on');}frFetch(m.ign,m.plat).then(function(p){var arr=frGet();arr[i].data=p.ok?p:{ok:false};arr[i].t=Date.now();if(p.ok&&p.apiPlat)arr[i].plat=frApiToUi(p.apiPlat);frSave(arr);frRender();frRenderDetail(arr[i]);});}
 
 /* === プレイヤーウォッチ 初回イントロ（①演出→②説明→③/④広告→⑤操作チュートリアル→⑥操作可） === */
 var PW_T=[];function pwClr(){PW_T.forEach(clearTimeout);PW_T=[];}
 function pwTrack(a){try{if(window.track)window.track('pw',a);}catch(e){}}
-var pwHomeFired=false;
-/* ①②：ホームを開いた時（=サイト訪問）に1回だけ → 開放演出 → 説明モーダル */
+/* === 新機能 告知キュー（ホームの開放演出）===
+   ・新機能を足すたび、この配列の【先頭】に {v, feat, go} を追加（v は必ず増やす＝最大が最新）
+   ・ホームを開いた時、未読でも“最新の1件だけ”演出する（バックログを連発しない）
+   ・既読位置は apexAnnV に「見た最大v」を保存。完了時にコミット */
+var pwHomeFired=false, pwPendingAnnV=null, pwAnnFeat='frank';
+var FEATURE_ANN=[
+ {v:1, feat:'frank', go:function(){pwAnnFeat='frank';pwFxPlay();}}   // 👁️ プレイヤーウォッチ（最新＝先頭）
+];
+/* ①②：ホーム表示時に「最新の1件だけ」開放演出→説明 */
 function pwHomeIntroMaybe(){
- try{if(localStorage.getItem('apexPwHomeV1'))return;}catch(e){return;}
  if(pwHomeFired)return;
- if(document.querySelector('.view.on'))return;            // 他画面（ディープリンク等）では出さない
- var hm=$('home');if(hm&&hm.style.display==='none')return;  // ホーム表示中のみ
- pwHomeFired=true;pwTrack('intro_start');pwFxPlay();
+ if(!FEATURE_ANN.length)return;
+ var newest=FEATURE_ANN[0];                                  // 先頭＝最新（v最大）
+ if(document.querySelector('.view.on'))return;               // 他画面（ディープリンク等）では出さない
+ var hm=$('home');if(hm&&hm.style.display==='none')return;    // ホーム表示中のみ
+ var seen=null;try{seen=localStorage.getItem('apexAnnV');}catch(e){return;}
+ if(seen!==null&&Number(seen)>=newest.v)return;              // 最新まで見済み → 何も出さない
+ pwHomeFired=true;pwPendingAnnV=newest.v;pwTrack('intro_start');
+ newest.go();                                                // ★最新の1件のみ。10000個あっても連発しない
 }
 /* ④⑤：プレイヤーウォッチ画面に初めて入った時に1回だけ → 広告 → 操作チュートリアル */
 function pwScreenIntroMaybe(){
  try{if(localStorage.getItem('apexPwScreenV1'))return;}catch(e){return;}
  pwAd();
 }
-/* ②説明モーダルを読み終え「さっそく見る」→ ③初遷移（フラグ確定して画面へ） */
+/* ②説明モーダルを読み終え「さっそく見る」→ 既読コミット → ③初遷移 */
 function pwHomeGo(){
- try{localStorage.setItem('apexPwHomeV1','1');}catch(e){}
+ if(pwPendingAnnV!=null){try{localStorage.setItem('apexAnnV',String(pwPendingAnnV));}catch(e){}pwPendingAnnV=null;}
  pwTrack('intro_explained');$('pwOv').classList.remove('on');
- try{if(typeof open_==='function')open_('frank');}catch(e){}
+ try{if(typeof open_==='function')open_(pwAnnFeat||'frank');}catch(e){}
 }
 function pwFxPlay(){
  pwClr();
@@ -4062,6 +4084,162 @@ function pwTut(p){
   +'</div>';
 }
 function pwDone(){try{localStorage.setItem('apexPwScreenV1','1');}catch(e){}pwTrack('intro_done');$('pwOv').classList.remove('on');var f=$('frIgn');if(f){try{f.focus();}catch(e){}}}
+
+/* ===== 各機能 操作チュートリアル（初回遷移時：showAdModalの広告5秒 → これを表示） ===== */
+var TUT_DATA={
+ frank:{pages:[
+  {em:'➕',t:'① プレイヤーを追加・削除',ps:[{type:'st',n:'1',h:'<b>ID</b>とプラットフォームを選んで<b>「＋追加」</b>。カードになって並ぶ（最大20人）。'},{type:'st',n:'2',h:'いらない相手はカードの<b>🗑️ゴミ箱</b>をタップで削除。入れ替え自由！'}]},
+  {em:'🪪',t:'② カードをタップで全部わかる',ps:[{type:'st',n:'1',h:'カードを<b>タップ</b>→<b>今オンラインか</b>・現在ランク・RP・使用レジェンド・プレイ中の状況・戦績まで表示。'},{type:'bub',h:'※カードを開くと5秒の広告が入るよ。'}]},
+  {em:'🏆',t:'③ ランキング＆更新',ps:[{type:'st',n:'1',h:'<b>ランキングタブ</b>で登録した全員を<b>RP順</b>に自動ランク付け。'},{type:'st',n:'2',h:'<b>「↻全員更新」</b>で最新化。毎日開いて差をチェック！'}]}
+ ]},
+ map:{pages:[
+  {em:'🗺️',t:'これは何？',ps:[{type:'co',h:'今Apexで回ってる<b>マップと残り時間</b>が一目でわかる画面。「今どこ行けばいい？」が即わかる。'}]},
+  {em:'⏱️',t:'現在のマップを見る',ps:[{type:'st',n:'1',h:'一番上に<b>今のマップ名</b>と、切り替わりまでの<b>カウントダウン</b>が出る。'},{type:'bub',h:'ランクとカジュアルは別ローテ。両方ここに並ぶよ。'}]},
+  {em:'⏭️',t:'次のマップを先読み',ps:[{type:'st',n:'1',h:'その下に<b>次のマップ</b>を表示。「あと何分で○○に変わる」が事前にわかる。'},{type:'st',n:'2',h:'移動の計画や、苦手マップを避ける判断に使える。'}]},
+  {em:'🔄',t:'鮮度について',ps:[{type:'co',h:'開くたびに最新を取得。残り時間はリアルタイム計算。<b>こまめに開けば常に正確</b>。'}]}
+ ]},
+ pred:{pages:[
+  {em:'👑',t:'プレデターボーダーとは',ps:[{type:'co',h:'各プラットフォームの<b>上位約750人</b>に入るのに必要な<b>RP（ランクポイント）</b>のライン＝ボーダー。'}]},
+  {em:'🎮',t:'プラットフォーム別に見る',ps:[{type:'st',n:'1',h:'PC / PS / Xbox / Switch の<b>4つ</b>が縦に並ぶ。自分の環境の数字を見よう。'},{type:'bub',h:'環境ごとに人口が違うのでボーダーも違う。'}]},
+  {em:'🔢',t:'数字の読み方',ps:[{type:'st',n:'1',h:'「○○,○○○ RP」＝そのラインを超えればプレデター圏内。'},{type:'st',n:'2',h:'自分のRPと比べて「あと何RP」を逆算→今日の目標にできる。'}]},
+  {em:'📈',t:'動くタイミング',ps:[{type:'co',h:'リセット直後やシーズン序盤は<b>大きく動く</b>。終盤は競争が激化してじわじわ上がる。'}]}
+ ]},
+ srv:{pages:[
+  {em:'📡',t:'何を確認できる？',ps:[{type:'co',h:'「<b>Apex落ちてる？</b>」を確かめる画面。ログイン・認証・EAサーバーなど根幹をチェック。'}]},
+  {em:'🔀',t:'自分側か公式側かを切り分け',ps:[{type:'st',n:'1',h:'ここが<b>正常なのに繋がらない</b>→自分のネット回線/端末側の可能性大。'},{type:'st',n:'2',h:'ここが<b>障害表示</b>→公式側のダウン。待つのが正解。'}]},
+  {em:'🧩',t:'各項目の意味',ps:[{type:'co',h:'ログイン＝サインイン可否 / 認証＝EAアカウント連携 / サーバー＝対戦サーバー本体。'},{type:'bub',h:'どれかが赤なら、その機能でトラブル中の合図。'}]},
+  {em:'🆘',t:'困ったら',ps:[{type:'st',n:'1',h:'障害中は無理に再起動を繰り返さず、復旧を待つ。'},{type:'st',n:'2',h:'開くたびに最新状態を取得するので、定期的に確認。'}]}
+ ]},
+ find:{pages:[
+  {em:'🔍',t:'これは何？',ps:[{type:'co',h:'プレイヤーの<b>戦績を照会</b>＋独自の<b>戦闘力を自動採点</b>する画面。実力が点数でわかる。'}]},
+  {em:'⌨️',t:'IDを入力',ps:[{type:'st',n:'1',h:'上の欄に<b>プレイヤー名</b>を入力（<b>PCはOrigin名</b>、大文字小文字も正確に）。'}]},
+  {em:'🎮',t:'環境を選んで検索',ps:[{type:'st',n:'1',h:'右のセレクトで <b>PC / PS / Xbox / Switch</b> を選択。'},{type:'st',n:'2',h:'<b>「検索」</b>をタップ→戦績と戦闘力スコアが表示される。'}]},
+  {em:'📊',t:'結果の見方',ps:[{type:'co',h:'レベル・ランク・キル/ダメージ等に加え、<b>戦闘力スコア</b>で総合的な強さを採点。'},{type:'bub',h:'スコアの下から、おすすめデバイスにも飛べる。'}]},
+  {em:'🕘',t:'履歴で再検索',ps:[{type:'st',n:'1',h:'検索した相手は<b>履歴</b>に残る。タップでもう一度すぐ照会。'}]}
+ ]},
+ diag:{pages:[
+  {em:'🧪',t:'これは何？',ps:[{type:'co',h:'あなたを分析する<b>ミニ診断＆あそびが146種</b>。立ち回りIQ、地雷度、ゲーマー年齢…ネタから本格まで。'}]},
+  {em:'👆',t:'診断を選ぶ',ps:[{type:'st',n:'1',h:'グリッドから気になる診断をタップ。'},{type:'bub',h:'上のカテゴリ（新着など）で絞り込みもできる。'}]},
+  {em:'❓',t:'質問に答える',ps:[{type:'st',n:'1',h:'表示される質問にポチポチ回答していくだけ。'}]},
+  {em:'🎉',t:'結果を見る',ps:[{type:'st',n:'1',h:'スコアのゲージと<b>あなたの称号・解説</b>が出る。'},{type:'st',n:'2',h:'結果はそのまま<b>𝕏でシェア</b>できる（ネタになる）。'}]},
+  {em:'↩️',t:'一覧に戻る',ps:[{type:'st',n:'1',h:'<b>「← 診断一覧に戻る」</b>で別の診断へ。気軽に何個でも。'}]}
+ ]},
+ shop:{pages:[
+  {em:'🛒',t:'これは何？',ps:[{type:'co',h:'プロ・配信者が実際に使ってる<b>デバイス紹介</b>。何を買えばいいか迷ったらここ。'}]},
+  {em:'🗂️',t:'タブで絞る',ps:[{type:'st',n:'1',h:'上の<b>タブ</b>でカテゴリ（マウス/モニター/イヤホン等）を切り替え。'}]},
+  {em:'🛍️',t:'商品を見る・買う',ps:[{type:'st',n:'1',h:'気になる商品をタップ→販売ページへ（<b>アフィリエイト/PRリンク</b>を含む）。'},{type:'bub',h:'価格は変動するので、リンク先で最終確認を。'}]},
+  {em:'💡',t:'使いどころ',ps:[{type:'co',h:'「強い人と同じ環境」を最短で揃えたい人向け。予算で選びたいなら「デバイス選び」が便利。'}]}
+ ]},
+ update:{pages:[
+  {em:'🆕',t:'これは何？',ps:[{type:'co',h:'Apex公式の<b>パッチノート＆ニュース</b>へのリンク集。調整内容をすぐ追える。'}]},
+  {em:'⬆️',t:'最新を見る',ps:[{type:'st',n:'1',h:'<b>一番上のリンク</b>が常に最新のニュース一覧（EA公式）。まずここ。'}]},
+  {em:'📚',t:'シーズン別に見る',ps:[{type:'st',n:'1',h:'その下は<b>シーズンごと</b>のパッチノート。過去の変更も遡れる。'},{type:'bub',h:'リンク先はEA公式（英語）ページ。'}]},
+  {em:'💡',t:'使いどころ',ps:[{type:'co',h:'「キャラ弱体化された？」「武器調整は？」を確認したい時に。'}]}
+ ]},
+ recruit:{pages:[
+  {em:'📋',t:'これは何？',ps:[{type:'co',h:'野良/固定の<b>募集まわりを全部サポート</b>。募集文づくり・コール集・フレコ管理・固定パ戦績・ステータス投稿。'}]},
+  {em:'📝',t:'募集作成タブ',ps:[{type:'st',n:'1',h:'<b>目的・ランク帯・人数・VC・環境・ひとこと</b>を選ぶ。'},{type:'st',n:'2',h:'<b>「📝募集文を作る」</b>→整形された募集文→<b>コピー / 𝕏で投稿</b>。'},{type:'bub',h:'「⚡今から募集」なら一発でX投稿画面へ。'}]},
+  {em:'💬',t:'コール集タブ',ps:[{type:'st',n:'1',h:'VC無しでも使える<b>定型コール</b>集。タップでコピーしてチャットに貼るだけ。'}]},
+  {em:'🎮',t:'フレコ管理タブ',ps:[{type:'st',n:'1',h:'フレンドの<b>IGN</b>を登録（端末内のみ保存）。'},{type:'st',n:'2',h:'🔍からそのまま<b>戦績検索</b>に飛べる。'}]},
+  {em:'👥',t:'固定パ戦績タブ',ps:[{type:'st',n:'1',h:'メンバーを<b>最大5人</b>登録→<b>「全員の戦績を取得」</b>。'},{type:'st',n:'2',h:'全員の戦闘力を<b>ランキング表示</b>。固定パの戦力チェックに。'}]},
+  {em:'📡',t:'今プレイ中タブ',ps:[{type:'st',n:'1',h:'「今やってる」を選んで<b>ステータス文を生成</b>→コピー/𝕏投稿で仲間を集める。'}]}
+ ]},
+ battle:{pages:[
+  {em:'⚔️',t:'これは何？',ps:[{type:'co',h:'実際の戦闘力データで<b>自動対決</b>させるお遊び機能。1vs1も3vs3もOK。'}]},
+  {em:'🎚️',t:'モードを選ぶ',ps:[{type:'st',n:'1',h:'<b>1 vs 1</b> か <b>3 vs 3</b> を選択。'}]},
+  {em:'⌨️',t:'プレイヤーを入れる',ps:[{type:'st',n:'1',h:'対戦させたい<b>プレイヤーのID</b>を入力（3vs3なら人数分）。'},{type:'st',n:'2',h:'<b>プラットフォーム</b>を選択。'}]},
+  {em:'🔥',t:'バトル開始',ps:[{type:'st',n:'1',h:'<b>「⚔️バトル開始」</b>→戦闘力をもとにターン制で自動バトル。'},{type:'bub',h:'アイコン＝そのアカウントの最高ランク（🐣→👹）。'}]},
+  {em:'📣',t:'結果をシェア',ps:[{type:'st',n:'1',h:'決着がついたら結果を<b>𝕏でシェア</b>できる。フレンドと煽り合おう。'}]}
+ ]},
+ gear:{pages:[
+  {em:'🧰',t:'これは何？',ps:[{type:'co',h:'<b>予算別の最適デバイス構成</b>と、<b>初心者向けセットアップガイド</b>。何から買うか迷ったらここ。'}]},
+  {em:'💰',t:'予算で選ぶ',ps:[{type:'st',n:'1',h:'<b>「💰予算で選ぶ」</b>タブで、<b>〜3万 / 3〜6万 / 6〜12万 / 12万〜</b>から選択。'}]},
+  {em:'🖱️',t:'おすすめ構成を見る',ps:[{type:'st',n:'1',h:'選んだ予算に合わせた<b>マウス・モニター等の構成</b>が表示される。'},{type:'bub',h:'商品リンクはPR（アフィリエイト）を含む。価格は変動あり。'}]},
+  {em:'🔰',t:'初心者ガイド',ps:[{type:'st',n:'1',h:'<b>「🔰初心者ガイド」</b>タブで、<b>何を揃えるか</b>を順番に解説。'}]},
+  {em:'💡',t:'使いどころ',ps:[{type:'co',h:'「予算○万で一番強くなる構成」を最短で知りたい人向け。'}]}
+ ]},
+ siteupd:{pages:[
+  {em:'🔔',t:'これは何？',ps:[{type:'co',h:'この<b>APEX激やばツール自体</b>の新機能・修正のお知らせ一覧。'}]},
+  {em:'📖',t:'読み方',ps:[{type:'st',n:'1',h:'<b>一番上が最新</b>。新機能(new)・修正(fix)などタグ付きで並ぶ。'}]},
+  {em:'💡',t:'使いどころ',ps:[{type:'st',n:'1',h:'「なんか変わった？」と思ったらここを見れば、何が追加/修正されたか分かる。'}]},
+  {em:'✨',t:'補足',ps:[{type:'co',h:'新機能はホームのパネルにも増えていく。気づいたらここで詳細チェック。'}]}
+ ]},
+ mypage:{pages:[
+  {em:'📊',t:'これは何？',ps:[{type:'co',h:'あなたが<b>やった診断の履歴</b>が貯まる場所。あとから見返し＆再シェアできる。'}]},
+  {em:'🗒️',t:'履歴を見る',ps:[{type:'st',n:'1',h:'これまでの診断結果が<b>リスト</b>で並ぶ。'}]},
+  {em:'🔁',t:'再表示・再シェア',ps:[{type:'st',n:'1',h:'履歴を<b>タップ</b>→結果をもう一度表示。'},{type:'st',n:'2',h:'そのまま<b>𝕏で再シェア</b>もできる。'}]},
+  {em:'📈',t:'貯めていこう',ps:[{type:'co',h:'診断するほど履歴が充実。自分の“記録”として残る。'}]}
+ ]},
+ gen:{pages:[
+  {em:'🎲',t:'これは何？',ps:[{type:'co',h:'タップで<b>ネタをランダム生成</b>。言い訳・やめます宣言・あるある、を量産してシェア。'}]},
+  {em:'👆',t:'種類を選ぶ',ps:[{type:'st',n:'1',h:'<b>🗣️言い訳 / 🚪やめます宣言 / 😂あるある</b> から選んでタップ。'}]},
+  {em:'🔄',t:'引き直す',ps:[{type:'st',n:'1',h:'何度でもタップで<b>新しいネタ</b>が出る。気に入るまでガチャ感覚で。'}]},
+  {em:'📣',t:'シェア',ps:[{type:'st',n:'1',h:'出たネタはそのまま<b>𝕏でシェア</b>。タイムラインのウケ狙いに。'}]}
+ ]},
+ repcard:{pages:[
+  {em:'📋',t:'これは何？',ps:[{type:'co',h:'あなたの<b>このアプリでの活動</b>から総合スコアを算出して、<b>通信簿カード</b>として画像化。'}]},
+  {em:'💬',t:'今日の指標',ps:[{type:'st',n:'1',h:'上部に<b>今日の状況</b>が出る。まずは眺めてみよう。'}]},
+  {em:'🖨️',t:'通信簿を作る',ps:[{type:'st',n:'1',h:'<b>「📋通信簿を作る」</b>をタップ→総合スコアを計算してカード生成。'}]},
+  {em:'🏅',t:'結果を見る',ps:[{type:'co',h:'総合スコア＆評価がカードに。自分の“成績表”として楽しめる。'}]},
+  {em:'💾',t:'保存・シェア',ps:[{type:'st',n:'1',h:'生成された<b>カード画像を保存</b>、または𝕏でシェア。'}]}
+ ]},
+ tools:{pages:[
+  {em:'🛠️',t:'これは何？',ps:[{type:'co',h:'<b>シーズン残り日数＆1日ノルマ</b>と、<b>他ゲーからの感度変換</b>が入った実用ツール。'}]},
+  {em:'📅',t:'シーズンタブ',ps:[{type:'st',n:'1',h:'<b>「📅シーズン」</b>で、今シーズンの<b>残り日数</b>を確認。'}]},
+  {em:'🎯',t:'1日ノルマ',ps:[{type:'st',n:'1',h:'目標達成までに<b>1日どれだけ必要か</b>の目安が出る。計画的にRPを盛れる。'}]},
+  {em:'🔁',t:'感度変換タブ',ps:[{type:'st',n:'1',h:'<b>「🎯感度変換」</b>で、<b>変換元のゲーム</b>（VALORANT/CS2/OW2）を選ぶ。'},{type:'st',n:'2',h:'<b>DPI</b>と<b>ゲーム内感度</b>を入力。'}]},
+  {em:'✅',t:'Apex感度が出る',ps:[{type:'co',h:'入力すると<b>Apex用の感度</b>へ自動換算。他ゲーの手の感覚をそのまま移行できる。'}]}
+ ]},
+ learn:{pages:[
+  {em:'📚',t:'これは何？',ps:[{type:'co',h:'上達のための情報を<b>6カテゴリ</b>に整理。コンボ・ミス改善・ロードマップ・観戦・キー配置・プロ設定。'}]},
+  {em:'🔗',t:'コンボ集',ps:[{type:'st',n:'1',h:'<b>🔗コンボ集</b>で、レジェンドのスキル連携や強ムーブを確認。'}]},
+  {em:'❌',t:'ミス改善 / ロードマップ',ps:[{type:'st',n:'1',h:'<b>❌ミス改善</b>＝よくあるミスと直し方。'},{type:'st',n:'2',h:'<b>🗺️ロードマップ</b>＝何から練習すべきかの順番。'}]},
+  {em:'👀',t:'観戦のコツ',ps:[{type:'st',n:'1',h:'<b>👀観戦のコツ</b>で、上手い人の動きから学ぶ見方を解説。'}]},
+  {em:'⌨️',t:'キー配置',ps:[{type:'st',n:'1',h:'<b>⌨️キー配置</b>で、おすすめのバインド設定を確認。'}]},
+  {em:'⚙️',t:'プロ設定',ps:[{type:'st',n:'1',h:'<b>⚙️プロ設定</b>は、プロ・配信者の感度/装備が見られる<b>外部サイト</b>へのリンク集。'}]}
+ ]},
+ links:{pages:[
+  {em:'🔗',t:'これは何？',ps:[{type:'co',h:'Apexに役立つ<b>外部サイト50選</b>をまとめたリンク集。'}]},
+  {em:'👆',t:'探す',ps:[{type:'st',n:'1',h:'リストから目的のサイトをタップ→<b>外部サイト</b>が開く。'}]},
+  {em:'🌐',t:'どんなサイト？',ps:[{type:'co',h:'戦績サイト、トラッカー、設定ツール、コミュニティなど、定番を厳選。'},{type:'bub',h:'このアプリにない深掘りデータはここから。'}]},
+  {em:'💡',t:'使いどころ',ps:[{type:'st',n:'1',h:'「もっと細かく調べたい」時の入口に。'}]}
+ ]},
+ card:{pages:[
+  {em:'🏷️',t:'これは何？',ps:[{type:'co',h:'戦績＆ランク入りの<b>名刺カード画像</b>を生成。SNSアイコンや募集に使える。'}]},
+  {em:'🆔',t:'IDの意味',ps:[{type:'co',h:'ここで言う「ID」＝Apexの<b>ゲーム内で表示される自分の名前</b>。ロビー左上や戦績画面の名前をそのまま。'}]},
+  {em:'⌨️',t:'入力',ps:[{type:'st',n:'1',h:'<b>ID（ゲーム内の名前）</b>を正確に入力（大文字小文字も）。'},{type:'st',n:'2',h:'<b>プラットフォーム</b>（PC/PS/Xbox）を選択。'}]},
+  {em:'🖨️',t:'名刺を作る',ps:[{type:'st',n:'1',h:'<b>「🏷️名刺を作る」</b>→戦績を取得してカード画像を自動生成。'}]},
+  {em:'💾',t:'保存・活用',ps:[{type:'st',n:'1',h:'できた<b>カード画像を保存</b>して、SNSや募集ツイートに添付。'}]}
+ ]}
+};
+var pwPendingTut=null;
+function tutMaybe(feat){
+ if(!feat||!TUT_DATA[feat])return;
+ if(typeof _fromPop!=='undefined'&&_fromPop)return;      // ディープリンク/履歴復元では出さない
+ try{if(localStorage.getItem('apexTut_'+feat+'_V1'))return;}catch(e){return;}
+ if(typeof SHOW_AD==='undefined'||!SHOW_AD){setTimeout(function(){tutShow(feat,0);},300);return;}
+ pwPendingTut=feat;                                       // 既存のshowAdModal(5秒)が閉じたら表示
+}
+function tutFirePending(){if(pwPendingTut){var f=pwPendingTut;pwPendingTut=null;setTimeout(function(){tutShow(f,0);},150);}}
+function tutShow(feat,p){
+ var T=TUT_DATA[feat];if(!T)return;var pages=T.pages;if(p<0||p>=pages.length)return;
+ var ov=$('pwOv'),box=$('pwOvBox');if(!ov||!box)return;ov.classList.add('on');
+ var pg=pages[p],last=p===pages.length-1;
+ var body=pg.ps.map(function(x,i){
+  if(x.type==='bub')return '<div class="pwbub">'+x.h+'</div>';
+  if(x.type==='st')return '<div class="pwmp '+(i%2?'tilt2':'tilt')+'"><div class="pwst"><span class="n">'+x.n+'</span><div class="pwml">'+x.h+'</div></div></div>';
+  return '<div class="pwmp '+(i%2?'tilt2':'tilt')+'"><div class="pwml">'+x.h+'</div></div>';
+ }).join('');
+ var dots='';for(var i=0;i<pages.length;i++)dots+='<i class="'+(i===p?'on':'')+'"></i>';
+ box.innerHTML='<div class="pwtut"><div class="pg"><div class="pwmp" style="box-shadow:4px 4px 0 #1a140c"><div class="pwmt"><span class="em">'+pg.em+'</span><span class="t">'+pg.t+'</span></div></div>'+body+'</div>'
+  +'<div class="pwfoot"><div class="pwdots">'+dots+'</div>'
+   +(last?'<button class="pwnb" type="button" onclick="tutShow(\''+feat+'\','+(p-1)+')">← 戻る</button>':'<div style="display:flex;gap:8px">'+(p>0?'<button class="pwnb" type="button" onclick="tutShow(\''+feat+'\','+(p-1)+')">← 戻る</button>':'')+'<button class="pwnb next" type="button" onclick="tutShow(\''+feat+'\','+(p+1)+')">次へ →</button></div>')
+  +'</div>'
+  +(last?'<div style="padding:12px 16px 16px"><button class="pwtry" type="button" onclick="tutDone(\''+feat+'\')">▶ 使ってみる</button></div>':'')
+  +'</div>';
+}
+function tutDone(feat){try{localStorage.setItem('apexTut_'+feat+'_V1','1');}catch(e){}try{if(window.track)window.track('tut',feat+'_done');}catch(e){}$('pwOv').classList.remove('on');}
+
 
 /* --- 今プレイ中ステータス共有 --- */
 function statusGen(){
