@@ -155,6 +155,11 @@
 .frqrttl{font-size:11px;color:#bda788;margin-bottom:6px}
 .frqrimg{display:inline-block;background:#fff;padding:8px;border-radius:10px;max-width:210px}
 .frqrimg svg{width:100%;height:auto;display:block}
+.frnav,.frhub{display:flex;gap:7px;flex-wrap:wrap}
+.frnavchip{background:rgba(255,255,255,.05);border:1px solid rgba(206,170,104,.3);color:#e7d6a8;border-radius:999px;padding:7px 12px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap}
+.frnavchip:active{transform:translateY(1px);background:rgba(231,196,95,.14)}
+.frhubwrap{margin-top:14px;border-top:1px solid rgba(206,170,104,.18);padding-top:12px}
+.frhublbl{font-size:11px;color:#bda788;margin-bottom:7px}
   /* フレンド詳細モーダル */
   .frov{position:fixed;inset:0;background:rgba(4,5,9,.86);display:none;align-items:flex-start;justify-content:center;z-index:1000;padding:20px 12px;overflow:auto}
   .frov.on{display:flex}
@@ -1610,6 +1615,7 @@ body{padding-bottom:64px!important}
     <div class="frbar"><div class="frtabs"><button class="frtab on" data-t="cards" onclick="frTab('cards')">🪪 カード</button><button class="frtab" data-t="rank" onclick="frTab('rank')">🏆 ランキング</button></div><button class="btn x" id="frRefreshBtn" onclick="frRefresh()">↻ 全員更新</button></div>
     <div id="frBox"></div>
     <div id="frDetail"></div>
+    <div class="frhubwrap"><div class="frhublbl">他の機能へ</div><div class="frhub"><button class="frnavchip" type="button" onclick="frNav('shop')">🛒 ショップ</button><button class="frnavchip" type="button" onclick="frNav('find')">🔎 検索</button><button class="frnavchip" type="button" onclick="frNav('diag')">🧪 診断</button><button class="frnavchip" type="button" onclick="frNav('map')">🗺️ マップ</button><button class="frnavchip" type="button" onclick="frNav('srv')">🖥️ サーバー</button></div></div>
     </div>
   </div>
 
@@ -2547,6 +2553,7 @@ setTimeout(function(){try{var _h=document.getElementById('home');if(_h&&_h.style
 
 /* ===== サイト更新情報＆赤丸通知 ===== */
 var SITEUPD=[
+ {d:'2026-06-15',tag:'new',f:'frank',t:'プレイヤーウォッチをハブ化（ショップ＆各機能への導線）',x:'①ウォッチ画面フッターに「🛒ショップ／🔎検索／🧪診断／🗺️マップ／🖥️サーバー」②プレイヤー詳細に文脈ナビ（ランク中→マップ、プレデ帯→プレデボーダー、🔎この人を詳しく検索 など）③ランク連動ギア枠の下に「ショップでもっと見る」④空リスト時・取得失敗時にも最適な機能へ誘導⑤リスト選択ホームに機能チップ（デバイス選び／ショップ／診断／便利ツール）'},
  {d:'2026-06-15',tag:'new',f:'frank',t:'詳細にランク連動ギア＋戦績検索からウォッチ追加',x:'①プレイヤー詳細に、そのランク帯に合わせたおすすめデバイス（PR）を表示②戦績検索の結果画面から「👁 ウォッチに追加」でワンタップ登録（今選んでいるリストへ・重複や20人上限も自動チェック）'},
  {d:'2026-06-15',tag:'new',f:'frank',t:'並び替え・重複検出・おすすめ枠・共有QR',x:'①カードを並び替え（RP／オンライン／追加／名前）②同じ人が複数リストにいると「⚠重複」表示③カード・ランキングの中間におすすめギア枠（PR）④共有モーダルにQRコード（対面・配信で見せる用）'},
  {d:'2026-06-15',tag:'new',f:'frank',t:'ウォッチリストのリンク共有＆ボタン改善',x:'①リストをリンク1本に埋め込んで共有（サーバー不要・UIDは36進数化＋名前省略で20人でも約500文字＝Xにも余裕で投稿可）。コピー／X／他アプリ共有に対応 ②共有リンクを開くと「どのリストに上書きする？」（既定サブ＝マイを保護）で取り込み→自動で最新ステータス更新 ③全員更新ボタンを小型化し、カード/ランキングの変な折返しを解消'},
@@ -4297,7 +4304,7 @@ function frHome(){
    +(id!=='main'?'<button class="frhren" type="button" onclick="frRenameList(\''+id+'\');event.stopPropagation();return false;" aria-label="名前変更">✏️</button>':'')
    +'<div class="frharr">›</div></div>';
  });
- html+='</div>';box.innerHTML=html;
+ html+='</div><div class="frhubwrap"><div class="frhublbl">他の機能へ</div><div class="frhub"><button class="frnavchip" type="button" onclick="frNav(\'gear\')">🧰 デバイス選び</button><button class="frnavchip" type="button" onclick="frNav(\'shop\')">🛒 ショップ</button><button class="frnavchip" type="button" onclick="frNav(\'diag\')">🧪 診断</button><button class="frnavchip" type="button" onclick="frNav(\'tools\')">🧩 便利ツール</button></div></div>';box.innerHTML=html;
 }
 function frPickList(id){frListSetActive(id);FR_VIEW='watch';var h=$('frHome'),w=$('frWatch');if(h)h.style.display='none';if(w)w.style.display='block';var n=$('frListName');if(n)n.textContent=frListName(id);FR_TAB='cards';var bs=document.querySelectorAll('#v-frank .frtab');for(var i=0;i<bs.length;i++){bs[i].classList.toggle('on',bs[i].getAttribute('data-t')==='cards');}frGearEnsure();frRender();pwTrack('list_'+id);}
 function frBackHome(){frOpen();}
@@ -4386,7 +4393,7 @@ function frImpDo(){
 }
 function frRender(){
  var box=$('frBox');if(!box)return;var a=frGet();
- if(!a.length){box.innerHTML='<div class="frempty">推し・フレンド・プロ・配信者…気になるプレイヤーのIDを入力して「＋追加」。<b>今オンラインか</b>と現在ランクが一目でわかる。カードをタップでリアルタイム詳細、タブでRPランキング。</div>';return;}
+ if(!a.length){box.innerHTML='<div class="frempty">推し・フレンド・プロ・配信者…気になるプレイヤーのIDを入力して「＋追加」。<b>今オンラインか</b>と現在ランクが一目でわかる。カードをタップでリアルタイム詳細、タブでRPランキング。</div><div class="frnav" style="margin-top:10px"><button class="frnavchip" type="button" onclick="frNav(\'find\')">🔎 まず自分の戦績</button><button class="frnavchip" type="button" onclick="frNav(\'shop\')">🛒 環境を整える</button><button class="frnavchip" type="button" onclick="frNav(\'diag\')">🧪 診断であそぶ</button></div>';return;}
  if(FR_TAB==='rank'){
   var ranked=a.map(function(m,i){return {m:m,i:i};}).filter(function(o){return o.m.data&&o.m.data.ok;}).sort(function(x,y){return (y.m.data.rp||0)-(x.m.data.rp||0);});
   var miss=a.filter(function(m){return !(m.data&&m.data.ok);});
@@ -4448,7 +4455,17 @@ function frDetailGear(p){
  var conf=FR_RANKGEAR[frTierOf(p)]||FR_RANKGEAR.def,prod=null;
  try{prod=gearPick(conf.k,conf.cap,conf.cheap,null);}catch(e){}
  if(!prod)return '';
- return '<div class="frsec"><div class="st">🎯 '+conf.label+' <span class="frprtag">PR</span></div><div style="padding:0 15px 4px">'+gearCard(prod)+'</div></div>';
+ return '<div class="frsec"><div class="st">🎯 '+conf.label+' <span class="frprtag">PR</span></div><div style="padding:0 15px 4px">'+gearCard(prod)+'<button class="frnavchip" type="button" style="margin-top:8px" onclick="frNav(\'shop\')">🛒 ショップでもっと見る</button></div></div>';
+}
+function frNav(sec){try{if(FR_CD){clearInterval(FR_CD);FR_CD=null;}}catch(e){}try{var ov=$('frModal');if(ov)ov.classList.remove('on');}catch(e){}try{open_(sec);}catch(e){}}
+function frFindThis(){var a=frGet(),m=a[FR_CUR];try{if(FR_CD){clearInterval(FR_CD);FR_CD=null;}}catch(e){}try{var ov=$('frModal');if(ov)ov.classList.remove('on');}catch(e){}try{open_('find');}catch(e){}if(m){try{var nm=$('pname');if(nm)nm.value=(m.data&&m.data.name)||m.ign||'';var pp=$('pplat');if(pp&&m.plat)pp.value=frPlatApi(m.plat);if(typeof findPlayer==='function')findPlayer();}catch(e){}}}
+function frDetailNav(p){
+ var c='<button class="frnavchip" type="button" onclick="frFindThis()">🔎 詳しく検索</button>';
+ if(p&&p.state==='match')c+='<button class="frnavchip" type="button" onclick="frNav(\'map\')">🗺️ 今のマップ</button>';
+ var tr=frTierOf(p);if(tr==='pred'||tr==='master')c+='<button class="frnavchip" type="button" onclick="frNav(\'pred\')">🏆 プレデボーダー</button>';
+ c+='<button class="frnavchip" type="button" onclick="frNav(\'diag\')">🧪 診断</button>';
+ c+='<button class="frnavchip" type="button" onclick="frNav(\'shop\')">🛒 ショップ</button>';
+ return '<div class="frsec"><div class="st">もっと見る</div><div class="frnav" style="padding:0 15px">'+c+'</div></div>';
 }
 function frRenderDetail(m){
  var p=m.data,det=$('frDetailBody');if(!det)return;
@@ -4459,6 +4476,7 @@ function frRenderDetail(m){
   +'<button class="btn primary" type="button" style="width:100%;margin-top:12px" onclick="frHelpOpen()">❓ どうして出ないの？直し方を見る</button>'
   +'<button class="btn" type="button" style="width:100%;margin-top:8px" onclick="frAlsRegister()">🔎 als.comを開く</button>'
   +'<button class="btn" type="button" style="width:100%;margin-top:8px" onclick="frReload(FR_CUR)">↻ 再取得する</button>'
+  +'<button class="btn" type="button" style="width:100%;margin-top:8px" onclick="frNav(\'srv\')">🖥️ サーバー状況を見る</button>'
   +'</div>';det.classList.add('on');return;}
  var now;
  if(p.state==='match'){
@@ -4478,6 +4496,7 @@ function frRenderDetail(m){
   +'<div class="frsec"><div class="st">リアルタイム生データ</div><div class="frraw">'+frrr('オンライン',p.online?'はい':'いいえ')+frrr('ゲーム中',p.inGame?'はい':'いいえ')+frrr('状態',p.state==='match'?'マッチ中':p.state==='lobby'?'ロビー':'オフライン')+frrr('ロビー状態',p.lobbyState||'—')+frrr('パーティ満員',p.partyFull?'はい':'いいえ')+frrr('参加可否',p.canJoin?'参加可':'不可')+frrr('使用レジェンド',p.legend||'—')+frrr('API判定ランク',p.apiRank||'—')+'</div></div>'
   +'<div class="frmnote">※プレイ中のマップ/モードはAPIが直接返さないため、現在のランクローテから推定表示しています。オンライン状態・使用レジェンド・パーティ状況は実データです。</div>'
   +frDetailGear(p)
+  +frDetailNav(p)
   +'<div style="padding:0 15px 16px"><button class="btn primary" type="button" style="width:100%" onclick="frReload(FR_CUR)">↻ 最新に更新</button></div>';
  det.classList.add('on');
 }
