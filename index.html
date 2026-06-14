@@ -70,6 +70,10 @@
   .frtabs{display:flex;gap:6px}
   .frtab{background:rgba(255,255,255,.06);border:1px solid var(--line);color:var(--sub);border-radius:9px;padding:7px 12px;font-size:12.5px;font-weight:700;cursor:pointer}
   .frtab.on{background:linear-gradient(135deg,#ffe08a,#d9a528);color:#241a10;border-color:transparent}
+#v-frank .frbar{flex-wrap:wrap;gap:8px}
+#v-frank .frtabs{gap:6px;flex:1 1 auto}
+#v-frank .frtab{white-space:nowrap;padding:8px 14px;font-size:13px}
+#v-frank .frbar .btn.x{width:auto;flex:0 0 auto;margin-top:0;padding:8px 14px;font-size:12.5px;font-weight:700;letter-spacing:0;font-family:inherit;border-radius:9px;white-space:nowrap}
   .frempty{color:var(--sub);font-size:13px;line-height:1.8;background:rgba(255,255,255,.03);border:1px dashed var(--line);border-radius:12px;padding:16px}
   .frgrid{display:grid;grid-template-columns:1fr;gap:11px}
   .fc{position:relative;display:flex;align-items:center;gap:13px;border-radius:9px;padding:14px 15px;overflow:hidden;cursor:pointer;background:linear-gradient(150deg,#241a10,#15100a);border:1px solid rgba(206,170,104,.3);transition:.15s}
@@ -116,6 +120,30 @@
   .frrow .fre{font-size:23px}
   .frbody{flex:1;min-width:0}.frbody b{font-size:13.5px;color:#f7efe0}.frbody small{display:block;font-size:11px;color:#bda788;margin-top:1px}
   .frrp{font-size:16px;font-weight:800;color:#fff;text-align:right}.frrp span{display:block;font-size:9px;color:#bda788;font-weight:600}
+.fdot{font-size:10.5px;font-weight:800;white-space:nowrap;letter-spacing:.02em;margin-left:7px}
+.fdot.m{color:#5bf0a8}.fdot.l{color:#8fe3c0}.fdot.o{color:#8a93a3}
+.fc .rk{display:flex;align-items:center;flex-wrap:wrap}
+.frbody b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.frbody small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.frlisthead{display:flex;align-items:center;gap:10px;margin:2px 0 12px}
+.frln{font-weight:800;font-size:15px;color:#f0d9a8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.frhhint{color:var(--sub);font-size:12.5px;margin:4px 2px 12px}
+.frhlists{display:grid;grid-template-columns:1fr;gap:10px}
+.frhcard{position:relative;display:flex;align-items:center;gap:13px;border-radius:11px;padding:15px;cursor:pointer;background:linear-gradient(150deg,#241a10,#15100a);border:1px solid rgba(206,170,104,.3);transition:.15s}
+.frhcard:active{transform:translateY(1px)}
+.frhcard.main{border-color:rgba(231,196,95,.55);box-shadow:0 0 0 1px rgba(231,196,95,.18) inset}
+.frhic{font-size:30px;flex:none;width:42px;text-align:center}
+.frhmid{flex:1;min-width:0}
+.frhn{font-size:15.5px;font-weight:800;color:#f7efe0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.frhs{font-size:11.5px;color:#bda788;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.frhren{flex:none;width:34px;height:34px;border-radius:9px;background:rgba(0,0,0,.35);color:#e7c45f;border:1px solid rgba(231,196,95,.3);font-size:14px;cursor:pointer}
+.frhren:active{background:rgba(231,196,95,.18)}
+.frharr{flex:none;color:#9c8a66;font-size:18px}
+.frshare{display:flex;gap:8px;margin:0 0 12px;flex-wrap:wrap}
+.frmh{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+.frmh b{font-size:15px;color:#f0d9a8}
+.frshareurl{width:100%;padding:11px;border-radius:9px;border:1px solid rgba(255,255,255,.14);background:#0e1320;color:#bfe;font-size:11.5px;font-family:ui-monospace,Menlo,Consolas,monospace;word-break:break-all}
+.frimpsel{width:100%;padding:11px 12px;border-radius:9px;border:1px solid rgba(255,255,255,.14);background:#0e1320;color:#e9eef6;font-size:14px}
   /* フレンド詳細モーダル */
   .frov{position:fixed;inset:0;background:rgba(4,5,9,.86);display:none;align-items:flex-start;justify-content:center;z-index:1000;padding:20px 12px;overflow:auto}
   .frov.on{display:flex}
@@ -1560,12 +1588,17 @@ body{padding-bottom:64px!important}
   <!-- ===== FRIEND RANK ===== -->
   <div class="view" id="v-frank"><button class="back" onclick="home()">← ホーム</button>
     <div class="caption"><h2>👥 プレイヤーウォッチ</h2><span class="d">気になるプレイヤーを登録→“今オンラインか”＆現在ランクを一目で</span></div>
+    <div id="frHome"></div>
+    <div id="frWatch" style="display:none">
+    <div class="frlisthead"><button class="frminib" type="button" onclick="frBackHome()">← リスト一覧</button><span id="frListName" class="frln"></span></div>
+    <div class="frshare"><button class="frminib" type="button" onclick="frShareOpen()">🔗 共有リンク</button><button class="frminib" type="button" onclick="frImpOpenManual()">📥 受け取る</button></div>
     <div class="searchbar"><input id="frIgn" placeholder="名前 / UID / als.comのURL" autocomplete="off"><select id="frPlat"><option value="PC">PC</option><option value="PS">PS</option><option value="Xbox">Xbox</option><option value="Switch">Switch</option></select><button id="frAddBtn" onclick="frAdd()">＋追加</button></div>
     <div class="frhint">ふだんは名前だけでOK（PCはOrigin名）。出ないときは案内が出るよ。</div>
     <button class="frminib" type="button" onclick="frHistOpen()">🕘 検索履歴</button>
     <div class="frbar"><div class="frtabs"><button class="frtab on" data-t="cards" onclick="frTab('cards')">🪪 カード</button><button class="frtab" data-t="rank" onclick="frTab('rank')">🏆 ランキング</button></div><button class="btn x" id="frRefreshBtn" onclick="frRefresh()">↻ 全員更新</button></div>
     <div id="frBox"></div>
     <div id="frDetail"></div>
+    </div>
   </div>
 
   <div class="view" id="v-diag"><button class="back" data-i18n="back" onclick="home()">← ホーム</button>
@@ -1923,7 +1956,7 @@ function open_(sec){$('home').style.display='none';document.querySelectorAll('.v
   if(sec==='learn'){learnTab('combo');}
   if(sec==='settings')renderSettings();
   if(sec==='links')renderLinks();
-  if(sec==='frank'){frRender();frMapFetch();}
+  if(sec==='frank'){frOpen();}
   try{seoTitle(sec);}catch(e){}
   try{pushUrl(sec);}catch(e){}
   try{popInc(sec);}catch(e){}
@@ -2432,6 +2465,7 @@ showSplash();document.addEventListener('DOMContentLoaded',showSplash);
 document.addEventListener('DOMContentLoaded',function(){setTimeout(grandOpen,200);});setTimeout(function(){try{grandOpen();}catch(e){}},300);
 function restoreFromUrl(){
  try{
+  if((location.hash||'').indexOf('#w=')===0){if(frImportFromHash())return;}
   var P=new URLSearchParams(location.search);
   var lg=P.get('lang');if(lg==='en'&&LANG!=='en'){LANG='en';try{localStorage.setItem('apexLang','en');}catch(e){}try{document.documentElement.setAttribute('lang','en');}catch(e){}try{applyStatic();}catch(e){}}
   var dParam=P.get('d');
@@ -2485,6 +2519,8 @@ setTimeout(function(){try{var _h=document.getElementById('home');if(_h&&_h.style
 
 /* ===== サイト更新情報＆赤丸通知 ===== */
 var SITEUPD=[
+ {d:'2026-06-15',tag:'new',f:'frank',t:'ウォッチリストのリンク共有＆ボタン改善',x:'①リストをリンク1本に埋め込んで共有（サーバー不要・UIDは36進数化＋名前省略で20人でも約500文字＝Xにも余裕で投稿可）。コピー／X／他アプリ共有に対応 ②共有リンクを開くと「どのリストに上書きする？」（既定サブ＝マイを保護）で取り込み→自動で最新ステータス更新 ③全員更新ボタンを小型化し、カード/ランキングの変な折返しを解消'},
+ {d:'2026-06-15',tag:'new',f:'frank',t:'プレイヤーウォッチに複数リスト＆見やすさ改善',x:'①マイウォッチリスト＋サブリスト1〜5（名前変更可）を新設。開くとまずリスト選択ホーム→選ぶと従来のウォッチ画面。リストごとに20人まで②カード/ランキングを2行に整理し、オンライン状態をコンパクト表示にして見やすく'},
  {d:'2026-06-14',tag:'fix',f:'all',t:'セキュリティ強化＆戦績の改善',x:'①入力のXSS対策を強化（属性・onclick両対応のエスケープ）②戦績の「次のランク」を実際のランクから正しく算出（旧式RPの誤表示を廃止）③解析タブ拡張：レジェンド別ダメージ／シーズン別キル推移／武器ダメージ／アリーナ詳細 ④データ中継(GAS)側もキー保護・エラー秘匿・URL検証・レート制限で堅牢化'},
  {d:'2026-06-14',tag:'new',f:'find',t:'戦績検索を実データ構造に合わせて全面強化',x:'①概要を total から正確集計（通算キル＝Career Kills・上位%付き、BRダメ/勝利/アリーナ）②レジェンド別＝全レジェンドの装備トラッカーを名前付きで表示＋レジェンドバッジ ③📊解析：RP推移・レジェンド別キルTOP8・武器キルTOP6・BR/アリーナ ④最高到達ランク＝Apex Predatorバッジを検出して「プレデター×N（上位3件）」表示、無ければ自己ベスト'},
  {d:'2026-06-14',tag:'new',f:'find',t:'戦績の蓄積＋解析タブ＋最高到達＋生データ出力',x:'①検索するほどレジェンド別データが貯まる蓄積方式（alsと同じ仕組み。1回のAPIは選択中レジェンドしか返さないため）②📊解析タブ追加：RP推移スパークライン・レジェンド別キル棒グラフ・BR/アリーナ比較 ③最高到達（当サイト計測）を表示 ④開発用「生データコピー」ボタン'},
@@ -4080,8 +4116,29 @@ function renderTeam(){
  var btn=$('teamFetchBtn');if(btn)btn.style.display=a.length?'block':'none';
 }
 /* --- プレイヤーウォッチ --- */
-function frGet(){try{return JSON.parse(localStorage.getItem('apexFriends')||'[]');}catch(e){return [];}}
-function frSave(a){try{localStorage.setItem('apexFriends',JSON.stringify(a));}catch(e){}}
+/* ===== 複数ウォッチリスト（マイ＋サブ1〜5）===== */
+var FR_LIST_IDS=['main','sub1','sub2','sub3','sub4','sub5'];
+function frListsDefault_(old){
+ var o={active:'main',lists:{main:{name:'マイウォッチリスト',players:old||[]}}};
+ for(var i=1;i<=5;i++)o.lists['sub'+i]={name:'サブリスト'+i,players:[]};
+ return o;
+}
+function frListsGet(){
+ try{var o=JSON.parse(localStorage.getItem('apexWatchLists')||'null');
+  if(o&&o.lists&&o.lists.main){ /* 欠けてるサブを補完 */
+   for(var i=1;i<=5;i++){if(!o.lists['sub'+i])o.lists['sub'+i]={name:'サブリスト'+i,players:[]};}
+   if(!o.lists[o.active])o.active='main';return o;}
+ }catch(e){}
+ var old=[];try{old=JSON.parse(localStorage.getItem('apexFriends')||'[]');}catch(e){} /* 旧データ移行 */
+ var def=frListsDefault_(old);frListsSave(def);return def;
+}
+function frListsSave(o){try{localStorage.setItem('apexWatchLists',JSON.stringify(o));}catch(e){}}
+function frActiveId(){var o=frListsGet();return o.lists[o.active]?o.active:'main';}
+function frListName(id){var o=frListsGet();return (o.lists[id]&&o.lists[id].name)||'リスト';}
+function frGet(){var o=frListsGet();var id=frActiveId();return (o.lists[id]&&o.lists[id].players)||[];}
+function frSave(a){var o=frListsGet();var id=frActiveId();if(!o.lists[id])o.lists[id]={name:'リスト',players:[]};o.lists[id].players=a;frListsSave(o);}
+function frListSetActive(id){var o=frListsGet();if(o.lists[id]){o.active=id;frListsSave(o);}}
+function frListRename(id,name){var o=frListsGet();if(o.lists[id]){name=String(name||'').trim().slice(0,20);if(name){o.lists[id].name=name;frListsSave(o);}}}
 function frPlatApi(p){return p==='PC'?'PC':p==='PS'?'PS4':p==='Xbox'?'X1':p==='Switch'?'SWITCH':'PC';}
 function rpRank(rp){rp=Number(rp)||0;
  if(rp>=18200)return {name:'マスター',emoji:'👺'};
@@ -4176,18 +4233,120 @@ function frMapFetch(){try{gas('map').then(function(d){if(d&&d.ranked&&d.ranked.c
 function frTab(tab){FR_TAB=tab;pwTrack('tab_'+tab);var bs=document.querySelectorAll('#v-frank .frtab');for(var i=0;i<bs.length;i++){bs[i].classList.toggle('on',bs[i].getAttribute('data-t')===tab);}frRender();}
 function frPz(st){if(st==='match')return '<span class="fpz match"><span class="dot"></span>ランク中</span>';if(st==='lobby')return '<span class="fpz lobby"><span class="dot"></span>ロビー</span>';return '<span class="fpz off"><span class="dot"></span>オフライン</span>';}
 function frOnBadge(st){if(st==='match')return '<span class="fon on"><span class="dot"></span>ONLINE<small>ランク中</small></span>';if(st==='lobby')return '<span class="fon on"><span class="dot"></span>ONLINE<small>ロビー</small></span>';return '<span class="fon off"><span class="dot"></span>OFFLINE</span>';}
+function frDot(st){if(st==='match')return '<span class="fdot m">● ランク中</span>';if(st==='lobby')return '<span class="fdot l">● ロビー</span>';return '<span class="fdot o">● オフライン</span>';}
+var FR_VIEW='home';
+function frOpen(){FR_VIEW='home';frHome();var h=$('frHome'),w=$('frWatch');if(h)h.style.display='block';if(w)w.style.display='none';frMapFetch();}
+function frHome(){
+ var box=$('frHome');if(!box)return;var o=frListsGet();
+ var html='<div class="frhhint">ウォッチリストを選んでね。リストごとに最大20人まで登録できます。</div><div class="frhlists">';
+ FR_LIST_IDS.forEach(function(id){
+  var L=o.lists[id]||{name:id,players:[]};var ps=L.players||[];
+  var ok=ps.filter(function(p){return p.data&&p.data.ok;});
+  var onCnt=ok.filter(function(p){return p.data.online;}).length;
+  var top=ok.slice().sort(function(a,b){return (b.data.rp||0)-(a.data.rp||0);})[0];
+  var sub=ps.length?(ps.length+'人登録'+(onCnt?'　🟢 '+onCnt+'人ON':'')+(top?'　最高 '+esc(top.data.rankName||'-'):'')):'まだ空っぽ';
+  html+='<div class="frhcard'+(id==='main'?' main':'')+'" onclick="frPickList(\''+id+'\')">'
+   +'<div class="frhic">'+(id==='main'?'👑':'📋')+'</div>'
+   +'<div class="frhmid"><div class="frhn">'+esc(L.name)+'</div><div class="frhs">'+sub+'</div></div>'
+   +(id!=='main'?'<button class="frhren" type="button" onclick="frRenameList(\''+id+'\');event.stopPropagation();return false;" aria-label="名前変更">✏️</button>':'')
+   +'<div class="frharr">›</div></div>';
+ });
+ html+='</div>';box.innerHTML=html;
+}
+function frPickList(id){frListSetActive(id);FR_VIEW='watch';var h=$('frHome'),w=$('frWatch');if(h)h.style.display='none';if(w)w.style.display='block';var n=$('frListName');if(n)n.textContent=frListName(id);FR_TAB='cards';var bs=document.querySelectorAll('#v-frank .frtab');for(var i=0;i<bs.length;i++){bs[i].classList.toggle('on',bs[i].getAttribute('data-t')==='cards');}frRender();pwTrack('list_'+id);}
+function frBackHome(){frOpen();}
+function frRenameList(id){var cur=frListName(id);var nm=prompt('リスト名を変更（20文字まで）',cur);if(nm==null)return;nm=String(nm).trim().slice(0,20);if(!nm)return;frListRename(id,nm);frHome();}
+/* ===== リスト共有（リンク埋め込み・サーバー不要） ===== */
+var FR_PLATC={PC:'P',PS:'S',Xbox:'X',Switch:'N'},FR_PLATR={P:'PC',S:'PS',X:'Xbox',N:'Switch'},FR_IMP=null;
+function frB64uEnc(s){var b=btoa(unescape(encodeURIComponent(s)));return b.replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');}
+function frB64uDec(b){b=String(b).replace(/-/g,'+').replace(/_/g,'/');while(b.length%4)b+='=';return decodeURIComponent(escape(atob(b)));}
+function frB36(uid){try{return BigInt(uid).toString(36);}catch(e){return '';}}
+function frUnB36(s){try{if(!/^[0-9a-z]+$/.test(s))return '';var n=0n;for(var i=0;i<s.length;i++){n=n*36n+BigInt(parseInt(s.charAt(i),36));}return n.toString();}catch(e){return '';}}
+function frSharePayload(){
+ var o=frListsGet(),id=frActiveId(),L=o.lists[id]||{name:'',players:[]};
+ var toks=(L.players||[]).slice(0,20).map(function(p){
+  var pc=FR_PLATC[p.plat]||'P';
+  if(p.uid&&/^\d{3,}$/.test(p.uid)){var b=frB36(p.uid);if(b)return pc+'u'+b;}
+  return pc+'n'+String(p.ign||'').slice(0,32);
+ }).filter(Boolean);
+ return frB64uEnc('1'+String(L.name||'').slice(0,20)+'\t'+toks.join('\n'));
+}
+function frShareUrl(){return location.href.split('#')[0].split('?')[0]+'#w='+frSharePayload();}
+function frShareDecode(code){
+ try{var raw=frB64uDec(code);if(raw.charAt(0)!=='1')return null;
+  var rest=raw.slice(1),ti=rest.indexOf('\t');if(ti<0)return null;
+  var name=rest.slice(0,ti).slice(0,20),body=rest.slice(ti+1),players=[];
+  (body?body.split('\n'):[]).slice(0,20).forEach(function(tk){
+   if(!tk)return;var pc=tk.charAt(0),ty=tk.charAt(1),val=tk.slice(2),plat=FR_PLATR[pc];if(!plat)return;
+   if(ty==='u'){var uid=frUnB36(val);if(uid)players.push({ign:'',plat:plat,uid:uid,data:null,t:0});}
+   else if(ty==='n'){var nm=String(val).slice(0,32);if(nm)players.push({ign:nm,plat:plat,uid:'',data:null,t:0});}
+  });
+  return players.length?{name:name||'共有リスト',players:players}:null;
+ }catch(e){return null;}
+}
+function frShareOpen(){
+ var o=frListsGet(),id=frActiveId(),L=o.lists[id]||{players:[]};
+ if(!(L.players||[]).length){toast2('先にこのリストへプレイヤーを追加してね');return;}
+ var url=frShareUrl(),n=(L.players||[]).length,box=$('frShareBox');if(!box)return;
+ box.innerHTML='<div class="frmh"><b>🔗 「'+esc(L.name)+'」を共有</b><button class="frhx" type="button" onclick="frShareClose()">✕</button></div>'
+  +'<div class="note" style="margin:6px 0 10px">'+n+'人ぶんをリンクに埋め込みました。LINE・DM・Xで送れます。受け取った人は好きなリストに上書きで取り込めます。</div>'
+  +'<input id="frShareUrl" class="frshareurl" readonly value="'+esc(url)+'">'
+  +'<div class="note" style="margin:2px 2px 10px;font-size:11px">リンク長：'+url.length+'文字</div>'
+  +'<button class="btn" type="button" onclick="frShareCopy()" style="width:100%;margin-top:0">📋 リンクをコピー</button>'
+  +'<button class="btn x" type="button" onclick="frShareX()" style="width:100%">𝕏 でシェア</button>'
+  +(navigator.share?'<button class="btn ghost" type="button" onclick="frShareNative()" style="width:100%">📱 他のアプリで共有</button>':'');
+ $('frShareOv').classList.add('on');
+}
+function frShareClose(){$('frShareOv').classList.remove('on');}
+function frShareCopy(){var u=frShareUrl();try{navigator.clipboard.writeText(u).then(function(){toast2('リンクをコピーした！');},function(){frShareCopyFb();});}catch(e){frShareCopyFb();}}
+function frShareCopyFb(){var i=$('frShareUrl');if(i){i.focus();i.select();try{document.execCommand('copy');toast2('リンクをコピーした！');}catch(e){toast2('リンクを長押しで選択してコピーしてね');}}}
+function frShareX(){var o=frListsGet(),id=frActiveId(),L=o.lists[id]||{};var txt='【APEXウォッチリスト】'+(L.name||'')+'を共有！このリンクから取り込めるよ👀\n'+frShareUrl()+'\n#APEX激やばツール';window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(txt),'_blank','noopener');}
+function frShareNative(){try{navigator.share({title:'APEXウォッチリスト',text:'ウォッチリストを共有！',url:frShareUrl()});}catch(e){}}
+function frImportFromHash(){
+ try{var m=(location.hash||'').match(/^#w=(.+)$/);if(!m)return false;
+  var dec=frShareDecode(m[1]);
+  try{history.replaceState(null,'',location.href.split('#')[0]);}catch(e){try{location.hash='';}catch(e2){}}
+  if(!dec){toast2('共有リンクが読み取れませんでした');return false;}
+  try{open_('frank');}catch(e){}frImpRender(dec);return true;
+ }catch(e){return false;}
+}
+function frImpOpenManual(){
+ var v=prompt('共有リンク（または #w= 以降のコード）を貼り付け');if(v==null)return;v=String(v).trim();
+ var m=v.match(/#w=(.+)$/);var dec=frShareDecode(m?m[1]:v);
+ if(!dec){toast2('リンクが読み取れませんでした');return;}frImpRender(dec);
+}
+function frImpRender(dec){
+ FR_IMP=dec;var o=frListsGet();
+ var opts=FR_LIST_IDS.map(function(id){var L=o.lists[id]||{};var cnt=(L.players||[]).length;return '<option value="'+id+'"'+(id==='sub1'?' selected':'')+'>'+esc(L.name)+'（現在'+cnt+'人）'+(id==='main'?' ※マイ':'')+'</option>';}).join('');
+ var box=$('frImpBox');if(!box)return;
+ box.innerHTML='<div class="frmh"><b>📥 リストを受け取る</b><button class="frhx" type="button" onclick="frImpClose()">✕</button></div>'
+  +'<div class="note" style="margin:6px 0 10px">「<b>'+esc(dec.name)+'</b>」（'+dec.players.length+'人）を受け取ります。<b>上書き先</b>を選んでね（選んだリストの中身は置き換わります）。</div>'
+  +'<select id="frImpTarget" class="frimpsel">'+opts+'</select>'
+  +'<div class="note" style="margin:8px 2px;font-size:11px">※既定はサブリスト。マイを選ぶと今の内容が消えるので注意。</div>'
+  +'<button class="btn primary" type="button" onclick="frImpDo()" style="width:100%">このリストに上書きで取り込む</button>'
+  +'<button class="btn ghost" type="button" onclick="frImpClose()" style="width:100%">キャンセル</button>';
+ $('frImpOv').classList.add('on');
+}
+function frImpClose(){$('frImpOv').classList.remove('on');FR_IMP=null;}
+function frImpDo(){
+ if(!FR_IMP)return;var sel=$('frImpTarget'),id=sel?sel.value:'sub1',o=frListsGet();
+ if(!o.lists[id]){toast2('リストが見つかりません');return;}
+ o.lists[id].players=FR_IMP.players.slice(0,20);o.active=id;frListsSave(o);
+ frImpClose();pwTrack('import');toast2('取り込んだ！最新ステータスを取得中…');
+ frPickList(id);frRefresh();
+}
 function frRender(){
  var box=$('frBox');if(!box)return;var a=frGet();
  if(!a.length){box.innerHTML='<div class="frempty">推し・フレンド・プロ・配信者…気になるプレイヤーのIDを入力して「＋追加」。<b>今オンラインか</b>と現在ランクが一目でわかる。カードをタップでリアルタイム詳細、タブでRPランキング。</div>';return;}
  if(FR_TAB==='rank'){
   var ranked=a.map(function(m,i){return {m:m,i:i};}).filter(function(o){return o.m.data&&o.m.data.ok;}).sort(function(x,y){return (y.m.data.rp||0)-(x.m.data.rp||0);});
   var miss=a.filter(function(m){return !(m.data&&m.data.ok);});
-  box.innerHTML='<div class="frrkttl">🏆 プレイヤーRPランキング</div>'+(ranked.length?ranked.map(function(o,i){var p=o.m.data;var md=i===0?'🥇':i===1?'🥈':i===2?'🥉':(i+1)+'';return '<div class="frrow'+(p.online?' onrow':'')+'" onclick="frShow('+o.i+')"><span class="frrk">'+md+'</span><span class="fre">'+p.emoji+'</span><div class="frbody"><b>'+esc(p.name)+'</b><small>'+esc(p.rankName||'-')+'</small></div>'+frOnBadge(p.state)+'<div class="frrp mono">'+(p.rp||0).toLocaleString()+'<span>RP</span></div></div>';}).join(''):'<div class="note">取得できたデータがまだないよ。「↻ 全員更新」を押してね。</div>')+(miss.length?'<div class="note">取得できず: '+miss.map(function(m){return esc(m.ign);}).join(', ')+'</div>':'');
+  box.innerHTML='<div class="frrkttl">🏆 プレイヤーRPランキング</div>'+(ranked.length?ranked.map(function(o,i){var p=o.m.data;var md=i===0?'🥇':i===1?'🥈':i===2?'🥉':(i+1)+'';return '<div class="frrow'+(p.online?' onrow':'')+'" onclick="frShow('+o.i+')"><span class="frrk">'+md+'</span><span class="fre">'+p.emoji+'</span><div class="frbody"><b>'+esc(p.name)+'</b><small>'+esc(p.rankName||'-')+' '+frDot(p.state)+'</small></div><div class="frrp mono">'+(p.rp||0).toLocaleString()+'<span>RP</span></div></div>';}).join(''):'<div class="note">取得できたデータがまだないよ。「↻ 全員更新」を押してね。</div>')+(miss.length?'<div class="note">取得できず: '+miss.map(function(m){return esc(m.ign);}).join(', ')+'</div>':'');
  }else{
   box.innerHTML='<div class="frgrid">'+a.map(function(m,i){var p=m.data;
    if(!p)return '<div class="fc load"><div class="em">⏳</div><div class="mid"><div class="nm">'+esc(m.ign)+'</div><div class="rk">取得中…</div></div></div>';
    if(!p.ok)return '<div class="fc off2" onclick="frShow('+i+')"><button class="del" onclick="frDel('+i+');event.stopPropagation();return false;" aria-label="削除">🗑️</button><div class="em">❓</div><div class="mid"><div class="nm">'+esc(m.ign)+'</div><div class="rk">取得できず（タップで対処法）</div></div></div>';
-   return '<div class="fc'+(p.online?' fonline':' foffline')+'" onclick="frShow('+i+')"><button class="del" onclick="frDel('+i+');event.stopPropagation();return false;" aria-label="削除">🗑️</button><div class="em">'+p.emoji+'</div><div class="mid"><div class="nm">'+esc(p.name)+'</div><div class="rk">'+esc(p.rankName||'-')+'</div>'+frOnBadge(p.state)+'</div><div class="right"><div class="rpv mono">'+(p.rp||0).toLocaleString()+'</div><div class="rpl">RP</div></div><div class="arr">›</div></div>';
+   return '<div class="fc'+(p.online?' fonline':' foffline')+'" onclick="frShow('+i+')"><button class="del" onclick="frDel('+i+');event.stopPropagation();return false;" aria-label="削除">🗑️</button><div class="em">'+p.emoji+'</div><div class="mid"><div class="nm">'+esc(p.name)+'</div><div class="rk">'+esc(p.rankName||'-')+' '+frDot(p.state)+'</div></div><div class="right"><div class="rpv mono">'+(p.rp||0).toLocaleString()+'</div><div class="rpl">RP</div></div><div class="arr">›</div></div>';
   }).join('')+'</div>';
  }
 }
@@ -4682,7 +4841,7 @@ function renderBind(){var box=$('bindBox');if(!box)return;box.innerHTML='<div cl
 /* ===== 設定・データ管理（v-settings） ===== */
 var APP_VERSION='2.6.0';
 var APEX_KEYS=['apexUid','apexTheme','apexLang','apexFirstVisit','apexDiagHist','apexDiagDone','apexDiagFav','apexFindHist','apexLfg','apexProdView','apexProdClick','apexShopFav','apexShareCount','apexFeatCount','apexFeatSeen','apexBattleRec','apexCardHist','apexFriendCodes','apexTeamMembers'];
-var KEYLABEL={apexDiagHist:'診断履歴',apexDiagDone:'診断コンプ記録',apexDiagFav:'お気に入り診断',apexFindHist:'検索履歴',apexFindDB:'戦績の蓄積データ',apexFrHist:'ウォッチ検索履歴',apexLfg:'募集履歴',apexProdView:'見た商品',apexProdClick:'クリック商品',apexShopFav:'お気に入り商品',apexShareCount:'シェア回数',apexFeatCount:'機能利用回数',apexBattleRec:'バトル戦績',apexCardHist:'名刺履歴',apexFriendCodes:'フレンドコード',apexTeamMembers:'固定パメンバー',apexFirstVisit:'初回訪問日',apexTheme:'テーマ設定',apexLang:'言語設定',apexUid:'匿名ID',apexFeatSeen:'既読状態'};
+var KEYLABEL={apexDiagHist:'診断履歴',apexDiagDone:'診断コンプ記録',apexDiagFav:'お気に入り診断',apexFindHist:'検索履歴',apexFindDB:'戦績の蓄積データ',apexWatchLists:'ウォッチリスト',apexFrHist:'ウォッチ検索履歴',apexLfg:'募集履歴',apexProdView:'見た商品',apexProdClick:'クリック商品',apexShopFav:'お気に入り商品',apexShareCount:'シェア回数',apexFeatCount:'機能利用回数',apexBattleRec:'バトル戦績',apexCardHist:'名刺履歴',apexFriendCodes:'フレンドコード',apexTeamMembers:'固定パメンバー',apexFirstVisit:'初回訪問日',apexTheme:'テーマ設定',apexLang:'言語設定',apexUid:'匿名ID',apexFeatSeen:'既読状態'};
 
 function setBytes(){var t=0;APEX_KEYS.forEach(function(k){var v=localStorage.getItem(k);if(v)t+=k.length+v.length;});return t;}
 function fmtBytes(b){return b<1024?b+' B':b<1048576?(b/1024).toFixed(1)+' KB':(b/1048576).toFixed(2)+' MB';}
@@ -5543,6 +5702,8 @@ try{var _sl=localStorage.getItem("apexLang");if(_sl)LANG=_sl;}catch(e){}applySta
     </div>
   </div>
   <div class="frhelpov" id="frHelpOv"><div class="frhelpbox" id="frHelpBox"></div></div>
+  <div class="frhelpov" id="frShareOv"><div class="frhelpbox" id="frShareBox"></div></div>
+  <div class="frhelpov" id="frImpOv"><div class="frhelpbox" id="frImpBox"></div></div>
   <div class="frhelpov" id="frRegOv"><div class="frhelpbox" id="frRegBox"></div></div>
   <div class="frhelpov" id="frHistOv"><div class="frhelpbox" id="frHistBox"></div></div>
 </body>
