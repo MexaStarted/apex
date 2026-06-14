@@ -1315,6 +1315,24 @@ body{padding-bottom:64px!important}
   .pwrga{color:#ff2b2b;font-weight:900;display:inline-block;text-shadow:0 0 7px #ff3b3b,0 0 15px #ff2b46;animation:pwrga 1s ease-in-out infinite}
   @keyframes pwrga{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 .frhint{font-size:11px;color:#8a7a55;margin:6px 2px 2px;line-height:1.5}
+.frfail{padding:22px 16px 18px;text-align:center}.frfail .ic{font-size:40px;margin-bottom:6px}.frfail .ttl{font-weight:800;font-size:16px;color:#e9dcae;margin-bottom:8px}.frfail .msg{font-size:12.5px;color:#bcae86;line-height:1.7;text-align:left;background:rgba(255,255,255,.03);border:1px solid rgba(212,175,55,.18);border-radius:12px;padding:11px 13px}
+.frhelpov{position:fixed;inset:0;z-index:100020;background:rgba(6,5,10,.85);display:none;align-items:center;justify-content:center;padding:18px}
+.frhelpov.on{display:flex}
+.frhelpbox{position:relative;width:100%;max-width:380px;max-height:88vh;overflow:auto;background:linear-gradient(180deg,#1c160c,#120d07);border:1px solid rgba(212,175,55,.42);border-radius:20px;padding:24px 20px 20px;box-shadow:0 20px 60px rgba(0,0,0,.6);text-align:center}
+.frhx{position:absolute;top:10px;right:12px;width:34px;height:34px;border-radius:50%;border:1px solid rgba(212,175,55,.3);background:rgba(0,0,0,.3);color:#e9dcae;font-size:20px;line-height:1;cursor:pointer}
+.frhstep{font-size:11px;letter-spacing:2px;color:#caa84e;font-weight:700;margin-bottom:6px}
+.frhem{font-size:52px;line-height:1;margin:6px 0 10px}
+.frht{font-size:20px;font-weight:800;color:#f0e2b6;margin-bottom:14px}
+.frhbody{font-size:15px;line-height:1.95;color:#e3d6b2;text-align:left;background:rgba(255,255,255,.03);border:1px solid rgba(212,175,55,.18);border-radius:14px;padding:15px 16px}
+.frhbody b{color:#ffe9a8}
+.frhbtn{margin-top:14px;width:100%;padding:14px;border-radius:12px;border:none;background:linear-gradient(180deg,#e7c45f,#caa23a);color:#241a06;font-weight:800;font-size:15px;cursor:pointer}
+.frhbtn.act{background:linear-gradient(180deg,#ffd56a,#e0b03f)}
+.frhnb{padding:14px 16px;border-radius:12px;border:1px solid rgba(212,175,55,.3);background:transparent;color:#e9dcae;font-weight:700;font-size:14px;cursor:pointer}
+.frhnav{display:flex;gap:10px;align-items:center;justify-content:space-between;margin-top:14px}
+.frhnav .frhbtn{margin-top:0;flex:1}
+.frhdots{display:flex;gap:7px;justify-content:center;margin-top:16px}
+.frhdots i{width:8px;height:8px;border-radius:50%;background:rgba(212,175,55,.25)}
+.frhdots i.on{background:#e7c45f;box-shadow:0 0 8px rgba(231,196,95,.6)}
 </style>
 <script type="application/ld+json">
 {
@@ -1530,7 +1548,7 @@ body{padding-bottom:64px!important}
   <div class="view" id="v-frank"><button class="back" onclick="home()">← ホーム</button>
     <div class="caption"><h2>👥 プレイヤーウォッチ</h2><span class="d">気になるプレイヤーを登録→“今オンラインか”＆現在ランクを一目で</span></div>
     <div class="searchbar"><input id="frIgn" placeholder="名前 / UID / als.comのURL" autocomplete="off"><select id="frPlat"><option value="PC">PC</option><option value="PS">PS</option><option value="Xbox">Xbox</option><option value="Switch">Switch</option></select><button onclick="frAdd()">＋追加</button></div>
-    <div class="frhint">名前で出ない人は、apexlegendsstatus.com のプロフィールURL（または UID）を貼ればOK。PCはOrigin名。</div>
+    <div class="frhint">ふだんは名前だけでOK（PCはOrigin名）。出ないときはタップで対処法が出るよ。</div>
     <div class="frbar"><div class="frtabs"><button class="frtab on" data-t="cards" onclick="frTab('cards')">🪪 カード</button><button class="frtab" data-t="rank" onclick="frTab('rank')">🏆 ランキング</button></div><button class="btn x" id="frRefreshBtn" onclick="frRefresh()">↻ 全員更新</button></div>
     <div id="frBox"></div>
     <div id="frDetail"></div>
@@ -2294,6 +2312,8 @@ setTimeout(function(){try{var _h=document.getElementById('home');if(_h&&_h.style
 
 /* ===== サイト更新情報＆赤丸通知 ===== */
 var SITEUPD=[
+ {d:'2026-06-14',tag:'new',f:'frank',t:'取得できない時の手順モーダルを追加',x:'プレイヤーが出ない時、「どうして出ないか」と直し方を4ステップでやさしく案内するモーダルを表示。als.comを開く→検索→数分待って再取得、を誰でも追えるように図解'},
+ {d:'2026-06-14',tag:'fix',f:'frank',t:'見つからない時の案内を改善',x:'名前で取得できない人には、ワンタップでals.comに登録（数分で名前検索できるように）できる案内を表示。基本は名前だけでOK'},
  {d:'2026-06-14',tag:'fix',f:'frank',t:'UID/URLでプレイヤー追加に対応',x:'名前で見つからない人（未インデックス等）を、apexlegendsstatus.comのプロフィールURLやUIDを貼って追加できるように。GAS側もUID照会に対応'},
  {d:'2026-06-14',tag:'fix',f:'frank',t:'プレイヤーウォッチのランクに段位を表示',x:'「プラチナ」だけでなく「プラチナ2」のように段位(1〜4)まで表示。APIの正式ランク優先、取れない時はRP推定にフォールバック'},
  {d:'2026-06-14',tag:'fix',f:'tools',t:'シーズン残り日数を修正',x:'スプリット2切替日が古かった（6/16→6/23に修正）。残り日数が正しく表示されるように。シーズン終了は8/4のまま'},
@@ -3990,7 +4010,7 @@ function frRender(){
  }else{
   box.innerHTML='<div class="frgrid">'+a.map(function(m,i){var p=m.data;
    if(!p)return '<div class="fc load"><div class="em">⏳</div><div class="mid"><div class="nm">'+esc(m.ign)+'</div><div class="rk">取得中…</div></div></div>';
-   if(!p.ok)return '<div class="fc off2" onclick="frShow('+i+')"><button class="del" onclick="frDel('+i+');event.stopPropagation();return false;" aria-label="削除">🗑️</button><div class="em">❓</div><div class="mid"><div class="nm">'+esc(m.ign)+'</div><div class="rk">取得できず（タップで再試行）</div></div></div>';
+   if(!p.ok)return '<div class="fc off2" onclick="frShow('+i+')"><button class="del" onclick="frDel('+i+');event.stopPropagation();return false;" aria-label="削除">🗑️</button><div class="em">❓</div><div class="mid"><div class="nm">'+esc(m.ign)+'</div><div class="rk">取得できず（タップで対処法）</div></div></div>';
    return '<div class="fc'+(p.online?' fonline':' foffline')+'" onclick="frShow('+i+')"><button class="del" onclick="frDel('+i+');event.stopPropagation();return false;" aria-label="削除">🗑️</button><div class="em">'+p.emoji+'</div><div class="mid"><div class="nm">'+esc(p.name)+'</div><div class="rk">'+esc(p.rankName||'-')+'</div>'+frOnBadge(p.state)+'</div><div class="right"><div class="rpv mono">'+(p.rp||0).toLocaleString()+'</div><div class="rpl">RP</div></div><div class="arr">›</div></div>';
   }).join('')+'</div>';
  }
@@ -4013,7 +4033,14 @@ function frkv(k,v){return '<div class="frkv"><span class="k">'+k+'</span><span c
 function frrr(k,v){return '<div class="frrr"><span class="rk2">'+esc(k)+'</span><span class="rv">'+esc(v)+'</span></div>';}
 function frRenderDetail(m){
  var p=m.data,det=$('frDetailBody');if(!det)return;
- if(!p||!p.ok){det.innerHTML='<div class="warnbox" style="margin:14px">データを取得できませんでした。IDとプラットフォームを確認して、もう一度試してください。</div>';det.classList.add('on');return;}
+ if(!p||!p.ok){det.innerHTML='<div class="frfail">'
+  +'<div class="ic">🔍</div>'
+  +'<div class="ttl">まだ取得できないみたい</div>'
+  +'<div class="msg">この名前が <b>apexlegendsstatus.com</b> にまだ登録されてないみたい。<b>あなたのせいじゃない</b>から大丈夫。下のボタンで直し方をやさしく案内するよ。</div>'
+  +'<button class="btn primary" type="button" style="width:100%;margin-top:12px" onclick="frHelpOpen()">❓ どうして出ないの？直し方を見る</button>'
+  +'<button class="btn" type="button" style="width:100%;margin-top:8px" onclick="frAlsRegister()">🔎 als.comを開く</button>'
+  +'<button class="btn" type="button" style="width:100%;margin-top:8px" onclick="frReload(FR_CUR)">↻ 再取得する</button>'
+  +'</div>';det.classList.add('on');return;}
  var now;
  if(p.state==='match'){
   var mp=(FR_MAP?esc(FR_MAP)+'・トリオ':'ランク・トリオ');
@@ -4058,6 +4085,41 @@ function pwHomeIntroMaybe(){
  if(seen!==null&&Number(seen)>=newest.v)return;              // 最新まで見済み → 何も出さない
  pwHomeFired=true;pwPendingAnnV=newest.v;pwTrack('intro_start');
  newest.go();                                                // ★最新の1件のみ。10000個あっても連発しない
+}
+function frAlsRegister(){
+ var a=frGet(),m=a[FR_CUR]||{};var nm=(m.ign||'').replace(/^取得中…$/,'');
+ try{if(nm&&navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(nm);}catch(e){}
+ try{window.open('https://apexlegendsstatus.com/stats','_blank');}catch(e){}
+ toast2(nm?('「'+nm+'」をコピーしたよ。als.comの検索に貼って一度開いて。数分後にアプリで名前検索OK'):'als.comで名前を一度検索してね。数分後にアプリで出るよ');
+ try{if(window.track)window.track('frank','als_register');}catch(e){}
+}
+/* === 取得できない時の「やさしい手順」モーダル（4ステップ） === */
+var FR_HELP=[
+ {em:'🤔',t:'どうして出ないの？',body:'<b>あなたのせいじゃないよ！</b><br><br>このアプリは、みんなのデータが集まる<b>「als（エーエルエス）」</b>という別のサイトから、戦績やランクを<b>借りて</b>表示しているんだ。<br><br>そのalsに、その人のデータが<b>まだ登録されていない</b>と、ここには出てこないよ。<br><br>新しく作ったアカウントや、まだあまり検索されていない人に起こりやすいよ。'},
+ {em:'1️⃣',t:'まず「als.comを開く」',body:'下のボタンを押すと…<br><br>① 入力した<b>名前が自動でコピー</b>される<br>② <b>als.com</b>が新しい画面で開く<br><br>ボタンを押したら、開いた画面に進んでね。',btn:{label:'🔎 als.comを開く（名前をコピー）',fn:'frAlsRegister'}},
+ {em:'2️⃣',t:'alsで「検索」する',body:'開いた als.com で、こうするよ：<br><br>① 上のほうの<b>検索ボックス</b>を長押し →<br>　<b>「ペースト（貼り付け）」</b>を選ぶ<br>　（さっきの名前が入るよ）<br>② <b>機種</b>（PS / Xbox / PC）を選ぶ<br>③ <b>検索</b>ボタンを押す<br>④ その人のページが<b>表示されればOK！</b><br><br>👉 ここで一度表示させるのが大事。これで als に記録されるよ。'},
+ {em:'3️⃣',t:'数分待って「再取得」',body:'最後はかんたん！<br><br>① <b>2〜5分</b>くらい待つ<br>　（als に登録されるのを待つ時間だよ）<br>② このアプリに<b>戻ってくる</b><br>③ <b>「再取得」</b>ボタンを押す<br>④ 名前で<b>出るようになる！</b> 🎉<br><br><b>それでも出ないとき：</b><br>・名前の<b>大文字・小文字</b>を、ゲーム内とまったく同じにする<br>・PCの人は<b>「EA / Origin」の名前</b>で試す<br>・あと<b>5分</b>くらい待ってみる',last:true}
+];
+var frHelpP=0;
+function frHelpOpen(){frHelpP=0;frHelpShow(0);try{if(window.track)window.track('frank','help_open');}catch(e){}}
+function frHelpClose(){var ov=$('frHelpOv');if(ov)ov.classList.remove('on');}
+function frHelpShow(p){
+ var ov=$('frHelpOv'),box=$('frHelpBox');if(!ov||!box)return;ov.classList.add('on');
+ if(p<0)p=0;if(p>=FR_HELP.length)p=FR_HELP.length-1;frHelpP=p;
+ var pg=FR_HELP[p],last=p===FR_HELP.length-1;
+ var dots='';for(var i=0;i<FR_HELP.length;i++)dots+='<i class="'+(i===p?'on':'')+'"></i>';
+ var actBtn=pg.btn?'<button class="frhbtn act" type="button" onclick="'+pg.btn.fn+'()">'+pg.btn.label+'</button>':'';
+ var nav;
+ if(last){nav='<div class="frhnav"><button class="frhnb" type="button" onclick="frHelpShow('+(p-1)+')">← 戻る</button><button class="frhbtn" type="button" onclick="frHelpClose();frReload(FR_CUR)">↻ 再取得する</button></div>';}
+ else{nav='<div class="frhnav">'+(p>0?'<button class="frhnb" type="button" onclick="frHelpShow('+(p-1)+')">← 戻る</button>':'<span></span>')+'<button class="frhbtn" type="button" onclick="frHelpShow('+(p+1)+')">次へ →</button></div>';}
+ box.innerHTML='<button class="frhx" type="button" onclick="frHelpClose()" aria-label="閉じる">×</button>'
+  +'<div class="frhstep">STEP '+(p+1)+' / '+FR_HELP.length+'</div>'
+  +'<div class="frhem">'+pg.em+'</div>'
+  +'<div class="frht">'+pg.t+'</div>'
+  +'<div class="frhbody">'+pg.body+'</div>'
+  +actBtn
+  +'<div class="frhdots">'+dots+'</div>'
+  +nav;
 }
 /* ④⑤：プレイヤーウォッチ画面に初めて入った時に1回だけ → 広告 → 操作チュートリアル */
 function pwScreenIntroMaybe(){
@@ -5228,5 +5290,6 @@ try{var _sl=localStorage.getItem("apexLang");if(_sl)LANG=_sl;}catch(e){}applySta
       <div class="frdet" id="frDetailBody"></div>
     </div>
   </div>
+  <div class="frhelpov" id="frHelpOv"><div class="frhelpbox" id="frHelpBox"></div></div>
 </body>
 </html>
