@@ -1333,6 +1333,18 @@ body{padding-bottom:64px!important}
 .frhdots{display:flex;gap:7px;justify-content:center;margin-top:16px}
 .frhdots i{width:8px;height:8px;border-radius:50%;background:rgba(212,175,55,.25)}
 .frhdots i.on{background:#e7c45f;box-shadow:0 0 8px rgba(231,196,95,.6)}
+.frhsub{font-size:12px;color:#bcae86;margin-bottom:12px}
+.frhempty{font-size:14px;color:#bcae86;line-height:1.8;padding:26px 10px;text-align:center}
+.frhspin{width:38px;height:38px;margin:18px auto 4px;border:4px solid rgba(212,175,55,.25);border-top-color:#e7c45f;border-radius:50%;animation:frhspin 0.8s linear infinite}
+@keyframes frhspin{to{transform:rotate(360deg)}}
+.frhlist{display:flex;flex-direction:column;gap:8px;text-align:left}
+.frhrow{display:flex;gap:8px;align-items:stretch}
+.frhre{flex:1;display:flex;align-items:center;gap:8px;padding:11px 12px;border-radius:12px;border:1px solid rgba(212,175,55,.22);background:rgba(255,255,255,.03);color:#e9dcae;cursor:pointer;text-align:left;min-width:0}
+.frhname{flex:1;font-weight:700;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.frhplat{flex:none;font-size:11px;font-weight:700;color:#241a06;background:#caa84e;border-radius:6px;padding:2px 7px}
+.frhgo{flex:none;font-size:11px;color:#caa84e;font-weight:700}
+.frhdel{flex:none;width:40px;border-radius:12px;border:1px solid rgba(255,90,90,.3);background:rgba(255,90,90,.08);color:#ff8a8a;font-size:18px;cursor:pointer}
+.frminib{display:inline-flex;align-items:center;gap:5px;margin:8px 2px 2px;padding:7px 13px;border-radius:999px;border:1px solid rgba(212,175,55,.3);background:rgba(212,175,55,.08);color:#e9dcae;font-size:12.5px;font-weight:700;cursor:pointer}
 </style>
 <script type="application/ld+json">
 {
@@ -1547,8 +1559,9 @@ body{padding-bottom:64px!important}
   <!-- ===== FRIEND RANK ===== -->
   <div class="view" id="v-frank"><button class="back" onclick="home()">← ホーム</button>
     <div class="caption"><h2>👥 プレイヤーウォッチ</h2><span class="d">気になるプレイヤーを登録→“今オンラインか”＆現在ランクを一目で</span></div>
-    <div class="searchbar"><input id="frIgn" placeholder="名前 / UID / als.comのURL" autocomplete="off"><select id="frPlat"><option value="PC">PC</option><option value="PS">PS</option><option value="Xbox">Xbox</option><option value="Switch">Switch</option></select><button onclick="frAdd()">＋追加</button></div>
-    <div class="frhint">ふだんは名前だけでOK（PCはOrigin名）。出ないときはタップで対処法が出るよ。</div>
+    <div class="searchbar"><input id="frIgn" placeholder="名前 / UID / als.comのURL" autocomplete="off"><select id="frPlat"><option value="PC">PC</option><option value="PS">PS</option><option value="Xbox">Xbox</option><option value="Switch">Switch</option></select><button id="frAddBtn" onclick="frAdd()">＋追加</button></div>
+    <div class="frhint">ふだんは名前だけでOK（PCはOrigin名）。出ないときは案内が出るよ。</div>
+    <button class="frminib" type="button" onclick="frHistOpen()">🕘 検索履歴</button>
     <div class="frbar"><div class="frtabs"><button class="frtab on" data-t="cards" onclick="frTab('cards')">🪪 カード</button><button class="frtab" data-t="rank" onclick="frTab('rank')">🏆 ランキング</button></div><button class="btn x" id="frRefreshBtn" onclick="frRefresh()">↻ 全員更新</button></div>
     <div id="frBox"></div>
     <div id="frDetail"></div>
@@ -2312,6 +2325,7 @@ setTimeout(function(){try{var _h=document.getElementById('home');if(_h&&_h.style
 
 /* ===== サイト更新情報＆赤丸通知 ===== */
 var SITEUPD=[
+ {d:'2026-06-14',tag:'new',f:'frank',t:'検索履歴＆アプリ内で完結する登録フロー',x:'①取得できなかった人はカード化しないように変更 ②検索履歴ボタンを追加（最大50件・ワンタップでPS等の情報ごと再検索）③出ない時はals.comを行き来せず、アプリ内のモーダルで「登録リクエスト→数分待つ→再取得」まで完結できるように'},
  {d:'2026-06-14',tag:'new',f:'frank',t:'取得できない時の手順モーダルを追加',x:'プレイヤーが出ない時、「どうして出ないか」と直し方を4ステップでやさしく案内するモーダルを表示。als.comを開く→検索→数分待って再取得、を誰でも追えるように図解'},
  {d:'2026-06-14',tag:'fix',f:'frank',t:'見つからない時の案内を改善',x:'名前で取得できない人には、ワンタップでals.comに登録（数分で名前検索できるように）できる案内を表示。基本は名前だけでOK'},
  {d:'2026-06-14',tag:'fix',f:'frank',t:'UID/URLでプレイヤー追加に対応',x:'名前で見つからない人（未インデックス等）を、apexlegendsstatus.comのプロフィールURLやUIDを貼って追加できるように。GAS側もUID照会に対応'},
@@ -3963,28 +3977,26 @@ function frFetchEntry(m){
  if(m&&m.uid)return frFetchUid(m.uid,frPlatApi(m.plat));
  return frFetch(m.ign,m.plat);
 }
-function frAdd(){
- var raw=($('frIgn').value||'').trim();
+function frAdd(qOverride,platOverride){
+ var raw=(qOverride!=null?qOverride:($('frIgn')?$('frIgn').value:'')||'').trim();
  if(!raw){toast2('ID / UID / als.comのURL を入力してね');return;}
- var selPlat=$('frPlat').value;
+ var selPlat=platOverride||($('frPlat')?$('frPlat').value:'PC');
  var parsed=frParseInput(raw);
+ var usePlat=parsed.plat||selPlat;
+ frHistAdd({q:raw,label:(parsed.uid?('UID:'+parsed.uid):raw),plat:usePlat,uid:parsed.uid||''});
  var a=frGet();
  if(a.length>=20){toast2('登録は20人まで');return;}
- var entry;
- if(parsed.uid){
-  if(a.some(function(x){return x.uid&&x.uid===parsed.uid;})){toast2('もう追加済みだよ');return;}
-  entry={ign:'取得中…',plat:(parsed.plat||selPlat),uid:parsed.uid,data:null,t:0};
- }else{
-  if(a.some(function(x){return !x.uid&&x.ign.toLowerCase()===parsed.ign.toLowerCase()&&x.plat===selPlat;})){toast2('もう追加済みだよ');return;}
-  entry={ign:parsed.ign,plat:selPlat,data:null,t:0};
- }
- $('frIgn').value='';a.push(entry);frSave(a);frRender();pwTrack('add');
- var idx=a.length-1;
- frFetchEntry(entry).then(function(p){
-  var arr=frGet();if(!arr[idx])return;
-  arr[idx].data=p.ok?p:{ok:false};arr[idx].t=Date.now();
-  if(p.ok){if(p.name)arr[idx].ign=p.name;if(p.apiPlat)arr[idx].plat=frApiToUi(p.apiPlat);if(p.uid)arr[idx].uid=p.uid;}
-  frSave(arr);frRender();
+ if(parsed.uid){if(a.some(function(x){return x.uid&&x.uid===parsed.uid;})){toast2('もう追加済みだよ');return;}}
+ else{if(a.some(function(x){return !x.uid&&x.ign.toLowerCase()===parsed.ign.toLowerCase()&&x.plat===usePlat;})){toast2('もう追加済みだよ');return;}}
+ var btn=$('frAddBtn');if(btn){btn.disabled=true;btn.textContent='検索中…';}
+ frFetchEntry({ign:parsed.ign,uid:parsed.uid,plat:usePlat}).then(function(p){
+  if(btn){btn.disabled=false;btn.textContent='＋追加';}
+  if(p&&p.ok){
+   var entry={ign:(p.name||parsed.ign||'プレイヤー'),plat:(p.apiPlat?frApiToUi(p.apiPlat):usePlat),uid:(p.uid||parsed.uid||''),data:p,t:Date.now()};
+   var arr=frGet();arr.push(entry);frSave(arr);if($('frIgn'))$('frIgn').value='';frRender();pwTrack('add');toast2('追加した！');
+  }else{
+   frRegOpen({q:raw,ign:parsed.ign,uid:parsed.uid,plat:usePlat});   // 失敗時はカード化せず登録モーダル
+  }
  });
 }
 function frDel(i){var a=frGet();a.splice(i,1);frSave(a);frRender();pwTrack('del');}
@@ -4093,6 +4105,82 @@ function frAlsRegister(){
  toast2(nm?('「'+nm+'」をコピーしたよ。als.comの検索に貼って一度開いて。数分後にアプリで名前検索OK'):'als.comで名前を一度検索してね。数分後にアプリで出るよ');
  try{if(window.track)window.track('frank','als_register');}catch(e){}
 }
+/* === 検索履歴（最大50件・ワンタップ再検索） === */
+function frHistGet(){try{return JSON.parse(localStorage.getItem('apexFrHist')||'[]');}catch(e){return [];}}
+function frHistSave(a){try{localStorage.setItem('apexFrHist',JSON.stringify(a));}catch(e){}}
+function frHistAdd(o){
+ if(!o||!o.q)return;
+ var a=frHistGet();
+ var key=(o.uid?('u:'+o.uid):('n:'+String(o.q).toLowerCase()+'|'+o.plat));
+ a=a.filter(function(x){var k=(x.uid?('u:'+x.uid):('n:'+String(x.q).toLowerCase()+'|'+x.plat));return k!==key;});
+ a.unshift({q:o.q,label:o.label||o.q,plat:o.plat||'PC',uid:o.uid||'',t:Date.now()});
+ if(a.length>50)a=a.slice(0,50);
+ frHistSave(a);
+}
+function frHistDel(i){var a=frHistGet();a.splice(i,1);frHistSave(a);frHistRender();}
+function frHistClear(){if(!confirm('検索履歴をすべて消す？'))return;frHistSave([]);frHistRender();}
+function frHistOpen(){frHistRender();var ov=$('frHistOv');if(ov)ov.classList.add('on');try{if(window.track)window.track('frank','hist_open');}catch(e){}}
+function frHistClose(){var ov=$('frHistOv');if(ov)ov.classList.remove('on');}
+function frHistRe(i){var a=frHistGet();var o=a[i];if(!o)return;if($('frIgn'))$('frIgn').value=o.q;if($('frPlat'))$('frPlat').value=o.plat;frHistClose();frAdd(o.q,o.plat);}
+function frHistRender(){
+ var box=$('frHistBox');if(!box)return;
+ var a=frHistGet();
+ var head='<button class="frhx" type="button" onclick="frHistClose()" aria-label="閉じる">×</button><div class="frht" style="margin-bottom:4px">🕘 検索履歴</div><div class="frhsub">タップでもう一度検索（最大50件・端末内のみ保存）</div>';
+ if(!a.length){box.innerHTML=head+'<div class="frhempty">まだ履歴はないよ。<br>プレイヤーを検索すると、ここに残るよ。</div>';return;}
+ var rows=a.map(function(o,i){
+  return '<div class="frhrow"><button class="frhre" type="button" onclick="frHistRe('+i+')"><span class="frhname">'+esc(o.label||o.q)+'</span><span class="frhplat">'+esc(o.plat)+'</span><span class="frhgo">🔍 再検索</span></button><button class="frhdel" type="button" onclick="frHistDel('+i+')" aria-label="削除">×</button></div>';
+ }).join('');
+ box.innerHTML=head+'<div class="frhlist">'+rows+'</div><button class="frhnb" type="button" style="width:100%;margin-top:12px" onclick="frHistClear()">履歴をすべて消す</button>';
+}
+
+/* === 登録モーダル（アプリ内で完結：登録リクエスト→数分待ち→再取得） === */
+var frRegCur=null,frRegTries=0,frRegBusy=false;
+function frRegOpen(ctx){
+ frRegCur=ctx;frRegTries=0;frRegBusy=false;
+ var ov=$('frRegOv');if(ov)ov.classList.add('on');
+ frRegRender('start');
+ try{if(window.track)window.track('frank','reg_open');}catch(e){}
+}
+function frRegClose(){var ov=$('frRegOv');if(ov)ov.classList.remove('on');}
+function frRegRender(state,msg){
+ var box=$('frRegBox');if(!box||!frRegCur)return;
+ var nm=esc(frRegCur.ign||frRegCur.q||'');
+ var H='<button class="frhx" type="button" onclick="frRegClose()" aria-label="閉じる">×</button>';
+ if(state==='start'){
+  H+='<div class="frhem">📡</div><div class="frht">alsに登録をリクエスト</div>'
+   +'<div class="frhbody">「<b>'+nm+'</b>」はまだ <b>als</b> に登録されていないみたい。<br><br>でも大丈夫。<b>今の検索で「この人を登録して」というリクエストは自動で送られた</b>よ（als.comを開く必要はないよ）。<br><br>登録が終わるまで<b>数分</b>かかることがある。下のボタンで取得をためせるよ。</div>'
+   +'<button class="frhbtn act" type="button" onclick="frRegRetry()">↻ 取得をためす</button>'
+   +'<button class="frhnb" type="button" style="width:100%;margin-top:8px" onclick="frHelpOpen()">❓ それでも出ない時の詳しい手順</button>';
+ }else if(state==='trying'){
+  H+='<div class="frhem">⏳</div><div class="frht">取得中…</div>'
+   +'<div class="frhbody" style="text-align:center"><b>'+nm+'</b> を取得しています…<br>'+(msg||'')+'</div>'
+   +'<div class="frhspin"></div>';
+ }else if(state==='wait'){
+  H+='<div class="frhem">🕒</div><div class="frht">もう少しだけ待ってね</div>'
+   +'<div class="frhbody">まだ登録が完了していないみたい。alsの登録には<b>最大5分</b>ほどかかることがあるよ。<br><br>少し時間をおいてから、もう一度ためしてみてね。</div>'
+   +'<button class="frhbtn act" type="button" onclick="frRegRetry()">↻ もう一度ためす</button>'
+   +'<button class="frhnb" type="button" style="width:100%;margin-top:8px" onclick="frHelpOpen()">❓ 詳しい手順（als.comで登録）</button>';
+ }else if(state==='done'){
+  H+='<div class="frhem">🎉</div><div class="frht">取得できた！</div>'
+   +'<div class="frhbody" style="text-align:center"><b>'+nm+'</b> をカードに追加したよ。</div>'
+   +'<button class="frhbtn" type="button" onclick="frRegClose()">閉じる</button>';
+ }
+ box.innerHTML=H;
+}
+function frRegRetry(){
+ if(frRegBusy||!frRegCur)return;frRegBusy=true;frRegTries++;
+ frRegRender('trying','試行 '+frRegTries+' 回目');
+ frFetchEntry({ign:frRegCur.ign,uid:frRegCur.uid,plat:frRegCur.plat}).then(function(p){
+  frRegBusy=false;
+  if(p&&p.ok){
+   var arr=frGet();
+   if(arr.length<20){arr.push({ign:(p.name||frRegCur.ign||'プレイヤー'),plat:(p.apiPlat?frApiToUi(p.apiPlat):frRegCur.plat),uid:(p.uid||frRegCur.uid||''),data:p,t:Date.now()});frSave(arr);frRender();pwTrack('add');}
+   if($('frIgn'))$('frIgn').value='';
+   frRegRender('done');
+  }else{frRegRender('wait');}
+ });
+}
+
 /* === 取得できない時の「やさしい手順」モーダル（4ステップ） === */
 var FR_HELP=[
  {em:'🤔',t:'どうして出ないの？',body:'<b>あなたのせいじゃないよ！</b><br><br>このアプリは、みんなのデータが集まる<b>「als（エーエルエス）」</b>という別のサイトから、戦績やランクを<b>借りて</b>表示しているんだ。<br><br>そのalsに、その人のデータが<b>まだ登録されていない</b>と、ここには出てこないよ。<br><br>新しく作ったアカウントや、まだあまり検索されていない人に起こりやすいよ。'},
@@ -5291,5 +5379,7 @@ try{var _sl=localStorage.getItem("apexLang");if(_sl)LANG=_sl;}catch(e){}applySta
     </div>
   </div>
   <div class="frhelpov" id="frHelpOv"><div class="frhelpbox" id="frHelpBox"></div></div>
+  <div class="frhelpov" id="frRegOv"><div class="frhelpbox" id="frRegBox"></div></div>
+  <div class="frhelpov" id="frHistOv"><div class="frhelpbox" id="frHistBox"></div></div>
 </body>
 </html>
