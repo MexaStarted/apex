@@ -1900,17 +1900,21 @@ function gas(type,extra){return fetch(APEX_GAS_URL+"?type="+type+(extra||""),{ca
 var GAS_CACHE={};
 function gasCached(type,ttlMs){ttlMs=ttlMs||120000;var c=GAS_CACHE[type],now=Date.now();if(c){if(c.data!==undefined&&(now-c.t)<ttlMs)return Promise.resolve(c.data);if(c.p&&(now-c.t)<ttlMs)return c.p;}var e={t:now,data:undefined,p:null};GAS_CACHE[type]=e;e.p=gas(type).then(function(d){if(d&&!d.error){e.data=d;e.t=Date.now();}else{if(GAS_CACHE[type]===e)delete GAS_CACHE[type];}return d;},function(err){if(GAS_CACHE[type]===e)delete GAS_CACHE[type];throw err;});return e.p;}
 var _dataErrShown=false;
-function dataErrShow(retryFn){
+function dataErrShow(retryFn,opts){
  if(document.getElementById('dataErrOv'))return;
+ opts=opts||{};
+ var deT=opts.title||'いまデータが混雑中です';
+ var deM=opts.msg||'たくさんのアクセスをいただいていて、<b style="color:#fff">マップローテ・プレデボーダー・サーバー状況</b>などのリアルタイムデータが<b style="color:#fff">一時的に取得できない</b>状態です。順次回復するので、少し時間をおいてから再試行してみてください🙏';
  var ov=document.createElement('div');ov.id='dataErrOv';
  ov.style.cssText='position:fixed;inset:0;z-index:99999;background:rgba(3,6,12,.86);display:flex;align-items:center;justify-content:center;padding:22px;backdrop-filter:blur(2px)';
  var box=document.createElement('div');
  box.style.cssText='max-width:430px;width:100%;background:linear-gradient(160deg,#111a30,#0a0e1a);border:1px solid rgba(25,227,255,.30);border-radius:18px;padding:24px 22px;text-align:center;box-shadow:0 14px 44px rgba(0,0,0,.55)';
- box.innerHTML='<div style="font-size:42px;line-height:1">🛠️</div><div style="font-family:\'Chakra Petch\',sans-serif;font-weight:700;font-size:19px;color:#eaf2ff;margin-top:8px">いまデータが混雑中です</div><p style="font-size:13.5px;line-height:1.75;color:#c5d0e4;margin:12px 4px 6px">たくさんのアクセスをいただいていて、<b style="color:#fff">マップローテ・プレデボーダー・サーバー状況</b>などのリアルタイムデータが<b style="color:#fff">一時的に取得できない</b>状態です。順次回復するので、少し時間をおいてから再試行してみてください🙏</p><div style="font-size:12px;color:#9fb0cc;background:rgba(255,255,255,.05);border-radius:10px;padding:9px 12px;margin:10px 2px 18px">✅ 診断・デバイス選び・各種ツールは<b style="color:#cfe2ff">いつも通り</b>使えます👀</div><button id="deRetry" class="btn primary" type="button" style="width:100%;margin-bottom:8px">🔄 もう一度読み込む</button><button id="deDiag" class="btn x" type="button" style="width:100%;margin-bottom:8px">🧪 診断で遊ぶ（こっちは元気）</button><button id="deClose" class="btn ghost" type="button" style="width:100%">閉じる</button>';
+ box.innerHTML='<div style="font-size:42px;line-height:1">📡</div><div style="font-family:\'Chakra Petch\',sans-serif;font-weight:700;font-size:19px;color:#eaf2ff;margin-top:8px">'+deT+'</div><p style="font-size:13.5px;line-height:1.75;color:#c5d0e4;margin:12px 4px 6px">'+deM+'</p><div style="font-size:12px;color:#9fb0cc;background:rgba(255,255,255,.05);border-radius:10px;padding:9px 12px;margin:10px 2px 18px">✅ 診断・デバイス選び・各種ツールは<b style="color:#cfe2ff">いつも通り</b>使えます👀</div><button id="deRetry" class="btn primary" type="button" style="width:100%;margin-bottom:8px">🔄 もう一度読み込む</button><a href="https://discord.gg/zsm52M7" target="_blank" rel="noopener" id="deDisc" class="btn x" style="width:100%;display:block;margin-bottom:8px;text-decoration:none;text-align:center">📡 Apexサーバーの状態をDiscordで確認</a><button id="deDiag" class="btn x" type="button" style="width:100%;margin-bottom:8px">🧪 診断で遊ぶ（こっちは元気）</button><button id="deClose" class="btn ghost" type="button" style="width:100%">閉じる</button>';
  ov.appendChild(box);document.body.appendChild(ov);
  function close(){if(ov.parentNode)ov.parentNode.removeChild(ov);}
  ov.addEventListener('click',function(e){if(e.target===ov)close();});
  var rb=document.getElementById('deRetry'),db=document.getElementById('deDiag'),cb=document.getElementById('deClose');
+ var disc=document.getElementById('deDisc');if(disc)disc.addEventListener('click',function(){try{if(window.track)track('dataerr_discord');}catch(e){}});
  if(cb)cb.addEventListener('click',close);
  if(rb)rb.addEventListener('click',function(){try{if(window.track)track('dataerr_retry');}catch(e){}close();try{if(typeof retryFn==='function')retryFn();}catch(e){}});
  if(db)db.addEventListener('click',function(){try{if(window.track)track('dataerr_diag');}catch(e){}close();try{open_('diag');}catch(e){}});
@@ -2174,16 +2178,24 @@ function findPlayer(){var name=($('pname').value||'').trim(),plat=$('pplat').val
 }
 function findTry(name,plat,attempt){
   gas('player','&player='+encodeURIComponent(name)+'&platform='+plat).then(function(d){
-    if(d&&(d.retry===true||d.error==='busy'||d.error==='request_failed')){   // 混雑/一時失敗 → 時間をずらして再試行（2/秒の空きを拾う）
+    if(d&&(d.error==='busy'||(d.retry===true&&d.error!=='als_down'))){   // 混雑(throttle) → 時間をずらして再試行（2/秒の空きを拾う）
       if(attempt<2){$('findBox').innerHTML='<div class="loading">'+t('searching')+'（混雑中・再試行 '+(attempt+2)+'/3）</div>';findAutoT=setTimeout(function(){findTry(name,plat,attempt+1);},1300*(attempt+1));return;}
       $('findBox').innerHTML='<div class="warnbox">いまアクセスが集中していて取得できませんでした。数秒おいて<button class="btn" type="button" onclick="findPlayer()" style="margin-left:8px">🔄 再検索</button></div>';return;
+    }
+    if(d&&(d.error==='als_down'||d.error==='request_failed')){   // als と通信できていない → リトライせず即モーダルで説明
+      $('findBox').innerHTML='<div class="warnbox">データ取得サーバーと通信できていません。下の案内をご確認ください。</div>';
+      findCommsDown(name,plat);return;
     }
     if(!d||d.Error||d.error){$('findBox').innerHTML='<div class="warnbox">'+t('err_notfound')+'</div>';return;}
     findRender(d,name,plat);
   }).catch(function(){
-    if(attempt<2){findAutoT=setTimeout(function(){findTry(name,plat,attempt+1);},1300*(attempt+1));return;}
-    $('findBox').innerHTML='<div class="warnbox">'+t('err_fail')+'</div>';
+    if(attempt<1){findAutoT=setTimeout(function(){findTry(name,plat,attempt+1);},1300);return;}   // 通信失敗は1回だけ再試行
+    $('findBox').innerHTML='<div class="warnbox">'+t('err_fail')+'</div>';findCommsDown(name,plat);
   });
+}
+function findCommsDown(name,plat){
+  if(typeof dataErrShow!=='function')return;
+  dataErrShow(function(){if(name){if($('pname'))$('pname').value=name;if($('pplat')&&plat)$('pplat').value=plat;findPlayer();}},{title:'通信が途絶えています',msg:'このサイトのデータ取得サーバーが、いま<b style="color:#fff">Apexの統計元（als）と通信できていません</b>。アクセス集中で一時的に制限されている可能性があります。少し時間をおいて再試行するか、下のDiscordでApexサーバーの状況を確認してみてください🙏'});
 }
 function findRefresh(){
   if(!findLast)return;var btn=$('findRefBtn');if(btn){btn.disabled=true;btn.textContent='更新中…';}
@@ -2631,6 +2643,7 @@ setTimeout(function(){try{var _h=document.getElementById('home');if(_h&&_h.style
 
 /* ===== サイト更新情報＆赤丸通知 ===== */
 var SITEUPD=[
+ {d:'2026-06-15',tag:'fix',f:'all',t:'als通信途絶に強く：10秒待ちを解消し、説明モーダル＋Discord案内を追加',x:'Apexの統計元(als)と通信できない時、これまで毎回10秒ほど固まってから失敗していたのを、連続失敗を検知して即「通信が途絶えています」と丁寧に説明するように（サーキットブレーカー）。Apexサーバーの状態をワンタップでDiscord確認できるボタンも追加。検索は「混雑」の時だけ自動リトライ、通信途絶はリトライせず即案内します'},
  {d:'2026-06-15',tag:'fix',f:'find',t:'スタッツ検索：混雑時に「見つからない」と誤表示→自動リトライに修正',x:'アクセス集中でデータ取得が一時的に詰まった時、実在するプレイヤーでも「見つかりませんでした」と出る不具合を修正。混雑時は自動で数秒ずらして最大3回まで再試行し、それでもダメなら「混雑中・再検索」と正しく案内します'},
  {d:'2026-06-15',tag:'new',f:'frank',t:'ウォッチに「前回比・セッションRP・変化順」を追加＋更新失敗時も前回値を表示',x:'①全員更新でカード/ランキングに前回からのRP増減を▲▼表示 ②「このセッション」で開いてからの合計RP変動をまとめ表示 ③並び替えに「変化」を追加（動いた人が上に）④更新に失敗した人もカードを空にせず、前回の値を「⚠前回値（◯分前）」と明記して表示するように'},
  {d:'2026-06-15',tag:'new',f:'all',t:'アプリ内ブラウザで「ブラウザで開く」案内を表示',x:'X等のアプリ内ブラウザで開いている時、商品リンクや一部機能を正しく動かすために「右上→ブラウザで開く」を案内するバナーを表示します（一度閉じれば再表示しません）。アフィリの計測漏れ対策'},
