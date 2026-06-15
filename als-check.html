@@ -52,6 +52,7 @@
 
 <button id="go" onclick="run()">チェック開始</button>
 <button id="burstBtn" onclick="burst()" style="background:linear-gradient(135deg,#ff7a3d,#ff5d6c)">⚡ 連打テスト（混雑か障害かを判定）</button>
+<button id="dbgBtn" onclick="dbg()" style="background:linear-gradient(135deg,#9b6bff,#6b4aff)">🔬 生データ診断（alsの本当の応答を見る）</button>
 <div id="bres" class="res"></div>
 
 <div id="verdict" class="verdict"></div>
@@ -101,6 +102,24 @@ function row(name,res){
  return '<div class="item"><div class="ih">'+esc(name)+'<span class="ms">'+res.ms+'ms</span><span class="badge b-'+c.k+'">'+c.label+(c.note?' · '+esc(c.note):'')+'</span></div><div class="raw">'+raw+'</div></div>';
 }
 function getUid(res){try{return res&&res.json&&res.json.global&&res.json.global.uid?String(res.json.global.uid):'';}catch(e){return '';}}
+async function dbg(){
+ var gas=$('gas').value.trim().replace(/\/+$/,''),name=$('pname').value.trim(),plat=$('pplat').value;
+ if(!gas){alert('GAS URLを入れてね');return;}
+ var b=$('dbgBtn');b.disabled=true;$('bres').innerHTML='<div class="note">alsの生応答を取得中…（抑制なし・ホスト別）</div>';
+ var url=gas+'?type=debug'+(name?('&player='+encodeURIComponent(name)+'&platform='+plat):'');
+ var res=await timed(url);
+ if(res.fetchErr||!res.json||!res.json.debug){$('bres').innerHTML='<div class="note warn">debug取得失敗。GASに「新バージョン」をデプロイした？（type=debug 未対応かも）</div>';b.disabled=false;return;}
+ var meanings={200:'OK',400:'数分後に再試行',403:'キー無効/不明',404:'プレイヤー不在',405:'外部API(EA)エラー',410:'不明な機種',429:'レート超過',500:'内部エラー'};
+ var rows=res.json.debug.map(function(h){
+  var code=(h.code!=null)?h.code:'ERR';
+  var k=(code===200)?'ok':(code===403||code===429||code===500)?'ng':'warn';
+  var mean=meanings[code]||'';
+  return '<div class="item"><div class="ih">'+esc(h.host)+'<span class="ms">'+(h.ms||0)+'ms</span><span class="badge b-'+k+'">'+code+(mean?' · '+mean:'')+'</span></div><div class="raw">'+esc(h.error||h.body||'')+'</div></div>';
+ }).join('');
+ $('bres').innerHTML='<div class="note" style="margin-bottom:6px">path: '+esc(res.json.path||'')+'</div>'+rows;
+ REPORT+='--- 生データ診断(debug) path='+(res.json.path||'')+' ---\n'+res.json.debug.map(function(h){return h.host+' : '+(h.code!=null?h.code:('ERR '+(h.error||'')))+' ('+(h.ms||0)+'ms)\n'+(h.body||h.error||'').slice(0,200);}).join('\n')+'\n\n';
+ $('copyBtn').style.display='block';b.disabled=false;
+}
 async function burst(){
  var gas=$('gas').value.trim().replace(/\/+$/,''),name=$('pname').value.trim(),plat=$('pplat').value;
  if(!gas){alert('GAS URLを入れてね');return;}
