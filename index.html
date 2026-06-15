@@ -211,6 +211,9 @@
   .tile:hover{transform:translateY(-3px);border-color:var(--g,#19e3ff);box-shadow:0 8px 30px -8px var(--g,#19e3ff)}
   .tile .ic{font-size:32px;position:relative}.tile .nm{font-family:'Chakra Petch';font-weight:700;font-size:19px;position:relative}.tile .ds{font-size:11px;color:var(--sub);margin-top:3px;position:relative;line-height:1.4}
   .tile .lv{position:absolute;top:12px;right:12px;font-family:'Chakra Petch';font-size:10px;color:var(--ok);border:1px solid var(--ok);border-radius:20px;padding:1px 8px;z-index:2}
+  .tile.tiledown{opacity:.5;filter:grayscale(.7)}
+  .tile.tiledown:hover{transform:none;box-shadow:none}
+  .tile .lv.lvdown{color:var(--warn)!important;border-color:var(--warn)!important}
   /* views */
   .view{display:none}.view.on{display:block;animation:fade .3s}@keyframes fade{from{opacity:0;transform:translateY(8px)}}
   .back{font-family:'Chakra Petch';font-weight:600;font-size:13px;color:var(--cy);background:none;border:1px solid var(--line);border-radius:8px;padding:8px 13px;cursor:pointer}
@@ -1543,9 +1546,9 @@ body{padding-bottom:64px!important}
     <div id="popularRank"></div>
     <div class="hubgrid">
       <div class="tile firetile" onclick="legendOpen()"><i class="fedge"></i><i class="b2"></i><span class="lv">物語</span><div class="ic">🗡️</div><div><div class="nm">世界を救って伝説になる</div><div class="ds">激やばサイトの開発者の人生を追体験する</div></div></div>
-      <div class="tile" data-feat="map" style="--g:#19e3ff" onclick="open_('map')"><span class="lv">LIVE</span><div class="ic">🗺️</div><div><div class="nm" data-i18n="tile_map_n">マップ</div><div class="ds" data-i18n="tile_map_d">現在/次・残り時間</div></div></div>
-      <div class="tile" data-feat="pred" style="--g:#ff4d3d" onclick="open_('pred')"><span class="lv">LIVE</span><div class="ic">👑</div><div><div class="nm" data-i18n="tile_pred_n">プレデター</div><div class="ds" data-i18n="tile_pred_d">到達RPボーダー</div></div></div>
-      <div class="tile" data-feat="srv" style="--g:#22e3a0" onclick="open_('srv')"><span class="lv">LIVE</span><div class="ic">📡</div><div><div class="nm" data-i18n="tile_srv_n">サーバー</div><div class="ds" data-i18n="tile_srv_d">障害・稼働状況</div></div></div>
+      <div class="tile" data-feat="map" style="--g:#19e3ff" onclick="tileTap('map')"><span class="lv">LIVE</span><div class="ic">🗺️</div><div><div class="nm" data-i18n="tile_map_n">マップ</div><div class="ds" data-i18n="tile_map_d">現在/次・残り時間</div></div></div>
+      <div class="tile" data-feat="pred" style="--g:#ff4d3d" onclick="tileTap('pred')"><span class="lv">LIVE</span><div class="ic">👑</div><div><div class="nm" data-i18n="tile_pred_n">プレデター</div><div class="ds" data-i18n="tile_pred_d">到達RPボーダー</div></div></div>
+      <div class="tile" data-feat="srv" style="--g:#22e3a0" onclick="tileTap('srv')"><span class="lv">LIVE</span><div class="ic">📡</div><div><div class="nm" data-i18n="tile_srv_n">サーバー</div><div class="ds" data-i18n="tile_srv_d">障害・稼働状況</div></div></div>
       <div class="tile" data-feat="find" style="--g:#ff3df2" onclick="open_('find')"><div class="ic">🔍</div><div><div class="nm" data-i18n="tile_find_n">検索</div><div class="ds" data-i18n="tile_find_d">戦績＋戦闘力採点</div></div></div>
       <div class="tile" data-feat="frank" style="--g:#5dd0ff" onclick="open_('frank')"><span class="lv">NEW</span><div class="ic">👥</div><div><div class="nm">プレイヤーウォッチ</div><div class="ds">推し・フレンドの現在ランク＆オンライン状況</div></div></div>
       <div class="tile" data-feat="diag" style="--g:#c062ff" onclick="open_('diag')"><div class="ic">🧪</div><div><div class="nm" data-i18n="tile_diag_n">診断・あそび</div><div class="ds" data-i18n="tile_diag_d">15診断＋あそび</div></div></div>
@@ -1895,7 +1898,7 @@ var A8ADS=[
 var $=function(id){return document.getElementById(id);};
 function gas(type,extra){return fetch(APEX_GAS_URL+"?type="+type+(extra||""),{cache:"no-store"}).then(function(r){return r.json();});}
 var GAS_CACHE={};
-function gasCached(type,ttlMs){ttlMs=ttlMs||120000;var c=GAS_CACHE[type],now=Date.now();if(c){if(c.data!==undefined&&(now-c.t)<ttlMs)return Promise.resolve(c.data);if(c.p&&(now-c.t)<ttlMs)return c.p;}var e={t:now,data:undefined,p:null};GAS_CACHE[type]=e;e.p=gas(type).then(function(d){e.data=d;e.t=Date.now();return d;},function(err){if(GAS_CACHE[type]===e)delete GAS_CACHE[type];throw err;});return e.p;}
+function gasCached(type,ttlMs){ttlMs=ttlMs||120000;var c=GAS_CACHE[type],now=Date.now();if(c){if(c.data!==undefined&&(now-c.t)<ttlMs)return Promise.resolve(c.data);if(c.p&&(now-c.t)<ttlMs)return c.p;}var e={t:now,data:undefined,p:null};GAS_CACHE[type]=e;e.p=gas(type).then(function(d){if(d&&!d.error){e.data=d;e.t=Date.now();}else{if(GAS_CACHE[type]===e)delete GAS_CACHE[type];}return d;},function(err){if(GAS_CACHE[type]===e)delete GAS_CACHE[type];throw err;});return e.p;}
 var _dataErrShown=false;
 function dataErrShow(retryFn){
  if(document.getElementById('dataErrOv'))return;
@@ -1914,6 +1917,30 @@ function dataErrShow(retryFn){
  try{if(window.track)track('dataerr_view');}catch(e){}
 }
 function dataErrMaybe(retryFn){if(_dataErrShown)return;_dataErrShown=true;dataErrShow(retryFn);}
+/* ===== ホームのデータ系パネル ヘルスチェック（取れない時はタップで説明） ===== */
+var DATA_OK=null,_lastHealth=0;
+function homeHealthCheck(force){
+ var now=Date.now();
+ if(!force&&DATA_OK!==null&&now-_lastHealth<60000)return Promise.resolve();
+ _lastHealth=now;
+ return gasCached('map',60000).then(function(d){DATA_OK=!(!d||d.error);applyPanelHealth();}).catch(function(){DATA_OK=false;applyPanelHealth();});
+}
+function applyPanelHealth(){
+ var down=(DATA_OK===false);
+ ['map','pred','srv'].forEach(function(f){
+  var el=document.querySelector('.tile[data-feat="'+f+'"]');if(!el)return;
+  el.classList.toggle('tiledown',down);
+  var lv=el.querySelector('.lv');if(lv){lv.textContent=down?'混雑中':'LIVE';lv.classList.toggle('lvdown',down);}
+ });
+}
+function tileTap(sec){
+ if(DATA_OK===false){
+  try{if(window.track)track('panel_down_tap',sec);}catch(e){}
+  dataErrShow(function(){homeHealthCheck(true).then(function(){if(DATA_OK!==false)open_(sec);});});
+  return;
+ }
+ open_(sec);
+}
 function esc(s){return String(s).replace(/[<>&"']/g,function(c){return{'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[c];});}
 function jesc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;').replace(/[\r\n\t]/g,' ');}
 /* ===== i18n ===== */
@@ -1977,7 +2004,7 @@ function grandOpen(){
   setTimeout(function(){c.classList.remove('go');f.classList.remove('go');},1700);
  }catch(e){}
 }
-function home(){document.querySelectorAll('.view').forEach(function(v){v.classList.remove('on')});$('home').style.display='block';window.scrollTo(0,0);try{botnavUpdate();}catch(e){}try{renderHomeNotice();}catch(e){}try{renderPopular();}catch(e){}try{document.title='Apexプレデターボーダー 今シーズン｜マップ・サーバー状態・戦績・診断 - 激やばツール';}catch(e){}try{seoApply('');}catch(e){}try{pushUrl('');}catch(e){}try{var _h=$('home');if(_h){_h.classList.remove('vltopen');void _h.offsetWidth;_h.classList.add('vltopen');setTimeout(function(){_h.classList.remove('vltopen');},1500);}}catch(e){}try{setTimeout(pwHomeIntroMaybe,500);}catch(e){}}
+function home(){document.querySelectorAll('.view').forEach(function(v){v.classList.remove('on')});$('home').style.display='block';try{homeHealthCheck();}catch(e){}window.scrollTo(0,0);try{botnavUpdate();}catch(e){}try{renderHomeNotice();}catch(e){}try{renderPopular();}catch(e){}try{document.title='Apexプレデターボーダー 今シーズン｜マップ・サーバー状態・戦績・診断 - 激やばツール';}catch(e){}try{seoApply('');}catch(e){}try{pushUrl('');}catch(e){}try{var _h=$('home');if(_h){_h.classList.remove('vltopen');void _h.offsetWidth;_h.classList.add('vltopen');setTimeout(function(){_h.classList.remove('vltopen');},1500);}}catch(e){}try{setTimeout(pwHomeIntroMaybe,500);}catch(e){}}
 function open_(sec){$('home').style.display='none';document.querySelectorAll('.view').forEach(function(v){v.classList.remove('on')});$('v-'+sec).classList.add('on');window.scrollTo(0,0);
   if(sec==='map'&&!loaded.map){loaded.map=1;loadMap();}
   if(sec==='pred'&&!loaded.pred){loaded.pred=1;loadPred();}
@@ -2521,6 +2548,7 @@ applyTheme();document.addEventListener('DOMContentLoaded',applyTheme);
 function showSplash(){try{if(sessionStorage.getItem('apexSplash'))return;sessionStorage.setItem('apexSplash','1');var d=document.createElement('div');d.id='splash';d.innerHTML='<div class="splogo"><b>APEX</b><i>激やば</i>ツール<span class="spz">⚡</span></div>';document.body.appendChild(d);setTimeout(function(){d.classList.add('out');setTimeout(function(){if(d.parentNode)d.remove();},500);},1100);}catch(e){}}
 showSplash();document.addEventListener('DOMContentLoaded',showSplash);
 document.addEventListener('DOMContentLoaded',function(){setTimeout(grandOpen,200);});setTimeout(function(){try{grandOpen();}catch(e){}},300);
+document.addEventListener('DOMContentLoaded',function(){setTimeout(function(){try{homeHealthCheck(true);}catch(e){}},400);});setTimeout(function(){try{homeHealthCheck(true);}catch(e){}},600);
 function restoreFromUrl(){
  try{
   if((location.hash||'').indexOf('#w=')===0){if(frImportFromHash())return;}
@@ -2577,6 +2605,7 @@ setTimeout(function(){try{var _h=document.getElementById('home');if(_h&&_h.style
 
 /* ===== サイト更新情報＆赤丸通知 ===== */
 var SITEUPD=[
+ {d:'2026-06-15',tag:'new',f:'all',t:'混雑時はデータ系パネルを一時停止表示',x:'ホームを開いた時に1回だけ取得チェックを行い、マップ／プレデ／サーバーのデータが取れない時はそのパネルを「混雑中」表示に。タップすると理由（混雑で一時的に取得不可）を説明します。無駄に開いて「取得失敗」になるのを防止。復旧すれば自動で元に戻ります'},
  {d:'2026-06-15',tag:'kai',f:'all',t:'混雑時の安定性を強化',x:'アクセス急増時もマップ・プレデ・サーバー情報が消えにくいよう、直前の正常値で表示を維持するようにしました。プレイヤー取得も最適化（その都合で「今オンラインか／現在の状況」は最大30秒ほど遅れて表示される場合があります）'},
  {d:'2026-06-15',tag:'new',f:'all',t:'データ取得できない時の説明モーダルを追加',x:'アクセス急増などでマップローテ・プレデボーダー・サーバー状況が読み込めない時に、理由（混雑で一時的に取得不可・順次回復）と「再試行」「診断で遊ぶ」案内を出すように。なんで見れないの？を解消'},
  {d:'2026-06-15',tag:'kai',f:'all',t:'5秒モーダル広告を廃止',x:'画面遷移時とカードを開いた時に出ていた5秒の広告モーダルを完全に廃止。サクサク使えるようになりました。各機能の初回チュートリアルは引き続き表示されます（ページ内の埋め込みバナー枠・おすすめ枠は維持）'},
