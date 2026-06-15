@@ -1941,6 +1941,22 @@ function tileTap(sec){
  }
  open_(sec);
 }
+/* ===== アプリ内ブラウザ（X/IG等）検知 → 「ブラウザで開く」案内（アフィリの取りこぼし対策） ===== */
+function isInApp(){var u=navigator.userAgent||'';return /Twitter|FBAN|FBAV|FB_IAB|Instagram|Line\/|musical_ly|TikTok|BytedanceWebview|MicroMessenger|Snapchat/i.test(u);}
+function iabBanner(){
+ try{
+  if(!isInApp())return;
+  if(localStorage.getItem('iabHideV1'))return;
+  if(document.getElementById('iabBar'))return;
+  var bar=document.createElement('div');bar.id='iabBar';
+  bar.style.cssText='position:fixed;left:8px;right:8px;bottom:8px;z-index:9998;background:linear-gradient(160deg,#16213e,#0c1020);border:1px solid rgba(25,227,255,.35);border-radius:14px;padding:11px 12px;box-shadow:0 8px 28px rgba(0,0,0,.5);display:flex;gap:10px;align-items:flex-start;font-size:12.5px;color:#dbe6f7;line-height:1.6';
+  bar.innerHTML='<div style="font-size:18px;line-height:1.2">🌐</div><div style="flex:1">アプリ内ブラウザで開いています。<b style="color:#fff">商品リンクや一部機能</b>を正しく動かすには、右上の<b style="color:#fff">【⋯】→「ブラウザで開く」</b>（Safari/Chrome）がおすすめです。</div><button id="iabX" type="button" style="background:none;border:none;color:#9fb0cc;font-size:18px;line-height:1;padding:0 4px;cursor:pointer">✕</button>';
+  document.body.appendChild(bar);
+  var x=document.getElementById('iabX');
+  if(x)x.addEventListener('click',function(){try{localStorage.setItem('iabHideV1','1');}catch(e){}if(bar.parentNode)bar.parentNode.removeChild(bar);try{if(window.track)track('iab_dismiss');}catch(e){}});
+  try{if(window.track)track('iab_shown');}catch(e){}
+ }catch(e){}
+}
 function esc(s){return String(s).replace(/[<>&"']/g,function(c){return{'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[c];});}
 function jesc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;').replace(/[\r\n\t]/g,' ');}
 /* ===== i18n ===== */
@@ -2548,7 +2564,7 @@ applyTheme();document.addEventListener('DOMContentLoaded',applyTheme);
 function showSplash(){try{if(sessionStorage.getItem('apexSplash'))return;sessionStorage.setItem('apexSplash','1');var d=document.createElement('div');d.id='splash';d.innerHTML='<div class="splogo"><b>APEX</b><i>激やば</i>ツール<span class="spz">⚡</span></div>';document.body.appendChild(d);setTimeout(function(){d.classList.add('out');setTimeout(function(){if(d.parentNode)d.remove();},500);},1100);}catch(e){}}
 showSplash();document.addEventListener('DOMContentLoaded',showSplash);
 document.addEventListener('DOMContentLoaded',function(){setTimeout(grandOpen,200);});setTimeout(function(){try{grandOpen();}catch(e){}},300);
-document.addEventListener('DOMContentLoaded',function(){setTimeout(function(){try{homeHealthCheck(true);}catch(e){}},400);});setTimeout(function(){try{homeHealthCheck(true);}catch(e){}},600);
+document.addEventListener('DOMContentLoaded',function(){setTimeout(function(){try{homeHealthCheck(true);}catch(e){}},400);});document.addEventListener('DOMContentLoaded',function(){setTimeout(function(){try{iabBanner();}catch(e){}},2000);});setTimeout(function(){try{homeHealthCheck(true);}catch(e){}},600);
 function restoreFromUrl(){
  try{
   if((location.hash||'').indexOf('#w=')===0){if(frImportFromHash())return;}
@@ -2605,6 +2621,7 @@ setTimeout(function(){try{var _h=document.getElementById('home');if(_h&&_h.style
 
 /* ===== サイト更新情報＆赤丸通知 ===== */
 var SITEUPD=[
+ {d:'2026-06-15',tag:'new',f:'all',t:'アプリ内ブラウザで「ブラウザで開く」案内を表示',x:'X等のアプリ内ブラウザで開いている時、商品リンクや一部機能を正しく動かすために「右上→ブラウザで開く」を案内するバナーを表示します（一度閉じれば再表示しません）。アフィリの計測漏れ対策'},
  {d:'2026-06-15',tag:'new',f:'all',t:'混雑時はデータ系パネルを一時停止表示',x:'ホームを開いた時に1回だけ取得チェックを行い、マップ／プレデ／サーバーのデータが取れない時はそのパネルを「混雑中」表示に。タップすると理由（混雑で一時的に取得不可）を説明します。無駄に開いて「取得失敗」になるのを防止。復旧すれば自動で元に戻ります'},
  {d:'2026-06-15',tag:'kai',f:'all',t:'混雑時の安定性を強化',x:'アクセス急増時もマップ・プレデ・サーバー情報が消えにくいよう、直前の正常値で表示を維持するようにしました。プレイヤー取得も最適化（その都合で「今オンラインか／現在の状況」は最大30秒ほど遅れて表示される場合があります）'},
  {d:'2026-06-15',tag:'new',f:'all',t:'データ取得できない時の説明モーダルを追加',x:'アクセス急増などでマップローテ・プレデボーダー・サーバー状況が読み込めない時に、理由（混雑で一時的に取得不可・順次回復）と「再試行」「診断で遊ぶ」案内を出すように。なんで見れないの？を解消'},
