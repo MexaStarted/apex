@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>als 生存チェッカー</title>
+<style>
+ :root{--bg:#0a0d14;--pn:#11161f;--ln:#222c3f;--tx:#e9f1ff;--sub:#8a99b5;--ok:#22e3a0;--warn:#ffc23d;--ng:#ff5d6c;--cy:#33d6ff}
+ *{box-sizing:border-box;margin:0;padding:0}
+ body{font-family:-apple-system,'Hiragino Kaku Gothic ProN',sans-serif;background:var(--bg);color:var(--tx);line-height:1.6;padding:16px;max-width:680px;margin:0 auto}
+ h1{font-size:19px;margin-bottom:4px}
+ .sub{color:var(--sub);font-size:12.5px;margin-bottom:16px}
+ label{display:block;font-size:12px;color:var(--sub);margin:12px 0 4px}
+ input,select{width:100%;background:var(--pn);border:1px solid var(--ln);color:var(--tx);border-radius:9px;padding:11px 12px;font-size:14px;font-family:inherit}
+ .row{display:flex;gap:8px}.row>*{flex:1}
+ button{width:100%;background:linear-gradient(135deg,#33d6ff,#1f9dff);color:#04121a;border:none;border-radius:10px;padding:13px;font-size:15px;font-weight:800;margin-top:14px;cursor:pointer}
+ button:active{transform:translateY(1px)}button:disabled{opacity:.6}
+ .verdict{margin:16px 0;padding:14px;border-radius:12px;border:1px solid var(--ln);background:var(--pn);font-size:14px;display:none}
+ .verdict.show{display:block}
+ .verdict h2{font-size:16px;margin-bottom:6px}
+ .vok{border-color:var(--ok)}.vok h2{color:var(--ok)}
+ .vwarn{border-color:var(--warn)}.vwarn h2{color:var(--warn)}
+ .vng{border-color:var(--ng)}.vng h2{color:var(--ng)}
+ .res{margin-top:14px}
+ .item{background:var(--pn);border:1px solid var(--ln);border-radius:9px;padding:10px 12px;margin-bottom:8px}
+ .ih{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:700}
+ .badge{font-size:11px;font-weight:800;padding:2px 8px;border-radius:20px;margin-left:auto}
+ .b-ok{background:rgba(34,227,160,.15);color:var(--ok)}
+ .b-warn{background:rgba(255,194,61,.15);color:var(--warn)}
+ .b-ng{background:rgba(255,93,108,.15);color:var(--ng)}
+ .ms{color:var(--sub);font-size:11px;font-weight:600}
+ .raw{margin-top:6px;font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#9fb0cc;background:#070a10;border-radius:6px;padding:8px;max-height:120px;overflow:auto;white-space:pre-wrap;word-break:break-all}
+ details{margin-top:18px;border-top:1px solid var(--ln);padding-top:14px}
+ summary{cursor:pointer;color:var(--sub);font-size:13px}
+ .note{font-size:11.5px;color:var(--sub);margin-top:6px}
+ .warn{color:var(--warn)}
+</style>
+</head>
+<body>
+<h1>🩺 als 生存チェッカー</h1>
+<div class="sub">あなたのGAS経由でテストして「alsが死んでる／GASが落ちてる／ただ混雑してるだけ」を判定します。</div>
+
+<label>GAS URL（/exec まで）</label>
+<input id="gas" value="https://script.google.com/macros/s/AKfycbw-4xanE8Cm_-ikmw2DQF2F5_zDy9HF5qXpfyMluI3DlIIJx9oXIEfbd4FR82JYdc-YyQ/exec">
+
+<div class="row">
+ <div><label>実在するプレイヤー名（als生存テスト用）</label><input id="pname" value="lunhhs" placeholder="例：自分のIGN"></div>
+ <div style="max-width:120px"><label>機種</label><select id="pplat"><option>PC</option><option>PS</option><option>Xbox</option><option>Switch</option></select></div>
+</div>
+<div class="note">プレイヤー名は省略OK（その場合は map/pred/servers だけで GAS の生死を判定します）。PCの確実に存在する名前が一番確実。</div>
+
+<button id="go" onclick="run()">チェック開始</button>
+<button id="burstBtn" onclick="burst()" style="background:linear-gradient(135deg,#ff7a3d,#ff5d6c)">⚡ 連打テスト（混雑か障害かを判定）</button>
+<div id="bres" class="res"></div>
+
+<div id="verdict" class="verdict"></div>
+<button id="copyBtn" onclick="copyReport()" style="display:none;background:linear-gradient(135deg,#22e3a0,#12b585)">📋 結果を全部コピー（Claudeに貼る用）</button>
+<div id="res" class="res"></div>
+
+<details>
+ <summary>als を直接テストする（任意・CORSで弾かれる場合あり）</summary>
+ <label>als APIキー（任意・このHTMLを他人に渡さないで）</label>
+ <input id="key" placeholder="入れると als へ直接アクセスして生存確認します">
+ <button onclick="direct()" style="background:linear-gradient(135deg,#ffc23d,#ff9d3d)">als 直接テスト</button>
+ <div id="dres" class="res"></div>
+ <div class="note warn">※ブラウザから als へ直接は CORS で読めないことが多いです。読めなくても「死んでる」とは限りません。基本は上のGAS経由の結果で判断してください。</div>
+</details>
+
+<script>
+function $(i){return document.getElementById(i);}
+function esc(s){return String(s).replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});}
+var REPORT='';
+function txtRow(name,res){var c=classify(res);return '['+name+'] '+c.label+(c.note?' · '+c.note:'')+' · '+res.ms+'ms\n'+(res.fetchErr?res.err:(res.txt||'').slice(0,220))+'\n\n';}
+function copyReport(){
+ if(!REPORT)return;var b=$('copyBtn');
+ function done(){var o=b.textContent;b.textContent='✅ コピーした！Claudeに貼ってね';setTimeout(function(){b.textContent=o;},1800);}
+ function fb(){var ta=document.createElement('textarea');ta.value=REPORT;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.focus();ta.select();try{document.execCommand('copy');done();}catch(e){prompt('これを長押しでコピーしてね：',REPORT);}document.body.removeChild(ta);}
+ try{navigator.clipboard.writeText(REPORT).then(done,fb);}catch(e){fb();}
+}
+async function timed(url){
+ var t0=performance.now();
+ try{
+  var r=await fetch(url,{method:'GET'});
+  var txt=await r.text(),ms=Math.round(performance.now()-t0),json=null;
+  try{json=JSON.parse(txt);}catch(e){}
+  return {ms:ms,status:r.status,txt:txt,json:json};
+ }catch(e){return {ms:Math.round(performance.now()-t0),fetchErr:true,err:String(e)};}
+}
+function classify(res){
+ if(res.fetchErr)return {k:'ng',label:'届かない',note:'CORS / ネットワーク / URL'};
+ var j=res.json;
+ if(!j)return {k:'warn',label:'非JSON',note:'(status '+res.status+')'};
+ if(j.error==='busy'||j.retry===true)return {k:'warn',label:'混雑(busy)',note:'2/秒スロットル'};
+ if(j.error||j.Error)return {k:'ng',label:'エラー',note:String(j.error||j.Error)};
+ return {k:'ok',label:'OK',note:''};
+}
+function row(name,res){
+ var c=classify(res);
+ var raw=res.fetchErr?esc(res.err):esc((res.txt||'').slice(0,500));
+ return '<div class="item"><div class="ih">'+esc(name)+'<span class="ms">'+res.ms+'ms</span><span class="badge b-'+c.k+'">'+c.label+(c.note?' · '+esc(c.note):'')+'</span></div><div class="raw">'+raw+'</div></div>';
+}
+function getUid(res){try{return res&&res.json&&res.json.global&&res.json.global.uid?String(res.json.global.uid):'';}catch(e){return '';}}
+async function burst(){
+ var gas=$('gas').value.trim().replace(/\/+$/,''),name=$('pname').value.trim(),plat=$('pplat').value;
+ if(!gas){alert('GAS URLを入れてね');return;}
+ if(!name){alert('プレイヤー名を入れてね（連打テストに必要）');return;}
+ var b=$('burstBtn');b.disabled=true;$('bres').innerHTML='<div class="note">連打中…（8回同時に叩いて内訳を見ます）</div>';
+ var N=8,proms=[];for(var i=0;i<N;i++)proms.push(timed(gas+'?type=player&player='+encodeURIComponent(name)+'&platform='+plat));
+ var rs=await Promise.all(proms);
+ var ok=0,busy=0,err=0,oth=0;rs.forEach(function(r){if(isOk(r))ok++;else if(isBusy(r))busy++;else if(isErr(r))err++;else oth++;});
+ var cls,title,body;
+ if(ok>0){cls='vok';title='✅ als 生存（'+ok+'/'+N+' 成功）';body='連打しても実データが返った＝<b>alsは死んでない</b>。busy '+busy+'件は2/秒の混雑によるもの（リトライで取れる範囲）。';}
+ else if(err>0){cls='vng';title='❌ als 障害の疑い（成功0・エラー'+err+'件）';body='トークンを通った分が<b>エラー</b>を返してる＝als本体の不調/障害・APIキー失効の可能性。別の確実な名前でも同じなら als 側が濃厚。';}
+ else{cls='vwarn';title='⚠️ 全部 busy（判定保留）';body='全部スロットルされて als まで届かず＝今この瞬間アクセスが集中しすぎ。少し時間をおいて再テストを。';}
+ $('bres').innerHTML='<div class="verdict show '+cls+'" style="margin-top:14px"><h2>'+title+'</h2><div>'+body+'</div></div><div class="note" style="margin-top:8px">内訳：✅成功 '+ok+' / ⚠️busy '+busy+' / ❌エラー '+err+(oth?' / その他 '+oth:'')+'</div>';
+ REPORT+='--- 連打テスト（'+N+'回同時・'+name+'/'+plat+'） ---\n成功 '+ok+' / busy '+busy+' / エラー '+err+(oth?' / その他 '+oth:'')+'\n判定: '+title+'\n'+body.replace(/<[^>]+>/g,'')+'\n\n';
+ $('copyBtn').style.display='block';b.disabled=false;
+}
+async function run(){
+ var gas=$('gas').value.trim().replace(/\/+$/,'');
+ if(!gas){alert('GAS URLを入れてね');return;}
+ var name=$('pname').value.trim(),plat=$('pplat').value;
+ $('go').disabled=true;$('verdict').className='verdict';$('verdict').innerHTML='';$('copyBtn').style.display='none';
+ $('res').innerHTML='<div class="note">テスト中…</div>';
+ REPORT='=== als生存チェック結果 ===\nGAS: '+gas+'\nプレイヤー: '+(name?(name+' / '+plat):'なし')+'\n時刻: '+new Date().toLocaleString()+'\n\n';
+ var out='',map,pred,srv,players=[];
+ map=await timed(gas+'?type=map');out+=row('GAS · map（キャッシュ配信）',map);REPORT+=txtRow('GAS map',map);$('res').innerHTML=out;
+ pred=await timed(gas+'?type=pred');out+=row('GAS · pred（キャッシュ配信）',pred);REPORT+=txtRow('GAS pred',pred);$('res').innerHTML=out;
+ srv=await timed(gas+'?type=servers');out+=row('GAS · servers（キャッシュ配信）',srv);REPORT+=txtRow('GAS servers',srv);$('res').innerHTML=out;
+ if(name){
+  for(var i=0;i<3;i++){
+   var pr=await timed(gas+'?type=player&player='+encodeURIComponent(name)+'&platform='+plat);
+   players.push(pr);out+=row('GAS · player ライブ取得 #'+(i+1),pr);REPORT+=txtRow('player #'+(i+1),pr);$('res').innerHTML=out;
+  }
+  var uid='';for(var k=0;k<players.length;k++){var u=getUid(players[k]);if(u){uid=u;break;}}
+  if(uid){var pu=await timed(gas+'?type=player&uid='+encodeURIComponent(uid)+'&platform='+plat);out+=row('GAS · player UID逆引き（uid:'+uid+'）',pu);REPORT+=txtRow('player by uid '+uid,pu);$('res').innerHTML=out;}
+ }
+ verdict(map,pred,srv,players,!!name);
+ $('copyBtn').style.display='block';
+ $('go').disabled=false;
+}
+function isOk(res){var c=classify(res);return c.k==='ok';}
+function isBusy(res){return !res.fetchErr&&res.json&&(res.json.error==='busy'||res.json.retry===true);}
+function isErr(res){var c=classify(res);return c.k==='ng';}
+function verdict(map,pred,srv,players,hasName){
+ var box=$('verdict'),cls,title,body;
+ var cacheOk=isOk(map)||isOk(pred)||isOk(srv);
+ var gasUnreachable=map.fetchErr&&pred.fetchErr&&srv.fetchErr;
+ if(gasUnreachable){
+  cls='vng';title='❌ GASに届いていない';
+  body='URLが違う／デプロイされてない／CORSで読めない。<br>→ このHTMLを<b>サイトと同じ場所（GitHubのapex/）</b>に置いて github.io 経由で開くと確実です。URLが正しいかも確認を。';
+ }else if(!cacheOk){
+  cls='vng';title='❌ GAS側の問題（alsじゃない可能性大）';
+  body='GASには届くのに、キャッシュ配信のmap/predすら返らない。<br>→ <b>デプロイ未反映 / クォータ超過 / トリガー未設定</b>を疑って。Apps Scriptで「新バージョン」デプロイ＆setupGlobalsTrigger実行を確認。';
+ }else if(!hasName){
+  cls='vwarn';title='△ GASは生きてる（alsライブは未テスト）';
+  body='map/pred/servers は返ってる＝GASは正常。<br>alsが生きてるかは<b>プレイヤー名を入れて再テスト</b>すると分かります。';
+ }else{
+  var anyOk=players.some(isOk),allBusy=players.length&&players.every(isBusy),anyErr=players.some(isErr);
+  if(anyOk){cls='vok';title='✅ 正常（alsもGASも生きてる）';body='ライブ取得が成功してる。混雑で時々busyになることはあっても、<b>als は死んでません</b>。';}
+  else if(allBusy){cls='vwarn';title='⚠️ alsは生きてる・ただ「混雑」してるだけ';body='ライブ取得が全部 busy（2/秒スロットル）。<b>als自体は死んでない</b>、アクセス集中で詰まってるだけ。リトライ実装で大半は取れる。時間をおけば解消。';}
+  else if(anyErr){cls='vng';title='❌ alsがエラー / 不調の可能性';body='GASは生きてる（map等OK）のに、ライブ取得が busy じゃなく<b>エラー</b>。<br>→ als側の障害、APIキー無効/失効、またはその名前・機種が本当に存在しない可能性。別の確実な名前でも出るなら<b>als不調</b>が濃厚。';}
+  else{cls='vwarn';title='△ 判定保留';body='ライブ取得が成功でもbusyでも明確なエラーでもない。下の生データを確認して。';}
+ }
+ box.className='verdict show '+cls;
+ box.innerHTML='<h2>'+title+'</h2><div>'+body+'</div>';
+ REPORT+='--- 判定 ---\n'+title+'\n'+body.replace(/<[^>]+>/g,'')+'\n';
+}
+async function direct(){
+ var key=$('key').value.trim();
+ if(!key){$('dres').innerHTML='<div class="note warn">キーを入れてね</div>';return;}
+ $('dres').innerHTML='<div class="note">als へ直接アクセス中…</div>';
+ var res=await timed('https://api.mozambiquehe.re/predator?auth='+encodeURIComponent(key));
+ var html=row('als 直接 · predator',res);
+ if(res.fetchErr)html+='<div class="note warn">ブラウザから直接は読めませんでした（おそらくCORS）。これだけでは「als死亡」とは判断できません。GAS経由の結果で判断を。</div>';
+ else if(res.json&&!res.json.Error&&!res.json.error)html+='<div class="note" style="color:var(--ok)">✅ als 直接アクセス成功＝als は確実に生存しています。</div>';
+ else if(res.json&&(res.json.Error||res.json.error))html+='<div class="note warn">als がエラーを返しました：'+esc(String(res.json.Error||res.json.error))+'（キー失効/レート制限/障害の可能性）</div>';
+ $('dres').innerHTML=html;
+}
+</script>
+</body>
+</html>
