@@ -2643,6 +2643,7 @@ setTimeout(function(){try{var _h=document.getElementById('home');if(_h&&_h.style
 
 /* ===== サイト更新情報＆赤丸通知 ===== */
 var SITEUPD=[
+ {d:'2026-06-16',tag:'upd',f:'frank',t:'プレイヤーウォッチの全員更新を高速化＆軽量化',x:'「全員更新」を1回の通信でまとめて取得する方式に改良。大人数を登録していても素早く更新でき、サーバー負荷も大幅に削減。取得できなかった人だけ自動で個別に再取得します'},
  {d:'2026-06-16',tag:'fix',f:'all',t:'データ基盤を刷新：アクセス集中でも検索が落ちにくく',x:'バックエンドを新しい仕組みに移行し、これまで一定の取得回数を超えると一時的に検索やプレイヤーウォッチが使えなくなっていた問題を根本から解消。大量アクセス時の安定性が大幅に向上しました'},
  {d:'2026-06-15',tag:'fix',f:'all',t:'als通信途絶に強く：10秒待ちを解消し、説明モーダル＋Discord案内を追加',x:'Apexの統計元(als)と通信できない時、これまで毎回10秒ほど固まってから失敗していたのを、連続失敗を検知して即「通信が途絶えています」と丁寧に説明するように（サーキットブレーカー）。Apexサーバーの状態をワンタップでDiscord確認できるボタンも追加。検索は「混雑」の時だけ自動リトライ、通信途絶はリトライせず即案内します'},
  {d:'2026-06-15',tag:'fix',f:'find',t:'スタッツ検索：混雑時に「見つからない」と誤表示→自動リトライに修正',x:'アクセス集中でデータ取得が一時的に詰まった時、実在するプレイヤーでも「見つかりませんでした」と出る不具合を修正。混雑時は自動で数秒ずらして最大3回まで再試行し、それでもダメなら「混雑中・再検索」と正しく案内します'},
@@ -4359,18 +4360,36 @@ function frAdd(qOverride,platOverride){
  });
 }
 function frDel(i){var a=frGet();a.splice(i,1);frSave(a);frRender();pwTrack('del');}
+/* ===== 全員更新：バッチ（1リクエストで全員）→ 取れなかった分だけ個別フォールバック ===== */
+function frApplyOne(a,i,p){var old=a[i].data,oldRp=(old&&old.ok&&typeof old.rp==='number')?old.rp:null;
+ if(oldRp!=null&&typeof p.rp==='number')a[i].dRp=p.rp-oldRp;a[i].data=p;a[i].t=Date.now();a[i].stale=false;if(p.apiPlat)a[i].plat=frApiToUi(p.apiPlat);if(a[i].uid&&p.name)a[i].ign=p.name;}
+function frApplyFail(a,i){var old=a[i].data;if(old&&old.ok){a[i].stale=true;a[i].staleT=Date.now();}else{a[i].data={ok:false};a[i].t=Date.now();}}
+/* バッチ取得：Worker type=batch。各 data は als生JSON文字列 → frStatsFrom で整形 */
+function frBatchFetch(payload){
+ var url=APEX_GAS_URL+'?type=batch&players='+encodeURIComponent(JSON.stringify(payload));
+ return fetch(url,{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
+  var out={};if(j&&j.batch){j.batch.forEach(function(it){if(!it)return;var i=it.key;if(it.data){var d=null;try{d=JSON.parse(it.data);}catch(e){}out[i]=d?frStatsFrom(d,(payload[i]&&payload[i].player)||'',(payload[i]&&payload[i].platform)||''):{ok:false};}else{out[i]={ok:false};}});}return out;
+ });
+}
+/* 個別フォールバック（環境フォールバック付き）：バッチで取れなかった分だけ叩く */
+function frRefreshOnly(a,idxs,fin){
+ if(!idxs.length){fin();return;}var total=idxs.length,done=0,j=0,CONC=Math.min(5,total);
+ function step(p,i){if(p&&p.ok)frApplyOne(a,i,p);else frApplyFail(a,i);done++;if(done===total)fin();else next();}
+ function next(){if(j>=idxs.length)return;var i=idxs[j++];frFetchEntry(a[i]).then(function(p){step(p,i);},function(){step({ok:false},i);});}
+ for(var s=0;s<CONC;s++)next();
+}
 function frRefresh(){
  var a=frGet();if(!a.length){toast2('先にフレンドを追加してね');return;}
  pwTrack('refresh');
  var btn=$('frRefreshBtn');if(btn){btn.disabled=true;btn.textContent='更新中…';}
- var total=a.length,done=0,idx=0,CONC=5;
  function fin(){frSave(a);frRender();if(btn){btn.disabled=false;btn.textContent='↻ 全員更新';}}
- function one(p,i){var old=a[i].data,oldRp=(old&&old.ok&&typeof old.rp==='number')?old.rp:null;
-  if(p&&p.ok){if(oldRp!=null&&typeof p.rp==='number')a[i].dRp=p.rp-oldRp;a[i].data=p;a[i].t=Date.now();a[i].stale=false;if(p.apiPlat)a[i].plat=frApiToUi(p.apiPlat);if(a[i].uid&&p.name)a[i].ign=p.name;}
-  else{if(old&&old.ok){a[i].stale=true;a[i].staleT=Date.now();}else{a[i].data={ok:false};a[i].t=Date.now();}}  /* 失敗時は前回値を保持（空にしない） */
-  done++;if(done===total)fin();else next();}
- function next(){if(idx>=total)return;var i=idx++;frFetchEntry(a[i]).then(function(p){one(p,i);},function(){one({ok:false},i);});}
- for(var s=0;s<Math.min(CONC,total);s++)next();
+ var payload=a.map(function(m,i){var plat=frPlatApi(m.plat);return m.uid?{key:i,uid:m.uid,platform:plat}:{key:i,player:m.ign,platform:plat};});
+ frBatchFetch(payload).then(function(res){
+  var fails=[];a.forEach(function(m,i){var p=res&&res[i];if(p&&p.ok)frApplyOne(a,i,p);else fails.push(i);});
+  frRefreshOnly(a,fails,fin);                                   /* バッチで取れなかった分だけ個別（環境フォールバック）*/
+ },function(){
+  frRefreshOnly(a,a.map(function(_,i){return i;}),fin);         /* バッチ自体失敗→全部個別（従来挙動） */
+ });
 }
 var FR_TAB='cards';var FR_MAP=null;var FR_CUR=-1;var FR_CD=null;
 function frMapFetch(){try{gasCached('map',300000).then(function(d){if(d&&d.ranked&&d.ranked.current&&typeof mapName==='function')FR_MAP=mapName(d.ranked.current.map);}).catch(function(){});}catch(e){}}
