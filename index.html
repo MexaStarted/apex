@@ -1613,6 +1613,7 @@ body{padding-bottom:64px!important}
     <div class="frhint">ふだんは名前だけでOK（PCはOrigin名）。出ないときは案内が出るよ。</div>
     <button class="frminib" type="button" onclick="frHistOpen()">🕘 検索履歴</button>
     <div class="frbar"><div class="frtabs"><button class="frtab on" data-t="cards" onclick="frTab('cards')">🪪 カード</button><button class="frtab" data-t="rank" onclick="frTab('rank')">🏆 ランキング</button></div><button class="btn x" id="frRefreshBtn" onclick="frRefresh()">↻ 全員更新</button></div>
+    <div class="frhint">※「今オンラインか／現在の状況」は混雑対策のため最大30秒ほど遅れて表示されることがあります（ログオフ直後でも数十秒オンライン表示のままになる場合あり）。</div>
     <div id="frBox"></div>
     <div id="frDetail"></div>
     <div class="frhubwrap"><div class="frhublbl">他の機能へ</div><div class="frhub"><button class="frnavchip" type="button" onclick="frNav('shop')">🛒 ショップ</button><button class="frnavchip" type="button" onclick="frNav('find')">🔎 検索</button><button class="frnavchip" type="button" onclick="frNav('diag')">🧪 診断</button><button class="frnavchip" type="button" onclick="frNav('map')">🗺️ マップ</button><button class="frnavchip" type="button" onclick="frNav('srv')">🖥️ サーバー</button></div></div>
@@ -2576,6 +2577,7 @@ setTimeout(function(){try{var _h=document.getElementById('home');if(_h&&_h.style
 
 /* ===== サイト更新情報＆赤丸通知 ===== */
 var SITEUPD=[
+ {d:'2026-06-15',tag:'kai',f:'all',t:'混雑時の安定性を強化',x:'アクセス急増時もマップ・プレデ・サーバー情報が消えにくいよう、直前の正常値で表示を維持するようにしました。プレイヤー取得も最適化（その都合で「今オンラインか／現在の状況」は最大30秒ほど遅れて表示される場合があります）'},
  {d:'2026-06-15',tag:'new',f:'all',t:'データ取得できない時の説明モーダルを追加',x:'アクセス急増などでマップローテ・プレデボーダー・サーバー状況が読み込めない時に、理由（混雑で一時的に取得不可・順次回復）と「再試行」「診断で遊ぶ」案内を出すように。なんで見れないの？を解消'},
  {d:'2026-06-15',tag:'kai',f:'all',t:'5秒モーダル広告を廃止',x:'画面遷移時とカードを開いた時に出ていた5秒の広告モーダルを完全に廃止。サクサク使えるようになりました。各機能の初回チュートリアルは引き続き表示されます（ページ内の埋め込みバナー枠・おすすめ枠は維持）'},
  {d:'2026-06-15',tag:'kai',f:'all',t:'バズ対策：GAS負荷を軽減（キャッシュ＋更新の分散）',x:'①マップ／プレデ／サーバー情報を短時間キャッシュして同じ取得を繰り返さないように（特にプレイヤーウォッチを開くたびのマップ取得を大幅カット）②「全員更新」を5人ずつに分けて取得し、サーバーへの同時アクセスを抑制。アクセス急増時の取りこぼしが起きにくくなりました'},
