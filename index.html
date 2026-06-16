@@ -1393,6 +1393,35 @@ body{padding-bottom:64px!important}
 .frhgo{flex:none;font-size:11px;color:#caa84e;font-weight:700}
 .frhdel{flex:none;width:40px;border-radius:12px;border:1px solid rgba(255,90,90,.3);background:rgba(255,90,90,.08);color:#ff8a8a;font-size:18px;cursor:pointer}
 .frminib{display:inline-flex;align-items:center;gap:5px;margin:8px 2px 2px;padding:7px 13px;border-radius:999px;border:1px solid rgba(212,175,55,.3);background:rgba(212,175,55,.08);color:#e9dcae;font-size:12.5px;font-weight:700;cursor:pointer}
+/* ===== 公式Xバナー＆寄付（ホーム最上部） 2026-06-16 ===== */
+.xbn{display:flex;align-items:center;gap:12px;width:100%;box-sizing:border-box;margin:0 0 12px;padding:13px 15px;border:1px solid var(--line);border-radius:14px;background:linear-gradient(135deg,#0a0e17,#11161f 60%,#0b0f18);color:var(--text);text-decoration:none;position:relative;overflow:hidden;box-shadow:0 2px 18px rgba(0,0,0,.4);transition:transform .15s ease}
+.xbn:active{transform:scale(.985)}
+.xbn::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(var(--cy),var(--mg));box-shadow:0 0 12px var(--cy)}
+.xbn .xlogo{flex:0 0 auto;width:38px;height:38px;display:grid;place-items:center;border-radius:10px;background:#000;border:1px solid #2a3450}
+.xbn .xlogo svg{width:19px;height:19px;fill:#fff}
+.xbn .xtx{flex:1;min-width:0;line-height:1.35}
+.xbn .xtx b{display:block;font-size:14.5px;font-weight:800;letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.xbn .xtx span{display:block;font-size:11.5px;color:var(--sub);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.xbn .xfollow{flex:0 0 auto;font-size:12px;font-weight:800;padding:7px 14px;border-radius:999px;background:#fff;color:#000;white-space:nowrap}
+html[data-theme="light"] .xbn{background:linear-gradient(135deg,#fff,#eef3fa)}
+.dnbtn{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;box-sizing:border-box;margin:0 0 16px;padding:12px 16px;border:1px solid #4a2f12;border-radius:14px;cursor:pointer;font-size:14px;font-weight:800;color:#fff2df;background:linear-gradient(135deg,#3a230f,#23344e);box-shadow:0 2px 16px rgba(255,106,31,.18);transition:transform .15s ease;-webkit-tap-highlight-color:transparent}
+.dnbtn .di{font-size:18px}
+.dnbtn:active{transform:scale(.985)}
+.dnbtn .dchip{font-size:10.5px;font-weight:800;padding:3px 8px;border-radius:999px;background:rgba(255,106,31,.18);color:var(--or);border:1px solid rgba(255,106,31,.35)}
+.dnov{position:fixed;inset:0;z-index:9000;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(4,6,12,.74);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+.dnov.on{display:flex}
+.dnbox{position:relative;width:100%;max-width:360px;box-sizing:border-box;padding:24px 20px 20px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(180deg,#0c1018,#0a0e16);box-shadow:0 18px 60px rgba(0,0,0,.6);text-align:center;animation:dnpop .22s ease}
+@keyframes dnpop{from{opacity:0;transform:translateY(10px) scale(.97)}to{opacity:1;transform:none}}
+.dnbox .dnx{position:absolute;top:10px;right:12px;width:30px;height:30px;border:none;border-radius:50%;background:rgba(255,255,255,.06);color:var(--sub);font-size:17px;cursor:pointer}
+.dnbox .dnh{font-size:17px;font-weight:800;color:var(--text);margin:0 0 3px}
+.dnbox .dnsub{font-size:11.5px;color:var(--sub);margin:0 0 16px}
+.dnjoke{min-height:62px;display:flex;align-items:center;justify-content:center;font-size:14.5px;font-weight:700;line-height:1.6;color:#ffe9cf;background:linear-gradient(135deg,rgba(255,106,31,.1),rgba(25,227,255,.06));border:1px dashed rgba(255,106,31,.3);border-radius:12px;padding:16px 14px;margin:0 0 6px;transition:opacity .15s ease}
+.dnroll{display:inline-flex;align-items:center;gap:5px;margin:0 0 16px;font-size:11.5px;color:var(--cy);background:none;border:none;cursor:pointer;font-weight:700}
+.dnpay{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;box-sizing:border-box;padding:14px;border-radius:13px;text-decoration:none;font-size:15px;font-weight:800;color:#fff;background:linear-gradient(135deg,#ff2d3f,#ff0033);box-shadow:0 4px 18px rgba(255,0,51,.35);transition:transform .15s ease}
+.dnpay:active{transform:scale(.98)}
+.dnpay.dis{background:#2a3145;color:var(--sub);box-shadow:none;pointer-events:none}
+.dnnote{font-size:10.5px;color:var(--dim);margin:12px 0 0;line-height:1.6}
+.promofoot{margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
 </style>
 <script type="application/ld+json">
 {
@@ -1535,6 +1564,12 @@ body{padding-bottom:64px!important}
 
   <!-- ===== HUB ===== -->
   <div id="home">
+    <a id="xBanner" class="xbn" href="https://x.com/MexaStated" target="_blank" rel="noopener" aria-label="公式Xを開く">
+      <span class="xlogo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></span>
+      <span class="xtx"><b>公式X ・ ツール、サイト開発者</b><span>最新情報・新機能の告知はこちら</span></span>
+      <span class="xfollow">フォロー</span>
+    </a>
+    <button class="dnbtn" type="button" onclick="openDonate()"><span class="di">🍜</span>開発者を応援する（寄付）<span class="dchip">投げ銭</span></button>
     <div id="maisonHead" class="maison-head">
       <div class="mh-crest">👑</div>
       <div class="mh-name">APEX LEGENDS</div>
@@ -2643,6 +2678,7 @@ setTimeout(function(){try{var _h=document.getElementById('home');if(_h&&_h.style
 
 /* ===== サイト更新情報＆赤丸通知 ===== */
 var SITEUPD=[
+ {d:'2026-06-16',tag:'new',f:'home',t:'ホーム最上部に公式Xバナー＆開発者への寄付ボタンを追加',x:'公式Xへワンタップで飛べるバナーをホーム最上部に設置。その下に「開発者を応援する（寄付）」ボタンを追加し、タップするとPayPayで応援できるモーダルが開きます（ランダムでひとことジョーク付き）。寄付は任意で、機能制限は一切ありません'},
  {d:'2026-06-16',tag:'upd',f:'frank',t:'プレイヤーウォッチの全員更新を高速化＆軽量化',x:'「全員更新」を1回の通信でまとめて取得する方式に改良。大人数を登録していても素早く更新でき、サーバー負荷も大幅に削減。取得できなかった人だけ自動で個別に再取得します'},
  {d:'2026-06-16',tag:'fix',f:'all',t:'データ基盤を刷新：アクセス集中でも検索が落ちにくく',x:'バックエンドを新しい仕組みに移行し、これまで一定の取得回数を超えると一時的に検索やプレイヤーウォッチが使えなくなっていた問題を根本から解消。大量アクセス時の安定性が大幅に向上しました'},
  {d:'2026-06-15',tag:'fix',f:'all',t:'als通信途絶に強く：10秒待ちを解消し、説明モーダル＋Discord案内を追加',x:'Apexの統計元(als)と通信できない時、これまで毎回10秒ほど固まってから失敗していたのを、連続失敗を検知して即「通信が途絶えています」と丁寧に説明するように（サーキットブレーカー）。Apexサーバーの状態をワンタップでDiscord確認できるボタンも追加。検索は「混雑」の時だけ自動リトライ、通信途絶はリトライせず即案内します'},
@@ -5862,6 +5898,18 @@ try{var _sl=localStorage.getItem("apexLang");if(_sl)LANG=_sl;}catch(e){}applySta
   </div>
 </div>
 
+  <div class="dnov" id="dnOv" onclick="if(event.target===this)closeDonate()">
+    <div class="dnbox" role="dialog" aria-modal="true" aria-label="開発者へ寄付">
+      <button class="dnx" type="button" onclick="closeDonate()" aria-label="閉じる">×</button>
+      <div class="dnh">🍜 開発者へ寄付</div>
+      <div class="dnsub">このサイトは完全無料・個人開発。応援は開発の燃料になります</div>
+      <div class="dnjoke" id="dnJoke">…</div>
+      <button class="dnroll" type="button" onclick="donateRoll()">🔄 別のひとこと</button>
+      <a class="dnpay" id="dnPay" href="#" target="_blank" rel="noopener">PayPayで応援する</a>
+      <div class="dnnote">※強制ではありません。1円でも開発者が泣いて喜びます。寄付の有無で機能制限は一切ありません。</div>
+    </div>
+  </div>
+
   <div class="botnav" id="botnav">
     <button onclick="home()"><span class="bi">🏠</span>ホーム</button>
     <button onclick="open_('map')"><span class="bi">🗺️</span>マップ</button>
@@ -5943,6 +5991,71 @@ try{var _sl=localStorage.getItem("apexLang");if(_sl)LANG=_sl;}catch(e){}applySta
   <div class="frhelpov" id="frShareOv"><div class="frhelpbox" id="frShareBox"></div></div>
   <div class="frhelpov" id="frImpOv"><div class="frhelpbox" id="frImpBox"></div></div>
   <div class="frhelpov" id="frRegOv"><div class="frhelpbox" id="frRegBox"></div></div>
-  <div class="frhelpov" id="frHistOv"><div class="frhelpbox" id="frHistBox"></div></div>
+  <div class="frhelpov" id="frHistOv"><div class="frhelpbox" id="frHistBox"></div></div><script>
+/* ===== 寄付モーダル＆ジョーク 2026-06-16 ===== */
+/* ▼▼ PayPay受け取りリンク（変更時はここ）／公式Xは <a id="xBanner"> の href を編集 ▼▼ */
+var DONATE_PAYPAY_URL = "https://qr.paypay.ne.jp/p2p01_XBiUnFVC09g1dFa6";
+/* ▲▲ ここまで ▲▲ */
+var DONATE_JOKES = [
+ "今日も開発者はラーメンを食べたいです。(綺麗な眼差し)",
+ "このサイト、実は開発者の夜食代で動いています🍜",
+ "寄付の使い道：80% ラーメン、20% トッピング。",
+ "あなたの善意が、開発者の「替え玉」になります。",
+ "課金要素ゼロ。代わりに開発者の胃袋が空です。",
+ "1円でも嬉しい。チャーシュー1枚分の幸せです🥢",
+ "開発者の本日の所持金、プレデターには程遠い。",
+ "このボタンを押すと、開発者の目に光が戻ります✨",
+ "開発者「無料で作ったけど…お腹は空くんだ…」",
+ "あなたの優しさで、今夜はトッピング全部乗せ。",
+ "募金じゃないよ、ラーメン基金だよ🍥",
+ "ご支援は栄養（主にラーメン）に変換されます。",
+ "サーバー代と開発者の生命維持にご協力ください🙏",
+ "寄付してくれた人、来世で神COMP組めるらしい。",
+ "開発者の朝食は「希望」です。具材は…ありません。"
+];
+function donateRoll(){
+  var el=document.getElementById('dnJoke'); if(!el)return;
+  var j=DONATE_JOKES[Math.floor(Math.random()*DONATE_JOKES.length)];
+  el.style.opacity='0';
+  setTimeout(function(){ el.textContent=j; el.style.opacity='1'; },120);
+}
+function openDonate(){
+  var ov=document.getElementById('dnOv'); if(!ov)return;
+  var el=document.getElementById('dnJoke');
+  if(el){ el.textContent=DONATE_JOKES[Math.floor(Math.random()*DONATE_JOKES.length)]; el.style.opacity='1'; }
+  var pay=document.getElementById('dnPay');
+  if(pay){
+    if(DONATE_PAYPAY_URL){ pay.href=DONATE_PAYPAY_URL; pay.classList.remove('dis'); pay.textContent='PayPayで応援する'; }
+    else { pay.href='#'; pay.classList.add('dis'); pay.textContent='PayPayリンク準備中'; }
+  }
+  ov.classList.add('on');
+  try{ if(window.track) window.track('donate','open'); }catch(e){}
+}
+function closeDonate(){ var ov=document.getElementById('dnOv'); if(ov)ov.classList.remove('on'); }
+try{ document.addEventListener('keydown',function(e){ if(e.key==='Escape')closeDonate(); }); }catch(e){}
+/* 公式Xバナー / PayPayボタンのクリックを計測（ホーム＋全画面の全コピー対象） */
+try{ document.addEventListener('click',function(e){
+  if(!e.target||!e.target.closest)return;
+  if(e.target.closest('.xbn')){ try{ window.track&&window.track('officialx','click'); }catch(_){} return; }
+  var p=e.target.closest('.dnpay');
+  if(p&&!p.classList.contains('dis')){ try{ window.track&&window.track('donate','paypay'); }catch(_){} }
+},true); }catch(e){}
+/* 全機能ビューの下部に公式Xバナー＋寄付ボタンを設置（ホームは上部に既設） */
+(function(){
+  var PROMO='<a class="xbn" href="https://x.com/MexaStated" target="_blank" rel="noopener" aria-label="公式Xを開く"><span class="xlogo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></span><span class="xtx"><b>公式X ・ ツール、サイト開発者</b><span>最新情報・新機能の告知はこちら</span></span><span class="xfollow">フォロー</span></a><button class="dnbtn" type="button" onclick="openDonate()"><span class="di">🍜</span>開発者を応援する（寄付）<span class="dchip">投げ銭</span></button>';
+  function inject(){
+    var vs=document.querySelectorAll('.view');
+    for(var i=0;i<vs.length;i++){
+      if(vs[i].querySelector('.promofoot'))continue;
+      var d=document.createElement('div');
+      d.className='promofoot';
+      d.innerHTML=PROMO;
+      vs[i].appendChild(d);
+    }
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',inject);
+  else inject();
+})();
+</script>
 </body>
 </html>
