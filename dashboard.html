@@ -361,6 +361,17 @@ function renderSummary(){
   +'<div id="mainLine">'+lineChart(dv.tr,{mavg:CFG.mavg===3?dv.mav3:CFG.mavg===7?dv.mav7:null,prevOverlay:true,notes:CFG.notes})+'</div>'
   +'<div class="note">点をタップで日別詳細 ・ 点線=平均 ・ 薄線=前週 ・ 🚩=メモ</div></div></div>';
  h+='<div class="sec" data-sec="funnel"><h2 onclick="secToggle(this)">🫙 今日のファネル <span class="arr">▼</span></h2><div class="body">'+funnel([{k:'訪問',c:k.todayVisits||0},{k:'診断',c:k.todayDiag||0},{k:'シェア',c:k.todayShares||0},{k:'商品クリック',c:k.todayProductClicks||0}])+'</div></div>';
+ var _fm={}; (D.features||[]).forEach(function(x){_fm[x.k]=x.c;});
+ var _dO=_fm['donate:open']||0,_dP=_fm['donate:paypay']||0,_xC=_fm['officialx:click']||0;
+ var _cv=_dO?Math.round(_dP/_dO*100):0;
+ h+='<div class="sec" data-sec="donate"><h2 onclick="secToggle(this)">💰 寄付 &amp; X誘導（累計） <span class="arr">▼</span></h2><div class="body">'
+  +funnel([{k:'寄付ボタン押下',c:_dO},{k:'PayPayへ',c:_dP}])
+  +'<div class="bars" style="margin-top:10px">'
+   +'<div class="bar"><div class="bl">寄付→PayPay 転換率</div><div class="bt"><i style="width:'+_cv+'%"></i></div><div class="bv">'+_cv+'%</div></div>'
+   +'<div class="bar"><div class="bl">公式Xバナー クリック</div><div class="bt"><i style="width:'+(_xC?100:0)+'%"></i></div><div class="bv">'+fmtN(_xC)+'</div></div>'
+  +'</div>'
+  +'<div class="note">累計値（全期間）。寄付ボタン押下＝モーダルを開いた回数 / PayPayへ＝モーダル内リンクのクリック。日別内訳が要る場合はGAS側に集計列の追加が必要</div>'
+  +'</div></div>';
  $g('p-sum').innerHTML=h;
  bindKpi();bindPoints();countUp();
 }
