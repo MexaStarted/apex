@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>APEX激やばツール — シンプル版（A8アプリ風）レイアウト案</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#c9ced6;color:#1c2430;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif;-webkit-font-smoothing:antialiased}
+  body{padding:18px 14px 60px}
+  .wrap{max-width:440px;margin:0 auto}
+  .lead{margin:2px 2px 14px}
+  .lead h1{font-size:17px;font-weight:800}
+  .lead p{font-size:12.5px;color:#46505f;margin-top:6px;line-height:1.7}
+  .lead .tag{display:inline-block;font-size:11px;font-weight:700;color:#fff;background:#3a4658;border-radius:4px;padding:3px 9px;margin-top:8px}
+  .picker{position:sticky;top:0;z-index:30;background:rgba(201,206,214,.92);backdrop-filter:blur(8px);padding:10px 2px;margin:0 -2px 14px;border-bottom:1px solid #b3bac4}
+  .picker label{display:block;font-size:11px;font-weight:700;color:#46505f;margin:0 2px 5px}
+  .picker select{width:100%;font-size:15px;font-weight:600;color:#11151c;background:#fff;border:1px solid #a9b1bc;border-radius:8px;padding:11px 12px;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236a7686' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center}
+
+  .phone{border-radius:30px;padding:9px;background:#11151c;box-shadow:0 14px 40px rgba(20,28,45,.26)}
+  .screen{height:640px;border-radius:23px;position:relative;overflow:hidden;background:#fff}
+  .body{height:100%;overflow-y:auto;scrollbar-width:none;padding-bottom:78px}
+  .body::-webkit-scrollbar{display:none}
+
+  :root{--red:#d12b2f;--blue:#2f7fd6;--teal:#1eb39e;--ink:#1c2430;--sub:#6b7480;--dim:#a3abb5;--line:#e7e9ed;--band:#eff0f3;--cell:#edeef1;--cellb:#f4f1e8}
+
+  .ic{width:18px;height:18px;display:block;flex:0 0 auto}
+
+  .appbar{position:sticky;top:0;z-index:5;background:var(--red);color:#fff;height:52px;display:flex;align-items:center;justify-content:center}
+  .appbar .t{font-size:16.5px;font-weight:700;letter-spacing:.3px}
+  .appbar .l{position:absolute;left:8px;top:0;height:52px;width:40px;display:grid;place-items:center;color:#fff}
+  .appbar .l .ic{width:22px;height:22px}
+  .appbar .r{position:absolute;right:14px;top:0;height:52px;display:flex;align-items:center;font-size:13px;font-weight:700;opacity:.95}
+  .appbar .r.rbtn{height:auto;top:13px;right:12px;gap:5px;border:1px solid rgba(255,255,255,.55);background:rgba(255,255,255,.14);border-radius:999px;padding:6px 12px;font-size:12px;color:#fff;opacity:1;cursor:pointer}
+  .appbar .r.rbtn .ic{width:15px;height:15px}
+
+  .band{background:var(--band);padding:11px 15px;font-size:13px;font-weight:700;color:var(--ink)}
+
+  .notice{margin:13px 13px;padding:14px 14px;background:#fff;border:1px solid var(--line);border-radius:10px;display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13.5px;font-weight:700;box-shadow:0 1px 4px rgba(20,30,60,.05)}
+  .notice .chev{color:var(--teal);display:flex}
+
+  .krow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:15px;border-bottom:1px solid var(--line)}
+  .krow .k{font-size:14px;color:var(--ink)}
+  .krow .v{font-size:14px;color:var(--blue);font-weight:700;display:flex;align-items:center;gap:5px}
+  .krow .v.dark{color:var(--ink)}
+  .krow .v .chev{color:var(--dim)}
+
+  .kv2{display:flex;border-bottom:1px solid var(--line)}
+  .kv2 .c{flex:1;text-align:center;padding:18px 8px}
+  .kv2 .c+.c{border-left:1px solid var(--line)}
+  .kv2 .lbl{font-size:12px;color:var(--sub)}
+  .kv2 .num{font-size:24px;font-weight:800;color:var(--blue);margin-top:9px;font-variant-numeric:tabular-nums}
+  .kv2 .num span{font-size:13px;font-weight:700}
+
+  .kvrow{display:flex;border-bottom:1px solid var(--line)}
+  .pair{flex:1;display:flex;min-width:0}
+  .pair+.pair{border-left:1px solid var(--line)}
+  .kl{background:var(--cell);color:var(--sub);font-size:12px;font-weight:600;padding:11px 12px;min-width:66px;display:flex;align-items:center;flex:0 0 auto}
+  .kl.b{background:var(--cellb)}
+  .kvv{flex:1;padding:11px 12px;font-size:13px;color:var(--ink);font-weight:600;display:flex;align-items:center;gap:7px;min-width:0}
+  .kvv.blue{color:var(--blue);font-weight:700}
+
+  .pills{display:flex;gap:8px;padding:14px 15px;overflow-x:auto;scrollbar-width:none;align-items:center}
+  .pills.tight{padding:0 0 12px}
+  .pills::-webkit-scrollbar{display:none}
+  .pill{flex:0 0 auto;display:inline-flex;align-items:center;gap:5px;padding:6px 15px;border-radius:999px;font-size:12px;font-weight:700;color:#fff;white-space:nowrap}
+  .pill.teal{background:var(--teal)}.pill.blue{background:#4a9fe0}.pill.green{background:#2aa45a}.pill.orange{background:#e0913a}
+  .pill.gray{background:#fff;color:var(--sub);border:1px solid #d7dbe1}
+
+  .nav{display:flex;align-items:center;gap:13px;padding:15px;border-bottom:1px solid var(--line)}
+  .nav .ni{color:var(--red);display:flex}
+  .nav .nb{flex:1;min-width:0}
+  .nav .nt{font-size:14px;font-weight:600;color:var(--ink)}
+  .nav .nd{font-size:11.5px;color:var(--sub);margin-top:2px}
+  .nav .chev{color:var(--dim);display:flex}
+
+  .field{padding:13px 15px;border-bottom:1px solid var(--line)}
+  .field label{display:block;font-size:11.5px;font-weight:700;color:var(--sub);margin-bottom:7px}
+  .field .input,.field .select{border:1px solid var(--line);border-radius:7px;padding:11px 12px;font-size:14px;color:var(--ink);display:flex;justify-content:space-between;align-items:center}
+  .field .select .ic{color:var(--dim)}
+
+  .pad{padding:15px}
+  .btn{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;text-align:center;font-size:14px;font-weight:700;padding:13px;border:none;border-radius:8px;font-family:inherit;cursor:pointer;background:var(--red);color:#fff;margin-bottom:10px}
+  .btn .ic{color:#fff}
+  .btn.ghost{background:#fff;color:var(--red);border:1px solid var(--red)}.btn.ghost .ic{color:var(--red)}
+  .btn.blue{background:var(--blue)}
+  .btnrow{display:flex;gap:10px;padding:14px 0 2px}.btnrow .btn{margin:0}
+
+  .seg{display:flex;border-bottom:1px solid var(--line)}
+  .seg .s{flex:1;text-align:center;padding:13px;font-size:13px;font-weight:700;color:var(--sub)}
+  .seg .s.on{color:var(--red);box-shadow:inset 0 -2px 0 var(--red)}
+
+  .toolbar{display:flex;align-items:center;justify-content:space-between;padding:13px 15px;border-bottom:1px solid var(--line)}
+  .toolbar .cnt{font-size:14px;font-weight:700}.toolbar .cnt b{color:var(--teal)}
+  .toolbar .sort{font-size:13px;color:var(--ink);display:flex;align-items:center;gap:5px;border-bottom:1px solid var(--blue);padding-bottom:2px}
+  .toolbar .sort .ic{color:var(--blue)}
+
+  .pcard{padding:15px;border-bottom:8px solid var(--band)}
+  .pcard .co{font-size:12px;color:var(--sub);letter-spacing:.3px}
+  .pcard .pt{font-size:16px;font-weight:700;margin:5px 0 12px;line-height:1.4}
+  .pcard .rew{display:flex;gap:12px;align-items:center;margin-bottom:13px}
+  .pcard .thumb{width:92px;height:62px;border-radius:6px;background:#eef0f2;display:grid;place-items:center;color:var(--dim);flex:0 0 auto}
+  .pcard .thumb .ic{width:24px;height:24px}
+  .pcard .rewt{flex:1;font-size:13.5px;color:var(--ink);font-weight:600}
+  .pcard .rchev{color:var(--dim);display:flex}
+
+  .prow{display:flex;align-items:center;gap:11px;padding:14px 15px;border-bottom:1px solid var(--line)}
+  .prow .pn{font-size:14px;font-weight:700;color:var(--ink)}
+  .prow .ps{font-size:11.5px;color:var(--sub);margin-top:2px}
+  .prow .right{margin-left:auto;text-align:right}
+  .prow .rp{font-size:15px;font-weight:800;color:var(--blue);font-variant-numeric:tabular-nums}
+  .prow .df{font-size:10.5px;font-weight:700}
+  .dot{width:9px;height:9px;border-radius:50%;flex:0 0 auto}
+
+  .note{margin:14px 15px;padding:12px 13px;background:#f7f8fa;border:1px solid var(--line);border-radius:8px;font-size:11.5px;line-height:1.7;color:var(--sub)}
+  .note b{color:var(--ink)}
+
+  .bar{height:7px;background:var(--line);border-radius:99px;overflow:hidden;margin:0 0 8px}
+  .bar i{display:block;height:100%;background:var(--red)}
+  .maphead{padding:15px}
+  .maphero{height:96px;border-radius:8px;background:#f3f5f8;display:grid;place-items:center;color:var(--red);margin-bottom:12px}
+  .maphero .ic{width:30px;height:30px}
+  .mapname{font-size:17px;font-weight:800;margin-bottom:12px}
+  .rowbetween{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--sub)}
+
+  .toggle{width:44px;height:26px;border-radius:99px;position:relative;flex:0 0 auto;background:#c6cdd9}
+  .toggle.on{background:var(--teal)}
+  .toggle i{position:absolute;width:20px;height:20px;border-radius:50%;background:#fff;top:3px;transition:.2s;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+  .toggle.on i{left:21px}.toggle.off i{left:3px}
+  .segbtn{display:inline-flex;border:1px solid var(--line);border-radius:7px;overflow:hidden}
+  .segbtn span{font-size:12px;font-weight:700;padding:7px 14px;color:var(--sub)}
+  .segbtn span.on{background:var(--red);color:#fff}
+
+  .promo{margin:14px 13px;border-radius:10px;overflow:hidden;background:linear-gradient(135deg,#d12b2f,#ec6a5a);color:#fff;padding:16px 15px}
+  .promo .pt{font-size:14px;font-weight:800;line-height:1.5}
+  .promo .pb{margin-top:11px;display:inline-block;background:#fff;color:var(--red);font-size:12.5px;font-weight:800;padding:8px 18px;border-radius:999px}
+
+  .preview{margin:15px;height:140px;border-radius:8px;background:#f3f5f8;display:grid;place-items:center;gap:8px;color:var(--red);text-align:center}
+  .preview .ic{width:28px;height:28px}.preview small{font-size:11.5px;color:var(--sub)}
+
+  .tabbar{position:absolute;left:0;right:0;bottom:0;display:flex;background:#fff;border-top:1px solid var(--line);padding:7px 4px calc(7px + env(safe-area-inset-bottom))}
+  .tabbar a{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:9.5px;font-weight:600;color:var(--sub);text-decoration:none}
+  .tabbar a.on{color:var(--red)}
+  .tabbar a .ic{width:21px;height:21px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="lead">
+    <h1>シンプル版（A8アプリ風）レイアウト案</h1>
+    <p>いただいたA8.netアプリの雰囲気に合わせました。赤ヘッダー＋グレーの見出し帯＋ラベルセル付きの表＋ピル＋青い数値＋ライン アイコンの下タブ。絵文字なし。画面はプルダウンで切替。</p>
+    <span class="tag">モック（実データ・実装は未反映）</span>
+  </div>
+  <div class="picker">
+    <label for="scrSel">画面を選ぶ</label>
+    <select id="scrSel"></select>
+  </div>
+  <div class="phone"><div class="screen"><div class="body" id="scr"></div>
+    <nav class="tabbar" id="tab"></nav>
+  </div></div>
+</div>
+
+<script>
+var ICONS={
+ home:'M3 11l9-7 9 7M5 10v10h5v-6h4v6h5V10',
+ search:'M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM21 21l-4.3-4.3',
+ eye:'M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7zM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6z',
+ chart:'M5 20V11M12 20V5M19 20v-6',
+ grid:'M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z',
+ bag:'M6 8h12l-1 12H7L6 8zM9 8a3 3 0 0 1 6 0',
+ book:'M5 4h12a1 1 0 0 1 1 1v15H6a1 1 0 0 1-1-1V4zM9 4v15',
+ map:'M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2zM9 4v14M15 6v14',
+ trophy:'M7 4h10v4a5 5 0 0 1-10 0V4zM7 6H4v1a3 3 0 0 0 3 3M17 6h3v1a3 3 0 0 1-3 3M9 20h6M12 13v4',
+ server:'M4 5h16v5H4zM4 14h16v5H4zM7.5 7.5h.01M7.5 16.5h.01',
+ user:'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c0-4 4-6 8-6s8 2 8 6',
+ users:'M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM3 20c0-3 3-5 6-5s6 2 6 5M16 6a3 3 0 0 1 0 6',
+ target:'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 3v3M12 18v3M3 12h3M18 12h3',
+ briefcase:'M3 8h18v12H3zM8 8V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2',
+ idcard:'M3 5h18v14H3zM8 12a2 2 0 1 0 0-4 2 2 0 0 0 0 4M5.5 16.5c0-1.4 1.1-2.5 2.5-2.5s2.5 1.1 2.5 2.5M14 9h4M14 13h4',
+ image:'M4 5h16v14H4zM8 11a2 2 0 1 0 0-4 2 2 0 0 0 0 4M4 17l5-5 4 4 3-3 4 4',
+ bell:'M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M10 21a2 2 0 0 0 4 0',
+ sliders:'M4 8h16M4 16h16M9 6v4M15 14v4',
+ clock:'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 8v4l3 2',
+ plus:'M12 5v14M5 12h14',
+ refresh:'M4 12a8 8 0 0 1 13.7-5.7L20 8M20 4v4h-4M20 12a8 8 0 0 1-13.7 5.7L4 16M4 20v-4h4',
+ ext:'M7 17 17 7M9 7h8v8',
+ more:'M5 12h0M12 12h0M19 12h0',
+ arrowl:'M15 6l-6 6 6 6',
+ chev:'M9 6l6 6-6 6',
+ chevd:'M6 9l6 6 6-6'
+};
+function ic(n){return '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="'+(ICONS[n]||'')+'"/></svg>';}
+function bar(t,back,right){return '<div class="appbar">'+(back?'<button class="l">'+ic('arrowl')+'</button>':'')+'<div class="t">'+t+'</div>'+(right||'')+'</div>';}
+function band(t){return '<div class="band">'+t+'</div>';}
+function nav(icon,t,d){return '<div class="nav"><span class="ni">'+ic(icon)+'</span><div class="nb"><div class="nt">'+t+'</div>'+(d?'<div class="nd">'+d+'</div>':'')+'</div><span class="chev">'+ic('chev')+'</span></div>';}
+function krow(k,v,dark){return '<div class="krow"><span class="k">'+k+'</span><span class="v'+(dark?' dark':'')+'">'+v+'</span></div>';}
+function kvchev(v){return v+' <span class="chev">'+ic('chev')+'</span>';}
+function pill(t,c){return '<span class="pill '+(c||'')+'">'+t+'</span>';}
+function kpair(l,v,beige,blue){return '<div class="pair"><div class="kl'+(beige?' b':'')+'">'+l+'</div><div class="kvv'+(blue?' blue':'')+'">'+v+'</div></div>';}
+function dotc(on){return '<span class="dot" style="background:'+(on?'#2aa45a':'#c4cbd4')+'"></span>';}
+
+var SCREENS={
+home:{n:'ホーム',r:function(){return bar('APEX激やばツール',false,'<button class="r rbtn" onclick="go(\'settings\')">'+ic('refresh')+'標準表示</button>')
+ +'<div class="notice"><span>シンプル表示に切り替えました</span><span class="chev">'+ic('chev')+'</span></div>'
+ +band('ライブ情報')
+ +krow('マップローテ',kvchev('ストームポイント'))
+ +krow('プレデターボーダー',kvchev('19,240 RP'))
+ +krow('サーバー状態',pill('稼働中','teal'),true)
+ +band('ツール')
+ +nav('search','戦績検索','RP・KD・採点')
+ +nav('eye','プレイヤーウォッチ','推し・フレンドを追跡')
+ +nav('chart','診断','146種であそぶ')
+ +nav('grid','デバイス選び','予算別おすすめ')
+ +nav('bag','ショップ','プロ使用ギア')
+ +nav('book','上達ガイド','設定・立ち回り')
+ +nav('sliders','便利ツール','シーズン日数ほか')
+ +'<div class="promo"><div class="pt">新機能・障害速報は公式Xでお知らせ</div><span class="pb">フォローする</span></div>';}},
+
+pred:{n:'プレデターボーダー',r:function(){return bar('プレデターボーダー',1)
+ +'<div class="pills">'+pill('PC','teal')+pill('PS','gray')+pill('Xbox','gray')+pill('Switch','gray')+'</div>'
+ +'<div class="kv2"><div class="c"><div class="lbl">到達ライン（PC・今シーズン）</div><div class="num">19,240<span> RP</span></div></div></div>'
+ +'<div class="kvrow">'+kpair('プレデ枠','#750')+kpair('マスター入り','15,000',true)+'</div>'
+ +'<div class="note">最終更新 2分前。ボーダーは順位制でリアルタイムに変動します。</div>';}},
+
+map:{n:'マップローテ',r:function(){return bar('マップローテ',1)
+ +'<div class="maphead"><div class="maphero">'+ic('map')+'</div><div class="mapname">ストームポイント</div><div class="bar"><i style="width:62%"></i></div><div class="rowbetween"><span>残り 38分</span><span>ランク / カジュアル</span></div></div>'
+ +band('次のマップ')
+ +nav('map','ワールズエッジ','38分後に切り替え')
+ +nav('map','オリンパス','1時間38分後');}},
+
+srv:{n:'サーバー状態',r:function(){return bar('サーバー状態',1)
+ +'<div class="notice"><span>'+dotc(1)+' 現在、大きな障害はありません</span></div>'
+ +band('プラットフォーム別')
+ +krow('PC（Steam / Origin）',pill('稼働中','teal'),true)
+ +krow('PlayStation',pill('稼働中','teal'),true)
+ +krow('Xbox',pill('稼働中','teal'),true)
+ +krow('Switch',pill('一部遅延','orange'),true)
+ +'<div class="pad"><button class="btn">Discordで障害情報を見る</button></div>'
+ +'<div class="note">繋がらない時は、回線側（あなた）の可能性が高いです。</div>';}},
+
+find:{n:'戦績検索',r:function(){return bar('戦績検索',1)
+ +band('検索条件')
+ +'<div class="field"><label>プレイヤー名</label><div class="input">Mexa_Stated</div></div>'
+ +'<div class="field"><label>プラットフォーム</label><div class="select">PC'+ic('chevd')+'</div></div>'
+ +'<div class="pad"><button class="btn">検索する</button></div>'
+ +band('検索結果')
+ +'<div class="pcard"><div class="co">PC ・ レベル 412</div><div class="pt">Mexa_Stated</div>'
+ +'<div class="pills tight">'+pill('ダイヤ 2','teal')+'</div>'
+ +'<div class="kvrow">'+kpair('KD','2.4',false,1)+kpair('平均ダメ','540',true,1)+'</div>'
+ +'<div class="kvrow">'+kpair('勝率','18%')+kpair('通算キル','12,403',true)+'</div>'
+ +'<div class="btnrow" style="padding:14px 0 0"><button class="btn">ウォッチに追加</button><button class="btn ghost">Xでシェア</button></div></div>';}},
+
+frank:{n:'プレイヤーウォッチ',r:function(){return bar('プレイヤーウォッチ',1)
+ +'<div class="seg"><div class="s on">カード</div><div class="s">RPランキング</div></div>'
+ +'<div class="btnrow" style="padding:14px 15px"><button class="btn">'+ic('plus')+'追加</button><button class="btn ghost">'+ic('refresh')+'全員更新</button></div>'
+ +'<div class="prow">'+dotc(1)+'<div><div class="pn">ぺこら</div><div class="ps">マスター ・ オンライン</div></div><div class="right"><div class="rp">21,400</div><div class="df" style="color:#2aa45a">+120</div></div></div>'
+ +'<div class="prow">'+dotc(0)+'<div><div class="pn">こよりん</div><div class="ps">ダイヤ1 ・ オフライン</div></div><div class="right"><div class="rp">8,950</div><div class="df" style="color:#a3abb5">±0</div></div></div>'
+ +'<div class="prow">'+dotc(1)+'<div><div class="pn">すいせい</div><div class="ps">プラチナ3 ・ オンライン</div></div><div class="right"><div class="rp">5,120</div><div class="df" style="color:#e0913a">-40</div></div></div>';}},
+
+diag:{n:'診断',r:function(){return bar('診断',1)
+ +'<div class="field"><div class="input" style="color:var(--sub)">'+ic('search')+'<span style="flex:1;margin-left:8px">診断をさがす（146種）</span></div></div>'
+ +'<div class="pills">'+pill('人気','teal')+pill('新着','gray')+pill('性格','gray')+pill('ネタ','gray')+pill('上達','gray')+'</div>'
+ +nav('chart','強さ診断','あなたの戦闘力を採点')
+ +nav('target','使うべきキャラ','最適レジェンド診断')
+ +nav('chart','立ち回りIQ','判断力テスト')
+ +nav('users','民度診断','あなたの民度は')
+ +nav('user','煽り耐性','メンタル測定')
+ +nav('clock','本日の野良運','今日の味方運');}},
+
+shop:{n:'ショップ',r:function(){return bar('おすすめデバイス',1)
+ +'<div class="pills">'+pill('全部','teal')+pill('マウス','gray')+pill('モニター','gray')+pill('キーボード','gray')+pill('ヘッドセット','gray')+'</div>'
+ +'<div class="pcard"><div class="pt" style="margin-top:0">軽量ゲーミングマウス</div><div class="rew"><div class="thumb">'+ic('grid')+'</div><div class="rewt">エイムの底上げに。プロ使用率の高い定番モデル。</div><span class="rchev">'+ic('chev')+'</span></div><div class="kvrow">'+kpair('価格','¥7,980',false,1)+kpair('送料','無料',true)+'</div></div>'
+ +'<div class="pcard"><div class="pt" style="margin-top:0">240Hz ゲーミングモニター</div><div class="rew"><div class="thumb">'+ic('grid')+'</div><div class="rewt">60→240で世界が変わる。ランク勢の必需品。</div><span class="rchev">'+ic('chev')+'</span></div><div class="kvrow">'+kpair('価格','¥34,800',false,1)+kpair('送料','無料',true)+'</div></div>';}},
+
+gear:{n:'デバイス選び',r:function(){return bar('デバイス選び',1)
+ +'<div class="pills">'+pill('〜1万円','gray')+pill('〜3万円','teal')+pill('こだわり','gray')+'</div>'
+ +band('この予算のおすすめ構成')
+ +krow('軽量マウス','¥7,980',true)
+ +krow('144Hz モニター','¥18,800',true)
+ +krow('ヘッドセット','¥4,200',true)
+ +'<div class="note">合計の目安 ¥30,980。まず1つなら<b>マウス</b>から。</div>';}},
+
+learn:{n:'上達ガイド',r:function(){return bar('上達ガイド',1)
+ +nav('sliders','感度・設定','DPI / 感度の決め方')
+ +nav('map','立ち回りの基本','安置・ポジション取り')
+ +nav('eye','索敵・音','足音と情報の取り方')
+ +nav('user','ムーブ・移動','被弾を減らす動き')
+ +nav('book','レジェンド別','キャラごとのコツ');}},
+
+tools:{n:'便利ツール',r:function(){return bar('便利ツール',1)
+ +nav('clock','シーズン残り日数','終了まであと48日')
+ +nav('sliders','感度・DPI変換','機種間で感度を揃える')
+ +nav('chart','ダメージ計算','武器別の威力')
+ +nav('target','ガチャ確率','天井までの目安');}},
+
+recruit:{n:'仲間募集',r:function(){return bar('仲間募集',1)
+ +'<div class="pad"><button class="btn">'+ic('plus')+'募集を出す</button></div>'
+ +nav('users','ダイヤ帯・ランク募集','PC ・ あと2人 ・ VC必須')
+ +nav('users','まったりカジュアル','PS ・ あと1人 ・ VCなしOK')
+ +nav('users','プレ団・1〜2時間','クロスプレイ ・ あと3人');}},
+
+battle:{n:'バトルマッチング',r:function(){return bar('バトルマッチング',1)
+ +'<div class="field"><label>ランク帯</label><div class="select">ダイヤ'+ic('chevd')+'</div></div>'
+ +'<div class="field"><label>モード</label><div class="select">ランク'+ic('chevd')+'</div></div>'
+ +'<div class="field"><label>ボイスチャット</label><div class="select">必須'+ic('chevd')+'</div></div>'
+ +'<div class="pad"><button class="btn">マッチを探す</button></div>'
+ +'<div class="note">条件の合うプレイヤーとマッチングします。見つかると通知でお知らせします。</div>';}},
+
+job:{n:'おしごと',r:function(){return bar('おしごと（スキマ）',1)
+ +'<div class="toolbar"><div class="cnt">案件 <b>12</b>件</div><div class="sort">報酬が高い順'+ic('chevd')+'</div></div>'
+ +'<div class="pcard"><div class="co">アンケートサービス</div><div class="pt">アンケートモニター大手</div><div class="rew"><div class="thumb">'+ic('briefcase')+'</div><div class="rewt">新規無料登録 1件 300円</div><span class="rchev">'+ic('chev')+'</span></div>'
+ +'<div class="kvrow">'+kpair('デバイス',pill('スマホ','blue'))+'</div>'
+ +'<div class="kvrow">'+kpair('単価','〜500円',false,1)+kpair('条件','無料登録',true)+'</div></div>'
+ +'<div class="pcard"><div class="co">クラウドソーシング</div><div class="pt">在宅ワーク大手サービス</div><div class="rew"><div class="thumb">'+ic('briefcase')+'</div><div class="rewt">新規無料登録 1件 500円</div><span class="rchev">'+ic('chev')+'</span></div>'
+ +'<div class="kvrow">'+kpair('デバイス',pill('PC','teal')+pill('スマホ','blue'))+'</div>'
+ +'<div class="kvrow">'+kpair('単価','案件制',false,1)+kpair('条件','無料登録',true)+'</div></div>';}},
+
+mypage:{n:'マイページ',r:function(){return bar('マイページ',1)
+ +'<div class="pcard" style="border-bottom-width:8px"><div class="co">自分として登録済み</div><div class="pt" style="margin-bottom:8px">Mexa_Stated</div><div class="pills tight">'+pill('PC','teal')+pill('ダイヤ 2','blue')+'</div></div>'
+ +band('あなたのデータ')
+ +nav('eye','ウォッチリスト','3リスト ・ 12人')
+ +nav('clock','検索履歴','24件')
+ +nav('trophy','開発を応援する','サーバー代・開発継続に');}},
+
+repcard:{n:'Apex通信簿',r:function(){return bar('Apex通信簿',1)
+ +'<div class="preview">'+ic('idcard')+'<small>あなたの戦績カードが生成されます</small></div>'
+ +'<div class="kvrow">'+kpair('総合','A+',false,1)+kpair('火力','S',true,1)+'</div>'
+ +'<div class="pad"><button class="btn">画像を作成</button><button class="btn ghost">Xでシェア</button></div>';}},
+
+gen:{n:'画像メーカー',r:function(){return bar('画像メーカー',1)
+ +'<div class="preview">'+ic('image')+'<small>プレビュー</small></div>'
+ +'<div class="field"><label>ひとこと</label><div class="input">今日はプレデ行く</div></div>'
+ +'<div class="field"><label>テーマ色</label><div class="select">レッド'+ic('chevd')+'</div></div>'
+ +'<div class="pad"><button class="btn">画像を作成</button></div>';}},
+
+card:{n:'名刺メーカー',r:function(){return bar('Apex名刺メーカー',1)
+ +'<div class="preview">'+ic('idcard')+'<small>名刺プレビュー</small></div>'
+ +'<div class="field"><label>名前</label><div class="input">Mexa_Stated</div></div>'
+ +'<div class="field"><label>使用キャラ</label><div class="select">レイス'+ic('chevd')+'</div></div>'
+ +'<div class="pad"><button class="btn">名刺を作成</button></div>';}},
+
+siteupd:{n:'更新情報',r:function(){return bar('更新情報',1)
+ +'<div class="krow"><span class="k" style="display:flex;align-items:center;gap:10px">'+pill('新機能','teal')+'診断結果に応援バーを追加</span><span class="v dark" style="font-weight:400;font-size:12px;color:var(--sub)">06/17</span></div>'
+ +'<div class="krow"><span class="k" style="display:flex;align-items:center;gap:10px">'+pill('改善','blue')+'ホームに前回からの更新を表示</span><span class="v dark" style="font-weight:400;font-size:12px;color:var(--sub)">06/17</span></div>'
+ +'<div class="krow"><span class="k" style="display:flex;align-items:center;gap:10px">'+pill('修正','orange')+'検索の未登録ガイドを自動表示</span><span class="v dark" style="font-weight:400;font-size:12px;color:var(--sub)">06/17</span></div>'
+ +'<div class="krow"><span class="k" style="display:flex;align-items:center;gap:10px">'+pill('改善','blue')+'iOSにホーム追加の案内</span><span class="v dark" style="font-weight:400;font-size:12px;color:var(--sub)">06/17</span></div>';}},
+
+update:{n:'お知らせ',r:function(){return bar('お知らせ',1)
+ +'<div class="notice"><span>プレイヤーウォッチが速くなりました</span><span class="chev">'+ic('chev')+'</span></div>'
+ +band('最近の更新')
+ +nav('sliders','シンプル表示を追加予定','設定から切り替え（このデザイン）')
+ +nav('server','データ基盤を刷新','アクセス集中でも落ちにくく');}},
+
+settings:{n:'設定',r:function(){return bar('設定',1)
+ +band('表示')
+ +'<div class="krow"><div><div class="k">表示デザイン</div><div style="font-size:11.5px;color:var(--sub);margin-top:3px">激やば（標準）/ シンプル</div></div><div class="segbtn"><span>激やば</span><span class="on">シンプル</span></div></div>'
+ +band('動作')
+ +'<div class="krow"><span class="k">検索履歴を残す</span><div class="toggle on"><i></i></div></div>'
+ +'<div class="krow"><span class="k">新機能の演出</span><div class="toggle on"><i></i></div></div>'
+ +'<div class="krow"><span class="k">アプリ内ブラウザ案内</span><div class="toggle off"><i></i></div></div>'
+ +band('データ')
+ +'<div class="krow"><span class="k">保存データを書き出す</span><span class="v dark"><span class="chev">'+ic('chev')+'</span></span></div>'
+ +'<div class="krow"><span class="k" style="color:var(--red)">データを削除</span><span class="v dark"><span class="chev">'+ic('chev')+'</span></span></div>';}},
+
+links:{n:'リンク集',r:function(){return bar('リンク集',1)
+ +'<div class="nav"><span class="ni">'+ic('ext')+'</span><div class="nb"><div class="nt">公式X（お知らせ）</div><div class="nd">@MexaStated</div></div><span class="chev">'+ic('ext')+'</span></div>'
+ +'<div class="nav"><span class="ni">'+ic('chart')+'</span><div class="nb"><div class="nt">als（戦績の元データ）</div><div class="nd">apexlegendsstatus.com</div></div><span class="chev">'+ic('ext')+'</span></div>'
+ +'<div class="nav"><span class="ni">'+ic('server')+'</span><div class="nb"><div class="nt">サーバー状況 Discord</div><div class="nd">障害情報の確認</div></div><span class="chev">'+ic('ext')+'</span></div>'
+ +'<div class="nav"><span class="ni">'+ic('trophy')+'</span><div class="nb"><div class="nt">開発を応援（PayPay）</div><div class="nd">任意・機能制限なし</div></div><span class="chev">'+ic('ext')+'</span></div>';}}
+};
+
+var ORDER=['home','find','frank','diag','pred','map','srv','shop','gear','learn','tools','recruit','battle','job','mypage','repcard','gen','card','siteupd','update','settings','links'];
+var sel=document.getElementById('scrSel');
+ORDER.forEach(function(id){var o=document.createElement('option');o.value=id;o.textContent=SCREENS[id].n;sel.appendChild(o);});
+var TABS=[['home','home','ホーム'],['search','find','戦績'],['eye','frank','ウォッチ'],['chart','diag','診断'],['more','settings','その他']];
+function renderTabs(cur){document.getElementById('tab').innerHTML=TABS.map(function(t){return '<a class="'+(t[1]===cur?'on':'')+'" onclick="go(\''+t[1]+'\')">'+ic(t[0])+'<span>'+t[2]+'</span></a>';}).join('');}
+function show(id){var b=document.getElementById('scr');b.innerHTML=SCREENS[id].r();b.scrollTop=0;renderTabs(id);}
+function go(id){if(sel.value!==id)sel.value=id;show(id);}
+sel.addEventListener('change',function(){show(this.value);});
+show('home');
+</script>
+</body>
+</html>
