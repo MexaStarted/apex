@@ -1435,6 +1435,17 @@ html[data-theme="light"] .xbn{background:linear-gradient(135deg,#fff,#eef3fa)}
 .wlbtn.x svg{width:17px;height:17px;fill:#000}
 .wlbtn.dn{background:linear-gradient(135deg,#ff6a1f,#ff0033);color:#fff;box-shadow:0 4px 16px rgba(255,0,51,.28)}
 .wllater{margin-top:14px;background:none;border:none;color:var(--dim);font-size:12px;cursor:pointer;text-decoration:underline}
+.nfg{text-align:left;background:linear-gradient(180deg,#0e1424,#0b0f1a);border:1px solid var(--line);border-radius:14px;padding:16px}
+.nfg .nfh{font-size:15px;font-weight:800;color:var(--text);margin:0 0 8px}
+.nfg .nfwhy{font-size:12.5px;line-height:1.7;color:var(--sub);margin:0 0 12px}
+.nfg .nfwhy b{color:var(--text)}
+.nfsteps{font-size:12.5px;color:var(--text);background:rgba(25,227,255,.05);border:1px solid rgba(25,227,255,.18);border-radius:10px;padding:11px 12px;margin:0 0 12px}
+.nfsteps>b{display:block;margin:0 0 7px;font-size:12px;color:var(--cy)}
+.nfstep{display:flex;gap:8px;align-items:flex-start;margin:0 0 5px;line-height:1.55}
+.nfstep>span{flex:0 0 auto;width:18px;height:18px;border-radius:50%;background:var(--cy);color:#001018;font-weight:800;font-size:11px;display:grid;place-items:center;margin-top:1px}
+.nfbtn{width:100%;margin:0 0 8px;display:block;text-align:center;text-decoration:none;box-sizing:border-box}
+.nftip{font-size:11px;line-height:1.6;color:var(--dim);margin:6px 0 0}
+.nftip b{color:var(--sub)}
 </style>
 <script type="application/ld+json">
 {
@@ -1995,6 +2006,26 @@ function tileTap(sec){
 }
 /* ===== アプリ内ブラウザ（X/IG等）検知 → 「ブラウザで開く」案内（アフィリの取りこぼし対策） ===== */
 function isInApp(){var u=navigator.userAgent||'';return /Twitter|FBAN|FBAV|FB_IAB|Instagram|Line\/|musical_ly|TikTok|BytedanceWebview|MicroMessenger|Snapchat/i.test(u);}
+function a2hsTip(){
+ try{
+  if(localStorage.getItem('apexA2HSeen'))return;            // 既に表示済み
+  if(!localStorage.getItem('apexWelcomeV1'))return;          // 初回はウェルカム優先→2回目以降
+  var u=navigator.userAgent||'';
+  if(!/iPhone|iPad|iPod/.test(u))return;                     // iOSのみ
+  if(navigator.standalone)return;                            // 既にホーム追加済みは出さない
+  if(typeof isInApp==='function'&&isInApp())return;          // アプリ内ブラウザは対象外
+  if(document.getElementById('a2hsBar'))return;
+  var bar=document.createElement('div');bar.id='a2hsBar';
+  bar.style.cssText='position:fixed;left:8px;right:8px;bottom:8px;z-index:9998;background:linear-gradient(160deg,#1a1330,#0c1020);border:1px solid rgba(255,61,242,.32);border-radius:14px;padding:11px 12px;box-shadow:0 8px 28px rgba(0,0,0,.5);display:flex;gap:10px;align-items:flex-start;font-size:12.5px;color:#dbe6f7;line-height:1.6';
+  bar.innerHTML='<div style="font-size:18px;line-height:1.2">📲</div><div style="flex:1">このサイトを<b style="color:#fff">ホーム画面に追加</b>すると、アプリみたいにワンタップで開けます。<br><b style="color:#fff">共有ボタン → 「ホーム画面に追加」</b>でOK👌（最新情報や新機能もすぐ見れます）</div><button id="a2hsX" type="button" style="background:none;border:none;color:#9fb0cc;font-size:18px;line-height:1;padding:0 4px;cursor:pointer">✕</button>';
+  document.body.appendChild(bar);
+  try{localStorage.setItem('apexA2HSeen','1');}catch(e){}
+  var x=document.getElementById('a2hsX');
+  if(x)x.addEventListener('click',function(){if(bar.parentNode)bar.parentNode.removeChild(bar);try{if(window.track)track('a2hs','dismiss');}catch(e){}});
+  setTimeout(function(){if(bar.parentNode)bar.parentNode.removeChild(bar);},12000);
+  try{if(window.track)track('a2hs','shown');}catch(e){}
+ }catch(e){}
+}
 function iabBanner(){
  try{
   if(!isInApp())return;
@@ -2234,7 +2265,7 @@ function findTry(name,plat,attempt){
       $('findBox').innerHTML='<div class="warnbox">データ取得サーバーと通信できていません。下の案内をご確認ください。</div>';
       findCommsDown(name,plat);return;
     }
-    if(!d||d.Error||d.error){$('findBox').innerHTML='<div class="warnbox">'+t('err_notfound')+'</div>';return;}
+    if(!d||d.Error||d.error){findNotFound(name,plat);return;}
     findRender(d,name,plat);
   }).catch(function(){
     if(attempt<1){findAutoT=setTimeout(function(){findTry(name,plat,attempt+1);},1300);return;}   // 通信失敗は1回だけ再試行
@@ -2244,6 +2275,41 @@ function findTry(name,plat,attempt){
 function findCommsDown(name,plat){
   if(typeof dataErrShow!=='function')return;
   dataErrShow(function(){if(name){if($('pname'))$('pname').value=name;if($('pplat')&&plat)$('pplat').value=plat;findPlayer();}},{title:'通信が途絶えています',msg:'このサイトのデータ取得サーバーが、いま<b style="color:#fff">Apexの統計元（als）と通信できていません</b>。アクセス集中で一時的に制限されている可能性があります。少し時間をおいて再試行するか、下のDiscordでApexサーバーの状況を確認してみてください🙏'});
+}
+var findNFName='';
+function findNotFound(name,plat){
+  findNFName=name||'';
+  var pn=esc(name||'');
+  $('findBox').innerHTML=
+   '<div class="nfg">'
+   +'<div class="nfh">🔍 「'+pn+'」が見つかりませんでした</div>'
+   +'<div class="nfwhy">いちばん多い原因は、<b>あなたのデータがまだ統計元(als)に登録されていない</b>ことです。フレンドは出るのに自分が出ないのは、フレンドが既に登録済みだから。30秒で直せます👇</div>'
+   +'<div class="nfsteps"><b>直し方</b>'
+     +'<div class="nfstep"><span>1</span><div>下のボタンで <b>als（apexlegendsstatus.com）</b> を開く</div></div>'
+     +'<div class="nfstep"><span>2</span><div>そこで<b>自分の名前を1回検索</b>（これで登録される）</div></div>'
+     +'<div class="nfstep"><span>3</span><div><b>数分待って</b>このサイトでもう一度検索</div></div>'
+   +'</div>'
+   +'<a class="btn primary nfbtn" href="https://apexlegendsstatus.com/" target="_blank" rel="noopener" onclick="try{window.track&&window.track(\'find\',\'als_open\')}catch(e){}">🔗 als.comを開いて自分を登録</a>'
+   +'<button class="btn nfbtn" type="button" onclick="findTryAllPlats(findNFName)">🔁 全機種(PC/PS/Xbox/Switch)で自動検索</button>'
+   +'<button class="btn nfbtn" type="button" onclick="findPlayer()">🔄 もう一度検索</button>'
+   +'<div class="nftip">💡 名前が特殊な場合は als.com の<b>プロフィールURL</b>や<b>UID</b>でも検索できます。検索時の<b>プラットフォーム</b>選択が合っているかもご確認を。</div>'
+   +'</div>';
+  try{if(window.track)window.track('find','notfound_guide');}catch(e){}
+}
+function findTryAllPlats(name){
+  if(!name)return;
+  var plats=['PC','PS4','X1','SWITCH'],i=0;
+  $('findBox').innerHTML='<div class="loading">全機種で検索中…</div>';
+  try{if(window.track)window.track('find','allplats');}catch(e){}
+  function next(){
+    if(i>=plats.length){findNotFound(name,($('pplat')||{}).value);return;}
+    var p=plats[i++];
+    gas('player','&player='+encodeURIComponent(name)+'&platform='+p).then(function(d){
+      if(d&&!d.Error&&!d.error){ if($('pplat'))$('pplat').value=p; try{fhSave(name,p);}catch(e){} findLast={name:name,plat:p}; findRender(d,name,p); }
+      else next();
+    }).catch(function(){next();});
+  }
+  next();
 }
 function findRefresh(){
   if(!findLast)return;var btn=$('findRefBtn');if(btn){btn.disabled=true;btn.textContent='更新中…';}
@@ -2634,7 +2700,7 @@ applyTheme();document.addEventListener('DOMContentLoaded',applyTheme);
 function showSplash(){try{if(sessionStorage.getItem('apexSplash'))return;sessionStorage.setItem('apexSplash','1');var d=document.createElement('div');d.id='splash';d.innerHTML='<div class="splogo"><b>APEX</b><i>激やば</i>ツール<span class="spz">⚡</span></div>';document.body.appendChild(d);setTimeout(function(){d.classList.add('out');setTimeout(function(){if(d.parentNode)d.remove();},500);},1100);}catch(e){}}
 showSplash();document.addEventListener('DOMContentLoaded',showSplash);
 document.addEventListener('DOMContentLoaded',function(){setTimeout(grandOpen,200);});setTimeout(function(){try{grandOpen();}catch(e){}},300);
-document.addEventListener('DOMContentLoaded',function(){setTimeout(function(){try{homeHealthCheck(true);}catch(e){}},400);});document.addEventListener('DOMContentLoaded',function(){setTimeout(function(){try{iabBanner();}catch(e){}},2000);});setTimeout(function(){try{homeHealthCheck(true);}catch(e){}},600);
+document.addEventListener('DOMContentLoaded',function(){setTimeout(function(){try{homeHealthCheck(true);}catch(e){}},400);});document.addEventListener('DOMContentLoaded',function(){setTimeout(function(){try{iabBanner();}catch(e){}},2000);});document.addEventListener('DOMContentLoaded',function(){setTimeout(function(){try{a2hsTip();}catch(e){}},2600);});setTimeout(function(){try{homeHealthCheck(true);}catch(e){}},600);
 function restoreFromUrl(){
  try{
   if((location.hash||'').indexOf('#w=')===0){if(frImportFromHash())return;}
@@ -2691,6 +2757,8 @@ setTimeout(function(){try{var _h=document.getElementById('home');if(_h&&_h.style
 
 /* ===== サイト更新情報＆赤丸通知 ===== */
 var SITEUPD=[
+ {d:'2026-06-17',tag:'new',f:'all',t:'iOSの方へ「ホーム画面に追加」の案内を表示',x:'2回目以降の訪問時に、iOS Safariの方へ「共有→ホーム画面に追加」の小さな案内を1回だけ表示。アプリのように素早く開けて、最新情報・新機能も見逃しにくくなります（アプリ内ブラウザ/追加済みの方には出ません・12秒で自動で消えます）'},
+ {d:'2026-06-17',tag:'upd',f:'find',t:'検索で見つからない時に「als登録ガイド」を自動表示＋全機種自動検索',x:'プレイヤーが出ない時、「見つかりません」だけで終わらせず、原因（als未登録の可能性）と直し方を3ステップで自動案内。als.com登録ボタン・全機種(PC/PS/Xbox/Switch)で自動検索・再検索ボタンも設置。「フレンドは出るのに自分が出ない」問題を自己解決できるように'},
  {d:'2026-06-17',tag:'new',f:'home',t:'初回訪問時にウェルカムモーダルを追加',x:'初めてホームに来た方へ、お礼メッセージ＋公式Xフォロー＋開発応援（寄付）の案内を1回だけ表示します'},
  {d:'2026-06-16',tag:'new',f:'home',t:'ホーム最上部に公式Xバナー＆開発者への寄付ボタンを追加',x:'公式Xへワンタップで飛べるバナーをホーム最上部に設置。その下に「開発者を応援する（寄付）」ボタンを追加し、タップするとPayPayで応援できるモーダルが開きます（ランダムでひとことジョーク付き）。寄付は任意で、機能制限は一切ありません'},
  {d:'2026-06-16',tag:'upd',f:'frank',t:'プレイヤーウォッチの全員更新を高速化＆軽量化',x:'「全員更新」を1回の通信でまとめて取得する方式に改良。大人数を登録していても素早く更新でき、サーバー負荷も大幅に削減。取得できなかった人だけ自動で個別に再取得します'},
@@ -6039,7 +6107,17 @@ var DONATE_JOKES = [
  "ご支援は栄養（主にラーメン）に変換されます。",
  "サーバー代と開発者の生命維持にご協力ください🙏",
  "寄付してくれた人、来世で神COMP組めるらしい。",
- "開発者の朝食は「希望」です。具材は…ありません。"
+ "開発者の朝食は「希望」です。具材は…ありません。",
+ "開発者の夢：チャーシュー麺を“特上”で頼むこと。",
+ "あなたの寄付が、開発者のHPを回復させます💉",
+ "無料です。ただし開発者の財布もフリー（空）です。",
+ "寄付＝開発者へのアルティメット供給です⚡",
+ "ノックダウンした開発者を蘇生してくれませんか🛡️",
+ "あなたの一杯分が、明日の新機能になります。",
+ "開発者、現在キャラ未所持（ラーメン）状態。",
+ "支援してくれた人、次の試合エイム良くなる…かも。",
+ "寄付は任意。でも開発者の胃は正直です🍜",
+ "今月の家賃、ラスゲ前の安置探しより不安です。"
 ];
 function donateRoll(){
   var el=document.getElementById('dnJoke'); if(!el)return;
