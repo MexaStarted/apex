@@ -1161,6 +1161,8 @@
 .homenotice{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
 .hnchip{display:flex;align-items:center;gap:11px;width:100%;background:linear-gradient(135deg,rgba(25,227,255,.12),rgba(255,61,242,.07));border:1px solid var(--cy);border-radius:13px;padding:12px 14px;cursor:pointer;font-family:inherit;text-align:left;animation:hnpulse 2s ease-in-out infinite}
 .hnchip.shop{background:linear-gradient(135deg,rgba(255,194,61,.12),rgba(255,61,242,.06));border-color:var(--warn)}
+.hnchip.upd{background:linear-gradient(135deg,rgba(255,61,242,.12),rgba(25,227,255,.06));border-color:var(--mg)}
+.hnchip.upd .hntx b{color:var(--mg)}
 .hnemoji{font-size:21px;flex:none}
 .hntx{flex:1;font-size:12.5px;color:var(--text);line-height:1.4}
 .hntx b{color:var(--cy);font-size:13.5px}
@@ -1446,6 +1448,9 @@ html[data-theme="light"] .xbn{background:linear-gradient(135deg,#fff,#eef3fa)}
 .nfbtn{width:100%;margin:0 0 8px;display:block;text-align:center;text-decoration:none;box-sizing:border-box}
 .nftip{font-size:11px;line-height:1.6;color:var(--dim);margin:6px 0 0}
 .nftip b{color:var(--sub)}
+.dnstrip{display:flex;align-items:center;gap:10px;margin:14px 0 0;padding:11px 13px;border:1px solid rgba(255,106,31,.3);border-radius:12px;background:linear-gradient(135deg,rgba(255,106,31,.08),rgba(25,227,255,.05));font-size:12px;color:var(--sub)}
+.dnstrip span{flex:1;line-height:1.5}
+.dnstripbtn{flex:0 0 auto;border:none;border-radius:999px;padding:8px 16px;font-size:12.5px;font-weight:800;color:#fff;background:linear-gradient(135deg,#ff6a1f,#ff0033);cursor:pointer}
 </style>
 <script type="application/ld+json">
 {
@@ -2266,7 +2271,7 @@ function findTry(name,plat,attempt){
       findCommsDown(name,plat);return;
     }
     if(!d||d.Error||d.error){findNotFound(name,plat);return;}
-    findRender(d,name,plat);
+    findRender(d,name,plat);try{var _fb=$('findBox');if(_fb&&typeof dnSupportStrip==='function')_fb.insertAdjacentHTML('beforeend',dnSupportStrip());}catch(e){}
   }).catch(function(){
     if(attempt<1){findAutoT=setTimeout(function(){findTry(name,plat,attempt+1);},1300);return;}   // 通信失敗は1回だけ再試行
     $('findBox').innerHTML='<div class="warnbox">'+t('err_fail')+'</div>';findCommsDown(name,plat);
@@ -2311,6 +2316,7 @@ function findTryAllPlats(name){
   }
   next();
 }
+function dnSupportStrip(){return '<div class="dnstrip"><span>🍜 役に立った？ 個人開発を続ける力になります</span><button type="button" class="dnstripbtn" onclick="openDonate()">応援する</button></div>';}
 function findRefresh(){
   if(!findLast)return;var btn=$('findRefBtn');if(btn){btn.disabled=true;btn.textContent='更新中…';}
   gas('player','&player='+encodeURIComponent(findLast.name)+'&platform='+findLast.plat).then(function(d){
@@ -2757,6 +2763,7 @@ setTimeout(function(){try{var _h=document.getElementById('home');if(_h&&_h.style
 
 /* ===== サイト更新情報＆赤丸通知 ===== */
 var SITEUPD=[
+ {d:'2026-06-17',tag:'new',f:'all',t:'ホームに「前回からの更新」表示＋戦績検索に応援バーを追加',x:'①前回見た時より新しい更新がある時、ホームに「前回からN件の更新」を表示（タップで更新情報へ）②戦績検索の結果末尾に、役に立った時の応援（寄付）バーを設置'},
  {d:'2026-06-17',tag:'new',f:'all',t:'iOSの方へ「ホーム画面に追加」の案内を表示',x:'2回目以降の訪問時に、iOS Safariの方へ「共有→ホーム画面に追加」の小さな案内を1回だけ表示。アプリのように素早く開けて、最新情報・新機能も見逃しにくくなります（アプリ内ブラウザ/追加済みの方には出ません・12秒で自動で消えます）'},
  {d:'2026-06-17',tag:'upd',f:'find',t:'検索で見つからない時に「als登録ガイド」を自動表示＋全機種自動検索',x:'プレイヤーが出ない時、「見つかりません」だけで終わらせず、原因（als未登録の可能性）と直し方を3ステップで自動案内。als.com登録ボタン・全機種(PC/PS/Xbox/Switch)で自動検索・再検索ボタンも設置。「フレンドは出るのに自分が出ない」問題を自己解決できるように'},
  {d:'2026-06-17',tag:'new',f:'home',t:'初回訪問時にウェルカムモーダルを追加',x:'初めてホームに来た方へ、お礼メッセージ＋公式Xフォロー＋開発応援（寄付）の案内を1回だけ表示します'},
@@ -5394,16 +5401,22 @@ function shopNewUnseen(){try{return localStorage.getItem('apexShopNewSeen')!==NE
 function markDiagNewSeen(){try{localStorage.setItem('apexDiagNewSeen',NEWBATCH_DIAG);}catch(e){}}
 function markShopNewSeen(){try{localStorage.setItem('apexShopNewSeen',NEWBATCH_SHOP);}catch(e){}}
 function shopNewCount(){var src=(typeof SHOPDATA!=='undefined'&&SHOPDATA)?SHOPDATA:PRODUCTS;var n=0;src.forEach(function(p){if(p.nw)n++;});return n;}
+function updNewest(){return (typeof SITEUPD!=='undefined'&&SITEUPD&&SITEUPD[0]&&SITEUPD[0].d)||'';}
+function updNewCount(){try{var seen=localStorage.getItem('apexUpdSeen');if(!seen)return 0;var n=0;for(var i=0;i<SITEUPD.length;i++){if(SITEUPD[i].d>seen)n++;}return n;}catch(e){return 0;}}
+function markUpdSeen(){try{localStorage.setItem('apexUpdSeen',updNewest());}catch(e){}}
 function renderHomeNotice(){
  var box=$('homeNotice');if(!box)return;
+ try{if(!localStorage.getItem('apexUpdSeen'))localStorage.setItem('apexUpdSeen',updNewest());}catch(e){}
  var chips='';
  if(diagNewUnseen())chips+='<button class="hnchip diag" onclick="gotoNew(\'diag\')"><span class="hnemoji">🧪</span><span class="hntx"><b>新しい診断が'+DIAGNEW.length+'件</b>追加されました</span><span class="hngo">›</span></button>';
  if(shopNewUnseen())chips+='<button class="hnchip shop" onclick="gotoNew(\'shop\')"><span class="hnemoji">🛒</span><span class="hntx"><b>新しい商品が'+shopNewCount()+'件</b>追加されました</span><span class="hngo">›</span></button>';
+ var _un=updNewCount();if(_un>0)chips+='<button class="hnchip upd" onclick="gotoNew(\'upd\')"><span class="hnemoji">✨</span><span class="hntx"><b>前回から'+_un+'件の更新</b>があります</span><span class="hngo">›</span></button>';
  box.innerHTML=chips?'<div class="homenotice">'+chips+'</div>':'';
 }
 function gotoNew(which){
  if(which==='diag'){HUBSTATE={q:'',cat:'新着'};open_('diag');markDiagNewSeen();renderHomeNotice();}
  else if(which==='shop'){shopCat='新着';open_('shop');markShopNewSeen();renderHomeNotice();setTimeout(function(){try{renderShop();}catch(e){}},30);}
+ else if(which==='upd'){open_('siteupd');markUpdSeen();renderHomeNotice();}
 }
 
 var SEO_TITLES={
