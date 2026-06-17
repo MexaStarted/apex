@@ -1451,6 +1451,10 @@ html[data-theme="light"] .xbn{background:linear-gradient(135deg,#fff,#eef3fa)}
 .dnstrip{display:flex;align-items:center;gap:10px;margin:14px 0 0;padding:11px 13px;border:1px solid rgba(255,106,31,.3);border-radius:12px;background:linear-gradient(135deg,rgba(255,106,31,.08),rgba(25,227,255,.05));font-size:12px;color:var(--sub)}
 .dnstrip span{flex:1;line-height:1.5}
 .dnstripbtn{flex:0 0 auto;border:none;border-radius:999px;padding:8px 16px;font-size:12.5px;font-weight:800;color:#fff;background:linear-gradient(135deg,#ff6a1f,#ff0033);cursor:pointer}
+.frselfcta{margin:12px 0}
+.frselfbtn{width:100%}
+.frselfnote{font-size:11px;color:var(--dim);margin:7px 2px 0;line-height:1.6;text-align:center}
+.dnuse{font-size:11.5px;color:var(--sub);background:rgba(25,227,255,.06);border:1px solid rgba(25,227,255,.16);border-radius:9px;padding:8px 11px;margin:12px 0 0;line-height:1.6;text-align:center}
 </style>
 <script type="application/ld+json">
 {
@@ -2763,6 +2767,7 @@ setTimeout(function(){try{var _h=document.getElementById('home');if(_h&&_h.style
 
 /* ===== サイト更新情報＆赤丸通知 ===== */
 var SITEUPD=[
+ {d:'2026-06-17',tag:'upd',f:'all',t:'診断結果に応援バー／ウォッチ空時に「自分を登録」CTA／寄付の使い道を明記',x:'①全ての診断結果の末尾にも「役に立った？応援」バーを追加 ②プレイヤーウォッチが空の時に「まず自分を検索して登録」ボタンを大きく表示（als未登録で出ない人の導線）③寄付モーダルに「いただいた応援はサーバー代・開発継続に充てています」と使い道を明記'},
  {d:'2026-06-17',tag:'new',f:'all',t:'ホームに「前回からの更新」表示＋戦績検索に応援バーを追加',x:'①前回見た時より新しい更新がある時、ホームに「前回からN件の更新」を表示（タップで更新情報へ）②戦績検索の結果末尾に、役に立った時の応援（寄付）バーを設置'},
  {d:'2026-06-17',tag:'new',f:'all',t:'iOSの方へ「ホーム画面に追加」の案内を表示',x:'2回目以降の訪問時に、iOS Safariの方へ「共有→ホーム画面に追加」の小さな案内を1回だけ表示。アプリのように素早く開けて、最新情報・新機能も見逃しにくくなります（アプリ内ブラウザ/追加済みの方には出ません・12秒で自動で消えます）'},
  {d:'2026-06-17',tag:'upd',f:'find',t:'検索で見つからない時に「als登録ガイド」を自動表示＋全機種自動検索',x:'プレイヤーが出ない時、「見つかりません」だけで終わらせず、原因（als未登録の可能性）と直し方を3ステップで自動案内。als.com登録ボタン・全機種(PC/PS/Xbox/Switch)で自動検索・再検索ボタンも設置。「フレンドは出るのに自分が出ない」問題を自己解決できるように'},
@@ -4652,7 +4657,7 @@ function frSess(m){if(!(m.data&&m.data.ok)||typeof m.data.rp!=='number')return 0
 function frSessBar(a){var tot=0,up=0,dn=0;a.forEach(function(m){var s=frSess(m);if(s>0){up++;tot+=s;}else if(s<0){dn++;tot+=s;}});if(!up&&!dn)return '';var col=tot>=0?'--ok':'--down';return '<div class="frsessbar" style="margin:0 0 10px;padding:8px 12px;border:1px solid var(--line);border-radius:9px;background:rgba(255,255,255,.03);font-size:12.5px;font-weight:700">🔼 このセッション <span class="mono" style="color:var('+col+')">'+(tot>=0?'+':'−')+Math.abs(tot).toLocaleString()+' RP</span><span style="color:var(--sub);font-weight:600;font-size:11px;margin-left:8px">'+(up?'▲'+up+'人 ':'')+(dn?'▼'+dn+'人':'')+'</span></div>';}
 function frRender(){
  var box=$('frBox');if(!box)return;var a=frGet();
- if(!a.length){box.innerHTML='<div class="frempty">推し・フレンド・プロ・配信者…気になるプレイヤーのIDを入力して「＋追加」。<b>今オンラインか</b>と現在ランクが一目でわかる。カードをタップでリアルタイム詳細、タブでRPランキング。</div><div class="frnav" style="margin-top:10px"><button class="frnavchip" type="button" onclick="frNav(\'find\')">🔎 まず自分の戦績</button><button class="frnavchip" type="button" onclick="frNav(\'shop\')">🛒 環境を整える</button><button class="frnavchip" type="button" onclick="frNav(\'diag\')">🧪 診断であそぶ</button></div>';return;}
+ if(!a.length){box.innerHTML='<div class="frempty">推し・フレンド・プロ・配信者…気になるプレイヤーのIDを入力して「＋追加」。<b>今オンラインか</b>と現在ランクが一目でわかる。カードをタップでリアルタイム詳細、タブでRPランキング。</div><div class="frselfcta"><button class="btn primary frselfbtn" type="button" onclick="frNav(\'find\')">🔍 まず自分を検索して登録</button><div class="frselfnote">検索に自分が出ない時は als未登録が原因。検索画面の案内で30秒で直せます。</div></div><div class="frnav" style="margin-top:10px"><button class="frnavchip" type="button" onclick="frNav(\'find\')">🔎 まず自分の戦績</button><button class="frnavchip" type="button" onclick="frNav(\'shop\')">🛒 環境を整える</button><button class="frnavchip" type="button" onclick="frNav(\'diag\')">🧪 診断であそぶ</button></div>';return;}
  if(FR_TAB==='rank'){
   var ranked=a.map(function(m,i){return {m:m,i:i};}).filter(function(o){return o.m.data&&o.m.data.ok;}).sort(function(x,y){return (y.m.data.rp||0)-(x.m.data.rp||0);});
   var miss=a.filter(function(m){return !(m.data&&m.data.ok);});
@@ -5796,7 +5801,7 @@ function recoBlock(code){
    +'<div class="recoprod-note">※ 練習が一番大事。その上で、道具は底上げになります。リンクは楽天アフィリエイトです（価格はリンク先をご確認ください）</div>'
    +'</div>';
  }
- html+='<div class="recowrap"><div class="recottl">あわせて遊ぶ</div><div class="recos">'+diagChips+'<button class="reco shop" onclick="home();open_(\'shop\')">🛒 デバイス一覧</button></div></div>';
+ html+='<div class="recowrap"><div class="recottl">あわせて遊ぶ</div><div class="recos">'+diagChips+'<button class="reco shop" onclick="home();open_(\'shop\')">🛒 デバイス一覧</button></div></div>';try{if(typeof dnSupportStrip==='function')html+=dnSupportStrip();}catch(e){}
  return html;
 }
 function gaugeRes(pct,num,suf,band,ts,shareTxt,code){DIAG_R=code+pct;diagHistSave({c:code,n:band.n,num:num,suf:suf,pct:pct,sh:shareTxt,t:Date.now()});return '<div class="res"><div class="gauge" style="--p:'+pct+'%"><div class="in"><div class="n mono">'+num+'</div><div class="o">'+suf+'</div></div></div><div class="tn">'+band.n+'</div><div class="ts">'+ts+'</div><div class="desc">'+band.d+'</div>'+richBlockG(code,pct,band)+'<button class="btn x" onclick="share(\''+shareTxt+'\')">𝕏 シェア</button><button class="btn primary" onclick="openDiag(\''+code+'\')">もう一度</button>'+recoBlock(code)+'</div>';}
@@ -6015,6 +6020,7 @@ try{var _sl=localStorage.getItem("apexLang");if(_sl)LANG=_sl;}catch(e){}applySta
       <div class="dnjoke" id="dnJoke">…</div>
       <button class="dnroll" type="button" onclick="donateRoll()">🔄 別のひとこと</button>
       <a class="dnpay" id="dnPay" href="#" target="_blank" rel="noopener">PayPayで応援する</a>
+      <div class="dnuse">💡 いただいた応援は、サーバー代と開発の継続に充てています🙏</div>
       <div class="dnnote">※強制ではありません。1円でも開発者が泣いて喜びます。寄付の有無で機能制限は一切ありません。</div>
     </div>
   </div>
