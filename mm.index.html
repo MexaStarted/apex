@@ -6212,7 +6212,7 @@ function tsJudge(){var kd=tsv('ts_kd'),dmg=tsv('ts_dmg'),pred=tsv('ts_pred'),gam
   window.scrollTo(0,0);}
 
 /* ルーレット */
-var LEGENDS=["レイス","パスファインダー","オクタン","ワットソン","ライフライン","ジブラルタル","ブラッドハウンド","バンガロール","コースティック","ミラージュ","クリプト","レヴナント","ローバ","ランパート","ホライゾン","ヒューズ","ヴァルキリー","シア","アッシュ","マッドマギー","ニューキャッスル","ヴァンテージ","キャタリスト","バリスティック","コンジット","オルター","ベンチャー"];
+var LEGENDS=["レイス","パスファインダー","オクタン","ワットソン","ライフライン","ジブラルタル","ブラッドハウンド","バンガロール","コースティック","ミラージュ","クリプト","レヴナント","ローバ","ランパート","ホライゾン","ヒューズ","ヴァルキリー","シア","アッシュ","マッドマギー","ニューキャッスル","ヴァンテージ","カタリスト","バリスティック","コンジット","オルター","スパロー","アクセル"];
 function rlStart(){$('diagArea').innerHTML='<div class="res"><div style="font-size:14px;color:var(--sub);margin-bottom:6px">3人分の使用キャラを抽選！</div><div class="slots" id="slots">'+[0,1,2].map(function(i){return '<div class="slot" id="slot'+i+'"><span class="pi">P'+(i+1)+'</span><span class="nm">?</span></div>';}).join('')+'</div><button class="btn primary" id="spinBtn" onclick="spin()">🎰 まわす</button></div>';}
 var spinning=false;
 function spin(){if(spinning)return;spinning=true;$('spinBtn').textContent='🎰 回転中…';for(var i=0;i<3;i++){$('slot'+i).classList.add('spin');$('slot'+i).classList.remove('win');}var pool=LEGENDS.slice(),pick=[];for(var j=0;j<3;j++){pick.push(pool.splice(Math.floor(Math.random()*pool.length),1)[0]);}var tick=setInterval(function(){for(var i=0;i<3;i++){$('slot'+i).querySelector('.nm').textContent=LEGENDS[Math.floor(Math.random()*LEGENDS.length)];}},80);[0,1,2].forEach(function(i){setTimeout(function(){var s=$('slot'+i);s.classList.remove('spin');s.querySelector('.nm').textContent=pick[i];s.classList.add('win');if(i===2){clearInterval(tick);spinning=false;$('spinBtn').textContent='🎰 もう一回';}},900+i*500);});}
@@ -8710,15 +8710,41 @@ window.monsAskHome=function(){ var ov=document.getElementById('pwOv'); if(ov)ov.
 #surveyBody .nbar .t i{display:block;height:100%;border-radius:99px}
 #surveyBody .sv-share{display:block;width:100%;padding:14px;margin-top:6px;background:linear-gradient(135deg,#19e3ff,#7b5cff);border:none;border-radius:10px;color:#04121f;font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:14.5px;cursor:pointer;box-shadow:0 0 24px -8px rgba(25,227,255,.7)}
 #surveyBody .sv-empty{text-align:center;color:#9fb0cc;font-size:13px;line-height:1.75;padding:26px 8px}
+#surveyBody .svshop{margin-top:18px}
+#surveyBody .svshop-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+#surveyBody .svshop-head .t{font-family:'Chakra Petch',monospace;font-size:12px;color:#fff;display:flex;align-items:center;gap:6px}
+#surveyBody .svshop-head .t .e{font-size:15px}
+#surveyBody .svshop-head .more{font-family:'Chakra Petch',monospace;font-size:11px;color:#19e3ff;text-decoration:none;white-space:nowrap}
+#surveyBody .svshop-rail{display:flex;gap:12px;overflow-x:auto;padding:6px 2px 12px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+#surveyBody .svshop-rail::-webkit-scrollbar{display:none}
+#surveyBody .svp{scroll-snap-align:start;flex:0 0 auto;width:162px;position:relative;border:1.5px solid #ff2d4e;background:radial-gradient(ellipse at 50% 18%,#2a0610,#0c0205);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;text-decoration:none;color:#e8eefb;transition:box-shadow .35s ease,transform .25s ease,border-color .2s}
+#surveyBody .svp:active{box-shadow:0 0 24px rgba(255,45,78,.75),inset 0 0 16px rgba(255,45,78,.3);transform:translateY(-2px);border-color:#ff5e72}
+#surveyBody .svp::after{content:"";position:absolute;top:0;left:0;width:38%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,90,114,.5),transparent);z-index:4;pointer-events:none;will-change:transform;transform:translateX(-170%) skewX(-18deg);animation:predShine 6s ease-in-out infinite}
+#surveyBody .svp-crown{position:absolute;top:7px;right:9px;font-size:13px;z-index:6;filter:drop-shadow(0 0 5px rgba(255,45,78,.85));pointer-events:none}
+#surveyBody .svp-thumb{height:124px;background-color:#0a0e16;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative;z-index:1}
+#surveyBody .svp-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+#surveyBody .svp-thumb.ph{font-size:42px;filter:grayscale(.15)}
+#surveyBody .svp-body{padding:11px 12px 13px;display:flex;flex-direction:column;gap:6px;flex:1;position:relative;z-index:5}
+#surveyBody .svp-cat{font-size:10.5px;color:#ff5e72;letter-spacing:.04em;text-transform:uppercase;display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+#surveyBody .svp-name{font-weight:700;font-size:13.5px;line-height:1.32;color:#eef4ff;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+#surveyBody .svp-note{font-size:11.5px;color:#9fb0cc;line-height:1.5;flex:1;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+#surveyBody .svp-row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:auto;flex-wrap:wrap}
+#surveyBody .svp-price{font-family:'Chakra Petch',monospace;font-weight:700;color:#ff5e72;font-size:14px}
+#surveyBody .svp-btn{background:linear-gradient(135deg,#ff2d4e,#c8102e);color:#fff;font-weight:800;font-size:12.5px;padding:8px 12px;border-radius:9px;white-space:nowrap;flex:1;text-align:center;min-width:112px}
+#surveyBody .svp-btn.off{background:rgba(255,255,255,.08);color:#9fb0cc;font-weight:600}
+#surveyBody .svp-tail{scroll-snap-align:start;flex:0 0 auto;width:120px;display:flex;align-items:center;justify-content:center;text-align:center;color:#9fb0cc;font-family:'Chakra Petch',monospace;font-size:11px;text-decoration:none;border:1px dashed rgba(255,45,78,.4);border-radius:12px;padding:14px}
+#surveyBody .svp-tail .arw{display:block;font-size:22px;color:#ff5e72;margin-bottom:6px}
+/* 結果画面の自動広告をエナドリ枠で置換（非表示化） */
+#v-survey .adSlot{display:none!important}
 </style>
 <div class="sv-ov" id="svOv"><div class="sv-box" id="svBox"></div></div>
 <script>
 (function(){
  /* ===== 2系統GAS：書き込み用(集計)・読み取り用(結果) — JSONP対応の/exec URLを設定 ===== */
  var SV_WRITE_URL="https://script.google.com/macros/s/AKfycbz4RjM5wjF6yyuxsKpuvDeD4tTlXPjOaZxTHq4BWaRYxTLSW0uhZwAA2m-23X0FipIP/exec";  /* 集計用GAS（投票を記録）*/
- var SV_READ_URL ="https://script.google.com/macros/s/AKfycbz4RjM5wjF6yyuxsKpuvDeD4tTlXPjOaZxTHq4BWaRYxTLSW0uhZwAA2m-23X0FipIP/exec";  /* 結果取得（まずはGAS直。STEP3でWorkerキャッシュ経由に変更予定）*/
+ var SV_READ_URL ="https://apex-proxy.clasickout06.workers.dev/?type=surveyresult";  /* 結果取得（Workerで30秒エッジキャッシュ＝2万閲覧対策・実質リアルタイム）*/
 
- var LEGENDS=['レイス','パスファインダー','オクタン','ライフライン','レヴナント','ブラッドハウンド','ジブラルタル','バンガロール','コースティック','ミラージュ','ワットソン','クリプト','ローバ','ランパート','ホライゾン','ヒューズ','ヴァルキリー','シア','アッシュ','マッドマギー','ニューキャッスル','ヴァンテージ','カタリスト','バリスティック','コンジット','オルター'];
+ var LEGENDS=['レイス','パスファインダー','オクタン','ライフライン','レヴナント','ブラッドハウンド','ジブラルタル','バンガロール','コースティック','ミラージュ','ワットソン','クリプト','ローバ','ランパート','ホライゾン','ヒューズ','ヴァルキリー','シア','アッシュ','マッドマギー','ニューキャッスル','ヴァンテージ','カタリスト','バリスティック','コンジット','オルター','スパロー','アクセル'];
  var MAPS=['キングスキャニオン','ワールズエッジ','オリンパス','ストームポイント','ブロークンムーン','Eディストリクト'];
 
  function L(k){try{return localStorage.getItem(k);}catch(e){return null;}}
@@ -8804,7 +8830,19 @@ window.monsAskHome=function(){ var ov=document.getElementById('pwOv'); if(ov)ov.
   if(po&&po.classList.contains('on'))return;
   if(so&&so.classList.contains('on'))return;
   if(document.querySelector('.view.on'))return;
-  setTimeout(function(){if(L('apexSurveyDone'))return;var x=document.getElementById('pwOv');if(x&&x.classList.contains('on'))return;if(document.querySelector('.view.on'))return;window.svShow();},650);
+  /* 新機能開放演出を最優先：この回に開放が出る/出た場合はアンケートを見送り、次のホーム表示に回す */
+  try{
+   if(window.pwHomeFired)return;
+   if(window.FEATURE_ANN&&window.FEATURE_ANN.length){var av=L('apexAnnV');if(av===null||Number(av)<window.FEATURE_ANN[0].v)return;}
+  }catch(e){}
+  setTimeout(function(){
+   if(L('apexSurveyDone'))return;
+   try{if(window.pwHomeFired)return;}catch(e){}
+   var fx=document.getElementById('pwFx');if(fx&&fx.classList.contains('on'))return;
+   var ov=document.getElementById('pwOv');if(ov&&ov.classList.contains('on'))return;
+   if(document.querySelector('.view.on'))return;
+   window.svShow();
+  },650);
  };
 
  /* ===== 結果ビュー（リアルタイム取得＋失敗時キャッシュ表示） ===== */
@@ -8821,6 +8859,20 @@ window.monsAskHome=function(){ var ov=document.getElementById('pwOv'); if(ov)ov.
   return shown.map(function(e,i){var pct=sum?Math.round(e[1]/sum*100):0,w=Math.round(e[1]/mx*100);return '<div class="nbar"><span class="rk">'+(i+1)+'</span><div class="body"><div class="top"><span class="n">'+esc(e[0])+'</span><span class="v">'+e[1]+'票 '+pct+'%</span></div><div class="t"><i style="width:'+w+'%;background:'+accent+';box-shadow:0 0 10px '+accent+'"></i></div></div></div>';}).join('');
  }
  function gaugeRow(label,pct,c1,c2){return '<div class="grow"><span class="gl">'+label+'</span><span class="gb"><i style="width:'+pct+'%;background:linear-gradient(90deg,'+c1+','+c2+');box-shadow:0 0 10px '+c1+'"></i></span><span class="gv">'+pct+'%</span></div>';}
+ function svIsEnergy(p){return /エナジー|エナドリ|レッドブル|モンスター|ガツンゴールド|エネリッシュ|ENERICHE/i.test((p.name||'')+' '+(p.cat||''));}
+ function svShopRail(){
+  var src=window.PRODUCTS;if(!src||!src.length)return '';
+  var list=src.filter(svIsEnergy);if(!list.length)return '';
+  var cards=list.map(function(p){
+   var short=String(p.name||'').split('（')[0].split('(')[0].trim();
+   var dead=(!p.url||p.url==='#');
+   var thumb=p.img?('<div class="svp-thumb"><img src="'+p.img+'" alt="'+esc(short)+'" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.display=\'none\';this.parentNode.classList.add(\'ph\');this.parentNode.textContent=\'🥤\'"></div>'):('<div class="svp-thumb ph">🥤</div>');
+   var btn=dead?'<span class="svp-btn off">準備中</span>':'<span class="svp-btn">買う ↗</span>';
+   var inner='<span class="svp-crown">♛</span>'+thumb+'<div class="svp-body"><div class="svp-cat">'+esc(p.cat||'エナドリ')+'</div><div class="svp-name">'+esc(short)+'</div>'+(p.note?'<div class="svp-note">'+esc(p.note)+'</div>':'')+'<div class="svp-row"><span class="svp-price">'+esc(p.price||'')+'</span>'+btn+'</div></div>';
+   return dead?('<div class="svp">'+inner+'</div>'):('<a class="svp" href="'+p.url+'" target="_blank" rel="sponsored nofollow noopener">'+inner+'</a>');
+  }).join('');
+  return '<div class="svshop"><div class="svshop-head"><span class="t"><span class="e">⚡</span>エナジードリンク</span><a class="more" href="javascript:void(0)" onclick="try{open_(\'shop\')}catch(e){}">すべて見る →</a></div><div class="svshop-rail">'+cards+'<a class="svp-tail" href="javascript:void(0)" onclick="try{open_(\'shop\')}catch(e){}"><span class="arw">→</span>ショップで<br>すべて見る</a></div></div>';
+ }
  function renderResults(d,stale,ts){
   var b=document.getElementById('surveyBody');if(!b)return;
   var cs=+d.cs||0,pc=+d.pc||0,kbm=+d.kbm||0,pad=+d.pad||0,total=cs+pc;
@@ -8839,6 +8891,7 @@ window.monsAskHome=function(){ var ov=document.getElementById('pwOv'); if(ov)ov.
   h+='<div class="sv-nsec"><div class="sv-nh"><span class="e">🗑️</span>消えて欲しいキャラ TOP10<span class="ln"></span></div>'+nbars(d.kill,'#ff3d5e',10)+'</div>';
   h+='<div class="sv-nsec"><div class="sv-nh"><span class="e">🗺️</span>消えて欲しいマップ<span class="ln"></span></div>'+nbars(d.map,'#ffb02e',10)+'</div>';
   h+='<div class="sv-nsec"><div class="sv-nh"><span class="e">💪</span>強化して欲しいキャラ TOP10<span class="ln"></span></div>'+nbars(d.buff,'#22e3a0',10)+'</div>';
+  h+=svShopRail();
   h+='<button class="sv-share" onclick="svShareResult()">𝕏 結果をシェア</button>';
   h+='</div>';
   b.innerHTML=h;window.__svD=d;
