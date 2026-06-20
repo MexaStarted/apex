@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>代行・同行 — MOCK</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Zen+Kaku+Gothic+New:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#070a10; --bg2:#0a0e16; --panel:#0e131d; --panel2:#121826;
+  --line:rgba(120,200,255,.10); --line2:rgba(120,200,255,.2);
+  --cyan:#19e3ff; --cyan2:#7df0ff; --cyan-deep:#0a86a8;
+  --red:#ff2e4d; --red2:#ff6b80; --amber:#ffb020;
+  --good:#19e3ff; --bad:#ff2e4d;
+  --tx:#dcefff8; --mut:#6f8298; --mut2:#475669;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--tx);font-family:'Zen Kaku Gothic New',system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit}
+.mono{font-family:'Chakra Petch',monospace;font-variant-numeric:tabular-nums}
+
+/* bg fx */
+.fx{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.fx .scan{position:absolute;inset:0;background:repeating-linear-gradient(transparent 0 2px,rgba(0,0,0,.16) 2px 3px);mix-blend-mode:multiply;opacity:.5}
+.fx .glow{position:absolute;top:-18%;left:50%;transform:translateX(-50%);width:130vw;max-width:760px;aspect-ratio:1;background:radial-gradient(circle,rgba(25,227,255,.12),transparent 60%)}
+.fx .rstream{position:absolute;top:0;bottom:0;width:1px;background:linear-gradient(transparent,rgba(255,46,77,.5),transparent);opacity:.4;animation:fall 6s linear infinite}
+.fx .rstream.b{left:18%;animation-delay:-2s} .fx .rstream.c{left:82%;animation-delay:-4s} .fx .rstream.a{left:50%}
+@keyframes fall{0%{transform:translateY(-100%)}100%{transform:translateY(100%)}}
+
+.wrap{position:relative;z-index:1;max-width:560px;margin:0 auto;min-height:100vh;padding:0 16px 40px}
+
+/* exe chrome header */
+.chrome{margin-top:16px;border:1px solid var(--line2);border-radius:14px 14px 0 0;background:linear-gradient(180deg,#101725,#0c1019);overflow:hidden}
+.chrome .bar{display:flex;align-items:center;gap:9px;padding:11px 14px;border-bottom:1px solid var(--line);background:rgba(255,46,77,.06)}
+.chrome .dots{display:flex;gap:6px}
+.chrome .dots i{width:10px;height:10px;border-radius:50%;display:block}
+.chrome .dots i:nth-child(1){background:#ff5f57} .chrome .dots i:nth-child(2){background:#febc2e} .chrome .dots i:nth-child(3){background:#28c840}
+.chrome .fn{font-family:'Chakra Petch';font-size:12px;letter-spacing:.12em;color:var(--mut);margin-left:4px}
+.chrome .fn b{color:var(--red2)}
+.chrome .stat{margin-left:auto;font-family:'Chakra Petch';font-size:10px;letter-spacing:.14em;color:var(--red);display:flex;align-items:center;gap:6px}
+.chrome .stat::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--red);box-shadow:0 0 8px var(--red);animation:blink 1.4s steps(2) infinite}
+@keyframes blink{50%{opacity:.25}}
+.chrome .head{padding:18px 18px 20px}
+.chrome .ttl{font-family:'Chakra Petch';font-weight:700;font-size:25px;letter-spacing:.02em;display:flex;align-items:center;gap:11px}
+.chrome .ttl .gl{color:var(--cyan);text-shadow:0 0 14px rgba(25,227,255,.6)}
+.chrome .ttl .sub{font-size:12px;color:var(--mut);font-weight:500;letter-spacing:.1em}
+.warnbox{margin-top:14px;border:1px solid rgba(255,46,77,.3);background:linear-gradient(100deg,rgba(255,46,77,.08),rgba(255,46,77,.02));border-radius:11px;padding:13px 14px;display:flex;gap:11px}
+.warnbox .ic{font-size:17px;flex:none;color:var(--amber)}
+.warnbox .t{font-size:12.5px;line-height:1.65;color:var(--red2)}
+.warnbox .t b{color:#fff;font-weight:700}
+.warnbox .t .dim{color:var(--mut)}
+
+/* controls */
+.ctrls{display:flex;gap:9px;align-items:center;margin:16px 2px 4px}
+.seg{display:flex;gap:3px;background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:3px;flex:1}
+.seg button{flex:1;font-family:'Chakra Petch';font-weight:700;font-size:11.5px;color:var(--mut);padding:9px 4px;border-radius:8px;display:flex;align-items:center;justify-content:center;gap:5px;white-space:nowrap;transition:.15s}
+.seg button.on{background:rgba(25,227,255,.14);color:var(--cyan);box-shadow:inset 0 0 0 1px rgba(25,227,255,.3)}
+.seg button.on.bad{background:rgba(255,46,77,.14);color:var(--red2);box-shadow:inset 0 0 0 1px rgba(255,46,77,.3)}
+.regbtn{flex:none;border:1px solid var(--cyan);color:var(--cyan);font-weight:800;font-size:13px;border-radius:11px;padding:11px 15px;display:flex;align-items:center;gap:7px;background:rgba(25,227,255,.05);box-shadow:0 0 16px -6px var(--cyan)}
+.regbtn:active{transform:scale(.96)}
+.countln{font-family:'Chakra Petch';font-size:10.5px;color:var(--mut2);letter-spacing:.12em;margin:14px 4px 10px;display:flex;align-items:center;gap:8px}
+.countln .ln{flex:1;height:1px;background:var(--line)}
+.countln b{color:var(--cyan)}
+.ranknote{font-size:10.5px;line-height:1.6;color:var(--mut2);margin:0 4px 12px;padding:9px 11px;border:1px dashed var(--line);border-radius:9px;background:rgba(255,176,32,.03)}
+
+/* banners */
+.list{display:flex;flex-direction:column;gap:11px}
+.ban{position:relative;display:flex;align-items:stretch;gap:0;border:1px solid var(--line2);border-radius:14px;background:linear-gradient(100deg,var(--panel),var(--panel2));overflow:hidden;text-align:left;transition:transform .08s,border-color .2s}
+.ban:active{transform:scale(.992)}
+.ban::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(var(--cyan),var(--cyan-deep))}
+.ban.pr::before{background:linear-gradient(var(--amber),#ff7a18)}
+.ban.flag::before{background:linear-gradient(var(--red),#8a1226)}
+.ban .rk{flex:none;width:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;border-right:1px solid var(--line);background:rgba(0,0,0,.18)}
+.ban .rk .h{font-family:'Chakra Petch';font-size:9px;color:var(--mut2);letter-spacing:.1em}
+.ban .rk .n{font-family:'Chakra Petch';font-weight:700;font-size:22px;line-height:1;color:var(--cyan)}
+.ban.bad .rk .n{color:var(--red2)}
+.ban .rk .n.g1{color:#ffd54a;text-shadow:0 0 10px rgba(255,200,60,.5)}
+.ban .bd{flex:1;min-width:0;padding:13px 12px 13px 13px}
+.ban .nm{font-family:'Chakra Petch';font-weight:700;font-size:16px;letter-spacing:.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#eafcff}
+.ban .tags{display:flex;gap:5px;margin-top:6px;flex-wrap:wrap}
+.tag{font-family:'Chakra Petch';font-size:9.5px;font-weight:700;letter-spacing:.08em;padding:3px 7px;border-radius:5px;border:1px solid var(--line2);color:var(--mut)}
+.tag.daiko{color:var(--red2);border-color:rgba(255,46,77,.3);background:rgba(255,46,77,.06)}
+.tag.doko{color:var(--cyan);border-color:rgba(25,227,255,.3);background:rgba(25,227,255,.06)}
+.tag.etc{color:var(--amber);border-color:rgba(255,176,32,.3);background:rgba(255,176,32,.06)}
+.tag.pr{color:#0a0e16;background:linear-gradient(90deg,var(--amber),#ffd54a);border:0}
+.ban .xh{font-family:'Chakra Petch';font-size:11px;color:var(--mut);margin-top:7px;display:flex;align-items:center;gap:5px}
+.ban .recpill{margin-top:7px;font-size:10px;color:var(--amber);display:flex;align-items:center;gap:5px;font-weight:700}
+.ban .vt{flex:none;display:flex;flex-direction:column;justify-content:center;gap:8px;padding:0 13px;border-left:1px solid var(--line);background:rgba(0,0,0,.12)}
+.ban .vt .v{display:flex;align-items:center;gap:6px;font-family:'Chakra Petch';font-weight:700;font-size:14px;font-variant-numeric:tabular-nums}
+.ban .vt .v.like{color:var(--cyan)} .ban .vt .v.bad{color:var(--red2)}
+.ban .vt .v .e{font-size:13px;width:16px;text-align:center}
+.ban .chev{flex:none;display:flex;align-items:center;padding-right:11px;color:var(--mut2);font-size:18px}
+
+/* modal */
+.scrim{position:fixed;inset:0;z-index:50;background:rgba(3,5,9,.78);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);display:none;align-items:flex-end;justify-content:center}
+.scrim.on{display:flex;animation:fz .2s ease}
+@keyframes fz{from{opacity:0}to{opacity:1}}
+.modal{width:100%;max-width:560px;background:linear-gradient(180deg,#101622,#0a0e16);border:1px solid var(--line2);border-bottom:0;border-radius:18px 18px 0 0;max-height:94vh;overflow-y:auto;animation:up .3s cubic-bezier(.2,.9,.3,1.05)}
+@keyframes up{from{transform:translateY(100%)}to{transform:none}}
+.mhead{position:sticky;top:0;display:flex;align-items:center;gap:9px;padding:13px 16px;border-bottom:1px solid var(--line);background:rgba(16,22,34,.92);backdrop-filter:blur(8px)}
+.mhead .dots{display:flex;gap:5px} .mhead .dots i{width:9px;height:9px;border-radius:50%}
+.mhead .dots i:nth-child(1){background:#ff5f57} .mhead .dots i:nth-child(2){background:#febc2e} .mhead .dots i:nth-child(3){background:#28c840}
+.mhead .fn{font-family:'Chakra Petch';font-size:11px;letter-spacing:.1em;color:var(--mut)}
+.mhead .x{margin-left:auto;font-size:20px;color:var(--mut);padding:2px 6px}
+.mbody{padding:20px 18px calc(26px + env(safe-area-inset-bottom))}
+
+/* detail */
+.dt-name{font-family:'Chakra Petch';font-weight:700;font-size:23px;color:#eafcff;text-shadow:0 0 16px rgba(25,227,255,.3);line-height:1.2}
+.dt-tags{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap}
+.dt-rec{margin-top:16px;border:1px solid rgba(255,176,32,.3);background:rgba(255,176,32,.06);border-radius:12px;padding:13px 14px;display:flex;gap:11px;align-items:center}
+.dt-rec .ic{font-size:20px;flex:none}
+.dt-rec .t{flex:1;min-width:0}
+.dt-rec .t .l{font-size:11px;color:var(--amber);font-weight:700}
+.dt-rec .t .v{font-family:'Chakra Petch';font-size:13px;color:var(--tx);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dt-rec .go{font-size:11px;color:var(--amber);font-weight:700;flex:none}
+.dt-sec{font-family:'Chakra Petch';font-size:10px;letter-spacing:.16em;color:var(--mut2);margin:22px 2px 11px;text-transform:uppercase}
+.linkbtn{width:100%;display:flex;align-items:center;gap:13px;border:1px solid var(--line2);border-radius:13px;padding:14px 15px;margin-bottom:10px;background:rgba(25,227,255,.03);transition:transform .08s}
+.linkbtn:active{transform:scale(.99)}
+.linkbtn .lic{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;font-family:'Chakra Petch';font-weight:700;font-size:16px;flex:none;background:rgba(25,227,255,.1);border:1px solid var(--line2);color:var(--cyan)}
+.linkbtn .lt{flex:1;min-width:0}
+.linkbtn .lt .a{font-weight:700;font-size:14px}
+.linkbtn .lt .b{font-family:'Chakra Petch';font-size:11px;color:var(--mut);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.linkbtn .arr{color:var(--mut2);font-size:18px;flex:none}
+.votes{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:6px}
+.vbtn{border:1px solid var(--line2);border-radius:14px;padding:16px 10px;display:flex;flex-direction:column;align-items:center;gap:7px;transition:.12s}
+.vbtn .e{font-size:24px}
+.vbtn .c{font-family:'Chakra Petch';font-weight:700;font-size:20px;font-variant-numeric:tabular-nums}
+.vbtn .k{font-size:10px;color:var(--mut);font-weight:700;letter-spacing:.1em}
+.vbtn:active{transform:scale(.97)}
+.vbtn.like.on{border-color:var(--cyan);background:rgba(25,227,255,.12);box-shadow:0 0 20px -8px var(--cyan)}
+.vbtn.like.on .c,.vbtn.like.on .e{color:var(--cyan)}
+.vbtn.bad.on{border-color:var(--red);background:rgba(255,46,77,.12);box-shadow:0 0 20px -8px var(--red)}
+.vbtn.bad.on .c,.vbtn.bad.on .e{color:var(--red2)}
+.safety{margin-top:20px;border:1px solid rgba(255,46,77,.25);border-radius:12px;padding:13px 14px;background:rgba(255,46,77,.04);font-size:11.5px;line-height:1.7;color:var(--red2)}
+.safety b{color:#fff}
+.report{width:100%;text-align:center;margin-top:12px;padding:12px;font-family:'Chakra Petch';font-size:12px;color:var(--mut);letter-spacing:.06em}
+
+/* registration form */
+.lead{font-size:12.5px;color:var(--mut);line-height:1.7;margin:0 0 18px}
+.field{margin-bottom:15px}
+.field label{display:block;font-family:'Chakra Petch';font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);margin-bottom:7px}
+.field label .req{color:var(--red2);margin-left:5px}
+.field label .opt{color:var(--mut2);margin-left:5px}
+.field input{width:100%;background:#070a11;border:1px solid var(--line2);border-radius:11px;padding:13px;color:var(--tx);font-size:15px;font-family:'Zen Kaku Gothic New';outline:none;transition:.15s}
+.field input.mono{font-family:'Chakra Petch'}
+.field input:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(25,227,255,.12)}
+.field input::placeholder{color:var(--mut2)}
+.typesel{display:flex;gap:8px}
+.typesel button{flex:1;border:1px solid var(--line2);border-radius:11px;padding:11px 6px;font-family:'Chakra Petch';font-weight:700;font-size:13px;color:var(--mut)}
+.typesel button.daiko.sel{color:var(--red2);border-color:var(--red);background:rgba(255,46,77,.08)}
+.typesel button.doko.sel{color:var(--cyan);border-color:var(--cyan);background:rgba(25,227,255,.08)}
+.typesel button.etc.sel{color:var(--amber);border-color:var(--amber);background:rgba(255,176,32,.08)}
+
+.payblock{margin-top:6px;border:1px solid var(--line2);border-radius:14px;overflow:hidden}
+.payblock .row{display:flex;align-items:center;gap:12px;padding:15px;background:rgba(25,227,255,.03)}
+.payblock .row .pic{font-size:22px}
+.payblock .row .pt{flex:1}
+.payblock .row .pt .a{font-weight:800;font-size:15px}
+.payblock .row .pt .b{font-size:11px;color:var(--mut);margin-top:3px}
+.payblock .row .amt{font-family:'Chakra Petch';font-weight:700;font-size:20px;color:var(--cyan)}
+.payblock .row .amt.buy{font-size:14px;border:1px solid var(--cyan);border-radius:10px;padding:9px 13px;background:rgba(25,227,255,.08);box-shadow:0 0 14px -6px var(--cyan);white-space:nowrap}
+.payblock .row .amt.buy:active{transform:scale(.95)}
+.payblock .div{display:flex;align-items:center;gap:10px;padding:0 15px;color:var(--mut2);font-family:'Chakra Petch';font-size:10px;letter-spacing:.2em}
+.payblock .div .l{flex:1;height:1px;background:var(--line)}
+.payblock .code{padding:13px 15px 16px}
+.payblock .code .cw{display:flex;gap:9px}
+.payblock .code input{flex:1}
+.payblock .code .apply{flex:none;border:1px solid var(--line2);border-radius:11px;padding:0 16px;font-family:'Chakra Petch';font-weight:700;font-size:12px;color:var(--tx)}
+.payblock .code .msg{font-size:11px;margin-top:9px;min-height:14px}
+.payblock .code .msg.ok{color:var(--cyan)} .payblock .code .msg.ng{color:var(--red2)}
+
+.submit{width:100%;border-radius:14px;padding:16px;font-weight:900;font-size:16px;margin-top:18px;color:#04222b;background:linear-gradient(135deg,var(--cyan2),var(--cyan));box-shadow:0 10px 28px -10px var(--cyan);transition:.12s}
+.submit.free{background:linear-gradient(135deg,#7df0ff,#19e3ff)}
+.submit:active{transform:scale(.985)}
+.miniwarn{font-size:11px;color:var(--mut2);line-height:1.6;margin-top:13px;text-align:center}
+
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(140%);z-index:80;background:#10202a;border:1px solid var(--cyan);border-radius:12px;padding:13px 18px;font-family:'Chakra Petch';font-size:13px;color:var(--cyan);box-shadow:0 0 28px -8px var(--cyan);transition:transform .35s cubic-bezier(.2,.9,.3,1.3);max-width:90vw;text-align:center}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+.foot{text-align:center;margin-top:26px;font-family:'Chakra Petch';font-size:10px;letter-spacing:.16em;color:var(--mut2)}
+.foot b{color:var(--red2)}
+</style>
+</head>
+<body>
+<div class="fx"><div class="glow"></div><div class="scan"></div><div class="rstream a"></div><div class="rstream b"></div><div class="rstream c"></div></div>
+
+<div class="wrap">
+  <div class="chrome">
+    <div class="bar"><div class="dots"><i></i><i></i><i></i></div><div class="fn">apex/<b>backdoor</b>.exe</div><div class="stat">UNVERIFIED</div></div>
+    <div class="head">
+      <div class="ttl"><span class="gl">代行</span>・同行<span style="color:var(--mut)">／</span>その他<span class="sub" style="margin-left:auto"></span></div>
+      <div class="warnbox"><span class="ic">⚠</span><div class="t">APEXで詰まった、勝てない――そんな時の<b>最後の砦</b>。<br><span class="dim">※ 当ツールは内容を保証しません。代行・同行は<b style="color:var(--red2)">ゲーム規約違反でBANの恐れ</b>があります。<b style="color:var(--red2)">推奨はしません。利用は自己責任で。</b></span></div></div>
+    </div>
+  </div>
+
+  <div class="ctrls">
+    <div class="seg" id="seg">
+      <button class="on" data-m="new" onclick="setMode('new')">🆕 新着</button>
+      <button data-m="like" onclick="setMode('like')">👍 イイネ順</button>
+      <button data-m="bad" onclick="setMode('bad')">👎 バッド順</button>
+    </div>
+    <button class="regbtn" onclick="openReg()">＋ 業者登録</button>
+  </div>
+
+  <div class="countln"><span id="countTxt">登録 <b>0</b> 件</span><span class="ln"></span><span id="modeTxt"></span></div>
+  <div class="ranknote">※ イイネ/バッドは目安の段階表示です。ランキングは操作される場合があるので、数字を鵜呑みにせず自己責任で。</div>
+  <div class="list" id="list"></div>
+
+  <div class="foot">SImULATED DIRECTORY · DATA → <b>GAS</b> · MOCK ONLY</div>
+</div>
+
+<!-- detail modal -->
+<div class="scrim" id="detailScrim" onclick="if(event.target===this)closeModal()"><div class="modal" id="detailModal"></div></div>
+<!-- registration modal -->
+<div class="scrim" id="regScrim" onclick="if(event.target===this)closeModal()"><div class="modal" id="regModal"></div></div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+"use strict";
+var $=function(id){return document.getElementById(id);};
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function xhandle(url){if(!url)return'';var m=String(url).match(/(?:x\.com|twitter\.com)\/@?([A-Za-z0-9_]+)/);return m?('@'+m[1]):(url[0]==='@'?url:('@'+url));}
+
+var mode='new';
+var DATA=[];
+/* ===== 本番GAS接続設定 ===== */
+var DK_WRITE_URL='https://script.google.com/macros/s/AKfycbxrOoz5vsVXQIF6sj0DR1w27hJvHSFv8htbV__9uYf3--WjykiXxLzAqOoc-sEaA7tP/exec';
+var DK_READ_URL =DK_WRITE_URL+'?action=list';
+/* 端末ごとの投票者ID（1端末1票の目安）＋自分の投票記録 */
+var VOTER=(function(){try{var k=localStorage.getItem('dk_voter');if(!k){k='v'+Date.now().toString(36)+Math.random().toString(36).slice(2,8);localStorage.setItem('dk_voter',k);}return k;}catch(e){return 'v'+Math.random();}})();
+var votedMap=(function(){try{return JSON.parse(localStorage.getItem('dk_voted')||'{}');}catch(e){return {};}})();
+function saveVoted(){try{localStorage.setItem('dk_voted',JSON.stringify(votedMap));}catch(e){}}
+var jseq=0;
+function jsonp(url,cb){
+  var name='__dk'+(jseq++),s=document.createElement('script'),done=false;
+  function fin(err,data){if(done)return;done=true;clearTimeout(to);try{delete window[name];}catch(e){window[name]=undefined;}if(s.parentNode)s.parentNode.removeChild(s);cb(err,data);}
+  window[name]=function(d){fin(null,d);};
+  var to=setTimeout(function(){fin(new Error('timeout'));},12000);
+  s.onerror=function(){fin(new Error('neterr'));};
+  s.src=url+(url.indexOf('?')>=0?'&':'?')+'callback='+name;
+  document.head.appendChild(s);
+}
+function loadList(){
+  $('list').innerHTML='<div style="text-align:center;color:var(--mut);font-family:Chakra Petch;padding:40px 0">読み込み中…</div>';
+  jsonp(DK_READ_URL,function(err,d){
+    if(err||!d||!d.ok){$('list').innerHTML='<div style="text-align:center;color:var(--mut);padding:34px 16px;border:1px dashed var(--line);border-radius:14px"><div style="font-size:30px">📡</div><p style="margin:10px 0 14px">一覧を読み込めませんでした。</p><button onclick="loadList()" style="border:1px solid var(--cyan);color:var(--cyan);border-radius:10px;padding:10px 18px;font-weight:700;background:rgba(25,227,255,.05)">再読み込み</button></div>';return;}
+    DATA=d.vendors||[];render();
+  });
+}
+
+var TAGLABEL={daiko:'代行',doko:'同行',etc:'その他'};
+function likeTier(n){return n>=100?'多数':n>=30?'多め':n>=5?'あり':'—';}
+function badTier(n){return n>=50?'多数':n>=15?'多め':n>=3?'あり':'—';}
+function sorted(){
+  var a=DATA.slice();
+  if(mode==='like')a.sort(function(p,q){return q.likes-p.likes;});
+  else if(mode==='bad')a.sort(function(p,q){return q.bads-p.bads;});
+  else a.sort(function(p,q){return q.ts-p.ts;});
+  return a;
+}
+function render(){
+  var a=sorted(),h='';
+  if(!a.length){$('countTxt').innerHTML='登録 <b>0</b> 件';$('modeTxt').textContent='';
+    $('list').innerHTML='<div style="text-align:center;color:var(--mut);padding:40px 16px;border:1px dashed var(--line);border-radius:14px"><div style="font-size:30px">🚪</div><p style="margin:10px 0 0;line-height:1.7">まだ業者が登録されていません。<br>「業者登録」から最初の登録をどうぞ。</p></div>';return;}
+  $('countTxt').innerHTML='登録 <b>'+DATA.length+'</b> 件';
+  $('modeTxt').textContent=mode==='like'?'★ イイネが多い順':(mode==='bad'?'☠ バッドが多い順':'最新の登録順');
+  for(var i=0;i<a.length;i++){var v=a[i],ranked=mode!=='new';
+    var cls='ban'+(v.pr?' pr':'')+(v.flag?' flag':'')+(mode==='bad'?' bad':'');
+    var rkn=ranked?('<span class="n'+(i===0?' g1':'')+'">'+(i+1)+'</span>'):('<span class="n" style="color:var(--mut2);font-size:15px">'+TAGLABEL[v.type]+'</span>');
+    var rkh=ranked?'<span class="h">RANK</span>':'<span class="h">TYPE</span>';
+    var tags='<span class="tag '+v.type+'">'+TAGLABEL[v.type]+'</span>'+(v.pr?'<span class="tag pr">PR</span>':'')+(v.flag?'<span class="tag" style="color:var(--red2);border-color:rgba(255,46,77,.4)">⚠ 低評価</span>':'');
+    var rec=v.rec?'<div class="recpill">🤝 オススメ紹介あり</div>':'';
+    h+='<button class="'+cls+'" onclick="openDetail('+v.id+')">'
+      +'<div class="rk">'+rkh+rkn+'</div>'
+      +'<div class="bd"><div class="nm">'+esc(v.name)+'</div><div class="tags">'+tags+'</div>'
+      +'<div class="xh">𝕏 '+esc(xhandle(v.x))+'</div>'+rec+'</div>'
+      +'<div class="vt"><div class="v like"><span class="e">👍</span>'+likeTier(v.likes)+'</div><div class="v bad"><span class="e">👎</span>'+badTier(v.bads)+'</div></div>'
+      +'<div class="chev">›</div></button>';
+  }
+  $('list').innerHTML=h;
+}
+window.setMode=function(m){mode=m;
+  document.querySelectorAll('#seg button').forEach(function(b){var on=b.getAttribute('data-m')===m;b.classList.toggle('on',on);b.classList.toggle('bad',on&&m==='bad');});
+  render();};
+
+function byId(id){for(var i=0;i<DATA.length;i++)if(DATA[i].id===id)return DATA[i];return null;}
+
+window.openDetail=function(id){var v=byId(id);if(!v)return;var mv=votedMap[id];
+  var recH='';
+  if(v.rec){recH='<div class="dt-rec"><span class="ic">🤝</span><div class="t"><div class="l">この業者様よりオススメされたユーザーです</div><div class="v">'+esc(xhandle(v.rec))+'</div></div><span class="go">𝕏 開く ›</span></div>';}
+  var links='';
+  links+='<a class="linkbtn" href="'+esc(v.x)+'" target="_blank" rel="noopener"><span class="lic">𝕏</span><div class="lt"><div class="a">X（旧Twitter）</div><div class="b">'+esc(xhandle(v.x))+'</div></div><span class="arr">↗</span></a>';
+  if(v.other)links+='<a class="linkbtn" href="'+esc(v.other)+'" target="_blank" rel="noopener"><span class="lic">🔗</span><div class="lt"><div class="a">その他リンク</div><div class="b">'+esc(v.other)+'</div></div><span class="arr">↗</span></a>';
+  $('detailModal').innerHTML=
+    '<div class="mhead"><div class="dots"><i></i><i></i><i></i></div><div class="fn">vendor/detail</div><button class="x" onclick="closeModal()">✕</button></div>'
+    +'<div class="mbody">'
+    +'<div class="dt-name">'+esc(v.name)+'</div>'
+    +'<div class="dt-tags"><span class="tag '+v.type+'">'+TAGLABEL[v.type]+'</span>'+(v.pr?'<span class="tag pr">PR</span>':'')+(v.flag?'<span class="tag" style="color:var(--red2);border-color:rgba(255,46,77,.4)">⚠ 低評価が多い業者</span>':'')+'</div>'
+    +recH
+    +'<div class="dt-sec">リンク</div>'+links
+    +'<div class="dt-sec">この業者を評価</div>'
+    +'<div class="votes"><button class="vbtn like'+(mv==='like'?' on':'')+'" onclick="vote('+id+',\'like\')"><span class="e">👍</span><span class="c" id="dLike">'+v.likes+'</span><span class="k">イイネ</span></button>'
+    +'<button class="vbtn bad'+(mv==='bad'?' on':'')+'" onclick="vote('+id+',\'bad\')"><span class="e">👎</span><span class="c" id="dBad">'+v.bads+'</span><span class="k">バッド</span></button></div>'
+    +'<div class="safety"><b>⚠ 安全のために</b><br>・<b>パスワードやアカウント情報は絶対に渡さないでください。</b>乗っ取り被害が多発しています。<br>・前払い・即決を迫る相手、実績不明の相手に注意。<br>・代行/同行はゲーム規約違反でBANの可能性があります。</div>'
+    +'<button class="report" onclick="toast(\'通報を受け付けました（モック）\')">⚑ この業者を通報する</button>'
+    +'</div>';
+  open_('detailScrim');
+};
+window.vote=function(id,kind){var v=byId(id);if(!v)return;
+  var bl=document.querySelector('.vbtn.like'),bb=document.querySelector('.vbtn.bad');
+  if(bl)bl.style.opacity=.5;if(bb)bb.style.opacity=.5;
+  jsonp(DK_WRITE_URL+'?action=vote&id='+id+'&kind='+kind+'&voter='+encodeURIComponent(VOTER),function(err,d){
+    if(bl)bl.style.opacity='';if(bb)bb.style.opacity='';
+    if(err||!d||!d.ok){toast(d&&d.error==='RATE'?'投票が多すぎます。少し待ってね':'いま混み合っています。後でね');return;}
+    v.likes=d.likes;v.bads=d.bads;
+    if(d.mine){votedMap[id]=d.mine;}else{delete votedMap[id];}saveVoted();
+    var dl=$('dLike'),db=$('dBad');if(dl)dl.textContent=v.likes;if(db)db.textContent=v.bads;
+    if(bl)bl.classList.toggle('on',votedMap[id]==='like');if(bb)bb.classList.toggle('on',votedMap[id]==='bad');
+    if(navigator.vibrate)try{navigator.vibrate(8);}catch(e){}
+    render();
+  });
+};
+
+/* registration */
+var regType='daiko';
+var GUMROAD_URL='https://clasickout.gumroad.com/l/mfeevo'; // あなたのGumroad商品
+window.openReg=function(){regType='daiko';
+  $('regModal').innerHTML=
+    '<div class="mhead"><div class="dots"><i></i><i></i><i></i></div><div class="fn">vendor/register</div><button class="x" onclick="closeModal()">✕</button></div>'
+    +'<div class="mbody">'
+    +'<p class="lead">あなたの代行/同行サービスを一覧に掲載します。掲載内容はあなたの責任で管理してください。当ツールは内容を保証しません。</p>'
+    +'<div class="field"><label>カテゴリ<span class="req">必須</span></label><div class="typesel" id="typesel">'
+    +'<button class="daiko sel" data-t="daiko" onclick="pickType(\'daiko\')">代行</button>'
+    +'<button class="doko" data-t="doko" onclick="pickType(\'doko\')">同行</button>'
+    +'<button class="etc" data-t="etc" onclick="pickType(\'etc\')">その他</button></div></div>'
+    +'<div class="field"><label>表示する業者名<span class="req">必須</span></label><input id="rName" type="text" maxlength="28" placeholder="例：最速プレマス代行 APEX"></div>'
+    +'<div class="field"><label>X（旧Twitter）リンク<span class="req">必須</span></label><input id="rX" class="mono" type="url" inputmode="url" placeholder="https://x.com/＿＿＿"></div>'
+    +'<div class="field"><label>オススメ業者のXリンク<span class="opt">任意</span></label><input id="rRec" class="mono" type="url" inputmode="url" placeholder="紹介元の業者X（任意）"></div>'
+    +'<div class="field"><label>その他URLリンク<span class="opt">任意</span></label><input id="rOther" class="mono" type="url" inputmode="url" placeholder="料金表・実績など（任意）"></div>'
+    +'<div class="dt-sec" style="margin-top:24px">掲載コード（¥500）</div>'
+    +'<div class="payblock">'
+    +'<div class="row"><span class="pic">🔑</span><div class="pt"><div class="a">Gumroadで掲載コードを購入</div><div class="b">購入ごとに固有コードが発行されます。1コード＝1登録（使い回し不可）。</div></div><a class="amt buy" href="'+GUMROAD_URL+'" target="_blank" rel="noopener">¥500 ↗</a></div>'
+    +'<div class="code"><label style="font-family:Chakra Petch;font-size:10.5px;letter-spacing:.1em;color:var(--mut);display:block;margin-bottom:8px">購入後のライセンスキーを貼り付け</label>'
+    +'<input id="rKey" class="mono" type="text" placeholder="XXXXXXXX-XXXXXXXX-XXXXXXXX-XXXXXXXX" style="width:100%">'
+    +'<div class="msg" id="codeMsg"></div></div>'
+    +'</div>'
+    +'<button class="submit" id="regSubmit" onclick="submitReg()">コードを照合して登録</button>'
+    +'<div class="miniwarn">登録＝当ツールの<b style="color:var(--red2)">免責事項</b>に同意したものとみなされます。<br>規約違反・詐欺・トラブルについて当ツールは一切責任を負いません。</div>'
+    +'</div>';
+  open_('regScrim');
+  setTimeout(function(){var f=$('rName');if(f)f.focus();},250);
+};
+window.pickType=function(t){regType=t;document.querySelectorAll('#typesel button').forEach(function(b){b.classList.toggle('sel',b.getAttribute('data-t')===t);});};
+window.submitReg=function(){var name=($('rName').value||'').trim(),x=($('rX').value||'').trim(),key=($('rKey').value||'').trim();
+  var msg=$('codeMsg');msg.className='msg';msg.textContent='';
+  if(!name){$('rName').focus();toast('業者名を入力してください');return;}
+  if(!x){$('rX').focus();toast('Xリンクを入力してください');return;}
+  if(!key){$('rKey').focus();msg.className='msg ng';msg.textContent='Gumroadで購入したライセンスキーを貼り付けてください。';return;}
+  msg.className='msg';msg.textContent='コードを照合中…';$('regSubmit').disabled=true;
+  var q='?action=register&key='+encodeURIComponent(key)+'&name='+encodeURIComponent(name)+'&type='+encodeURIComponent(regType)
+    +'&x='+encodeURIComponent(x)+'&rec='+encodeURIComponent(($('rRec').value||'').trim())+'&other='+encodeURIComponent(($('rOther').value||'').trim());
+  jsonp(DK_WRITE_URL+q,function(err,d){
+    $('regSubmit').disabled=false;
+    if(err){msg.className='msg ng';msg.textContent='通信に失敗しました。キーは有効なままなので、後でもう一度お試しください。';return;}
+    if(d&&d.ok){closeModal();toast('照合OK・登録しました');loadList();window.scrollTo({top:0,behavior:'smooth'});return;}
+    if(d&&(d.busy||d.error==='COOLDOWN'||d.error==='RATE')){msg.className='msg ng';msg.textContent='いま混み合っています。少し待って再試行してください（キーは有効なまま）。';return;}
+    var M={KEY_USED:'このキーは登録済みです。一覧をご確認ください（すでに掲載されている可能性があります）。',KEY_INVALID:'キーが確認できませんでした。Gumroadで購入したキーをそのまま貼り付けてください。',NO_KEY:'キーを貼り付けてください。',BAD_X:'Xリンクは https://x.com/～ の形式で入れてください。',BAD_NAME:'業者名を確認してください。'};
+    msg.className='msg ng';msg.textContent=(d&&M[d.error])||('登録できませんでした（'+((d&&d.error)||'不明')+'）');
+  });
+};
+
+function open_(id){$(id).classList.add('on');}
+window.closeModal=function(){$('detailScrim').classList.remove('on');$('regScrim').classList.remove('on');};
+var tT=null;
+window.toast=function(m){var t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(tT);tT=setTimeout(function(){t.classList.remove('show');},2200);};
+
+loadList();
+})();
+</script>
+</body>
+</html>
