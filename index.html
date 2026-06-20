@@ -8625,6 +8625,11 @@ window.monsAskHome=function(){ var ov=document.getElementById('pwOv'); if(ov)ov.
 .sv-chrome{display:flex;align-items:center;gap:7px;padding:11px 14px;border-bottom:1px solid rgba(25,227,255,.16);font-family:'Chakra Petch',monospace;font-size:10.5px;letter-spacing:.12em;color:#5e8aa6;position:relative;z-index:1}
 .sv-chrome .dotr{width:8px;height:8px;border-radius:50%;background:#ff2e4d;box-shadow:0 0 8px #ff2e4d}
 .sv-chrome .grow{flex:1}
+.sv-title{margin-bottom:18px}
+.sv-tmain{font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:26px;line-height:1.12;color:#eef4ff;display:flex;align-items:center;gap:9px;letter-spacing:.01em}
+.sv-tmain .ic{font-size:23px;filter:drop-shadow(0 0 7px rgba(25,227,255,.55))}
+.sv-tmain b{color:#19e3ff;font-weight:700;text-shadow:0 0 15px rgba(25,227,255,.6)}
+.sv-tsub{margin-top:7px;font-family:'Chakra Petch',monospace;font-size:11px;letter-spacing:.05em;color:#7f94b3}
 .sv-pad{padding:20px;position:relative;z-index:1}
 .sv-prog{display:flex;gap:6px;margin-bottom:16px}
 .sv-seg{flex:1;height:5px;border-radius:99px;background:rgba(255,255,255,.13);transition:.2s}
@@ -8776,6 +8781,7 @@ window.monsAskHome=function(){ var ov=document.getElementById('pwOv'); if(ov)ov.
  function path(){return S.plat==='cs'?['q1','q4','q5','q6']:['q1','q3','q4','q5','q6'];}
  function progHTML(){var p=path(),idx=p.indexOf(S.step),h='';for(var i=0;i<p.length;i++){var c=i<idx?'done':(i===idx?'active':'');h+='<span class="sv-seg '+c+'"></span>';}return '<div class="sv-prog">'+h+'</div>';}
  var CHROME='<div class="sv-chrome"><span class="dotr"></span><span>SURVEY.exe</span><span class="grow"></span><span>匿名 / ANON</span></div>';
+ var TITLE='<div class="sv-title"><div class="sv-tmain"><span class="ic">📊</span><span>APEX<b>アンケート</b></span></div><div class="sv-tsub">匿名でOK ／ 所要約１分 ／ 結果はリアルタイム集計</div></div>';
 
  function optBtn(field,val,emoji,label){return '<button class="sv-opt" onclick="svPick(\''+field+'\',\''+val+'\')"><span class="oe">'+emoji+'</span><span class="ot">'+label+'</span></button>';}
  function ddHTML(field,arr,ph){
@@ -8793,7 +8799,7 @@ window.monsAskHome=function(){ var ov=document.getElementById('pwOv'); if(ov)ov.
   if(S.step==='q6') return '<div class="sv-eye">QUERY / 願い</div><div class="sv-q">強化して欲しいキャラは？<span class="cur">_</span></div>'+ddHTML('buff',LEGENDS,'レジェンドを選択')+footHTML();
   return '';
  }
- function render(){bx().innerHTML=CHROME+'<div class="sv-pad">'+progHTML()+'<div class="sv-body">'+bodyHTML()+'</div></div>';}
+ function render(){bx().innerHTML=CHROME+'<div class="sv-pad">'+TITLE+progHTML()+'<div class="sv-body">'+bodyHTML()+'</div></div>';}
 
  function svNext(){if(S.step==='q1')S.step=(S.plat==='cs'?'q4':'q3');else if(S.step==='q3')S.step='q4';else if(S.step==='q4')S.step='q5';else if(S.step==='q5')S.step='q6';S.open=null;render();}
  function updMineStatus(){var el=document.getElementById('svMst');if(!el)return;var pend=L('apexSurveyPend')==='1';el.className=pend?'pend':'okm';el.innerHTML=pend?'⏳ 送信待ち（接続が混雑中。次回アクセス時に自動で反映されます）':'✓ 集計に反映済み';}
@@ -8823,26 +8829,27 @@ window.monsAskHome=function(){ var ov=document.getElementById('pwOv'); if(ov)ov.
 
  window.svMaybe=function(){
   if(L('apexSurveyDone')){try{svFlush();}catch(e){}return;}
-  var n=(parseInt(L('apexSurveyHomeN'),10)||0)+1;Sset('apexSurveyHomeN',String(n));
-  if(n<2)return;
-  var pf=document.getElementById('pwFx'),po=document.getElementById('pwOv'),so=document.getElementById('svOv');
-  if(pf&&pf.classList.contains('on'))return;
-  if(po&&po.classList.contains('on'))return;
-  if(so&&so.classList.contains('on'))return;
-  if(document.querySelector('.view.on'))return;
-  /* 新機能開放演出を最優先：この回に開放が出る/出た場合はアンケートを見送り、次のホーム表示に回す */
-  try{
-   if(window.pwHomeFired)return;
-   if(window.FEATURE_ANN&&window.FEATURE_ANN.length){var av=L('apexAnnV');if(av===null||Number(av)<window.FEATURE_ANN[0].v)return;}
-  }catch(e){}
-  setTimeout(function(){
+  /* ホームがデフォルト状態（モーダル・解放演出が無い）になった瞬間に発火。片付くまで数回チェックするので、解放演出やモーダルが閉じた直後にも表示される */
+  function annPending(){try{if(window.FEATURE_ANN&&window.FEATURE_ANN.length){var av=L('apexAnnV');return (av===null||Number(av)<window.FEATURE_ANN[0].v);}}catch(e){}return false;}
+  function busy(){
+   if(document.querySelector('.view.on'))return true; /* 別画面が開いている＝ホームでない */
+   var ids=['pwFx','pwOv','svOv','adModal'];
+   for(var i=0;i<ids.length;i++){var el=document.getElementById(ids[i]);if(el&&el.classList.contains('on'))return true;}
+   try{if(window.pwHomeFired)return true;}catch(e){} /* 解放演出が進行中 */
+   if(annPending())return true; /* これから解放演出が出る → 先にそちらを優先 */
+   return false;
+  }
+  if(window._svPollT){clearTimeout(window._svPollT);window._svPollT=null;}
+  window._svPollN=0;
+  function tick(){
+   window._svPollT=null;
    if(L('apexSurveyDone'))return;
-   try{if(window.pwHomeFired)return;}catch(e){}
-   var fx=document.getElementById('pwFx');if(fx&&fx.classList.contains('on'))return;
-   var ov=document.getElementById('pwOv');if(ov&&ov.classList.contains('on'))return;
-   if(document.querySelector('.view.on'))return;
-   window.svShow();
-  },650);
+   var hm=document.getElementById('home');
+   if(hm&&hm.style.display!=='none'&&!busy()){window.svShow();return;}
+   if((++window._svPollN)>=14)return; /* 約11秒で諦め、次のホーム表示で再判定 */
+   window._svPollT=setTimeout(tick,750);
+  }
+  window._svPollT=setTimeout(tick,600);
  };
 
  /* ===== 結果ビュー（リアルタイム取得＋失敗時キャッシュ表示） ===== */
