@@ -1728,6 +1728,11 @@ html[data-theme="light"] .xbn{background:linear-gradient(135deg,#fff,#eef3fa)}
 #v-daiko .report{width:100%;text-align:center;margin-top:12px;padding:12px;font-family:'Chakra Petch';font-size:12px;color:var(--mut);letter-spacing:.06em}
 #v-daiko .ban .dkmsg{margin-top:7px;font-size:11.5px;line-height:1.5;color:var(--cyan2);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 #v-daiko .dt-msg{margin-top:14px;border-left:2px solid var(--cyan);padding:9px 13px;background:rgba(25,227,255,.05);border-radius:0 9px 9px 0;font-size:13.5px;line-height:1.7;color:var(--cyan2)}
+#v-daiko .dkeditrow{margin:8px 2px 0;text-align:center}
+#v-daiko .dkeditlnk{font-family:'Chakra Petch';font-size:11px;color:var(--mut);letter-spacing:.02em;padding:6px 10px;text-decoration:underline;text-underline-offset:2px;text-decoration-color:var(--line2)}
+#v-daiko .dkeditlnk:active{color:var(--cyan)}
+#v-daiko .dkpolicy{margin:18px 0 4px;border:1px solid rgba(255,176,32,.4);background:rgba(255,176,32,.07);border-radius:11px;padding:12px 14px;font-size:11.5px;line-height:1.75;color:var(--amber)}
+#v-daiko .dkpolicy b{color:#ffd54a;font-weight:700}
 
 /* registration form */
 #v-daiko .lead{font-size:12.5px;color:var(--mut);line-height:1.7;margin:0 0 18px}
@@ -2351,6 +2356,7 @@ html[data-theme="light"] .xbn{background:linear-gradient(135deg,#fff,#eef3fa)}
     <button class="regbtn" onclick="dkOpenReg()">＋ 業者登録</button>
   </div>
 
+  <div class="dkeditrow"><button class="dkeditlnk" onclick="dkOpenEdit()">✎ 登録済みの業者の方｜購入キーで内容を編集</button></div>
   <div class="countln"><span id="countTxt">登録 <b>0</b> 件</span><span class="ln"></span><span id="modeTxt"></span></div>
   <div class="ranknote">※ イイネ/バッドは目安の段階表示です。ランキングは操作される場合があるので、数字を鵜呑みにせず自己責任で。</div>
   <div class="list" id="list"></div>
@@ -9324,6 +9330,7 @@ window.dkOpenReg=function(){regType='daiko';try{if(window.track)track('dk','reg_
     +'<div class="field"><label>オススメ業者のXリンク<span class="opt">任意</span></label><input id="rRec" class="mono" type="url" inputmode="url" placeholder="紹介元の業者X（任意）"></div>'
     +'<div class="field"><label>その他URLリンク<span class="opt">任意</span></label><input id="rOther" class="mono" type="url" inputmode="url" placeholder="料金表・実績など（任意）"></div>'
     +'<div class="field"><label>一言メッセージ<span class="opt">任意</span></label><textarea id="rMsg" maxlength="60" rows="2" placeholder="例：丁寧・最速対応！初回割引あり（60字まで）" style="width:100%;background:#070a11;border:1px solid var(--line2);border-radius:11px;padding:13px;color:#fff;font-size:14px;font-family:inherit;line-height:1.5;outline:none;resize:none"></textarea></div>'
+    +'<div class="dkpolicy"><b>⚠ ご購入前に必ずお読みください</b><br>・詐欺・なりすまし・他者への重大な迷惑など、<b>運営が著しく不適切と判断した掲載は予告なく削除</b>することがあります。<br>・その場合でも<b>掲載コード代金（¥500）は返金できません</b>（コードは消費済みとなります）。<br>・ご同意の上でご購入・登録ください。<b>購入・登録をもって本内容に同意</b>したものとみなします。</div>'
     +'<div class="dt-sec" style="margin-top:24px">掲載コード（¥500）</div>'
     +'<div class="payblock">'
     +'<div class="row"><span class="pic">🔑</span><div class="pt"><div class="a">Gumroadで掲載コードを購入</div><div class="b">購入ごとに固有コードが発行されます。1コード＝1登録（使い回し不可）。</div></div><a class="amt buy" href="'+GUMROAD_URL+'" target="_blank" rel="noopener" data-dk="gumroad">¥500 ↗</a></div>'
@@ -9356,6 +9363,75 @@ window.dkSubmitReg=function(){var name=($('rName').value||'').trim(),x=($('rX').
   });
 };
 
+/* ===== 登録内容の編集（購入キーで本人認証） ===== */
+var dkEditKey='';
+window.dkOpenEdit=function(){try{if(window.track)track('dk','edit_open');}catch(e){}
+  $('regModal').innerHTML=
+    '<div class="mhead"><div class="dots"><i></i><i></i><i></i></div><div class="fn">vendor/edit</div><button class="x" onclick="dkCloseModal()">✕</button></div>'
+    +'<div class="mbody">'
+    +'<p class="lead">登録時に使った<b style="color:var(--cyan2)">ライセンスキー</b>を貼り付けると、登録内容を読み込んで編集できます。<br><span style="color:var(--mut)">※ 評価（イイネ/バッド）はそのまま引き継がれます。追加の購入は不要です。</span></p>'
+    +'<div class="field"><label>ライセンスキー<span class="req">必須</span></label><input id="eKey" class="mono" type="text" placeholder="XXXXXXXX-XXXXXXXX-XXXXXXXX-XXXXXXXX" style="width:100%"></div>'
+    +'<button class="submit" id="eLoad" onclick="dkEditLoad()">登録内容を読み込む</button>'
+    +'<div class="msg" id="eMsg" style="margin-top:10px"></div>'
+    +'<div class="miniwarn">購入時のキーが分からない場合は、Gumroadの購入メール／ライブラリで確認できます。</div>'
+    +'</div>';
+  dkScrim('regScrim');
+  setTimeout(function(){var f=$('eKey');if(f)f.focus();},250);
+};
+window.dkEditLoad=function(){var key=($('eKey').value||'').trim();var m=$('eMsg');m.className='msg';m.textContent='';
+  if(!key){$('eKey').focus();m.className='msg ng';m.textContent='ライセンスキーを貼り付けてください。';return;}
+  m.textContent='照合中…';$('eLoad').disabled=true;
+  jsonp(DK_WRITE_URL+'?action=mine&key='+encodeURIComponent(key),function(err,d){
+    $('eLoad').disabled=false;
+    if(err){m.className='msg ng';m.textContent='通信に失敗しました。後でもう一度お試しください。';return;}
+    if(!d||!d.ok||!d.vendor){
+      try{if(window.track)track('dk','edit_load_fail:'+((d&&d.error)||'unknown'));}catch(e){}
+      m.className='msg ng';m.textContent=(d&&d.error==='NOT_OWNER')?'このキーで登録された業者が見つかりません。キーをご確認ください。':((d&&d.error==='NOT_FOUND')?'登録が見つかりません（削除済みの可能性）。':'読み込めませんでした。後でもう一度お試しください。');
+      return;
+    }
+    try{if(window.track)track('dk','edit_load_ok');}catch(e){}
+    dkEditKey=key;dkEditForm(d.vendor);
+  });
+};
+window.dkEditForm=function(v){regType=v.type||'daiko';
+  $('regModal').innerHTML=
+    '<div class="mhead"><div class="dots"><i></i><i></i><i></i></div><div class="fn">vendor/edit</div><button class="x" onclick="dkCloseModal()">✕</button></div>'
+    +'<div class="mbody">'
+    +'<p class="lead">登録内容を編集します。変更して「更新する」を押してください。</p>'
+    +'<div class="field"><label>カテゴリ<span class="req">必須</span></label><div class="typesel" id="typesel">'
+    +'<button class="daiko'+(v.type==='daiko'?' sel':'')+'" data-t="daiko" onclick="dkPickType(\'daiko\')">代行</button>'
+    +'<button class="doko'+(v.type==='doko'?' sel':'')+'" data-t="doko" onclick="dkPickType(\'doko\')">同行</button>'
+    +'<button class="etc'+(v.type==='etc'?' sel':'')+'" data-t="etc" onclick="dkPickType(\'etc\')">その他</button></div></div>'
+    +'<div class="field"><label>表示する業者名<span class="req">必須</span></label><input id="rName" type="text" maxlength="28" value="'+esc(v.name||'')+'"></div>'
+    +'<div class="field"><label>X（旧Twitter）リンク<span class="req">必須</span></label><input id="rX" class="mono" type="url" inputmode="url" value="'+esc(v.x||'')+'"></div>'
+    +'<div class="field"><label>オススメ業者のXリンク<span class="opt">任意</span></label><input id="rRec" class="mono" type="url" inputmode="url" value="'+esc(v.rec||'')+'"></div>'
+    +'<div class="field"><label>その他URLリンク<span class="opt">任意</span></label><input id="rOther" class="mono" type="url" inputmode="url" value="'+esc(v.other||'')+'"></div>'
+    +'<div class="field"><label>一言メッセージ<span class="opt">任意</span></label><textarea id="rMsg" maxlength="60" rows="2" placeholder="例：丁寧・最速対応！初回割引あり（60字まで）" style="width:100%;background:#070a11;border:1px solid var(--line2);border-radius:11px;padding:13px;color:#fff;font-size:14px;font-family:inherit;line-height:1.5;outline:none;resize:none">'+esc(v.msg||'')+'</textarea></div>'
+    +'<button class="submit" id="regSubmit" onclick="dkSubmitEdit()">更新する</button>'
+    +'<div class="msg" id="codeMsg" style="margin-top:10px"></div>'
+    +'<div class="miniwarn">更新＝当ツールの<b style="color:var(--red2)">免責事項</b>に同意したものとみなされます。<br>不適切と判断された掲載は予告なく削除される場合があります（返金不可）。</div>'
+    +'</div>';
+  setTimeout(function(){var f=$('rName');if(f)f.focus();},200);
+};
+window.dkSubmitEdit=function(){var key=dkEditKey;var name=($('rName').value||'').trim(),x=($('rX').value||'').trim();
+  var msg=$('codeMsg');msg.className='msg';msg.textContent='';
+  if(!key){msg.className='msg ng';msg.textContent='キー情報が失われました。最初からやり直してください。';return;}
+  if(!name){$('rName').focus();dkToast('業者名を入力してください');return;}
+  if(!x){$('rX').focus();dkToast('Xリンクを入力してください');return;}
+  msg.textContent='更新中…';$('regSubmit').disabled=true;
+  try{if(window.track)track('dk','edit_submit');}catch(e){}
+  var q='?action=edit&key='+encodeURIComponent(key)+'&name='+encodeURIComponent(name)+'&type='+encodeURIComponent(regType)
+    +'&x='+encodeURIComponent(x)+'&rec='+encodeURIComponent(($('rRec').value||'').trim())+'&other='+encodeURIComponent(($('rOther').value||'').trim())+'&msg='+encodeURIComponent(($('rMsg').value||'').trim());
+  jsonp(DK_WRITE_URL+q,function(err,d){
+    $('regSubmit').disabled=false;
+    if(err){msg.className='msg ng';msg.textContent='通信に失敗しました。後でもう一度お試しください。';return;}
+    if(d&&d.ok){try{if(window.track)track('dk','edit_ok');}catch(e){}dkCloseModal();dkToast('更新しました');loadList();window.scrollTo({top:0,behavior:'smooth'});return;}
+    if(d&&d.busy){msg.className='msg ng';msg.textContent='いま混み合っています。少し待って再試行してください。';return;}
+    try{if(window.track)track('dk','edit_fail:'+((d&&d.error)||'unknown'));}catch(e){}
+    var M={NOT_OWNER:'このキーで登録された業者が見つかりません。',NOT_FOUND:'登録が見つかりません（削除済みの可能性）。',BAD_X:'Xリンクは https://x.com/～ の形式で入れてください。',BAD_NAME:'業者名を確認してください。',NO_KEY:'キーが必要です。'};
+    msg.className='msg ng';msg.textContent=(d&&M[d.error])||('更新できませんでした（'+((d&&d.error)||'不明')+'）');
+  });
+};
 function dkScrim(id){$(id).classList.add('on');}
 window.dkCloseModal=function(){$('detailScrim').classList.remove('on');$('regScrim').classList.remove('on');};
 var tT=null;
