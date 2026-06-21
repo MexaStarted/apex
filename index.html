@@ -1687,7 +1687,7 @@ html[data-theme="light"] .xbn{background:linear-gradient(135deg,#fff,#eef3fa)}
 #v-daiko .scrim{position:fixed;inset:0;z-index:50;background:rgba(3,5,9,.78);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);display:none;align-items:flex-end;justify-content:center}
 #v-daiko .scrim.on{display:flex;animation:fz .2s ease}
 @keyframes fz{from{opacity:0}to{opacity:1}}
-#v-daiko .modal{width:100%;max-width:560px;background:linear-gradient(180deg,#101622,#0a0e16);border:1px solid var(--line2);border-bottom:0;border-radius:18px 18px 0 0;max-height:94vh;overflow-y:auto;animation:up .3s cubic-bezier(.2,.9,.3,1.05)}
+#v-daiko .modal{width:100%;max-width:560px;background:linear-gradient(180deg,#101622,#0a0e16);border:1px solid var(--line2);border-bottom:0;border-radius:18px 18px 0 0;max-height:94vh;max-height:92dvh;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;animation:up .3s cubic-bezier(.2,.9,.3,1.05)}
 @keyframes up{from{transform:translateY(100%)}to{transform:none}}
 #v-daiko .mhead{position:sticky;top:0;display:flex;align-items:center;gap:9px;padding:13px 16px;border-bottom:1px solid var(--line);background:rgba(16,22,34,.92);backdrop-filter:blur(8px)}
 #v-daiko .mhead .dots{display:flex;gap:5px} .mhead .dots i{width:9px;height:9px;border-radius:50%}
@@ -9432,8 +9432,8 @@ window.dkSubmitEdit=function(){var key=dkEditKey;var name=($('rName').value||'')
     msg.className='msg ng';msg.textContent=(d&&M[d.error])||('更新できませんでした（'+((d&&d.error)||'不明')+'）');
   });
 };
-function dkScrim(id){$(id).classList.add('on');}
-window.dkCloseModal=function(){$('detailScrim').classList.remove('on');$('regScrim').classList.remove('on');};
+function dkScrim(id){$(id).classList.add('on');document.body.style.overflow='hidden';}
+window.dkCloseModal=function(){$('detailScrim').classList.remove('on');$('regScrim').classList.remove('on');document.body.style.overflow='';};
 var tT=null;
 window.dkToast=function(m){var t=$('dkToast');t.textContent=m;t.classList.add('show');clearTimeout(tT);tT=setTimeout(function(){t.classList.remove('show');},2200);};
 
