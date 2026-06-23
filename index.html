@@ -10048,5 +10048,39 @@ B:[[85,'歩くマップ 🧭','全マップを完璧に記憶した地理マス�
 })();
 
 </script>
-</body>
+<script>
+(function(){
+  function T(t,v){ try{ if(window.track) window.track(t,(v==null?'':String(v))); }catch(e){} }
+  function L(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+  function S(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+  function diagDoneN(){ try{ return Object.keys(JSON.parse(L('apexDiagDone')||'{}')).length; }catch(e){ return 0; } }
+  var today = new Date(Date.now()+9*36e5).toISOString().slice(0,10);
+  var seenBefore = !!( L('apexFirstDay') || L('apexWelcomeV1') || L('apexLastDay') || diagDoneN()>0 );
+  var isNew = !seenBefore;
+  var member = (L('apexCohortMember')==='1');
+  if(isNew){
+    S('apexFirstDay', today); S('apexFirstVisit', String(Date.now())); S('apexCohortMember','1'); S('apexLastDay', today);
+    member = true; T('cohort','new');
+  } else if(member){
+    if(L('apexLastDay') !== today){
+      S('apexLastDay', today); T('cohort','return_day');
+      var firstDay = L('apexFirstDay') || today;
+      var off = Math.round((Date.parse(today) - Date.parse(firstDay))/864e5);
+      var fired={}; try{ fired=JSON.parse(L('apexRetFired')||'{}'); }catch(e){}
+      [['d1',1],['d3',3],['d7',7],['d14',14],['d30',30]].forEach(function(m){ if(off>=m[1] && !fired[m[0]]){ fired[m[0]]=1; T('cohort',m[0]); } });
+      S('apexRetFired', JSON.stringify(fired));
+    }
+  } else {
+    if(L('apexLastDay') !== today) S('apexLastDay', today);
+  }
+  try{
+    var P = new URLSearchParams(location.search);
+    if((P.get('r') || P.get('d')) && !sessionStorage.getItem('apexRefCounted')){
+      sessionStorage.setItem('apexRefCounted','1');
+      T('viral','ref_land');
+      if(isNew) T('viral','ref_new');
+    }
+  }catch(e){}
+})();
+</script></body>
 </html>

@@ -230,6 +230,31 @@ function renderYD(){
  var note=full?'':'<div class="note">いまは 訪問 / 新規 / リピート のみ表示中。診断・シェア等の日別は、GASに daily 配列を足すと自動で増えます（直近14日→60日にも拡張）。</div>';
  box.innerHTML=head+cards+note;
 }
+function growthBody(){
+ var feats=D.features||[];
+ function fc(key){var f=feats.find(function(x){return String(x.k)===key;});return f?f.c:0;}
+ function fsum(pre){return feats.filter(function(x){return String(x.k).indexOf(pre)===0;}).reduce(function(a,x){return a+x.c;},0);}
+ var newU=fc('cohort:new'), refNew=fc('viral:ref_new'), refLand=fc('viral:ref_land'), shares=fsum('share:');
+ if(!newU && !shares){ return '<div class="hint">成長指標は、新バージョンを公開してデータが貯まり始めると表示されます（数日〜）。</div>'; }
+ var k=newU?(refNew/newU):0;
+ var kc=k>=1?'#22e3a0':k>=0.5?'#ffc23d':k>=0.2?'#ff9f40':'#ff3d5e';
+ var kmsg=k>=1?'自走で増殖（バイラル成立）':k>=0.5?'強いクチコミ。あと一押しで自走':k>=0.2?'クチコミは効いている':'ほぼ自走しない。流入施策が要る';
+ var ret=[['d1','翌日+'],['d3','3日+'],['d7','1週間+'],['d14','2週間+'],['d30','1ヶ月+']].map(function(m){var c=fc('cohort:'+m[0]);return {lbl:m[1],n:c,pct:newU?Math.round(c/newU*100):0};});
+ var h='<div style="display:flex;align-items:center;gap:14px;margin-bottom:12px">'
+   +'<div style="font-size:34px;font-weight:900;color:'+kc+'">'+k.toFixed(2)+'</div>'
+   +'<div><div style="font-size:13px;font-weight:800">k-factor（バイラル係数）</div><div style="font-size:12px;color:var(--sub)">'+esc(kmsg)+'</div></div></div>';
+ h+='<div class="bars" style="margin-bottom:12px">'
+   +'<div class="bar"><div class="bl">新規ユーザー</div><div class="bt"><i style="width:100%"></i></div><div class="bv">'+fmtN(newU)+'</div></div>'
+   +'<div class="bar"><div class="bl">シェア総数</div><div class="bt"><i style="width:'+(newU?Math.min(100,Math.round(shares/newU*100)):0)+'%"></i></div><div class="bv">'+fmtN(shares)+'</div></div>'
+   +'<div class="bar"><div class="bl">シェア経由の着地</div><div class="bt"><i style="width:'+(newU?Math.min(100,Math.round(refLand/newU*100)):0)+'%"></i></div><div class="bv">'+fmtN(refLand)+'</div></div>'
+   +'<div class="bar"><div class="bl">シェア経由の新規</div><div class="bt"><i style="width:'+(newU?Math.round(refNew/newU*100):0)+'%;background:'+kc+'"></i></div><div class="bv">'+fmtN(refNew)+'</div></div>'
+   +'</div>';
+ h+='<div style="font-weight:800;font-size:13px;margin:6px 0 6px">継続率（新規のうち、また来た割合）</div><div class="bars">'
+   +ret.map(function(r){return '<div class="bar"><div class="bl">'+r.lbl+'</div><div class="bt"><i style="width:'+r.pct+'%"></i></div><div class="bv">'+r.pct+'%（'+fmtN(r.n)+'）</div></div>';}).join('')
+   +'</div>';
+ h+='<div class="note">k-factor＝新規1人が連れてくる新規の数。1.0以上で自走的に増殖。継続率＝新規のうちN日後以降にまた来た割合。<b>公開直後は値が低めに出ます（既存ユーザーの扱い・経過日数のため）。安定まで数日〜数週間</b>。シェアは結果リンク(?r=)経由の新規のみ帰属。</div>';
+ return h;
+}
 /* スナップショット履歴 */
 function snaps(){return lsGet('dash2snaps',[]);}
 function pushSnap(d){var a=snaps();a.push({t:Date.now(),k:d.kpi,top:{views:(d.views||[]).slice(0,8),diags:(d.diags||[]).slice(0,8),prods:(d.products||[]).slice(0,8)}});if(a.length>40)a=a.slice(-40);lsSet('dash2snaps',a);}
@@ -387,6 +412,7 @@ function renderSummary(){
  +'<div class="note">前週同曜日比: '+(function(){var t=dv.tr;if(t.length>=8){var a=t[t.length-1].v,b=t[t.length-8].v;return arrowMk(a,b)+' '+pctS(a,b)+'（'+WDN[wd(t[t.length-1].date)]+'曜同士）';}return '-';})()
  +' ・ 週間成長率 '+(dv.growth>=0?'+':'')+dv.growth.toFixed(0)+'% ・ 連続訪問 '+dv.streak+'日 ・ 今日の終了予測 '+fmtN(dv.pred)+'回（線形）</div></div></div>';
  h+='<div class="sec" data-sec="yday"><h2 onclick="secToggle(this)">📅 昨日 / 日付指定 <span class="bdg">日別</span><span class="arr">▼</span></h2><div class="body"><div id="ydBlock"></div></div></div>';
+ h+='<div class="sec" data-sec="growth"><h2 onclick="secToggle(this)">🚀 成長指標（k-factor / 継続率） <span class="bdg">武器</span><span class="arr">▼</span></h2><div class="body">'+growthBody()+'</div></div>';
  h+='<div class="sec" data-sec="mini"><h2 onclick="secToggle(this)">📈 直近14日 <span class="arr">▼</span></h2><div class="body">'
   +'<div class="tbar"><button class="chip '+(CFG.mavg===0?'on':'')+'" onclick="CFG.mavg=0;saveCfg();renderAll()">実数</button><button class="chip '+(CFG.mavg===3?'on':'')+'" onclick="CFG.mavg=3;saveCfg();renderAll()">3日平均</button><button class="chip '+(CFG.mavg===7?'on':'')+'" onclick="CFG.mavg=7;saveCfg();renderAll()">7日平均</button><button class="chip" onclick="chartPlay()">▶ コマ送り</button></div>'
   +'<div id="mainLine">'+lineChart(dv.tr,{mavg:CFG.mavg===3?dv.mav3:CFG.mavg===7?dv.mav7:null,prevOverlay:true,notes:CFG.notes})+'</div>'
