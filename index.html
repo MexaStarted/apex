@@ -1832,6 +1832,90 @@ html[data-theme="light"] .xbn{background:linear-gradient(135deg,#fff,#eef3fa)}
 .dgm-foot button{flex:1;font-family:inherit;font-weight:800;font-size:12.5px;border-radius:12px;padding:11px 8px;border:1px solid #1f2b46;background:#0e1626;color:#eaf1ff;cursor:pointer}
 .dgm-foot .dgm-prim{background:#19e3ff;color:#04121a;border:0}
 .dgm-dismiss{display:block;width:100%;margin-top:8px;background:none;border:0;color:#6a7a9c;font-size:12px;font-family:inherit;padding:8px;cursor:pointer}
+
+/* ===== 人気ランキング（タブ式）===== */
+#popularRank{display:none !important}
+.rw{background:#121a2c;border:1px solid #1f2b46;border-radius:18px;padding:13px 13px 8px;margin:10px 0 12px}
+.rwh{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.rwh .t{font-size:14px;font-weight:900;display:flex;align-items:center;gap:6px;color:#eaf1ff}
+.rwh .more{font-size:11px;color:#19e3ff;font-weight:700;cursor:pointer}
+.rwtabs{display:flex;gap:6px;margin-bottom:10px;overflow-x:auto;padding-bottom:2px;-webkit-overflow-scrolling:touch}
+.rwtab{flex:none;font-family:inherit;font-size:12px;font-weight:800;border-radius:99px;padding:7px 13px;background:#0e1626;border:1px solid #1f2b46;color:#94a6c9;cursor:pointer;white-space:nowrap}
+.rwtab.on{background:rgba(25,227,255,.14);border-color:rgba(25,227,255,.5);color:#19e3ff}
+.rk{display:flex;align-items:center;gap:10px;padding:8px 4px;border-bottom:1px solid rgba(31,43,70,.5);cursor:pointer;text-decoration:none}
+.rk:last-child{border-bottom:0}
+.rklink{color:inherit}
+.rknum{width:22px;height:22px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;flex:none;background:#0e1626;border:1px solid #1f2b46;color:#94a6c9}
+.rknum.g1{background:rgba(255,194,61,.18);border-color:rgba(255,194,61,.6);color:#ffc23d}
+.rknum.g2{background:rgba(180,200,230,.14);border-color:rgba(180,200,230,.5);color:#cdd8ee}
+.rknum.g3{background:rgba(255,138,61,.16);border-color:rgba(255,138,61,.5);color:#ff8a3d}
+.rkemo{font-size:18px;width:22px;text-align:center;flex:none}
+.rkmain{flex:1;min-width:0}
+.rkname{font-size:13px;font-weight:700;color:#eaf1ff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rkbar{height:5px;border-radius:99px;background:#16203a;margin-top:4px;overflow:hidden}
+.rkbar i{display:block;height:100%;background:linear-gradient(90deg,#19e3ff,#c062ff)}
+.rkcnt{font-size:11px;font-weight:800;color:#ffc23d;flex:none;white-space:nowrap}
+.rank-ov{position:fixed;inset:0;z-index:100002;background:rgba(4,7,14,.86);display:none;flex-direction:column;padding:14px}
+.rank-ov.on{display:flex}
+.rank-sheet{max-width:480px;width:100%;margin:auto;background:#0c1322;border:1px solid #1f2b46;border-radius:20px;padding:16px 14px;max-height:88vh;display:flex;flex-direction:column}
+.rank-top{position:relative;margin-bottom:10px}
+.rank-x{position:absolute;top:-2px;right:-2px;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid #1f2b46;color:#94a6c9;font-size:15px;cursor:pointer}
+.rank-ttl{font-size:18px;font-weight:900;color:#eaf1ff}
+.rank-sub{font-size:12px;color:#6a7a9c;margin-top:2px}
+.rank-ov .rklist{overflow-y:auto;-webkit-overflow-scrolling:touch}
+.rank-note{font-size:11px;color:#6a7a9c;text-align:right;margin-top:10px}
+
+/* ===== デイリー診断（今日の作戦＋ストリーク）===== */
+.dlcard{background:#121a2c;border:1px solid #1f2b46;border-radius:18px;padding:14px;margin:10px 0 12px;position:relative;overflow:hidden}
+.dlcard.done{border-color:rgba(34,227,160,.4)}
+.dlcard::before{content:"";position:absolute;inset:0;background:radial-gradient(340px 100px at 18% 0%,rgba(255,138,61,.12),transparent 70%);pointer-events:none}
+.dlsk{display:flex;align-items:center;gap:10px}
+.dlflame{font-size:24px;filter:drop-shadow(0 0 7px rgba(255,138,61,.6))}
+.dlskinfo .n{font-size:17px;font-weight:900;color:#eaf1ff}
+.dlskinfo .n b{color:#ff8a3d}
+.dlskinfo .s{font-size:10px;color:#6a7a9c}
+.dlweek{display:flex;gap:4px;margin-left:auto}
+.dlwd{width:16px;height:22px;border-radius:6px;background:#0e1626;border:1px solid #1f2b46;display:flex;align-items:center;justify-content:center}
+.dlwd .dot{width:6px;height:6px;border-radius:50%;background:#26304a}
+.dlwd.on .dot{background:#ff8a3d;box-shadow:0 0 5px rgba(255,138,61,.8)}
+.dlwd.on{border-color:rgba(255,138,61,.4)}
+.dlwd.today{border-color:#19e3ff}
+.dlwd.today .dot{background:#19e3ff}
+.dlhr{height:1px;background:#1f2b46;margin:12px 0}
+.dlrt{font-size:13px;font-weight:800;color:#19e3ff;margin-bottom:8px}
+.dlq-desc{font-size:12px;color:#94a6c9;margin-bottom:11px}
+.dlcta{display:block;width:100%;font-family:inherit;font-weight:900;font-size:14px;border:0;border-radius:13px;padding:13px;background:linear-gradient(90deg,#ff8a3d,#ffc23d);color:#231400;cursor:pointer}
+.dlqhead{margin-bottom:12px}
+.dlprog{display:flex;gap:5px;margin-bottom:10px}
+.dlprog span{flex:1;height:4px;border-radius:99px;background:#1a2238}
+.dlprog span.on{background:linear-gradient(90deg,#19e3ff,#c062ff)}
+.dlqt{font-size:15px;font-weight:800;color:#eaf1ff}
+.dlopt{display:block;width:100%;text-align:left;font-family:inherit;font-size:13.5px;font-weight:700;color:#eaf1ff;background:#0e1626;border:1px solid #1f2b46;border-radius:12px;padding:13px 14px;margin-bottom:8px;cursor:pointer}
+.dlopt:active{background:#16203a}
+.dltheme{display:flex;align-items:center;gap:11px;margin-bottom:10px}
+.dlth-ic{font-size:26px}
+.dlth-t{font-size:15px;font-weight:900;color:#eaf1ff}
+.dlth-s{font-size:12px;color:#94a6c9}
+.dlgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.dlcell{background:#0e1626;border:1px solid #1f2b46;border-radius:12px;padding:9px 11px}
+.dlcell .l{font-size:10px;color:#6a7a9c;margin-bottom:2px}
+.dlcell .v{font-size:13.5px;font-weight:800}
+.dlcell .v.cy{color:#19e3ff}.dlcell .v.pp{color:#c062ff}.dlcell .v.gr{color:#22e3a0}.dlcell .v.am{color:#ffc23d}
+.dlnote{font-size:12px;color:#94a6c9;background:rgba(255,194,61,.07);border:1px solid rgba(255,194,61,.2);border-radius:10px;padding:9px 11px;margin-bottom:11px}
+.dldone-row{display:flex;gap:8px;margin-bottom:11px}
+.dldone-row button{flex:1;font-family:inherit;font-weight:800;font-size:13px;border-radius:12px;padding:12px 8px;cursor:pointer}
+.dl-share{background:#000;color:#fff;border:1px solid #2a3550}
+.dl-next{background:#0e1626;color:#eaf1ff;border:1px solid #1f2b46}
+.dlrew{background:#0e1626;border:1px solid #1f2b46;border-radius:12px;padding:10px 12px;margin-bottom:10px}
+.dlrew .rt{font-size:11px;color:#94a6c9;margin-bottom:6px;display:flex;justify-content:space-between}
+.dlrew .rbar{height:8px;border-radius:99px;background:#1a2238;overflow:hidden}
+.dlrew .rbar i{display:block;height:100%;background:linear-gradient(90deg,#ffc23d,#ff8a3d)}
+.dlnext-msg{font-size:12px;color:#94a6c9;text-align:center}
+.dlnext-msg b{color:#ffc23d}
+.dltoast{background:linear-gradient(100deg,rgba(255,194,61,.16),rgba(255,138,61,.1));border:1px solid rgba(255,194,61,.5);border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:11px;margin-bottom:10px}
+.dltoast .ic{font-size:26px}
+.dltoast .h{font-size:14px;font-weight:900;color:#ffc23d}
+.dltoast .s{font-size:12px;color:#94a6c9}
 </style>
 <script type="application/ld+json">
 {
@@ -1986,7 +2070,7 @@ html[data-theme="light"] .xbn{background:linear-gradient(135deg,#fff,#eef3fa)}
       <div class="mh-est">激 や ば ツ ー ル ・ E S T . 2 0 2 6</div>
       <div class="mh-rule"><span class="mh-ln"></span><span class="mh-d">◆</span><span class="mh-ln r"></span></div>
     </div>
-    <div id="homeNotice"></div>
+    <div id="dailyMount"></div><div id="rankWidget"></div><div id="homeNotice"></div>
     <div class="homesearch"><input id="globalq" placeholder="🔍 機能・診断・商品を検索" oninput="globalSearch(this.value)" autocomplete="off"><div id="globalRes" class="globalres"></div></div>
     <div id="popularRank"></div>
     <div id="vfCard" class="vf-card" onclick="vfOpen()">
@@ -10081,6 +10165,204 @@ B:[[85,'歩くマップ 🧭','全マップを完璧に記憶した地理マス�
       if(isNew) T('viral','ref_new');
     }
   }catch(e){}
+})();
+</script>
+<div id="rankOv" class="rank-ov" aria-hidden="true" onclick="if(event.target===this&&window.__rankCloseAll)__rankCloseAll()">
+  <div class="rank-sheet">
+    <div class="rank-top">
+      <button class="rank-x" type="button" aria-label="閉じる">&#10005;</button>
+      <div class="rank-ttl">&#128293; 人気ランキング</div>
+      <div class="rank-sub">みんながよく使っている順</div>
+    </div>
+    <div id="rankOvTabs" class="rwtabs"></div>
+    <div id="rankOvList" class="rklist"></div>
+    <div class="rank-note">集計：実データ＋利用状況 ・ 自動更新</div>
+  </div>
+</div>
+<script>
+(function(){
+ function esc2(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+ function T(t,v){try{if(window.track)window.track(t,(v==null?'':String(v)));}catch(e){}}
+ (function(){var o=window.mpProdClick;if(typeof o==='function'){window.mpProdClick=function(name,cat){try{if(name){var m=JSON.parse(localStorage.getItem('apexProdCnt')||'{}');m[name]=(m[name]||0)+1;localStorage.setItem('apexProdCnt',JSON.stringify(m));}}catch(e){}return o.apply(this,arguments);};}})();
+ function prodCnt(){try{return JSON.parse(localStorage.getItem('apexProdCnt')||'{}');}catch(e){return {};}}
+ var TABS=[['shop','\uD83D\uDED2','ショップ'],['diag','\uD83E\uDDEA','診断'],['feat','\uD83D\uDDFA\uFE0F','機能']];
+ var curTab='shop';
+ function getShop(){
+   var arr=(typeof gearData==='function')?(gearData()||[]):[];var cnt=prodCnt();
+   var items=arr.filter(function(p){return p&&p.url&&p.url!=='#';}).map(function(p,i){
+     return {kind:'shop',key:(p.name||''),emoji:(typeof catIcon==='function'?catIcon(p.cat):'\uD83D\uDED2'),name:(p.name||p.cat||'商品'),count:(cnt[p.name]||0),order:i,url:p.url,cat:(p.cat||'')};
+   });
+   items.sort(function(a,b){if(b.count!==a.count)return b.count-a.count;return a.order-b.order;});
+   return items;
+ }
+ function getDiag(){
+   var R=(typeof DIAGREG!=='undefined')?DIAGREG:{};
+   return Object.keys(R).map(function(c){return {kind:'diag',key:c,emoji:(R[c].e||'\uD83E\uDDEA'),name:(R[c].n||c),count:(window.diagHitCount?diagHitCount(c):0)};}).sort(function(a,b){return b.count-a.count;});
+ }
+ function getFeat(){
+   if(typeof POP_META==='undefined')return [];
+   var local={};try{local=JSON.parse(localStorage.getItem('popHits')||'{}');}catch(e){}
+   return Object.keys(POP_META).map(function(k){var m=POP_META[k];return {kind:'feat',key:k,emoji:(m.ic||'\u25AB\uFE0F'),name:(m.nm||k),count:((typeof POP_BASE!=='undefined'&&POP_BASE[k])||0)+(local[k]||0)*3};}).sort(function(a,b){return b.count-a.count;});
+ }
+ function getRank(tab){return tab==='shop'?getShop():tab==='diag'?getDiag():getFeat();}
+ function rowHTML(x,i,max){
+   var g=i===0?' g1':i===1?' g2':i===2?' g3':'';
+   var w=Math.max(8,Math.round((x.count/(max||1))*100));
+   var cnt=x.count>0?'<span class="rkcnt">\uD83D\uDD25'+x.count+'</span>':'';
+   var inner='<span class="rknum'+g+'">'+(i+1)+'</span><span class="rkemo">'+x.emoji+'</span><div class="rkmain"><div class="rkname">'+esc2(x.name)+'</div><div class="rkbar"><i style="width:'+w+'%"></i></div></div>'+cnt;
+   if(x.kind==='shop'){return '<a class="rk rklink" href="'+esc2(x.url)+'" target="_blank" rel="sponsored nofollow noopener" data-kind="shop" data-name="'+esc2(x.key)+'" data-cat="'+esc2(x.cat)+'">'+inner+'</a>';}
+   return '<div class="rk" data-kind="'+x.kind+'" data-key="'+esc2(x.key)+'">'+inner+'</div>';
+ }
+ function listHTML(tab,limit){
+   var items=getRank(tab).slice(0,limit);var max=items.length?items[0].count:1;
+   return items.length?items.map(function(x,i){return rowHTML(x,i,max);}).join(''):'<div class="hint" style="padding:10px;color:#6a7a9c;font-size:12px">データはまだありません</div>';
+ }
+ function tabsHTML(){return TABS.map(function(t){return '<button class="rwtab'+(t[0]===curTab?' on':'')+'" data-rtab="'+t[0]+'">'+t[1]+' '+t[2]+'</button>';}).join('');}
+ function renderWidget(){
+   var box=document.getElementById('rankWidget');if(!box)return;
+   box.innerHTML='<div class="rw"><div class="rwh"><div class="t">\uD83D\uDD25 人気ランキング</div><div class="more" data-rankall="1">すべて見る →</div></div><div class="rwtabs">'+tabsHTML()+'</div><div class="rklist">'+listHTML(curTab,5)+'</div></div>';
+ }
+ function renderFull(){var t=document.getElementById('rankOvTabs'),l=document.getElementById('rankOvList');if(t)t.innerHTML=tabsHTML();if(l)l.innerHTML=listHTML(curTab,20);}
+ window.__rankRender=renderWidget;
+ function openAll(){var ov=document.getElementById('rankOv');if(ov){ov.classList.add('on');renderFull();T('rank','open_all');}}
+ function closeAll(){var ov=document.getElementById('rankOv');if(ov)ov.classList.remove('on');}
+ window.__rankCloseAll=closeAll;
+ function setTab(tab){curTab=tab;renderWidget();var ov=document.getElementById('rankOv');if(ov&&ov.classList.contains('on'))renderFull();T('rank','tab:'+tab);}
+ window.renderPopular=function(){try{var pr=document.getElementById('popularRank');if(pr)pr.style.display='none';}catch(e){}renderWidget();};
+ document.addEventListener('click',function(e){
+   var t=e.target;if(!t||!t.closest)return;
+   var rt=t.closest('[data-rtab]');if(rt){setTab(rt.getAttribute('data-rtab'));return;}
+   if(t.closest('[data-rankall]')){openAll();return;}
+   if(t.closest('.rank-x')){closeAll();return;}
+   var row=t.closest('.rk');if(row){
+     var kind=row.getAttribute('data-kind');
+     if(kind==='shop'){try{mpProdClick(row.getAttribute('data-name'),row.getAttribute('data-cat'));}catch(_){}T('rank','item:shop');return;}
+     T('rank','item:'+kind);var key=row.getAttribute('data-key');closeAll();
+     if(kind==='diag'){try{if(window.open_)open_('diag');}catch(_){}try{if(window.openDiag)openDiag(key);}catch(_){}}
+     else if(kind==='feat'){try{if(window.open_)open_(key);}catch(_){}}
+     return;
+   }
+ },false);
+ function boot(){try{renderWidget();}catch(e){}}
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
+})();
+</script><script>
+(function(){
+ function E(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+ function T(t,v){try{if(window.track)window.track(t,(v==null?'':String(v)));}catch(e){}}
+ function dlGet(k){try{return JSON.parse(localStorage.getItem(k)||'null');}catch(e){return null;}}
+ function dlSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+ function dlToday(){return new Date(Date.now()+9*36e5).toISOString().slice(0,10);}
+ function dlOff(d,o){return new Date(Date.parse(d)+o*864e5).toISOString().slice(0,10);}
+ function dlDays(){var a=dlGet('apexDailyDays');return a&&a.length?a:[];}
+ function dlSeed(){var d=new Date(Date.now()+9*36e5);return d.getFullYear()*372+(d.getMonth()+1)*31+d.getDate();}
+ var DL_MOOD={
+   AGG:{th:'攻めの圧で主導権を握る日',ps:'先手必勝。近距離で詰めて主導権を渡さない。',kw:'先手・近距離',legs:['レイス','オクタン','アッシュ','ホライゾン','バリスティック'],comp:['PK','R-99','ボセック']},
+   POS:{th:'位置と冷静さで勝つ日',ps:'有利ポジを確保し、無理な交戦は避けて地形で勝つ。',kw:'有利ポジ確保',legs:['コースティック','ワットソン','シア','キャタリスト','ニューキャッスル'],comp:['センチネル','30-30','チャージライフル']},
+   RANK:{th:'順位と生存を最優先する日',ps:'漁夫と引き際を重視。無駄なファイトは降りてRPを守る。',kw:'漁夫・生存重視',legs:['シア','クリプト','ブラッドハウンド','ジブラルタル','ローバ'],comp:['EVA-8','ハボック','フラットライン']},
+   WARM:{th:'感覚を取り戻す日',ps:'カジュアルで撃ち合い量を稼ぎ、感覚を戻す。',kw:'撃ち合い量を稼ぐ',legs:['オクタン','パスファインダー','ミラージュ','ライフライン','ヴァルキリー'],comp:['R-301','R-99','スピットファイア']}
+ };
+ var DL_WEP={SMG:'R-99',AR:'R-301',SG:'EVA-8',MM:'G7スカウト',ANY:''};
+ var DL_COND={
+   GOOD:{kw:'終盤の油断',full:'好調でも終盤の油断に注意。勝ってる時こそ丁寧に立ち回ろう。'},
+   MID:{kw:'単独詰め注意',full:'無理な単独詰めは避け、味方と数的有利を作ってから動こう。'},
+   TIRED:{kw:'詰めすぎ厳禁',full:'寝不足は判断が鈍りがち。詰めすぎ厳禁、安置移動は早めに。'},
+   TILT:{kw:'1戦休む勇気',full:'イラついてる時は1戦休むのも作戦。チャット/ボイスのミュートで自衛を。'}
+ };
+ var DL_Q=[
+   {t:'① 今日の気持ちは？',k:'mood',opts:[['AGG','⚔️ ガンガン撃ち合いたい'],['POS','🛡️ 落ち着いて立ち回り重視'],['RANK','📈 ランクを盛りたい'],['WARM','🎯 久々で勘を戻したい']]},
+   {t:'② 前回、弾がよく当たった武器は？',k:'weapon',opts:[['SMG','💨 SMG系（R-99 / Volt）'],['AR','🔫 AR系（R-301 / フラトラ）'],['SG','💥 ショットガン系（PK / EVA）'],['MM','🎯 マークスマン / スナイパー'],['ANY','❔ 覚えてない']]},
+   {t:'③ 今日のコンディションは？',k:'cond',opts:[['GOOD','🔥 絶好調'],['MID','😐 普通'],['TIRED','😴 寝不足ぎみ'],['TILT','😤 イライラ気味']]}
+ ];
+ var dlAns={};
+ var MILES=[[3,30],[7,100],[14,200],[30,500],[100,2000]];
+ function dlCompute(ans,seed){
+   var m=DL_MOOD[ans.mood]||DL_MOOD.AGG;
+   var idx=({AGG:0,POS:1,RANK:2,WARM:3})[ans.mood]||0;
+   var legend=m.legs[(seed+idx)%m.legs.length];
+   var primary=DL_WEP[ans.weapon];if(!primary){primary=(ans.mood==='AGG'||ans.mood==='WARM')?'R-99':'R-301';}
+   var comp=m.comp[seed%m.comp.length];
+   var cond=DL_COND[ans.cond]||DL_COND.MID;
+   return {theme:m.th,play:m.ps,kw:m.kw,legend:legend,weapon:primary+' ＋ '+comp,caution:cond.full,cautionKw:cond.kw};
+ }
+ function dlStreakHeader(streak,best,days){
+   var today=dlToday();var dots='';
+   for(var i=6;i>=0;i--){var d=dlOff(today,-i);var on=days.indexOf(d)>=0;dots+='<div class="dlwd'+(on?' on':'')+(i===0?' today':'')+'"><span class="dot"></span></div>';}
+   return '<div class="dlsk"><div class="dlflame">🔥</div><div class="dlskinfo"><div class="n"><b>'+streak+'</b>日連続</div><div class="s">最高 '+best+'日</div></div><div class="dlweek">'+dots+'</div></div>';
+ }
+ function dispStreak(){
+   var streak=parseInt(localStorage.getItem('apexDailyStreak')||'0',10);
+   var last=localStorage.getItem('apexDailyLast');var today=dlToday();
+   return (last===today||last===dlOff(today,-1))?streak:0;
+ }
+ function nextMile(s){for(var i=0;i<MILES.length;i++){if(MILES[i][0]>s)return MILES[i][0];}return null;}
+ function renderPrompt(){
+   var box=document.getElementById('dailyMount');if(!box)return;
+   var s=dispStreak();var best=parseInt(localStorage.getItem('apexDailyBest')||'0',10);
+   var nm=nextMile(s);var extra=(nm&&(nm-s)<=2&&s>0)?('（連続'+nm+'まであと'+(nm-s)+'日！）'):'';
+   box.innerHTML='<div class="dlcard">'+dlStreakHeader(s,best,dlDays())
+     +'<div class="dlhr"></div><div class="dlrt">🎯 今日の作戦診断</div>'
+     +'<div class="dlq-desc">今日の気持ち＆前回の調子から、使うべきキャラ・武器・立ち回りを提案。</div>'
+     +'<button class="dlcta" onclick="__dlStart()">🔥 今日の作戦を立てる'+extra+'</button></div>';
+ }
+ function dlAsk(qi){
+   var box=document.getElementById('dailyMount');if(!box)return;var q=DL_Q[qi];
+   var prog='<div class="dlprog">'+DL_Q.map(function(_,i){return '<span class="'+(i<=qi?'on':'')+'"></span>';}).join('')+'</div>';
+   box.innerHTML='<div class="dlcard"><div class="dlqhead">'+prog+'<div class="dlqt">'+q.t+'</div></div>'
+     +q.opts.map(function(o){return '<button class="dlopt" onclick="__dlAns('+qi+',\''+o[0]+'\')">'+o[1]+'</button>';}).join('')+'</div>';
+ }
+ function dlComplete(ans){
+   var today=dlToday();var result=dlCompute(ans,dlSeed());result.date=today;result.ans=ans;
+   var last=localStorage.getItem('apexDailyLast');
+   var streak=parseInt(localStorage.getItem('apexDailyStreak')||'0',10);
+   var best=parseInt(localStorage.getItem('apexDailyBest')||'0',10);
+   var mile=null;
+   if(last!==today){
+     streak=(last===dlOff(today,-1))?streak+1:1;
+     if(streak===1){localStorage.setItem('apexDailyMile','{}');}
+     best=Math.max(best,streak);
+     localStorage.setItem('apexDailyLast',today);localStorage.setItem('apexDailyStreak',String(streak));localStorage.setItem('apexDailyBest',String(best));
+     var days=dlDays();if(days.indexOf(today)<0){days.push(today);if(days.length>40)days=days.slice(-40);dlSet('apexDailyDays',days);}
+     var fired={};try{fired=JSON.parse(localStorage.getItem('apexDailyMile')||'{}');}catch(e){}
+     MILES.forEach(function(mm){if(streak>=mm[0]&&!fired[mm[0]]){fired[mm[0]]=1;try{if(window.grantCoin){var g=grantCoin(mm[1],{daily:'dstreak'+mm[0]+'_'+today,perDay:1})||0;if(g&&window.coinToast)coinToast('🪙 '+mm[0]+'日連続！ +'+g);}}catch(e){}if(!mile)mile={day:mm[0],coin:mm[1]};}});
+     localStorage.setItem('apexDailyMile',JSON.stringify(fired));
+     T('daily','complete');T('daily','streak:'+streak);
+   }
+   result.streak=streak;result.best=best;dlSet('apexDailyResult',result);
+   renderResult(result,mile);
+ }
+ function renderResult(r,mile){
+   var box=document.getElementById('dailyMount');if(!box)return;
+   var nm=nextMile(r.streak);var rew='';
+   if(nm){var prev=0;for(var i=0;i<MILES.length;i++){if(MILES[i][0]<nm)prev=MILES[i][0];}var pct=Math.max(4,Math.round(((r.streak-prev)/(nm-prev))*100));rew='<div class="dlrew"><div class="rt"><span>次の報酬まで</span><span>'+r.streak+' / '+nm+'日</span></div><div class="rbar"><i style="width:'+pct+'%"></i></div></div>';}
+   var mi=mile?('<div class="dltoast"><div class="ic">🏅</div><div><div class="h">'+mile.day+'日連続 達成！</div><div class="s">記念バッジ＋コイン+'+mile.coin+'を獲得</div></div></div>'):'';
+   box.innerHTML='<div class="dlcard done">'+dlStreakHeader(r.streak,r.best,dlDays())+mi
+     +'<div class="dlhr"></div><div class="dlrt">🎯 今日の作戦</div>'
+     +'<div class="dltheme"><div class="dlth-ic">🔥</div><div><div class="dlth-t">今日は「'+E(r.theme)+'」</div><div class="dlth-s">'+E(r.play)+'</div></div></div>'
+     +'<div class="dlgrid"><div class="dlcell"><div class="l">おすすめレジェンド</div><div class="v cy">'+E(r.legend)+'</div></div>'
+     +'<div class="dlcell"><div class="l">おすすめ武器</div><div class="v pp">'+E(r.weapon)+'</div></div>'
+     +'<div class="dlcell"><div class="l">立ち回り</div><div class="v gr">'+E(r.kw)+'</div></div>'
+     +'<div class="dlcell"><div class="l">注意</div><div class="v am">'+E(r.cautionKw)+'</div></div></div>'
+     +'<div class="dlnote">⚠️ '+E(r.caution)+'</div>'
+     +'<div class="dldone-row"><button class="dl-share" onclick="__dlShare()">𝕏 結果をシェア</button><button class="dl-next" onclick="if(window.open_)open_(\'diag\')">他の診断もやる</button></div>'
+     +rew+'<div class="dlnext-msg">✅ 今日の作戦、完了！ <b>明日も来て連続記録を伸ばそう</b> 🔥</div></div>';
+ }
+ function render(){var box=document.getElementById('dailyMount');if(!box)return;var r=dlGet('apexDailyResult');if(r&&r.date===dlToday())renderResult(r,null);else renderPrompt();}
+ window.__dlStart=function(){dlAns={};T('daily','open');dlAsk(0);};
+ window.__dlAns=function(qi,v){dlAns[DL_Q[qi].k]=v;if(qi+1<DL_Q.length)dlAsk(qi+1);else dlComplete(dlAns);};
+ window.__dlShare=function(){
+   var r=dlGet('apexDailyResult');if(!r)return;
+   try{if(window.mpShareInc)mpShareInc();}catch(e){}
+   try{if(window.grantCoin){var g=grantCoin(20,{daily:'share_daily_'+dlToday(),perDay:1});if(g&&window.coinToast)coinToast('🪙 シェアありがとう！ +'+g);}}catch(e){}
+   var txt='今日の作戦は「'+r.theme+'」。おすすめは'+r.legend+'＆'+r.weapon+'🔥';
+   var url=location.href.split('#')[0].split('?')[0]+'?d=daily';
+   var tag=(typeof SHARE_TAG!=='undefined'&&SHARE_TAG)?SHARE_TAG:'APEX';
+   var u='https://twitter.com/intent/tweet?text='+encodeURIComponent('【APEX激やばツール】'+txt)+'&url='+encodeURIComponent(url)+'&hashtags='+encodeURIComponent(tag);
+   try{if(window.openX)openX(u);else window.open(u,'_blank','noopener');}catch(e){}
+   T('daily','share');T('share','daily');
+ };
+ window.__renderDaily=render;
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',render);else render();
 })();
 </script></body>
 </html>
