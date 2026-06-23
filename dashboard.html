@@ -200,6 +200,35 @@ function deriv(d){
  var growth=wkPrev?((wk-wkPrev)/wkPrev*100):0;
  return {tr:tr,sum:sum,avg:avg,med:med,sd:sd,wdAvg:wdAvg,best:best,worst:worst,streak:streak,mav3:mav3,mav7:mav7,cum:cum,max:max,maxI:maxI,pred:pred,wk:wk,wkPrev:wkPrev,growth:growth};
 }
+/* ===== 昨日KPI / 日付指定 ===== */
+var YDSTATE={date:null};
+function ydAvail(){
+ if(D&&D.daily&&D.daily.length){return D.daily.map(function(x){var v=Number(x.visits)||0,n=Number(x.nu!=null?x.nu:x.new)||0;return {date:String(x.date||'').slice(0,10),visits:v,nu:n,ret:(x.ret!=null?Number(x.ret):Math.max(0,v-n)),diag:Number(x.diag)||0,shares:Number(x.shares)||0,prod:Number(x.prod!=null?x.prod:x.products)||0,full:true};}).filter(function(x){return /^\d{4}-\d{2}-\d{2}$/.test(x.date);});}
+ return ((D._dv&&D._dv.tr)||[]).map(function(x){return {date:x.date,visits:x.v,nu:x.nu,ret:x.ret,full:false};});
+}
+function ydPick(dt){YDSTATE.date=dt;renderYD();}
+function ydCard(label,val,accent){return '<div style="background:#0e1626;border:1px solid var(--line);border-radius:12px;padding:10px 12px;min-width:0"><div style="font-size:11px;color:var(--sub);margin-bottom:3px">'+label+'</div><div style="font-size:20px;font-weight:800;color:'+(accent||'#eaf1ff')+'">'+fmtN(val)+'</div></div>';}
+function renderYD(){
+ var box=$g('ydBlock'); if(!box)return;
+ var av=ydAvail();
+ if(!av.length){box.innerHTML='<div class="hint">日別データがまだありません</div>';return;}
+ var full=av[av.length-1].full;
+ var ydDef=av.length>=2?av[av.length-2].date:av[av.length-1].date;
+ var sel=YDSTATE.date||ydDef;
+ if(!av.some(function(x){return x.date===sel;}))sel=ydDef;
+ var day=av.find(function(x){return x.date===sel;})||{};
+ var isY=(sel===ydDef);
+ var opts=av.slice().reverse().map(function(x){return '<option value="'+x.date+'"'+(x.date===sel?' selected':'')+'>'+x.date+'（'+WDN[wd(x.date)]+'）'+(x.date===ydDef?' ←昨日':'')+'</option>';}).join('');
+ var cards='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px">'
+   +ydCard('訪問',day.visits||0,'#19e3ff')+ydCard('新規',day.nu||0,'#22e3a0')+ydCard('リピート',day.ret||0,'#c062ff');
+ if(full)cards+=ydCard('診断',day.diag||0,'#ffc23d')+ydCard('シェア',day.shares||0,'#ff3df2')+ydCard('商品クリック',day.prod||0,'#ff6a1f');
+ cards+='</div>';
+ var head='<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">'
+   +'<button class="chip '+(isY?'on':'')+'" onclick="ydPick(\''+ydDef+'\')">昨日</button>'
+   +'<select onchange="ydPick(this.value)" style="flex:1;min-width:140px">'+opts+'</select></div>';
+ var note=full?'':'<div class="note">いまは 訪問 / 新規 / リピート のみ表示中。診断・シェア等の日別は、GASに daily 配列を足すと自動で増えます（直近14日→60日にも拡張）。</div>';
+ box.innerHTML=head+cards+note;
+}
 /* スナップショット履歴 */
 function snaps(){return lsGet('dash2snaps',[]);}
 function pushSnap(d){var a=snaps();a.push({t:Date.now(),k:d.kpi,top:{views:(d.views||[]).slice(0,8),diags:(d.diags||[]).slice(0,8),prods:(d.products||[]).slice(0,8)}});if(a.length>40)a=a.slice(-40);lsSet('dash2snaps',a);}
@@ -356,6 +385,7 @@ function renderSummary(){
  var h='<div class="sec" data-sec="kpi"><h2 onclick="secToggle(this)">📌 今日のKPI <span class="bdg">タップで詳細/長押しで定義</span><span class="arr">▼</span></h2><div class="body"><div class="kpis">'+defs.map(function(x){return kpiCard(x,d,dv);}).join('')+'</div>'
  +'<div class="note">前週同曜日比: '+(function(){var t=dv.tr;if(t.length>=8){var a=t[t.length-1].v,b=t[t.length-8].v;return arrowMk(a,b)+' '+pctS(a,b)+'（'+WDN[wd(t[t.length-1].date)]+'曜同士）';}return '-';})()
  +' ・ 週間成長率 '+(dv.growth>=0?'+':'')+dv.growth.toFixed(0)+'% ・ 連続訪問 '+dv.streak+'日 ・ 今日の終了予測 '+fmtN(dv.pred)+'回（線形）</div></div></div>';
+ h+='<div class="sec" data-sec="yday"><h2 onclick="secToggle(this)">📅 昨日 / 日付指定 <span class="bdg">日別</span><span class="arr">▼</span></h2><div class="body"><div id="ydBlock"></div></div></div>';
  h+='<div class="sec" data-sec="mini"><h2 onclick="secToggle(this)">📈 直近14日 <span class="arr">▼</span></h2><div class="body">'
   +'<div class="tbar"><button class="chip '+(CFG.mavg===0?'on':'')+'" onclick="CFG.mavg=0;saveCfg();renderAll()">実数</button><button class="chip '+(CFG.mavg===3?'on':'')+'" onclick="CFG.mavg=3;saveCfg();renderAll()">3日平均</button><button class="chip '+(CFG.mavg===7?'on':'')+'" onclick="CFG.mavg=7;saveCfg();renderAll()">7日平均</button><button class="chip" onclick="chartPlay()">▶ コマ送り</button></div>'
   +'<div id="mainLine">'+lineChart(dv.tr,{mavg:CFG.mavg===3?dv.mav3:CFG.mavg===7?dv.mav7:null,prevOverlay:true,notes:CFG.notes})+'</div>'
@@ -373,7 +403,7 @@ function renderSummary(){
   +'<div class="note">累計値（全期間）。寄付ボタン押下＝モーダルを開いた回数 / PayPayへ＝モーダル内リンクのクリック。日別内訳が要る場合はGAS側に集計列の追加が必要</div>'
   +'</div></div>';
  $g('p-sum').innerHTML=h;
- bindKpi();bindPoints();countUp();
+ bindKpi();bindPoints();countUp();renderYD();
 }
 function renderCharts(){
  var d=D,dv=D._dv;
@@ -429,7 +459,7 @@ function renderLists(){
  var feats=d.features||[];
  function fgrp(pre){return feats.filter(function(x){return String(x.k).indexOf(pre+':')===0;}).map(function(x){return {k:String(x.k).slice(pre.length+1)||'(無題)',c:x.c};});}
  var tapG=fgrp('tap'),shareG=fgrp('share'),gearG=fgrp('gear'),battleG=fgrp('battle'),recruitG=fgrp('recruit');
- var otherG=feats.filter(function(x){return !/^(view|diag|product|tap|share|gear|battle|recruit|bk|cta|search|pw|ui|pwa|depth|q):/.test(String(x.k));}).map(function(x){return {k:x.k,c:x.c};});
+ var otherG=feats.filter(function(x){return !/^(view|diag|product|tap|share|gear|battle|recruit|bk|cta|search|pw|ui|pwa|depth|q|modal):/.test(String(x.k));}).map(function(x){return {k:x.k,c:x.c};});
  if(tapG.length)    h+=listSec('タップ操作（パネル/ボタン）','👆',tapG,'tapG',{foot:'各パネルやボタンのタップ数。新しいパネルや要素を足すと、ここに自動で出ます'});
  if(shareG.length)  h+=listSec('シェア（画像/テキスト）','📤',shareG,'shareG',{});
  if(gearG.length)   h+=listSec('デバイス選び','🖱',gearG,'gearG',{});
@@ -451,6 +481,22 @@ function renderLists(){
  var pwaF=feats.find(function(x){return /^pwa:/.test(String(x.k));});
  var qRows=[]; if(engF)qRows.push({k:'操作した訪問（エンゲージ）',c:engF.c}); if(srchF)qRows.push({k:'検索を使った',c:srchF.c}); if(pwF)qRows.push({k:'ウォッチに登録',c:pwF.c}); if(pwaF)qRows.push({k:'ホーム追加の案内表示',c:pwaF.c});
  if(qRows.length)h+=listSec('利用の質（エンゲージ / 検索 / 登録）','🪶',qRows,'qual',{foot:'「操作した訪問」が多いほど直帰が少ない＝中身まで触られている目安'});
+ // ===== モーダル計測（表示数・実行率・離脱率）=====
+ var MODNAME={welcome:'ウェルカム',donate:'寄付',survey:'アンケート',diag_invite:'診断誘導',playerwatch:'プレイヤーウォッチ',a2hs:'ホーム追加バー'};
+ var modalMap={};
+ feats.forEach(function(x){var m=String(x.k).match(/^modal:(show|ok|close):(.+)$/);if(m){var nm=m[2];if(!modalMap[nm])modalMap[nm]={show:0,ok:0,close:0};modalMap[nm][m[1]]+=x.c;}});
+ var mNames=Object.keys(modalMap).sort(function(a,b){return modalMap[b].show-modalMap[a].show;});
+ if(mNames.length){
+   var mh='<div class="sec" data-sec="modal"><h2 onclick="secToggle(this)">📲 モーダル計測 <span class="bdg">'+mNames.length+'</span><span class="arr">▼</span></h2><div class="body">';
+   mNames.forEach(function(nm){var m=modalMap[nm];var okR=m.show?Math.round(m.ok/m.show*100):0;var clR=m.show?Math.round(m.close/m.show*100):0;
+     mh+='<div style="margin-bottom:14px"><div style="font-weight:800;font-size:13px;margin-bottom:5px">'+esc(MODNAME[nm]||nm)+' <span style="color:var(--sub);font-weight:600">表示 '+fmtN(m.show)+'回</span></div><div class="bars">'
+       +'<div class="bar"><div class="bl">実行率（機能してる度）</div><div class="bt"><i style="width:'+okR+'%"></i></div><div class="bv">'+okR+'%</div></div>'
+       +'<div class="bar"><div class="bl">離脱率（閉じる/無視）</div><div class="bt"><i style="width:'+clR+'%;background:var(--down)"></i></div><div class="bv">'+clR+'%</div></div>'
+       +'</div></div>';
+   });
+   mh+='<div class="note">表示数＝出た回数 / 実行率＝出た中で行動された割合（高いほど機能している）/ 離脱率＝閉じる・無視。診断誘導は「TOP3・ランダム・全部見る」のいずれか＝実行、寄付は「PayPayへ」＝実行、アンケートは「送信」＝実行。</div></div></div>';
+   h+=mh;
+ }
  if(otherG.length)  h+=listSec('その他の操作（未分類）','✨',otherG,'otherG',{foot:'まだ分類していない新イベント。今後どんな要素を足してもGAS変更なしでここに出ます'});
  $g('p-list').innerHTML=h;
 }
