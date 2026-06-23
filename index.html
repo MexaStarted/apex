@@ -9595,5 +9595,32 @@ window.dkReload=loadList;
   if(document.readyState!=='loading'){vfBoot();} else {document.addEventListener('DOMContentLoaded',vfBoot);}
 })();
 </script>
+
+<script>
+/* ===== 計測拡張：既存 window.track にイベント追加（GAS無改修で features に入る）===== */
+(function(){
+  function tk(t,v){try{if(window.track)window.track(t,(v==null?'':String(v)));}catch(e){}}
+  function W(name,t,v){var o=window[name];if(typeof o!=='function')return;window[name]=function(){try{tk(t,(typeof v==='function'?v.apply(null,arguments):v));}catch(e){}return o.apply(this,arguments);};}
+  W('openDonate','cta','donate');
+  W('globalSearch','search','use');
+  W('frAdd','pw','add');
+  W('a2hsTip','pwa','tip_shown');
+  var eng=0; function mkEng(){ if(eng)return; eng=1; tk('q','engaged'); }
+  var fired={};
+  function onScroll(){
+    var h=document.documentElement, b=document.body||{};
+    var st=h.scrollTop||b.scrollTop||0;
+    var sh=(h.scrollHeight||0)-(h.clientHeight||window.innerHeight||1);
+    var pct=sh>0?Math.round(st/sh*100):0;
+    [25,50,75,90].forEach(function(q){ if(pct>=q&&!fired[q]){fired[q]=1; tk('depth',q);} });
+    if(pct>=25)mkEng();
+  }
+  window.addEventListener('scroll',onScroll,{passive:true});
+  document.addEventListener('click',function(e){
+    mkEng();
+    try{ if(e.target&&e.target.closest&&e.target.closest('#xBanner,.xbn')) tk('cta','x_banner'); }catch(x){}
+  },true);
+})();
+</script>
 </body>
 </html>

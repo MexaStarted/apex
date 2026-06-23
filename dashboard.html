@@ -429,12 +429,28 @@ function renderLists(){
  var feats=d.features||[];
  function fgrp(pre){return feats.filter(function(x){return String(x.k).indexOf(pre+':')===0;}).map(function(x){return {k:String(x.k).slice(pre.length+1)||'(無題)',c:x.c};});}
  var tapG=fgrp('tap'),shareG=fgrp('share'),gearG=fgrp('gear'),battleG=fgrp('battle'),recruitG=fgrp('recruit');
- var otherG=feats.filter(function(x){return !/^(view|diag|product|tap|share|gear|battle|recruit):/.test(String(x.k));}).map(function(x){return {k:x.k,c:x.c};});
+ var otherG=feats.filter(function(x){return !/^(view|diag|product|tap|share|gear|battle|recruit|bk|cta|search|pw|ui|pwa|depth|q):/.test(String(x.k));}).map(function(x){return {k:x.k,c:x.c};});
  if(tapG.length)    h+=listSec('タップ操作（パネル/ボタン）','👆',tapG,'tapG',{foot:'各パネルやボタンのタップ数。新しいパネルや要素を足すと、ここに自動で出ます'});
  if(shareG.length)  h+=listSec('シェア（画像/テキスト）','📤',shareG,'shareG',{});
  if(gearG.length)   h+=listSec('デバイス選び','🖱',gearG,'gearG',{});
  if(battleG.length) h+=listSec('対決バトル','⚔',battleG,'battleG',{});
  if(recruitG.length)h+=listSec('募集','📋',recruitG,'recruitG',{});
+ // ===== 追加セクション（動画 / CTA / スクロール深度 / 利用の質）=====
+ var bkOpen=feats.filter(function(x){return /^bk:open/.test(String(x.k));}).reduce(function(a,x){return a+x.c;},0);
+ var bkPlay=feats.filter(function(x){return /^bk:play:/.test(String(x.k));}).map(function(x){return {k:'再生 '+(String(x.k).replace('bk:play:','')||'?'),c:x.c};});
+ var vidRows=[]; if(bkOpen)vidRows.push({k:'フィードを開いた',c:bkOpen}); bkPlay.forEach(function(x){vidRows.push(x);});
+ if(vidRows.length)h+=listSec('動画（爆笑動画集）','🎬',vidRows,'vid',{foot:'ヒーローカード/ボタンから開いた数＋各プラットフォームの再生数'});
+ var ctaLbl={donate:'寄付モーダルを開いた',x_banner:'Xバナーをタップ'};
+ var ctaG=fgrp('cta').map(function(x){return {k:ctaLbl[x.k]||x.k,c:x.c};});
+ if(ctaG.length)h+=listSec('導線（寄付 / X誘導）','📣',ctaG,'cta',{});
+ var depth=[25,50,75,90].map(function(q){var f=feats.find(function(x){return String(x.k)==='depth:'+q;});return {k:q+'% まで到達',c:f?f.c:0};}).filter(function(x){return x.c>0;});
+ if(depth.length)h+=listSec('スクロール到達深度','📜',depth,'depth',{foot:'ページをどこまで読んだか（各深度に到達した訪問数）。下に行くほど絞られるのが普通'});
+ var engF=feats.find(function(x){return String(x.k)==='q:engaged';});
+ var srchF=feats.find(function(x){return String(x.k)==='search:use';});
+ var pwF=feats.find(function(x){return String(x.k)==='pw:add';});
+ var pwaF=feats.find(function(x){return /^pwa:/.test(String(x.k));});
+ var qRows=[]; if(engF)qRows.push({k:'操作した訪問（エンゲージ）',c:engF.c}); if(srchF)qRows.push({k:'検索を使った',c:srchF.c}); if(pwF)qRows.push({k:'ウォッチに登録',c:pwF.c}); if(pwaF)qRows.push({k:'ホーム追加の案内表示',c:pwaF.c});
+ if(qRows.length)h+=listSec('利用の質（エンゲージ / 検索 / 登録）','🪶',qRows,'qual',{foot:'「操作した訪問」が多いほど直帰が少ない＝中身まで触られている目安'});
  if(otherG.length)  h+=listSec('その他の操作（未分類）','✨',otherG,'otherG',{foot:'まだ分類していない新イベント。今後どんな要素を足してもGAS変更なしでここに出ます'});
  $g('p-list').innerHTML=h;
 }
