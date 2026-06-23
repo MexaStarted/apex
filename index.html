@@ -10364,5 +10364,20 @@ B:[[85,'歩くマップ 🧭','全マップを完璧に記憶した地理マス�
  window.__renderDaily=render;
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',render);else render();
 })();
+</script><script>
+(function(){
+  var orig=window.pwHomeIntroMaybe;
+  if(typeof orig!=='function')return;
+  window.__pwWaitN=0;
+  window.pwHomeIntroMaybe=function(){
+    try{
+      var c=document.getElementById('grandCurtain');
+      var sp=document.getElementById('splash');
+      var busy=(c&&c.classList&&c.classList.contains('go'))||(sp&&sp.parentNode);
+      if(busy&&(window.__pwWaitN++)<30){setTimeout(window.pwHomeIntroMaybe,300);return;}
+    }catch(e){}
+    return orig.apply(this,arguments);
+  };
+})();
 </script></body>
 </html>
