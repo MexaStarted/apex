@@ -10031,7 +10031,7 @@ B:[[85,'歩くマップ 🧭','全マップを完璧に記憶した地理マス�
       try{ new MutationObserver(function(){ var now=el.classList.contains('on'); if(now&&!was)modalTrack('show',name); was=now; }).observe(el,{attributes:true,attributeFilter:['class']}); }catch(e){} }
     for(var id in MODAL_IDS) watch(id,MODAL_IDS[id]); })();
   (function(){ var o=window.a2hsTip; if(typeof o==='function'){ window.a2hsTip=function(){ try{modalTrack('show','a2hs');}catch(e){} return o.apply(this,arguments); }; } })();
-  (function(){ var o=window.svSubmit; if(typeof o==='function'){ window.svSubmit=function(){ try{modalTrack('ok','survey');}catch(e){} return o.apply(this,arguments); }; } })();
+  (function(){ var _t=window.track; if(typeof _t==='function'){ window.track=function(t,v){ try{ if(t==='survey_submit') modalTrack('ok','survey'); }catch(e){} return _t.apply(this,arguments); }; } })();
   document.addEventListener('click',function(e){ try{
       var t=e.target; if(!t||!t.closest)return;
       if(t.closest('#a2hsX')){ modalTrack('close','a2hs'); return; }

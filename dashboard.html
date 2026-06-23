@@ -213,7 +213,8 @@ function renderYD(){
  var av=ydAvail();
  if(!av.length){box.innerHTML='<div class="hint">日別データがまだありません</div>';return;}
  var full=av[av.length-1].full;
- var ydDef=av.length>=2?av[av.length-2].date:av[av.length-1].date;
+ var _y=new Date(Date.now()+9*36e5-864e5),_ys=_y.toISOString().slice(0,10);
+ var ydDef=av.some(function(x){return x.date===_ys;})?_ys:(av.length>=2?av[av.length-2].date:av[av.length-1].date);
  var sel=YDSTATE.date||ydDef;
  if(!av.some(function(x){return x.date===sel;}))sel=ydDef;
  var day=av.find(function(x){return x.date===sel;})||{};
