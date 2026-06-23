@@ -1916,6 +1916,52 @@ html[data-theme="light"] .xbn{background:linear-gradient(135deg,#fff,#eef3fa)}
 .dltoast .ic{font-size:26px}
 .dltoast .h{font-size:14px;font-weight:900;color:#ffc23d}
 .dltoast .s{font-size:12px;color:#94a6c9}
+
+/* ===== Player Watch 急上昇タブ ===== */
+.frmvp{position:relative;border:1px solid rgba(255,194,61,.5);border-radius:14px;padding:13px;margin-bottom:10px;background:linear-gradient(135deg,rgba(255,194,61,.13),rgba(255,138,61,.05));cursor:pointer;overflow:hidden}
+.frmvptag{display:inline-block;font-size:10px;font-weight:900;color:#231400;background:linear-gradient(90deg,#ffc23d,#ff8a3d);padding:3px 9px;border-radius:99px;margin-bottom:8px}
+.frmvprow{display:flex;align-items:center;gap:11px}
+.frmvpem{font-size:30px;flex:none}
+.frmvpb{flex:1;min-width:0}
+.frmvpb b{font-size:16px;font-weight:900;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.frmvpb small{font-size:11.5px;color:var(--sub);display:flex;align-items:center;gap:5px}
+.frmvpg{text-align:right;flex:none}
+.frmvpg .d{font-size:21px;font-weight:900;color:var(--ok);font-variant-numeric:tabular-nums;line-height:1}
+.frmvpg .rp{font-size:11px;color:var(--sub);margin-top:2px}
+.frrised{font-size:13px;font-weight:800;flex:none;text-align:right;min-width:88px;font-variant-numeric:tabular-nums}
+.frrised .up{color:var(--ok)}
+.frrised .dn{color:var(--down)}
+.frrised .flat{color:#6a7a9c}
+.frrised .now{display:block;font-size:10px;color:#6a7a9c;font-weight:600}
+.frriseothh{font-size:11px;color:#6a7a9c;font-weight:700;margin:12px 0 2px;padding-top:9px;border-top:1px dashed var(--line)}
+.frriseanon{display:flex;align-items:center;gap:7px;justify-content:center;font-size:11.5px;color:var(--sub);margin-top:2px;cursor:pointer}
+.frriseanon input{accent-color:#ffc23d}
+
+/* ===== SEO: 可視FAQ（クローラー向け実コンテンツ）===== */
+.seofaq{margin:20px 0 6px;border-top:1px solid var(--line);padding-top:16px}
+.seofaq h2{font-size:15px;font-weight:800;color:var(--text);margin:0 0 8px}
+.seofaq .seointro{font-size:12.5px;color:var(--sub);line-height:1.85;margin-bottom:12px}
+.seofaq .seointro b{color:var(--text);font-weight:700}
+.seofaq details{border:1px solid var(--line);border-radius:10px;margin-bottom:7px;background:rgba(255,255,255,.02);overflow:hidden}
+.seofaq summary{padding:11px 13px;font-size:13px;font-weight:700;color:var(--text);cursor:pointer;list-style:none;display:flex;align-items:center;gap:8px}
+.seofaq summary::-webkit-details-marker{display:none}
+.seofaq summary::before{content:"Q";flex:none;width:18px;height:18px;border-radius:5px;background:rgba(25,227,255,.15);color:var(--cy);font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center}
+.seofaq details[open] summary{border-bottom:1px solid var(--line)}
+.seofaq .seoa{padding:11px 13px;font-size:12.5px;color:var(--sub);line-height:1.9}
+.seofaq .seoa a{color:var(--cy);font-weight:700;text-decoration:none}
+
+/* ===== Player Watch オンラインフック ===== */
+.pwonhero{margin:0 0 12px;padding:11px 13px;border:1px solid rgba(34,227,160,.4);border-radius:12px;background:linear-gradient(135deg,rgba(34,227,160,.12),rgba(25,227,255,.04))}
+.pwonhero.off{border-color:var(--line);background:rgba(255,255,255,.02)}
+.pwonhd{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:800;color:var(--text)}
+.pwonhd b{font-weight:900}
+.pwondot{width:9px;height:9px;border-radius:50%;background:#22e3a0;box-shadow:0 0 7px rgba(34,227,160,.9);flex:none;animation:pwonpulse 1.8s infinite}
+.pwondot.off{background:#3a455e;box-shadow:none;animation:none}
+@keyframes pwonpulse{0%,100%{opacity:1}50%{opacity:.35}}
+.pwonjust{margin-left:auto;font-size:11px;font-weight:800;color:#231400;background:linear-gradient(90deg,#ffc23d,#ff8a3d);padding:3px 9px;border-radius:99px}
+.pwonchips{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.pwonchip{font-size:11.5px;font-weight:700;color:#bdf5df;background:rgba(34,227,160,.12);border:1px solid rgba(34,227,160,.3);border-radius:99px;padding:4px 10px}
+.pwonchip.nw{color:#231400;background:linear-gradient(90deg,#ffe08a,#ffc23d);border-color:transparent}
 </style>
 <script type="application/ld+json">
 {
@@ -2041,7 +2087,9 @@ html[data-theme="light"] .xbn{background:linear-gradient(135deg,#fff,#eef3fa)}
         {"@type":"Question","name":"自分の戦績や戦闘力を調べられますか？","acceptedAnswer":{"@type":"Answer","text":"戦績検索ページでプレイヤー名とプラットフォームを入力すると、レベル・RP・KD・平均ダメージなどから戦闘力を自動採点します。"}},
         {"@type":"Question","name":"診断は何種類ありますか？","acceptedAnswer":{"@type":"Answer","text":"立ち回り・強さ・キャンパー度・脳筋ラッシュ度・煽り耐性など、全166種のApex診断・あそびを無料で楽しめます。"}},
         {"@type":"Question","name":"プレデターボーダーはどのくらいの頻度で更新されますか？","acceptedAnswer":{"@type":"Answer","text":"ボーダーは公式データを元に随時更新されます。表示には取得時刻も併記しているので、いつ時点の数値かが分かります。"}},
-        {"@type":"Question","name":"利用に料金や登録は必要ですか？","acceptedAnswer":{"@type":"Answer","text":"すべての機能を完全無料・登録不要で利用できます。"}}
+        {"@type":"Question","name":"利用に料金や登録は必要ですか？","acceptedAnswer":{"@type":"Answer","text":"すべての機能を完全無料・登録不要で利用できます。"}},
+         {"@type":"Question","name":"推しやフレンドが今オンラインか、現在のランクを確認できますか？","acceptedAnswer":{"@type":"Answer","text":"プレイヤーウォッチに登録すると、相手の現在ランク・RP・今オンラインかどうかをいつでも確認できます。登録した全員のRP急上昇ランキングや、セッションごとのRP増減も表示します。"}},
+         {"@type":"Question","name":"次のマップに切り替わるのはいつですか？","acceptedAnswer":{"@type":"Answer","text":"マップページで、現在のマップと次のマップ、切り替わりまでの残り時間を確認できます。"}}
       ]
     }
   ]
@@ -2106,7 +2154,17 @@ html[data-theme="light"] .xbn{background:linear-gradient(135deg,#fff,#eef3fa)}
       <div class="tile" data-feat="mypage" style="--g:#5dd0ff" onclick="open_('mypage')"><span class="lv">NEW</span><div class="ic">📊</div><div><div class="nm" data-i18n="tile_my_n">マイページ</div><div class="ds" data-i18n="tile_my_d">診断履歴＆再シェア</div></div></div>
       <div class="tile" data-feat="card" style="--g:#ff3df2" onclick="open_('card')"><span class="lv">NEW</span><div class="ic">🏷️</div><div><div class="nm" data-i18n="tile_cd_n">プレイヤー名刺メーカー</div><div class="ds" data-i18n="tile_cd_d">戦績入りカード画像を作る</div></div></div>
     </div>
-    <div class="ad" id="adHome"></div>
+    <section class="seofaq" aria-label="Apex 激やばツールについて・よくある質問">
+<h2>Apex 激やばツールとは｜よくある質問</h2>
+<p class="seointro">APEX激やばツールは、<b>Apex Legends</b>の今シーズンの<b>プレデターボーダー（到達RP）</b>、<b>サーバーの障害・稼働状況</b>、現在の<b>マップローテ</b>、<b>戦績検索・戦闘力採点</b>、推し・フレンドの<b>プレイヤーウォッチ</b>、166種の<b>診断</b>を、すべて無料・登録不要でまとめた非公式ファンツールです。</p>
+<details><summary>今シーズンのApexプレデターボーダー（到達RP）は何点？</summary><div class="seoa"><a href="?v=pred" onclick="open_('pred');return false;">プレデターボーダー</a>ページで、現在の到達RPをリアルタイム表示。PC・PS・Xbox・Switchのプラットフォーム別ボーダーと、マスター＋プレデターの人数も確認できます。取得時刻も併記しています。</div></details>
+<details><summary>Apexのサーバーは今落ちてる？障害情報を知りたい</summary><div class="seoa"><a href="?v=srv" onclick="open_('srv');return false;">サーバー状態</a>ページで、Apex Legendsの稼働状況・障害をリアルタイム確認。ログイン・認証など根幹サービスが赤なら障害中、緑なら正常です。自分の回線との切り分け方も案内します。</div></details>
+<details><summary>現在のマップローテ・次のマップ・残り時間は？</summary><div class="seoa"><a href="?v=map" onclick="open_('map');return false;">マップ</a>ページで、現在のマップと次のマップ、切り替わりまでの残り時間がわかります。</div></details>
+<details><summary>推し・フレンドの今のランクやオンライン状況を見るには？</summary><div class="seoa"><a href="?v=frank" onclick="open_('frank');return false;">プレイヤーウォッチ</a>に登録すると、相手の現在ランク・RP・今オンラインかが一目でわかります。登録した全員のRP急上昇ランキングも表示します。</div></details>
+<details><summary>自分の戦績や戦闘力を調べられますか？</summary><div class="seoa"><a href="?v=find" onclick="open_('find');return false;">戦績検索</a>でプレイヤー名とプラットフォームを入力すると、レベル・RP・KD・平均ダメージなどから戦闘力を自動採点します。</div></details>
+<details><summary>診断は何種類？料金や登録は必要？</summary><div class="seoa"><a href="?v=diag" onclick="open_('diag');return false;">診断</a>は立ち回り・強さ・キャンパー度・煽り耐性など全166種。すべて完全無料・登録不要で楽しめます。</div></details>
+</section>
+<div class="ad" id="adHome"></div>
     <footer data-i18n-html="footer">データ：<a href="https://apexlegendsstatus.com" target="_blank" rel="noopener">Data from apexlegendsstatus.com</a>（非公式Apex API）。Apex Legends は Electronic Arts / Respawn の商標です。本サイトは非公式のファン制作ツールです。</footer>
   </div>
 
@@ -2154,7 +2212,7 @@ html[data-theme="light"] .xbn{background:linear-gradient(135deg,#fff,#eef3fa)}
     <div class="searchbar"><input id="frIgn" placeholder="名前 / UID / als.comのURL" autocomplete="off"><select id="frPlat"><option value="PC">PC</option><option value="PS">PS</option><option value="Xbox">Xbox</option><option value="Switch">Switch</option></select><button id="frAddBtn" onclick="frAdd()">＋追加</button></div>
     <div class="frhint">ふだんは名前だけでOK（PCはOrigin名）。出ないときは案内が出るよ。</div>
     <button class="frminib" type="button" onclick="frHistOpen()">🕘 検索履歴</button>
-    <div class="frbar"><div class="frtabs"><button class="frtab on" data-t="cards" onclick="frTab('cards')">🪪 カード</button><button class="frtab" data-t="rank" onclick="frTab('rank')">🏆 ランキング</button></div><button class="btn x" id="frRefreshBtn" onclick="frRefresh()">↻ 全員更新</button></div>
+    <div class="frbar"><div class="frtabs"><button class="frtab on" data-t="cards" onclick="frTab('cards')">🪪 カード</button><button class="frtab" data-t="rank" onclick="frTab('rank')">🏆 ランキング</button><button class="frtab" data-t="rise" onclick="frTab('rise')">🔥 急上昇</button></div><button class="btn x" id="frRefreshBtn" onclick="frRefresh()">↻ 全員更新</button></div>
     <div class="frhint">※「今オンラインか／現在の状況」は混雑対策のため最大30秒ほど遅れて表示されることがあります（ログオフ直後でも数十秒オンライン表示のままになる場合あり）。</div>
     <div id="frBox"></div>
     <div id="frDetail"></div>
@@ -10377,6 +10435,111 @@ B:[[85,'歩くマップ 🧭','全マップを完璧に記憶した地理マス�
       if(busy&&(window.__pwWaitN++)<30){setTimeout(window.pwHomeIntroMaybe,300);return;}
     }catch(e){}
     return orig.apply(this,arguments);
+  };
+})();
+</script><script>
+(function(){
+ if(typeof window.frRender!=='function')return;
+ var _orig=window.frRender;
+ function riseData(){
+   var a=(typeof frGet==='function')?frGet():[];
+   var wd=a.map(function(m,i){return {m:m,i:i,d:Number(m.dRp)||0};}).filter(function(o){return o.m.data&&o.m.data.ok;});
+   return {a:a,risers:wd.filter(function(o){return o.d>0;}).sort(function(x,y){return y.d-x.d;}),others:wd.filter(function(o){return o.d<=0;}).sort(function(x,y){return (y.m.data.rp||0)-(x.m.data.rp||0);})};
+ }
+ function sessTotals(a){var t=0,n=0;a.forEach(function(m){var s=(typeof frSess==='function')?frSess(m):0;if(s>0){t+=s;n++;}});return {t:t,n:n};}
+ window.frRiseAnonSet=function(v){try{localStorage.setItem('apexRiseShareAnon',v?'1':'');}catch(e){}};
+ function frRenderRise(){
+   var box=document.getElementById('frBox');if(!box)return;
+   var d=riseData();
+   if(!d.a.length){return _orig.call(window);}
+   var sum=(typeof frSessBar==='function')?frSessBar(d.a):'';
+   if(!d.risers.length){
+     box.innerHTML=(sum||'')+'<div class="frrkttl">🔥 RP急上昇</div><div class="note" style="text-align:center;padding:22px 14px">まだ変化のデータがないよ。<br>時間をおいて「↻ 全員更新」を2回押すと、RPの伸びがここに出るよ🔥</div>';
+     return;
+   }
+   var mv=d.risers[0],mp=mv.m.data;
+   var h=(sum||'')+'<div class="frrkttl">🔥 RP急上昇ランキング</div>';
+   h+='<div class="frmvp" onclick="frShow('+mv.i+')"><span class="frmvptag">🔥 本日の急上昇 MVP</span><div class="frmvprow"><span class="frmvpem">'+mp.emoji+'</span><div class="frmvpb"><b>'+esc(mp.name)+'</b><small>'+esc(mp.rankName||'-')+' '+frDot(mp.state)+'</small></div><div class="frmvpg"><div class="d">▲ +'+mv.d.toLocaleString()+'</div><div class="rp">'+(mp.rp||0).toLocaleString()+' RP</div></div></div></div>';
+   var rows=d.risers.slice(1).map(function(o,idx){var p=o.m.data;return '<div class="frrow'+(p.online?' onrow':'')+'" onclick="frShow('+o.i+')"><span class="frrk">'+(idx+2)+'</span><span class="fre">'+p.emoji+'</span><div class="frbody"><b>'+esc(p.name)+'</b><small>'+esc(p.rankName||'-')+' '+frDot(p.state)+'</small></div><div class="frrised"><span class="up">▲ +'+o.d.toLocaleString()+'</span><span class="now">'+(p.rp||0).toLocaleString()+' RP</span></div></div>';});
+   if(d.others.length){
+     rows.push('<div class="frriseothh">変化なし・下降</div>');
+     d.others.forEach(function(o){var p=o.m.data;rows.push('<div class="frrow" onclick="frShow('+o.i+')"><span class="frrk">·</span><span class="fre">'+p.emoji+'</span><div class="frbody"><b>'+esc(p.name)+'</b><small>'+esc(p.rankName||'-')+' '+frDot(p.state)+'</small></div><div class="frrised">'+(o.d<0?'<span class="dn">▼ −'+Math.abs(o.d).toLocaleString()+'</span>':'<span class="flat">±0</span>')+'<span class="now">'+(p.rp||0).toLocaleString()+' RP</span></div></div>');});
+   }
+   var anon=false;try{anon=!!localStorage.getItem('apexRiseShareAnon');}catch(e){}
+   h+=rows.join('');
+   h+='<button class="btn x" type="button" onclick="frRiseShare()" style="width:100%;margin:8px 0 6px">𝕏 急上昇ランキングをシェア</button>';
+   h+='<label class="frriseanon"><input type="checkbox" onchange="frRiseAnonSet(this.checked)"'+(anon?' checked':'')+'> シェア時に名前を隠す</label>';
+   h+='<div class="note" style="text-align:center;margin-top:6px">「前回更新からのRP変化」で集計。「↻全員更新」で最新化。</div>';
+   box.innerHTML=h;
+ }
+ window.frRender=function(){if(window.FR_TAB==='rise'){return frRenderRise();}return _orig.apply(this,arguments);};
+ window.frRiseShare=function(){
+   try{
+     var d=riseData();var top=d.risers.slice(0,3);if(!top.length)return;
+     var st=sessTotals(d.a);
+     var anon=false;try{anon=!!localStorage.getItem('apexRiseShareAnon');}catch(e){}
+     var c=document.createElement('canvas');c.width=1000;c.height=560;var x=c.getContext('2d');
+     var g=x.createLinearGradient(0,0,1000,560);g.addColorStop(0,'#101b38');g.addColorStop(1,'#06080f');x.fillStyle=g;x.fillRect(0,0,1000,560);
+     x.strokeStyle='rgba(25,227,255,.55)';x.lineWidth=4;x.strokeRect(14,14,972,532);
+     x.strokeStyle='rgba(255,61,242,.35)';x.lineWidth=2;x.strokeRect(26,26,948,508);
+     for(var i=0;i<46;i++){x.globalAlpha=.1+Math.random()*.3;x.fillStyle=i%2?'#19e3ff':'#ff3df2';x.beginPath();x.arc(Math.random()*1000,Math.random()*560,1+Math.random()*2.5,0,7);x.fill();}
+     x.globalAlpha=1;x.textBaseline='alphabetic';
+     x.fillStyle='#ffc23d';x.font='900 46px sans-serif';x.textAlign='left';x.fillText('🔥 RP急上昇ランキング',58,92);
+     x.fillStyle='#7e8db0';x.font='600 22px sans-serif';x.fillText('APEX LEGENDS ・ 激やばツール',60,124);
+     x.textAlign='right';x.fillStyle='#22e3a0';x.font='900 30px sans-serif';x.fillText('このセッション +'+st.t.toLocaleString()+' RP',942,94);
+     x.fillStyle='#7e8db0';x.font='600 20px sans-serif';x.fillText('👁️ プレイヤーウォッチ',942,122);
+     var med=['🥇','🥈','🥉'];var yy=212;
+     top.forEach(function(o,i){var p=o.m.data;
+       x.textAlign='left';x.font='900 40px sans-serif';x.fillStyle='#eaf2ff';x.fillText(med[i],60,yy);
+       x.font='58px sans-serif';x.fillText(p.emoji,128,yy+4);
+       x.font='800 38px sans-serif';x.fillStyle='#eaf2ff';var nm=anon?('プレイヤー'+(i+1)):((p.name||'').length>12?(p.name||'').slice(0,11)+'…':(p.name||''));x.fillText(nm,206,yy);
+       x.textAlign='right';x.font='900 44px sans-serif';x.fillStyle='#22e3a0';x.fillText('▲ +'+o.d.toLocaleString(),832,yy);
+       x.font='600 22px sans-serif';x.fillStyle='#7e8db0';x.fillText((p.rp||0).toLocaleString()+' RP',942,yy);
+       yy+=94;
+     });
+     x.textAlign='left';x.fillStyle='#eaf2ff';x.font='700 28px sans-serif';x.fillText('▶ mexastarted.github.io',58,506);
+     x.textAlign='right';x.fillStyle='#7e8db0';x.font='500 21px sans-serif';x.fillText('#'+(typeof SHARE_TAG!=='undefined'?SHARE_TAG:'APEX'),942,506);
+     var durl=c.toDataURL('image/png');
+     var med2=['🥇','🥈','🥉'];var url=location.href.split('#')[0].split('?')[0]+'?d=daily';var tag=(typeof SHARE_TAG!=='undefined'?SHARE_TAG:'APEX');
+     var txt;
+     if(anon){ txt='【APEX激やばツール】今日はウォッチ仲間が 合計+'+st.t.toLocaleString()+'RP 上昇🔥（▲'+st.n+'人）\n誰が伸びてるか一目でわかる👁️ プレイヤーウォッチ\n'+url+'\n#'+tag+' #ApexLegends'; }
+     else { var lines=top.map(function(o,i){return med2[i]+' '+(o.m.data.name||'')+' ▲+'+o.d.toLocaleString();}).join('\n'); txt='【APEX激やばツール】ウォッチ仲間のRP急上昇ランキング🔥\n'+lines+'\n推し・フレンドの今のランクが分かる👁️\n'+url+'\n#'+tag+' #ApexLegends'; }
+     try{if(window.mpShareInc)mpShareInc();}catch(e){}
+     try{if(window.pwTrack)pwTrack('rise_share');}catch(e){}
+     try{if(window.track)track('share','pw_rise');}catch(e){}
+     try{var ar=durl.split(','),bs=atob(ar[1]),nn=bs.length,uu=new Uint8Array(nn);while(nn--)uu[nn]=bs.charCodeAt(nn);var file=new File([uu],'apex-rise.png',{type:'image/png'});if(navigator.canShare&&navigator.canShare({files:[file]})){navigator.share({files:[file],text:txt}).catch(function(){});return;}}catch(e){}
+     openX('https://twitter.com/intent/tweet?text='+encodeURIComponent(txt));
+   }catch(e){}
+ };
+})();
+</script><script>
+(function(){
+  var _prev=window.frRender;
+  if(typeof _prev!=='function')return;
+  function keyOf(m){return (typeof frKey==='function')?frKey(m):((m&&(m.uid||m.ign))||'');}
+  function pwOnlineHero(){
+    var box=document.getElementById('frBox');if(!box)return;
+    var a=(typeof frGet==='function')?frGet():[];
+    if(!a.length)return;
+    var online=a.filter(function(m){return m.data&&m.data.ok&&m.data.online;});
+    var prevEmpty=true,prev={};
+    try{var raw=localStorage.getItem('apexPwOnlinePrev');if(raw){prevEmpty=false;prev=JSON.parse(raw)||{};}}catch(e){}
+    var nowSet={},just=0;
+    online.forEach(function(m){var k=keyOf(m);nowSet[k]=1;if(!prevEmpty&&!prev[k])just++;});
+    var h;
+    if(online.length){
+      var chips=online.slice(0,10).map(function(m){var k=keyOf(m);var nw=(!prevEmpty&&!prev[k]);return '<span class="pwonchip'+(nw?' nw':'')+'">'+(nw?'🆕 ':'')+esc(m.data.name)+'</span>';}).join('');
+      h='<div class="pwonhero"><div class="pwonhd"><span class="pwondot"></span><b>今オンライン '+online.length+'人</b>'+(just?'<span class="pwonjust">🆕 '+just+'人がINした！</span>':'')+'</div><div class="pwonchips">'+chips+'</div></div>';
+    }else{
+      h='<div class="pwonhero off"><div class="pwonhd"><span class="pwondot off"></span>今オンラインの人はいません</div></div>';
+    }
+    box.insertAdjacentHTML('afterbegin',h);
+    try{localStorage.setItem('apexPwOnlinePrev',JSON.stringify(nowSet));}catch(e){}
+  }
+  window.frRender=function(){
+    var r=_prev.apply(this,arguments);
+    try{if(window.FR_TAB!=='rise')pwOnlineHero();}catch(e){}
+    return r;
   };
 })();
 </script></body>
