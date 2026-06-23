@@ -1962,6 +1962,38 @@ html[data-theme="light"] .xbn{background:linear-gradient(135deg,#fff,#eef3fa)}
 .pwonchips{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
 .pwonchip{font-size:11.5px;font-weight:700;color:#bdf5df;background:rgba(34,227,160,.12);border:1px solid rgba(34,227,160,.3);border-radius:99px;padding:4px 10px}
 .pwonchip.nw{color:#231400;background:linear-gradient(90deg,#ffe08a,#ffc23d);border-color:transparent}
+
+/* ===== ホーム プレデターボーダー ウィジェット ===== */
+.predw{position:relative;border:1px solid rgba(255,77,61,.45);border-radius:18px;padding:14px;margin:8px 0 12px;overflow:hidden;background:linear-gradient(150deg,rgba(255,77,61,.12),rgba(233,196,106,.05) 55%,rgba(12,18,34,.2));cursor:pointer}
+.predw::before{content:"";position:absolute;inset:0;background:radial-gradient(320px 120px at 16% -10%,rgba(255,77,61,.25),transparent 70%);pointer-events:none}
+.predwh{display:flex;align-items:center;gap:10px;margin-bottom:12px;position:relative}
+.predwh .crown{font-size:24px;filter:drop-shadow(0 0 8px rgba(255,77,61,.6))}
+.predwh .t{font-size:14.5px;font-weight:900;color:var(--text)}
+.predwh .s{font-size:10px;color:var(--sub)}
+.predwh .more{margin-left:auto;font-size:11px;font-weight:700;color:#ffc23d}
+.predwtop{display:flex;align-items:flex-end;gap:10px;margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid rgba(255,77,61,.18);position:relative}
+.predwtop .lab{font-size:11px;color:var(--sub);margin-bottom:3px}
+.predwtop .plat{font-size:14px;font-weight:800;color:#ffd9a0}
+.predwtop .big{margin-left:auto;text-align:right}
+.predwtop .big .v{font-size:30px;font-weight:900;color:#fff;line-height:1;font-variant-numeric:tabular-nums}
+.predwtop .big .v small{font-size:13px;color:#e9c46a;font-weight:700;margin-left:2px}
+.predwtop .big .hd{font-size:10px;color:#ff4d3d;font-weight:700;margin-top:3px}
+.predwgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;position:relative}
+.predwgrid .pc{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:10px;padding:8px 9px;text-align:center}
+.predwgrid .pc .e{font-size:14px}
+.predwgrid .pc .pl{font-size:9.5px;color:var(--sub);margin:1px 0 2px}
+.predwgrid .pc b{font-size:14px;font-weight:900;color:#ffd9a0;font-variant-numeric:tabular-nums;display:block}
+.predwgrid .pc .ppl{font-size:9px;color:#6a7a9c;margin-top:1px}
+.predwfoot{display:flex;align-items:center;justify-content:space-between;margin-top:11px;font-size:10.5px;color:#6a7a9c;position:relative}
+.predwfoot b{color:#ffd9a0}
+
+/* ===== シェア報酬バナー（診断結果）===== */
+.sharerw{display:flex;align-items:center;gap:9px;margin:14px 0 8px;padding:11px 13px;border:1.5px solid rgba(255,210,74,.5);border-radius:13px;background:linear-gradient(160deg,rgba(255,210,74,.12),rgba(255,138,61,.05));font-size:12.5px;color:var(--text);line-height:1.55}
+.sharerw .ic{font-size:20px;flex:none}
+.sharerw b{color:#ffd24a;font-weight:900}
+.sharerw .chip{margin-left:auto;flex:none;font-size:11.5px;font-weight:800;color:#3a2a00;background:linear-gradient(90deg,#ffe08a,#ffc23d);border-radius:99px;padding:4px 10px;white-space:nowrap}
+.sharerw.got{border-color:rgba(34,227,160,.45);background:linear-gradient(160deg,rgba(34,227,160,.1),transparent)}
+.sharerw.got .chip{background:rgba(34,227,160,.2);color:#7ff7cf}
 </style>
 <script type="application/ld+json">
 {
@@ -2118,7 +2150,7 @@ html[data-theme="light"] .xbn{background:linear-gradient(135deg,#fff,#eef3fa)}
       <div class="mh-est">激 や ば ツ ー ル ・ E S T . 2 0 2 6</div>
       <div class="mh-rule"><span class="mh-ln"></span><span class="mh-d">◆</span><span class="mh-ln r"></span></div>
     </div>
-    <div id="dailyMount"></div><div id="rankWidget"></div><div id="homeNotice"></div>
+    <div id="predWidget"></div><div id="dailyMount"></div><div id="rankWidget"></div><div id="homeNotice"></div>
     <div class="homesearch"><input id="globalq" placeholder="🔍 機能・診断・商品を検索" oninput="globalSearch(this.value)" autocomplete="off"><div id="globalRes" class="globalres"></div></div>
     <div id="popularRank"></div>
     <div id="vfCard" class="vf-card" onclick="vfOpen()">
@@ -5518,7 +5550,7 @@ function frShareOpen(){
   +'<div class="note" style="margin:6px 0 10px">'+n+'人ぶんをリンクに埋め込みました。LINE・DM・Xで送れます。受け取った人は好きなリストに上書きで取り込めます。</div>'
   +'<input id="frShareUrl" class="frshareurl" readonly value="'+esc(url)+'">'
   +'<div class="note" style="margin:2px 2px 10px;font-size:11px">リンク長：'+url.length+'文字</div>'
-  +'<button class="btn" type="button" onclick="frShareCopy()" style="width:100%;margin-top:0">📋 リンクをコピー</button>'
+  +'<button class="btn frimgshare" type="button" onclick="frShareImg()" style="width:100%;margin-top:0;background:linear-gradient(95deg,#19e3ff,#5ad1ff);color:#04121a;font-weight:900">🖼️ 画像つきでシェア</button><button class="btn" type="button" onclick="frShareCopy()" style="width:100%;margin-top:0">📋 リンクをコピー</button>'
   +'<button class="btn x" type="button" onclick="frShareX()" style="width:100%">𝕏 でシェア</button>'
   +(navigator.share?'<button class="btn ghost" type="button" onclick="frShareNative()" style="width:100%">📱 他のアプリで共有</button>':'')
   +'<div class="frqr" id="frQrBox"></div>'
@@ -10541,6 +10573,102 @@ B:[[85,'歩くマップ 🧭','全マップを完璧に記憶した地理マス�
     try{if(window.FR_TAB!=='rise')pwOnlineHero();}catch(e){}
     return r;
   };
+})();
+</script><script>
+(function(){
+  window.predOpen=function(){try{if(window.open_)open_('pred');}catch(e){}};
+  function predWidgetRender(){
+    var box=document.getElementById('predWidget');if(!box)return;
+    if(!box.getAttribute('data-init')){box.setAttribute('data-init','1');box.innerHTML='<div class="predw" onclick="predOpen()"><div class="predwh"><span class="crown">👑</span><div><div class="t">プレデターボーダー</div><div class="s">読み込み中…</div></div><span class="more">詳しく →</span></div></div>';}
+    if(typeof gasCached!=='function')return;
+    gasCached('pred',300000).then(function(d){
+      try{
+        if(!d||d.error||!d.RP)return;
+        var rp=d.RP||{};
+        var order=[['PC','🖥️','PC'],['PS4','🎮','PlayStation'],['X1','🎮','Xbox'],['SWITCH','🕹️','Switch']];
+        var arr=order.map(function(o){var x=rp[o[0]]||{};return {e:o[1],pl:o[2],val:(x.val!=null?x.val:0),cnt:(x.totalMastersAndPreds!=null?x.totalMastersAndPreds:'-')};}).filter(function(x){return x.val>0;});
+        if(!arr.length)return;
+        arr.sort(function(a,b){return b.val-a.val;});
+        var top=arr[0],rest=arr.slice(1);
+        var totCnt=arr.reduce(function(s,x){return s+(typeof x.cnt==='number'?x.cnt:0);},0);
+        var grid=rest.map(function(x){return '<div class="pc"><div class="e">'+x.e+'</div><div class="pl">'+esc(x.pl)+'</div><b>'+x.val.toLocaleString()+'</b><div class="ppl">'+(typeof x.cnt==='number'?('M+P '+x.cnt.toLocaleString()+'人'):'')+'</div></div>';}).join('');
+        box.innerHTML='<div class="predw" onclick="predOpen()"><div class="predwh"><span class="crown">👑</span><div><div class="t">プレデターボーダー</div><div class="s">今シーズンの到達RP・ライブ更新</div></div><span class="more">詳しく →</span></div><div class="predwtop"><div><div class="lab">現在の最難関ボーダー</div><div class="plat">'+top.e+' '+esc(top.pl)+'</div></div><div class="big"><div class="v">'+top.val.toLocaleString()+'<small>RP</small></div><div class="hd">いま一番きついのは '+esc(top.pl)+'</div></div></div>'+(grid?'<div class="predwgrid">'+grid+'</div>':'')+'<div class="predwfoot"><span>マスター＋プレデター 合計 <b>約'+totCnt.toLocaleString()+'人</b></span><span>5分ごとに自動更新</span></div></div>';
+      }catch(e){}
+    }).catch(function(){});
+  }
+  window.predWidgetRender=predWidgetRender;
+  var _home=window.home;
+  if(typeof _home==='function'){window.home=function(){var r=_home.apply(this,arguments);try{predWidgetRender();}catch(e){}return r;};}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',predWidgetRender);else predWidgetRender();
+})();
+</script><script>
+(function(){
+  function $(id){return document.getElementById(id);}
+  window.frListImg=function(){
+    var o=frListsGet(),id=frActiveId(),L=o.lists[id]||{name:'',players:[]};
+    var ps=(L.players||[]).filter(function(p){return p.data&&p.data.ok;});
+    ps.sort(function(a,b){return (b.data.rp||0)-(a.data.rp||0);});
+    ps=ps.slice(0,14);
+    var onCnt=ps.filter(function(p){return p.data.online;}).length;
+    var W=1000,padT=180,rowH=76,padB=96;
+    var H=padT+Math.max(1,ps.length)*rowH+padB;
+    var c=document.createElement('canvas');c.width=W;c.height=H;var x=c.getContext('2d');
+    var g=x.createLinearGradient(0,0,W,H);g.addColorStop(0,'#101b38');g.addColorStop(1,'#06080f');x.fillStyle=g;x.fillRect(0,0,W,H);
+    var g2=x.createLinearGradient(0,0,W,0);g2.addColorStop(0,'#19e3ff');g2.addColorStop(1,'#c062ff');x.fillStyle=g2;x.fillRect(0,0,W,7);
+    x.textBaseline='top';
+    x.fillStyle='#eaf1ff';x.font='900 46px sans-serif';x.fillText('👁 マイ・ウォッチリスト',44,42);
+    x.fillStyle='#94a6c9';x.font='600 27px sans-serif';x.fillText((L.name||'リスト')+' ・ '+ps.length+'人',46,104);
+    if(onCnt){x.textAlign='right';x.fillStyle='#22e3a0';x.font='800 27px sans-serif';x.fillText('🟢 '+onCnt+'人オンライン',W-44,104);x.textAlign='left';}
+    if(!ps.length){x.fillStyle='#7e8db0';x.font='600 28px sans-serif';x.fillText('まだ読み込めていません。更新してからシェアしてね。',46,padT+10);}
+    ps.forEach(function(p,i){
+      var y=padT+i*rowH,d=p.data;
+      x.fillStyle='#56607a';x.font='800 28px sans-serif';x.fillText(String(i+1),44,y+22);
+      x.fillStyle=d.online?'#22e3a0':'#3a455e';x.beginPath();x.arc(106,y+36,8,0,7);x.fill();
+      x.fillStyle='#eaf1ff';x.font='800 31px sans-serif';
+      var nm=String(d.name||p.ign||'');if(nm.length>22)nm=nm.slice(0,22)+'…';x.fillText(nm,130,y+10);
+      x.fillStyle='#ffd9a0';x.font='600 23px sans-serif';
+      x.fillText(String((d.emoji?d.emoji+' ':'')+(d.rankName||'')),132,y+46);
+      x.textAlign='right';x.fillStyle='#fff';x.font='900 33px sans-serif';
+      x.fillText((d.rp!=null?Number(d.rp).toLocaleString():'-')+' RP',W-44,y+18);x.textAlign='left';
+      x.strokeStyle='rgba(255,255,255,.06)';x.lineWidth=1;x.beginPath();x.moveTo(44,y+rowH-2);x.lineTo(W-44,y+rowH-2);x.stroke();
+    });
+    x.fillStyle='#56607a';x.font='700 24px sans-serif';x.fillText('▶ mexastarted.github.io/apex ・ #APEX激やばツール',44,H-60);
+    return c.toDataURL('image/png');
+  };
+  window.frImgOpenX=function(){var t=window._frImgTxt||'';window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(t),'_blank','noopener');};
+  function frImgShow(durl,txt){
+    var box=$('frShareBox');if(!box)return;window._frImgTxt=txt;
+    box.innerHTML='<div class="frmh"><b>🖼️ 画像を保存してシェア</b><button class="frhx" type="button" onclick="frShareClose()">✕</button></div>'
+     +'<div class="note" style="margin:6px 0 10px">画像を長押し（PCは右クリック）で保存 → Xに添付して投稿してね。下のボタンで本文＋取り込みリンク付きのXが開きます。</div>'
+     +'<img src="'+durl+'" alt="ウォッチリスト" style="width:100%;border-radius:12px;border:1px solid #1f2b46;display:block">'
+     +'<button class="btn x" type="button" onclick="frImgOpenX()" style="width:100%">𝕏 本文（取り込みリンク付き）を開く</button>';
+    var ov=$('frShareOv');if(ov)ov.classList.add('on');
+  }
+  window.frShareImg=function(){
+    try{
+      var durl=window.frListImg();
+      var o=frListsGet(),id=frActiveId(),L=o.lists[id]||{};
+      var url=(typeof frShareUrl==='function')?frShareUrl():location.href;
+      var txt='【APEXウォッチリスト】'+(L.name||'')+' 👀 このリンクから取り込めるよ\n'+url+'\n#APEX激やばツール #ApexLegends';
+      try{if(window.track)track('pw','list_img_share');}catch(e){}
+      var a=durl.split(','),b=atob(a[1]),n=b.length,u=new Uint8Array(n);while(n--)u[n]=b.charCodeAt(n);
+      var file=new File([u],'apex-watchlist.png',{type:'image/png'});
+      if(navigator.canShare&&navigator.canShare({files:[file]})){navigator.share({files:[file],text:txt}).catch(function(){});return;}
+      frImgShow(durl,txt);
+    }catch(e){try{if(window.frShareX)frShareX();}catch(_){}}
+  };
+})();
+</script><script>
+(function(){
+  function rwGotToday(){try{var w=(window.wGet?wGet():null);if(!w||!w.daily)return false;var k='share_reward_'+(window.today?today():'');return !!w.daily[k];}catch(e){return false;}}
+  function rwBannerHtml(got){return '<span class="ic">'+(got?'✅':'🪙')+'</span><span>'+(got?'今日のシェア報酬は受け取り済み。また明日もらえます':'シェアすると <b>30コイン</b> もらえる（今日まだもらえる・1日1回）')+'</span><span class="chip">'+(got?'✓ 獲得済み':'+30 🪙')+'</span>';}
+  function rwUpdate(){var b=document.getElementById('shareRwBanner');if(b){var got=rwGotToday();b.className='sharerw'+(got?' got':'');b.innerHTML=rwBannerHtml(got);}}
+  window.__shareRwUpdate=rwUpdate;
+  window.__shareReward=function(){try{if(typeof grantCoin!=='function')return;var g=grantCoin(30,{daily:'share_reward',perDay:1});if(g>0){try{if(window.coinToast)coinToast('🪙 シェアありがとう！ +'+g+'コイン');}catch(e){}}rwUpdate();}catch(e){}};
+  function decorate(){try{var area=document.getElementById('diagArea');if(!area)return;var sb=area.querySelector('.btn.x[data-sharetxt]');if(!sb)return;if(document.getElementById('shareRwBanner'))return;var got=rwGotToday();var b=document.createElement('div');b.id='shareRwBanner';b.className='sharerw'+(got?' got':'');b.innerHTML=rwBannerHtml(got);sb.parentNode.insertBefore(b,sb);}catch(e){}}
+  var _inj=window.dxInjectBtn;
+  if(typeof _inj==='function'){window.dxInjectBtn=function(){var r=_inj.apply(this,arguments);try{decorate();}catch(e){}return r;};}
+  ['dxShare','share'].forEach(function(fn){var _f=window[fn];if(typeof _f==='function'){window[fn]=function(){var r=_f.apply(this,arguments);try{window.__shareReward();}catch(e){}return r;};}});
 })();
 </script></body>
 </html>
