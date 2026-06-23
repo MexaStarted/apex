@@ -10013,17 +10013,19 @@ B:[[85,'歩くマップ 🧭','全マップを完璧に記憶した地理マス�
   window.__dgmPick=function(code){ modalTrack('ok','diag_invite'); dgmHide(); try{if(window.open_)open_('diag');}catch(e){} try{if(window.openDiag)openDiag(code);}catch(e){} };
   window.__dgmRandom=function(){ modalTrack('ok','diag_invite'); dgmHide(); try{ if(window.open_)open_('diag'); if(window.diagRandom){diagRandom();return;} var ks=Object.keys(DIAGREG); openDiag(ks[Math.floor(Math.random()*ks.length)]); }catch(e){} };
   window.__dgmAll=function(){ modalTrack('ok','diag_invite'); dgmHide(); try{if(window.open_)open_('diag');}catch(e){} };
-  function dgmShow(){ if(dgmShown)return; var ov=document.getElementById('dgmOv'); if(!ov)return; dgmRender(); ov.classList.add('on'); ov.setAttribute('aria-hidden','false'); dgmShown=true; try{sessionStorage.setItem('apexModalShown','diag');}catch(e){} modalTrack('show','diag_invite'); }
+  function dgmShow(){ if(dgmShown)return; var ov=document.getElementById('dgmOv'); if(!ov)return; dgmRender(); ov.classList.add('on'); ov.setAttribute('aria-hidden','false'); dgmShown=true; try{sessionStorage.setItem('apexModalShown','diag');}catch(e){} try{localStorage.setItem('apexDgmSeen',String(Date.now()));}catch(e){} modalTrack('show','diag_invite'); }
   window.__dgmMaybe=function(){ try{
       if(dgmShown)return;
       try{ if(sessionStorage.getItem('apexModalShown'))return; }catch(e){}
       var hm=document.getElementById('home'); if(!hm||hm.style.display==='none')return;
-      if(window.__vfCount && window.__vfCount()>0) return;
       try{ if(!localStorage.getItem('apexWelcomeV1'))return; }catch(e){}
+      try{ var last=Number(localStorage.getItem('apexDgmSeen')||0); if(last && (Date.now()-last)<3*864e5) return; }catch(e){}
       var openOther=['wlOv','dnOv','svOv','pwOv'].some(function(id){var o=document.getElementById(id);return o&&o.classList.contains('on');});
       if(openOther)return;
       dgmShow();
     }catch(e){} };
+  try{ function _dgmBackup(){ setTimeout(function(){ try{ if(window.__dgmMaybe)window.__dgmMaybe(); }catch(e){} }, 2600); }
+    if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded',_dgmBackup); } else { _dgmBackup(); } }catch(e){}
 
   var MODAL_IDS={wlOv:'welcome',dnOv:'donate',svOv:'survey',pwOv:'playerwatch'};
   function modalName(el){ if(!el||!el.closest)return ''; for(var id in MODAL_IDS){ if(el.closest('#'+id))return MODAL_IDS[id]; } return ''; }
@@ -10037,8 +10039,10 @@ B:[[85,'歩くマップ 🧭','全マップを完璧に記憶した地理マス�
       if(t.closest('#a2hsX')){ modalTrack('close','a2hs'); return; }
       var nm=modalName(t); if(!nm)return;
       if(t.closest('#dnPay')){ modalTrack('ok',nm); return; }
-      if(nm==='welcome'){ var a=t.closest('a'); if(a&&/x[.]com|twitter/.test(a.getAttribute('href')||'')){ modalTrack('ok','welcome'); return; } }
-      var btn=t.closest('[onclick]'); var oc=btn?(btn.getAttribute('onclick')||''):''; var txt=(t.textContent||'').trim();
+      var a=t.closest('a'); if(a&&/x[.]com|twitter/.test(a.getAttribute('href')||'')){ modalTrack('ok',nm); return; }
+      var btn=t.closest('[onclick]'); var oc=btn?(btn.getAttribute('onclick')||''):'';
+      if(/openDonate|openDiag/.test(oc)){ modalTrack('ok',nm); return; }
+      var txt=(t.textContent||'').trim();
       if(/close|Close|dismiss/.test(oc) || /閉じる|\u00D7|\u2715|あとで|後で|今はいい|またにする/.test(txt)) modalTrack('close',nm);
     }catch(x){} },true);
 })();
