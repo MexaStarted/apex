@@ -2003,7 +2003,7 @@ html[data-theme="light"] .xbn{background:linear-gradient(135deg,#fff,#eef3fa)}
 .rprt-entry-t{font-size:14.5px;font-weight:700;color:var(--text)}
 .rprt-entry-d{font-size:11px;color:var(--sub);margin-top:2px}
 .rprt-entry-go{color:var(--pred);font-size:20px;flex:none}
-.rprt-ov{position:fixed;inset:0;z-index:100010;background:rgba(4,5,9,.9);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);display:none;align-items:flex-start;justify-content:center;padding:18px 12px;overflow:auto}
+.rprt-ov{position:fixed;inset:0;z-index:100010;background:rgba(4,5,9,.9);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);display:none;align-items:flex-start;justify-content:center;padding:18px 12px;overflow:auto;overscroll-behavior:contain}
 .rprt-ov.on{display:flex}
 .rprt-sheet{width:100%;max-width:460px;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px;margin:auto}
 .rprt-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
@@ -2034,7 +2034,7 @@ html[data-theme="light"] .xbn{background:linear-gradient(135deg,#fff,#eef3fa)}
 .rprt-btnx:active{opacity:.85}
 
 /* === 新機能解放演出（rprtu-名前空間）=== */
-.rprtu-ov{position:fixed;inset:0;z-index:100015;display:none;align-items:center;justify-content:center;padding:24px;background:radial-gradient(circle at 50% 42%,#1a0d0e,#06070d 72%);overflow:hidden}
+.rprtu-ov{position:fixed;inset:0;z-index:100015;display:none;align-items:center;justify-content:center;padding:24px;background:radial-gradient(circle at 50% 42%,#1a0d0e,#06070d 72%);overflow:hidden;overscroll-behavior:contain}
 .rprtu-ov.on{display:flex}
 #rprtuFx{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
 .rprtu-flash{position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(circle at 50% 44%,rgba(227,201,143,.45),transparent 56%);opacity:0;animation:rprtuFlash 1s ease forwards}
@@ -2063,6 +2063,35 @@ html[data-theme="light"] .xbn{background:linear-gradient(135deg,#fff,#eef3fa)}
 .rprtu-btn:active,.rprtu-yes:active,.rprtu-no:active{opacity:.85}
 .rprtu-yes{flex:1.4;background:#c0564c;border:none;color:#fff;border-radius:12px;padding:14px;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit}
 .rprtu-no{flex:1;background:#1c2129;border:1px solid #2a2f3a;color:#9b988f;border-radius:12px;padding:14px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit}
+
+/* === ホーム新規動線強化（hm マップ / hon オンライン）=== */
+#adHome{display:none!important}
+#home .adSlot{display:none!important}
+.hm{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 0 12px}
+.hm-cell{display:flex;align-items:center;gap:11px;background:linear-gradient(150deg,var(--panel),#0a0d14);border:1px solid var(--line);border-radius:14px;padding:12px 13px;cursor:pointer;transition:.15s;min-width:0}
+.hm-cell:active{transform:scale(.98)}
+.hm-cell.rk{border-color:rgba(255,77,61,.32)}
+.hm-ic{width:40px;height:40px;border-radius:10px;background:#0c1018;display:flex;align-items:center;justify-content:center;font-size:20px;flex:none;overflow:hidden}
+.hm-ic img{width:100%;height:100%;object-fit:cover}
+.hm-tx{min-width:0;flex:1}
+.hm-lab{font-size:10px;letter-spacing:.1em;color:var(--sub);font-weight:800;text-transform:uppercase}
+.hm-cell.rk .hm-lab{color:#ff6b5e}
+.hm-nm{font-size:14px;font-weight:800;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+.hm-rem{font-size:11px;color:var(--cy);margin-top:3px;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hon{background:linear-gradient(150deg,var(--panel),#0a0d14);border:1px solid var(--line);border-radius:14px;padding:13px 14px;margin:0 0 12px}
+.hon-hd{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.hon-live{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 8px var(--ok);animation:honPulse 2s infinite;flex:none}
+@keyframes honPulse{0%,100%{opacity:1}50%{opacity:.4}}
+.hon-hd b{font-size:13px;font-weight:800;color:var(--text);flex:1;min-width:0}
+.hon-more{font-size:11px;color:var(--cy);font-weight:700;flex:none;cursor:pointer}
+.hon-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--line);cursor:pointer}
+.hon-row.first{border-top:none}
+.hon-dot{width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 6px var(--ok);flex:none}
+.hon-e{font-size:18px;flex:none}
+.hon-b{flex:1;min-width:0}
+.hon-b b{font-size:13px;font-weight:700;color:var(--text);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hon-b small{font-size:10.5px;color:var(--sub)}
+.hon-rp{font-size:12px;font-weight:700;color:var(--cy);font-variant-numeric:tabular-nums;flex:none}
 </style>
 <script type="application/ld+json">
 {
@@ -2219,7 +2248,7 @@ html[data-theme="light"] .xbn{background:linear-gradient(135deg,#fff,#eef3fa)}
       <div class="mh-est">激 や ば ツ ー ル ・ E S T . 2 0 2 6</div>
       <div class="mh-rule"><span class="mh-ln"></span><span class="mh-d">◆</span><span class="mh-ln r"></span></div>
     </div>
-    <div id="predWidget"></div><div id="dailyMount"></div><div id="rankWidget"></div><div id="homeNotice"></div><div class="rprt-entry" onclick="rprtOpen()"><div class="rprt-entry-ic">🚨</div><div class="rprt-entry-tx"><div class="rprt-entry-t">害悪プレイヤーをEAに通報</div><div class="rprt-entry-d">公式アンチチート担当 @SatoshiRSPN へ正式に報告</div></div><div class="rprt-entry-go">›</div></div>
+    <div id="homeMap"></div><div id="homeOnline"></div><div id="predWidget"></div><div id="dailyMount"></div><div id="rankWidget"></div><div id="homeNotice"></div><div class="rprt-entry" onclick="rprtOpen()"><div class="rprt-entry-ic">🚨</div><div class="rprt-entry-tx"><div class="rprt-entry-t">害悪プレイヤーをEAに通報</div><div class="rprt-entry-d">公式アンチチート担当 @SatoshiRSPN へ正式に報告</div></div><div class="rprt-entry-go">›</div></div>
     <div class="homesearch"><input id="globalq" placeholder="🔍 機能・診断・商品を検索" oninput="globalSearch(this.value)" autocomplete="off"><div id="globalRes" class="globalres"></div></div>
     <div id="popularRank"></div>
     <div id="vfCard" class="vf-card" onclick="vfOpen()">
@@ -10674,6 +10703,78 @@ B:[[85,'歩くマップ 🧭','全マップを完璧に記憶した地理マス�
 </script><script>
 (function(){
   function $(id){return document.getElementById(id);}
+  function E(s){return (typeof esc==='function')?esc(s):String(s==null?'':s);}
+  window.homeGoMap=function(){try{if(window.open_)open_('map');}catch(e){}};
+  window.homeGoWatch=function(){try{if(window.open_)open_('frank');}catch(e){}};
+  function hmFmt(s){s=Math.max(0,s|0);var h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60;function p(n){return (n<10?'0':'')+n;}return h>0?(h+':'+p(m)+':'+p(x)):(m+':'+p(x));}
+
+  /* ===== マップ（ランク / カジュアル） ===== */
+  var hmInt=null;
+  function hmCell(label,cur,cls){
+    if(!cur||!cur.map)return '';
+    var nm=(typeof mapName==='function')?mapName(cur.map):cur.map;
+    var ic=(typeof mi==='function')?mi(cur.map):'';
+    var rem=(cur.remainingSecs!=null)?cur.remainingSecs:'';
+    return '<div class="hm-cell '+cls+'" onclick="homeGoMap()"><div class="hm-ic">'+ic+'</div><div class="hm-tx"><div class="hm-lab">'+label+'</div><div class="hm-nm">'+E(nm)+'</div><div class="hm-rem" data-rem="'+rem+'">'+(rem!==''?('あと '+hmFmt(rem)):'')+'</div></div></div>';
+  }
+  function hmTick(){
+    var els=document.querySelectorAll('#homeMap .hm-rem[data-rem]');
+    if(!els.length){if(hmInt){clearInterval(hmInt);hmInt=null;}return;}
+    var allZero=true,any=false;
+    els.forEach(function(el){var r=parseInt(el.getAttribute('data-rem'),10);if(isNaN(r))return;any=true;r-=1;if(r>0)allZero=false;if(r<0)r=0;el.setAttribute('data-rem',r);el.textContent='あと '+hmFmt(r);});
+    if(any&&allZero){if(hmInt){clearInterval(hmInt);hmInt=null;}setTimeout(homeMapRender,1500);}
+  }
+  function homeMapRender(){
+    var box=$('homeMap');if(!box)return;
+    if(typeof gasCached!=='function'){box.style.display='none';return;}
+    gasCached('map',60000).then(function(d){
+      if(!d||d.error){box.style.display='none';return;}
+      var rk=d.ranked&&d.ranked.current,cas=d.battle_royale&&d.battle_royale.current;
+      var html=hmCell('ランク',rk,'rk')+hmCell('カジュアル',cas,'cas');
+      if(!html){box.style.display='none';return;}
+      box.style.display='';box.innerHTML='<div class="hm">'+html+'</div>';
+      if(hmInt)clearInterval(hmInt);hmInt=setInterval(hmTick,1000);
+    },function(){box.style.display='none';}).catch(function(){box.style.display='none';});
+  }
+  window.homeMapRender=homeMapRender;
+
+  /* ===== オンラインのウォッチメンバー ===== */
+  function paintOnline(box,players){
+    var online=players.filter(function(p){return p.online;});
+    if(!online.length){box.style.display='none';box.innerHTML='';return;}
+    box.style.display='';
+    var rows=online.slice(0,12).map(function(p,i){return '<div class="hon-row'+(i===0?' first':'')+'" onclick="homeGoWatch()"><span class="hon-dot"></span><span class="hon-e">'+E(p.emoji||'👤')+'</span><div class="hon-b"><b>'+E(p.name)+'</b><small>'+E(p.rank||'-')+'</small></div><span class="hon-rp">'+((p.rp||0).toLocaleString())+' RP</span></div>';}).join('');
+    box.innerHTML='<div class="hon"><div class="hon-hd"><span class="hon-live"></span><b>ウォッチ中の '+online.length+'人がオンライン</b><span class="hon-more" onclick="homeGoWatch()">一覧 →</span></div>'+rows+'</div>';
+  }
+  function homeOnlineRender(){
+    var box=$('homeOnline');if(!box)return;
+    var a=(typeof frGet==='function')?frGet():[];
+    if(!a||!a.length){box.style.display='none';box.innerHTML='';return;}
+    var cache=null;try{cache=JSON.parse(localStorage.getItem('apexHomeWatchCache')||'null');}catch(e){}
+    if(cache&&cache.players)paintOnline(box,cache.players);
+    var now=Date.now();
+    if(cache&&cache.ts&&(now-cache.ts<300000))return;        // 5分キャッシュ
+    if(typeof frFetchEntry!=='function')return;
+    var list=a.slice(0,15),results=[],i=0;
+    function step(){
+      if(i>=list.length){try{localStorage.setItem('apexHomeWatchCache',JSON.stringify({ts:Date.now(),players:results}));}catch(e){}paintOnline(box,results);return;}
+      var e=list[i++];
+      try{
+        frFetchEntry(e).then(function(p){if(p&&p.ok){results.push({name:p.name||e.ign||'?',rank:p.rankName||'-',rp:p.rp||0,online:!!p.online,emoji:p.emoji||'👤'});}step();},function(){step();});
+      }catch(err){step();}
+    }
+    step();
+  }
+  window.homeOnlineRender=homeOnlineRender;
+
+  function runHomeX(){try{homeMapRender();}catch(e){}try{homeOnlineRender();}catch(e){}}
+  var _ph=window.home;
+  window.home=function(){var r;try{if(typeof _ph==='function')r=_ph.apply(this,arguments);}catch(e){}try{runHomeX();}catch(e){}return r;};
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',runHomeX);else runHomeX();
+})();
+</script><script>
+(function(){
+  function $(id){return document.getElementById(id);}
   window.frListImg=function(){
     var o=frListsGet(),id=frActiveId(),L=o.lists[id]||{name:'',players:[]};
     var ps=(L.players||[]).filter(function(p){return p.data&&p.data.ok;});
@@ -10768,12 +10869,14 @@ B:[[85,'歩くマップ 🧭','全マップを完璧に記憶した地理マス�
   var NL=String.fromCharCode(10);
   function $(id){return document.getElementById(id);}
   function pad(n){return (n<10?'0':'')+n;}
+  window.rprtLock=function(){try{if(window.__rprtLockN===undefined)window.__rprtLockN=0;if(window.__rprtLockN===0){window.__rprtLockY=window.scrollY||window.pageYOffset||0;var b=document.body;b.style.position='fixed';b.style.top=(-window.__rprtLockY)+'px';b.style.left='0';b.style.right='0';b.style.width='100%';b.style.overflow='hidden';}window.__rprtLockN++;}catch(e){}};
+  window.rprtUnlock=function(){try{if(window.__rprtLockN===undefined)window.__rprtLockN=0;window.__rprtLockN--;if(window.__rprtLockN<=0){window.__rprtLockN=0;var b=document.body;b.style.position='';b.style.top='';b.style.left='';b.style.right='';b.style.width='';b.style.overflow='';window.scrollTo(0,window.__rprtLockY||0);}}catch(e){}};
   function val(id){var el=$(id);return el?(el.value||'').trim():'';}
   function reasonLabel(v){var m={cheat:'チート（エイムボット/ウォール等）',conv:'コンバーター（変換器）使用',afk:'放置・AFK',grief:'故意の妨害（チーミング/邪魔）',abuse:'暴言・ハラスメント',other:'その他'};return m[v]||v;}
   function platLabel(v){var m={PC:'PC',PS:'PlayStation',Xbox:'Xbox',Switch:'Switch'};return m[v]||v;}
   function fmtDT(v){if(!v)return '';try{var d=new Date(v);if(isNaN(d))return v;return d.getFullYear()+'/'+pad(d.getMonth()+1)+'/'+pad(d.getDate())+' '+pad(d.getHours())+':'+pad(d.getMinutes());}catch(e){return v;}}
-  window.rprtOpen=function(){try{var ov=$('rprtOv');if(!ov)return;var d=new Date();var v=d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+'T'+pad(d.getHours())+':'+pad(d.getMinutes());var dt=$('rprtDT');if(dt&&!dt.value)dt.value=v;ov.classList.add('on');var r=$('rprtResult');if(r)r.hidden=true;try{if(window.track)track('report','open');}catch(e){}}catch(e){}};
-  window.rprtClose=function(){var ov=$('rprtOv');if(ov)ov.classList.remove('on');};
+  window.rprtOpen=function(){try{var ov=$('rprtOv');if(!ov)return;var d=new Date();var v=d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+'T'+pad(d.getHours())+':'+pad(d.getMinutes());var dt=$('rprtDT');if(dt&&!dt.value)dt.value=v;ov.classList.add('on');if(window.rprtLock)window.rprtLock();var r=$('rprtResult');if(r)r.hidden=true;try{if(window.track)track('report','open');}catch(e){}}catch(e){}};
+  window.rprtClose=function(){var ov=$('rprtOv');if(ov)ov.classList.remove('on');if(window.rprtUnlock)window.rprtUnlock();};
   function drawCard(data){
     var c=$('rprtCanvas');var ratio=2;var W=540;
     var x=c.getContext('2d');
@@ -10879,12 +10982,12 @@ B:[[85,'歩くマップ 🧭','全マップを完璧に記憶した地理マス�
     st.innerHTML='<div class="rprtu-card"><div class="rprtu-em">'+pg.em+'</div><div class="rprtu-t">'+pg.t+'</div><div class="rprtu-bd">'+pg.h+'</div><div class="rprtu-dots">'+dots+'</div>'+foot+'</div>';
   }
   window.rprtuNav=function(d){var np=P+d;if(np<0||np>=EXP.length)return;P=np;renderTut();};
-  function closeU(){fxRun=false;var ov=$('rprtuOv');if(ov){ov.classList.remove('on');ov.onclick=null;}}
+  function closeU(){fxRun=false;var ov=$('rprtuOv');if(ov){ov.classList.remove('on');ov.onclick=null;}if(window.rprtUnlock)window.rprtUnlock();}
   window.rprtUnlockClose=closeU;
   window.rprtuYes=function(){closeU();try{if(window.track)track('report','unlock_yes');}catch(e){}try{if(window.rprtOpen)rprtOpen();}catch(e){}};
   window.rprtuNo=function(){closeU();try{if(window.track)track('report','unlock_no');}catch(e){}};
   window.rprtUnlockShow=function(){
-    var ov=$('rprtuOv');if(!ov)return;ov.classList.add('on');
+    var ov=$('rprtuOv');if(!ov)return;ov.classList.add('on');if(window.rprtLock)window.rprtLock();
     var fl=$('rprtuFlash');if(fl){fl.style.animation='none';void fl.offsetWidth;fl.style.animation='rprtuFlash 1s ease forwards';}
     renderFan();startFx();
     try{if(window.track)track('report','unlock_show');}catch(e){}
