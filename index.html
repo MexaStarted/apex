@@ -1977,7 +1977,7 @@ html[data-theme="light"] .xbn{background:linear-gradient(135deg,#fff,#eef3fa)}
 .predwtop .big{margin-left:auto;text-align:right}
 .predwtop .big .v{font-size:30px;font-weight:900;color:#fff;line-height:1;font-variant-numeric:tabular-nums}
 .predwtop .big .v small{font-size:13px;color:#e9c46a;font-weight:700;margin-left:2px}
-.predwtop .big .hd{font-size:10px;color:#ff4d3d;font-weight:700;margin-top:3px}
+.predwtop .big .hd{display:block;padding:0;font-size:10px;color:#ff4d3d;font-weight:700;margin-top:3px}
 .predwgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;position:relative}
 .predwgrid .pc{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:10px;padding:8px 9px;text-align:center}
 .predwgrid .pc .e{font-size:14px}
@@ -1991,9 +1991,78 @@ html[data-theme="light"] .xbn{background:linear-gradient(135deg,#fff,#eef3fa)}
 .sharerw{display:flex;align-items:center;gap:9px;margin:14px 0 8px;padding:11px 13px;border:1.5px solid rgba(255,210,74,.5);border-radius:13px;background:linear-gradient(160deg,rgba(255,210,74,.12),rgba(255,138,61,.05));font-size:12.5px;color:var(--text);line-height:1.55}
 .sharerw .ic{font-size:20px;flex:none}
 .sharerw b{color:#ffd24a;font-weight:900}
-.sharerw .chip{margin-left:auto;flex:none;font-size:11.5px;font-weight:800;color:#3a2a00;background:linear-gradient(90deg,#ffe08a,#ffc23d);border-radius:99px;padding:4px 10px;white-space:nowrap}
+.sharerw .chip{margin-left:auto;flex:none;border:0;font-size:11.5px;font-weight:800;color:#3a2a00;background:linear-gradient(90deg,#ffe08a,#ffc23d);border-radius:99px;padding:4px 10px;white-space:nowrap}
 .sharerw.got{border-color:rgba(34,227,160,.45);background:linear-gradient(160deg,rgba(34,227,160,.1),transparent)}
 .sharerw.got .chip{background:rgba(34,227,160,.2);color:#7ff7cf}
+
+/* === EA規約違反 通報機能（rprt-名前空間）=== */
+.rprt-entry{display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,#1a0f10,#140d14);border:1px solid var(--pred);border-radius:14px;padding:14px 16px;margin:0 0 14px;cursor:pointer;transition:transform .15s}
+.rprt-entry:active{transform:scale(.98)}
+.rprt-entry-ic{font-size:26px;flex:none;filter:drop-shadow(0 0 8px rgba(192,86,76,.5))}
+.rprt-entry-tx{flex:1;min-width:0}
+.rprt-entry-t{font-size:14.5px;font-weight:700;color:var(--text)}
+.rprt-entry-d{font-size:11px;color:var(--sub);margin-top:2px}
+.rprt-entry-go{color:var(--pred);font-size:20px;flex:none}
+.rprt-ov{position:fixed;inset:0;z-index:100010;background:rgba(4,5,9,.9);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);display:none;align-items:flex-start;justify-content:center;padding:18px 12px;overflow:auto}
+.rprt-ov.on{display:flex}
+.rprt-sheet{width:100%;max-width:460px;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px;margin:auto}
+.rprt-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.rprt-title{font-size:16px;font-weight:800;color:var(--text)}
+.rprt-x{background:none;border:none;color:var(--sub);font-size:20px;cursor:pointer;padding:4px 8px;line-height:1}
+.rprt-note{font-size:12px;color:var(--sub);line-height:1.7;background:var(--panel2);border-radius:10px;padding:10px 12px;margin-bottom:10px}
+.rprt-note b{color:var(--text)}
+.rprt-warn{font-size:11.5px;color:#f0c0bb;line-height:1.6;background:rgba(192,86,76,.12);border:1px solid rgba(192,86,76,.4);border-radius:10px;padding:9px 12px;margin-bottom:14px}
+.rprt-warn b{color:#ffd9d4}
+.rprt-field{margin-bottom:12px}
+.rprt-label{display:block;font-size:11.5px;color:var(--sub);margin-bottom:5px;font-weight:600}
+.rprt-label .req{color:var(--pred);margin-left:3px}
+.rprt-input,.rprt-sel,.rprt-ta{width:100%;background:var(--panel2);border:1px solid var(--line);color:var(--text);border-radius:10px;padding:11px 13px;font-size:14px;font-family:inherit;-webkit-appearance:none;box-sizing:border-box}
+.rprt-ta{min-height:62px;resize:vertical}
+.rprt-input:focus,.rprt-sel:focus,.rprt-ta:focus{border-color:var(--cy);outline:none}
+.rprt-build{width:100%;background:var(--pred);color:#fff;border:none;border-radius:12px;padding:14px;font-size:14.5px;font-weight:700;cursor:pointer;margin-top:4px}
+.rprt-build:active{opacity:.85}
+.rprt-result{margin-top:16px;border-top:1px solid var(--line);padding-top:16px}
+.rprt-steps{font-size:12px;color:var(--text);line-height:1.9;background:var(--panel2);border-radius:10px;padding:11px 13px;margin-bottom:12px}
+.rprt-steps b{color:var(--cy)}
+.rprt-cardprev{width:100%;border-radius:12px;border:1px solid var(--line);display:block;margin-bottom:10px}
+.rprt-hint{font-size:11px;color:var(--sub);text-align:center;margin-bottom:10px}
+.rprt-hint2{font-size:11px;color:var(--sub);margin-top:6px;line-height:1.55}
+.rprt-hint2 b{color:var(--text)}
+.rprt-btn2{display:block;width:100%;text-align:center;background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:12px;font-size:13.5px;font-weight:600;cursor:pointer;margin-bottom:9px;text-decoration:none;box-sizing:border-box}
+.rprt-btn2:active{opacity:.8}
+.rprt-btnx{display:block;width:100%;text-align:center;background:#fff;color:#000;border:none;border-radius:10px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:4px;box-sizing:border-box}
+.rprt-btnx:active{opacity:.85}
+
+/* === 新機能解放演出（rprtu-名前空間）=== */
+.rprtu-ov{position:fixed;inset:0;z-index:100015;display:none;align-items:center;justify-content:center;padding:24px;background:radial-gradient(circle at 50% 42%,#1a0d0e,#06070d 72%);overflow:hidden}
+.rprtu-ov.on{display:flex}
+#rprtuFx{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
+.rprtu-flash{position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(circle at 50% 44%,rgba(227,201,143,.45),transparent 56%);opacity:0;animation:rprtuFlash 1s ease forwards}
+@keyframes rprtuFlash{0%{opacity:0}12%{opacity:1}100%{opacity:0}}
+.rprtu-stage{position:relative;z-index:2;width:100%;max-width:430px;text-align:center}
+.rprtu-fan{animation:rprtuPop .9s cubic-bezier(.16,1,.3,1)}
+@keyframes rprtuPop{from{opacity:0;transform:scale(.82)}to{opacity:1;transform:none}}
+@keyframes rprtuUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.rprtu-eyebrow{font-size:12px;letter-spacing:.42em;color:#c9a86a;font-weight:700;text-indent:.42em;opacity:0;animation:rprtuUp .7s ease .25s forwards}
+.rprtu-big{font-size:31px;font-weight:800;color:#fff;margin:16px 0 8px;line-height:1.32;text-shadow:0 0 30px rgba(192,86,76,.55);opacity:0;animation:rprtuUp .8s ease .5s forwards}
+.rprtu-tap{font-size:12px;color:#9b988f;letter-spacing:.12em;margin-top:30px;opacity:0;animation:rprtuBlink 1.6s ease 1.3s infinite}
+@keyframes rprtuBlink{0%,100%{opacity:.3}50%{opacity:.85}}
+.rprtu-card{background:#121319;border:1px solid #2a2f3a;border-radius:18px;padding:26px 22px;animation:rprtuPop .5s cubic-bezier(.16,1,.3,1)}
+.rprtu-em{font-size:46px;margin-bottom:10px;line-height:1}
+.rprtu-t{font-size:18px;font-weight:800;color:#f2f0ea;margin-bottom:12px}
+.rprtu-bd{font-size:13.5px;color:#c9c6bf;line-height:1.95;text-align:left}
+.rprtu-bd .hi{color:#e3c98f;font-weight:700}
+.rprtu-bd b{color:#f2f0ea}
+.rprtu-dots{display:flex;gap:6px;justify-content:center;margin:20px 0 16px}
+.rprtu-dots i{width:6px;height:6px;border-radius:50%;background:#3a3f4a;transition:.3s}
+.rprtu-dots i.on{background:#c9a86a;width:18px;border-radius:3px}
+.rprtu-ask{font-size:14px;font-weight:700;color:#f2f0ea;margin:2px 0 14px;text-align:center}
+.rprtu-foot{display:flex;gap:10px;justify-content:center}
+.rprtu-btn{flex:1;background:#1c2129;border:1px solid #2a2f3a;color:#f2f0ea;border-radius:12px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
+.rprtu-btn.primary{background:#c0564c;border-color:#c0564c;color:#fff}
+.rprtu-btn:active,.rprtu-yes:active,.rprtu-no:active{opacity:.85}
+.rprtu-yes{flex:1.4;background:#c0564c;border:none;color:#fff;border-radius:12px;padding:14px;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit}
+.rprtu-no{flex:1;background:#1c2129;border:1px solid #2a2f3a;color:#9b988f;border-radius:12px;padding:14px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit}
 </style>
 <script type="application/ld+json">
 {
@@ -2150,7 +2219,7 @@ html[data-theme="light"] .xbn{background:linear-gradient(135deg,#fff,#eef3fa)}
       <div class="mh-est">激 や ば ツ ー ル ・ E S T . 2 0 2 6</div>
       <div class="mh-rule"><span class="mh-ln"></span><span class="mh-d">◆</span><span class="mh-ln r"></span></div>
     </div>
-    <div id="predWidget"></div><div id="dailyMount"></div><div id="rankWidget"></div><div id="homeNotice"></div>
+    <div id="predWidget"></div><div id="dailyMount"></div><div id="rankWidget"></div><div id="homeNotice"></div><div class="rprt-entry" onclick="rprtOpen()"><div class="rprt-entry-ic">🚨</div><div class="rprt-entry-tx"><div class="rprt-entry-t">害悪プレイヤーをEAに通報</div><div class="rprt-entry-d">公式アンチチート担当 @SatoshiRSPN へ正式に報告</div></div><div class="rprt-entry-go">›</div></div>
     <div class="homesearch"><input id="globalq" placeholder="🔍 機能・診断・商品を検索" oninput="globalSearch(this.value)" autocomplete="off"><div id="globalRes" class="globalres"></div></div>
     <div id="popularRank"></div>
     <div id="vfCard" class="vf-card" onclick="vfOpen()">
@@ -5727,6 +5796,7 @@ var FEATURE_ANN=[
 ];
 /* ①②：ホーム表示時に「最新の1件だけ」開放演出→説明 */
 function pwHomeIntroMaybe(){
+ return;/* disabled: 通報解放演出に一本化 */
  if(pwHomeFired)return;
  if(!FEATURE_ANN.length)return;
  var newest=FEATURE_ANN[0];                                  // 先頭＝最新（v最大）
@@ -10669,6 +10739,179 @@ B:[[85,'歩くマップ 🧭','全マップを完璧に記憶した地理マス�
   var _inj=window.dxInjectBtn;
   if(typeof _inj==='function'){window.dxInjectBtn=function(){var r=_inj.apply(this,arguments);try{decorate();}catch(e){}return r;};}
   ['dxShare','share'].forEach(function(fn){var _f=window[fn];if(typeof _f==='function'){window[fn]=function(){var r=_f.apply(this,arguments);try{window.__shareReward();}catch(e){}return r;};}});
+})();
+</script><div class="rprt-ov" id="rprtOv"><div class="rprt-sheet">
+<div class="rprt-head"><div class="rprt-title">🚨 規約違反をEAに通報</div><button class="rprt-x" onclick="rprtClose()">✕</button></div>
+<div class="rprt-note">公式アンチチート担当 <b>@SatoshiRSPN</b> 宛に、整った通報を作成します。チート・コンバーター・放置などの<b>本物の違反のみ</b>報告してください。</div>
+<div class="rprt-warn">⚠️ プレイヤーIDは <b>1文字でも間違うと無関係の人が通報されます</b>。正確に入力してください。虚偽・私怨の通報はしないでください。</div>
+<div class="rprt-field"><label class="rprt-label">対象プレイヤーの表示名<span class="req">*</span></label><input class="rprt-input" id="rprtName" placeholder="例: [THE] Adam Bradley" autocomplete="off"><div class="rprt-hint2">観戦画面の<b>左下</b>に出る名前。キルされた時に画面に出る名前でもOK</div></div>
+<div class="rprt-field"><label class="rprt-label">EA ID（数字）</label><input class="rprt-input" id="rprtEAID" placeholder="例: 116045689975160647077" autocomplete="off" inputmode="numeric"><div class="rprt-hint2">観戦画面の<b>右下</b>「ID: …」の数字。あると確実に特定できます（任意）</div></div>
+<div class="rprt-field"><label class="rprt-label">通報理由<span class="req">*</span></label><select class="rprt-sel" id="rprtREASON"><option value="">選択してください</option><option value="cheat">チート（エイムボット/ウォール等）</option><option value="conv">コンバーター（変換器）使用</option><option value="afk">放置・AFK</option><option value="grief">故意の妨害（チーミング/邪魔）</option><option value="abuse">暴言・ハラスメント</option><option value="other">その他</option></select></div>
+<div class="rprt-field"><label class="rprt-label">発生日時</label><input class="rprt-input" id="rprtDT" type="datetime-local"></div>
+<div class="rprt-field"><label class="rprt-label">マッチID</label><input class="rprt-input" id="rprtMID" placeholder="マッチID（任意・あると調査が速い）" autocomplete="off"></div>
+<div class="rprt-field"><label class="rprt-label">プラットフォーム</label><select class="rprt-sel" id="rprtPLAT"><option value="PC">PC</option><option value="PS">PlayStation</option><option value="Xbox">Xbox</option><option value="Switch">Switch</option></select></div>
+<div class="rprt-field"><label class="rprt-label">ゲームモード</label><select class="rprt-sel" id="rprtMODE"><option value="ランク">ランク</option><option value="カジュアル">カジュアル</option><option value="ミックステープ">ミックステープ</option><option value="その他">その他</option></select></div>
+<div class="rprt-field"><label class="rprt-label">該当箇所（動画の何秒から）</label><input class="rprt-input" id="rprtSEC" placeholder="例: 0:42" autocomplete="off"></div>
+<div class="rprt-field"><label class="rprt-label">補足（任意）</label><textarea class="rprt-ta" id="rprtNOTE" placeholder="例: 明らかにエイムが吸い付いていた / 開幕から一切動かず放置"></textarea></div>
+<button class="rprt-build" onclick="rprtBuild()">通報を作成する</button>
+<div class="rprt-result" id="rprtResult" hidden>
+<div class="rprt-steps">投稿手順：<b>①下の画像を保存</b> → <b>②証拠の動画を用意</b> → <b>③𝕏を開く</b>（画像と動画を添付して投稿）</div>
+<img class="rprt-cardprev" id="rprtImg" alt="通報カード">
+<div class="rprt-hint">画像を長押し（PCは右クリック）で保存、または下のボタンから</div>
+<a class="rprt-btn2" id="rprtDl" download="apex-report.png">画像を保存</a>
+<button class="rprt-btn2" onclick="rprtCopyText()">通報テキストをコピー</button>
+<button class="rprt-btnx" onclick="rprtOpenX()">𝕏 を開いて投稿（画像・動画を添付）</button>
+</div>
+<canvas id="rprtCanvas" hidden></canvas>
+</div></div><script>
+(function(){
+  var NL=String.fromCharCode(10);
+  function $(id){return document.getElementById(id);}
+  function pad(n){return (n<10?'0':'')+n;}
+  function val(id){var el=$(id);return el?(el.value||'').trim():'';}
+  function reasonLabel(v){var m={cheat:'チート（エイムボット/ウォール等）',conv:'コンバーター（変換器）使用',afk:'放置・AFK',grief:'故意の妨害（チーミング/邪魔）',abuse:'暴言・ハラスメント',other:'その他'};return m[v]||v;}
+  function platLabel(v){var m={PC:'PC',PS:'PlayStation',Xbox:'Xbox',Switch:'Switch'};return m[v]||v;}
+  function fmtDT(v){if(!v)return '';try{var d=new Date(v);if(isNaN(d))return v;return d.getFullYear()+'/'+pad(d.getMonth()+1)+'/'+pad(d.getDate())+' '+pad(d.getHours())+':'+pad(d.getMinutes());}catch(e){return v;}}
+  window.rprtOpen=function(){try{var ov=$('rprtOv');if(!ov)return;var d=new Date();var v=d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+'T'+pad(d.getHours())+':'+pad(d.getMinutes());var dt=$('rprtDT');if(dt&&!dt.value)dt.value=v;ov.classList.add('on');var r=$('rprtResult');if(r)r.hidden=true;try{if(window.track)track('report','open');}catch(e){}}catch(e){}};
+  window.rprtClose=function(){var ov=$('rprtOv');if(ov)ov.classList.remove('on');};
+  function drawCard(data){
+    var c=$('rprtCanvas');var ratio=2;var W=540;
+    var x=c.getContext('2d');
+    function wrap(ctx,text,maxW){var out=[];var ps=String(text).split(String.fromCharCode(13)).join('').split(String.fromCharCode(10));for(var q=0;q<ps.length;q++){var line='';var ch=ps[q].split('');for(var i=0;i<ch.length;i++){var t=line+ch[i];if(ctx.measureText(t).width>maxW&&line){out.push(line);line=ch[i];}else line=t;}out.push(line);}if(out.length>16){out=out.slice(0,16);out[15]=out[15].slice(0,Math.max(0,out[15].length-1))+'…';}return out;}
+    c.width=W*ratio;c.height=1600*ratio;x.setTransform(ratio,0,0,ratio,0,0);
+    var noteOnCard=!!(data.note&&data.note.length>40);
+    var noteLines=[];if(noteOnCard){x.font='500 14px -apple-system,sans-serif';noteLines=wrap(x,data.note,W-56);}
+    var rowsEnd=402;var nb=rowsEnd+6,labelY=nb+8,linesStart=labelY+20;
+    var afterNote=noteOnCard?(linesStart+noteLines.length*22+10):(rowsEnd+12);
+    var fdiv=afterNote+8;var H=fdiv+72;
+    c.width=W*ratio;c.height=H*ratio;x.setTransform(ratio,0,0,ratio,0,0);
+    x.fillStyle='#0e1118';x.fillRect(0,0,W,H);
+    x.strokeStyle='#2a2f3a';x.lineWidth=2;x.strokeRect(1,1,W-2,H-2);
+    x.fillStyle='#c0564c';x.fillRect(0,0,W,8);
+    x.textBaseline='top';x.textAlign='left';
+    x.fillStyle='#ffffff';x.font='700 24px -apple-system,sans-serif';x.fillText('APEX 規約違反 通報',28,30);
+    x.fillStyle='#9b988f';x.font='600 12px -apple-system,sans-serif';x.fillText('OFFICIAL ANTI-CHEAT REPORT',28,62);
+    x.strokeStyle='#222630';x.beginPath();x.moveTo(28,92);x.lineTo(W-28,92);x.stroke();
+    var y=110;
+    function row(label,value,emph,color){
+      x.fillStyle='#6f6d67';x.font='600 12px -apple-system,sans-serif';x.fillText(label,28,y);
+      var fs=emph?22:16;var fw=emph?'700 ':'500 ';x.fillStyle=color||(emph?'#ffffff':'#e8e6e0');
+      x.font=fw+fs+'px -apple-system,sans-serif';var s=(value==null||value==='')?'—':String(value);var maxw=W-56;
+      while(x.measureText(s).width>maxw&&fs>11){fs--;x.font=fw+fs+'px -apple-system,sans-serif';}
+      x.fillText(s,28,y+16);y+=emph?54:46;
+    }
+    row('対象プレイヤー（表示名）',data.name||'—',true);
+    row('EA ID',data.eaid||'—');
+    row('通報理由',data.reason,true,'#e87a6f');
+    row('日時',data.dt);
+    row('マッチID',data.mid);
+    row('プラットフォーム / モード',(data.plat||'—')+'  /  '+(data.mode||'—'));
+    if(noteOnCard){
+      x.strokeStyle='#222630';x.beginPath();x.moveTo(28,nb);x.lineTo(W-28,nb);x.stroke();
+      x.fillStyle='#6f6d67';x.font='600 12px -apple-system,sans-serif';x.fillText('補足',28,labelY);
+      x.fillStyle='#e8e6e0';x.font='500 14px -apple-system,sans-serif';
+      var ly=linesStart;for(var i=0;i<noteLines.length;i++){x.fillText(noteLines[i],28,ly);ly+=22;}
+    }
+    x.strokeStyle='#222630';x.beginPath();x.moveTo(28,fdiv);x.lineTo(W-28,fdiv);x.stroke();
+    x.fillStyle='#c9a86a';x.font='700 15px -apple-system,sans-serif';x.fillText('通報先: @SatoshiRSPN',28,fdiv+14);
+    x.fillStyle='#9b988f';x.font='600 13px -apple-system,sans-serif';x.fillText('#BANして山下',28,fdiv+38);
+    x.fillStyle='#5f5d57';x.font='500 11px -apple-system,sans-serif';x.textAlign='right';x.fillText('APEX激やばツールで作成',W-28,fdiv+40);x.textAlign='left';
+    return c.toDataURL('image/png');
+  }
+  function buildText(data){var L=['@SatoshiRSPN Apex規約違反の通報です'];if(data.name)L.push('対象: '+data.name);if(data.eaid)L.push('EA ID: '+data.eaid);if(data.sec)L.push('該当箇所: 動画 '+data.sec+'〜');if(data.note&&data.note.length<=40)L.push('補足: '+data.note);L.push('#BANして山下');return L.join(NL);}
+  var _lastText='';
+  window.rprtBuild=function(){
+    var nm=val('rprtName');var eaid=val('rprtEAID');var reason=$('rprtREASON')?$('rprtREASON').value:'';
+    if(!nm&&!eaid){alert('対象プレイヤーの表示名か EA ID のどちらかを入力してください');return;}
+    if(!reason){alert('通報理由を選択してください');return;}
+    var data={name:nm,eaid:eaid,reason:reasonLabel(reason),dt:fmtDT(val('rprtDT')),mid:val('rprtMID'),plat:platLabel($('rprtPLAT')?$('rprtPLAT').value:''),mode:($('rprtMODE')?$('rprtMODE').value:''),sec:val('rprtSEC'),note:val('rprtNOTE')};
+    var durl;try{durl=drawCard(data);}catch(e){alert('画像の生成に失敗しました');return;}
+    var img=$('rprtImg');if(img)img.src=durl;var dl=$('rprtDl');if(dl)dl.href=durl;
+    _lastText=buildText(data);
+    var r=$('rprtResult');if(r){r.hidden=false;try{r.scrollIntoView({behavior:'smooth',block:'start'});}catch(e){}}
+    try{if(window.track)track('report','build');}catch(e){}
+  };
+  function fallbackCopy(t){try{var ta=document.createElement('textarea');ta.value=t;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);toastR('コピーしました');}catch(e){}}
+  window.rprtCopyText=function(){try{if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(_lastText).then(function(){toastR('通報テキストをコピーしました');},function(){fallbackCopy(_lastText);});}else{fallbackCopy(_lastText);}}catch(e){fallbackCopy(_lastText);}};
+  window.rprtOpenX=function(){try{if(navigator.clipboard&&navigator.clipboard.writeText){try{navigator.clipboard.writeText(_lastText);}catch(e){}}var u='https://twitter.com/intent/tweet?text='+encodeURIComponent(_lastText);try{if(window.track)track('report','open_x');}catch(e){}window.open(u,'_blank');}catch(e){}};
+  function toastR(m){try{var d=document.createElement('div');d.textContent=m;d.style.cssText='position:fixed;left:50%;bottom:84px;transform:translateX(-50%);background:#1a1d24;border:1px solid #2a2f3a;color:#fff;padding:10px 16px;border-radius:999px;font-size:13px;z-index:100020;max-width:80%;text-align:center';document.body.appendChild(d);setTimeout(function(){d.remove();},1800);}catch(e){}}
+})();
+</script><div class="rprtu-ov" id="rprtuOv"><canvas id="rprtuFx"></canvas><div class="rprtu-flash" id="rprtuFlash"></div><div class="rprtu-stage" id="rprtuStage"></div></div><script>
+(function(){
+  function $(id){return document.getElementById(id);}
+  var EXP=[
+    {em:'🚨',t:'自動通報テキスト生成 とは？',h:'チート・コンバーター・放置など、試合を壊す<span class="hi">規約違反プレイヤー</span>を、EA公式アンチチート担当 <span class="hi">@SatoshiRSPN</span> に通報するための新機能。<br><br>必要な情報を入れるだけで、<span class="hi">通報用の画像とテキストを自動生成</span>します。'},
+    {em:'📝',t:'使い方はかんたん3ステップ',h:'<span class="hi">①</span> 表示名・EA ID・理由・日時などを入力<br><span class="hi">②</span>「通報を作成」で <b>画像カード</b> と <b>テキスト</b> が完成<br><span class="hi">③</span> 𝕏が開く → <b>画像と証拠動画を添付</b>して投稿<br><br>あとは山下さんが調査して対応してくれます。'},
+    {em:'⚠️',t:'正しく使ってね',h:'通報は <span class="hi">本物の違反だけ</span>。<br>プレイヤーIDは <span class="hi">1文字でも間違うと無関係の人</span>が通報されます。正確に。<br><br>私怨・なりすまし・虚偽の通報はしないでください。'}
+  ];
+  var P=0,fxRun=false;
+  function startFx(){
+    var c=$('rprtuFx');if(!c)return;var x=c.getContext('2d');
+    c.width=c.offsetWidth;c.height=c.offsetHeight;
+    var cx=c.width/2,cy=c.height*0.42,ps=[];
+    for(var i=0;i<58;i++){var a=Math.random()*6.283,sp=2+Math.random()*5.2;ps.push({x:cx,y:cy,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,r:1+Math.random()*2.3,life:1,gold:Math.random()<.62});}
+    for(var j=0;j<22;j++)ps.push({x:Math.random()*c.width,y:Math.random()*c.height,vx:(Math.random()-.5)*.3,vy:-(.2+Math.random()*.4),r:.6+Math.random()*1.3,amb:true,gold:Math.random()<.7});
+    fxRun=true;
+    function tick(){
+      if(!fxRun)return;x.clearRect(0,0,c.width,c.height);
+      for(var i=0;i<ps.length;i++){var p=ps[i];var al;
+        if(p.amb){p.x+=p.vx;p.y+=p.vy;if(p.y<-4){p.y=c.height+4;p.x=Math.random()*c.width;}al=.22+.22*Math.sin(Date.now()/600+i);}
+        else{p.vx*=.96;p.vy=p.vy*.96+.02;p.x+=p.vx;p.y+=p.vy;p.life-=.012;al=p.life;}
+        if(al<=0)continue;
+        x.beginPath();x.arc(p.x,p.y,p.r,0,6.283);x.fillStyle=(p.gold?'rgba(227,201,143,':'rgba(192,86,76,')+(al<0?0:al).toFixed(3)+')';x.fill();
+      }
+      requestAnimationFrame(tick);
+    }
+    tick();
+  }
+  function renderFan(){
+    var st=$('rprtuStage');if(!st)return;
+    st.innerHTML='<div class="rprtu-fan"><div class="rprtu-eyebrow">NEW FEATURE</div><div class="rprtu-big">🚨 自動通報<br>テキスト生成</div><div class="rprtu-tap">タップして続ける</div></div>';
+    var ov=$('rprtuOv');if(ov)ov.onclick=function(){goTut();};
+  }
+  function goTut(){var ov=$('rprtuOv');if(ov)ov.onclick=null;P=0;renderTut();}
+  function renderTut(){
+    var st=$('rprtuStage');if(!st)return;var pg=EXP[P],last=P===EXP.length-1;
+    var dots='';for(var i=0;i<EXP.length;i++)dots+='<i class="'+(i===P?'on':'')+'"></i>';
+    var foot;
+    if(last){foot='<div class="rprtu-ask">さっそく通報してみる？</div><div class="rprtu-foot"><button class="rprtu-no" onclick="rprtuNo()">いいえ</button><button class="rprtu-yes" onclick="rprtuYes()">はい、通報する →</button></div>';}
+    else{foot='<div class="rprtu-foot">'+(P>0?'<button class="rprtu-btn" onclick="rprtuNav(-1)">戻る</button>':'')+'<button class="rprtu-btn primary" onclick="rprtuNav(1)">次へ</button></div>';}
+    st.innerHTML='<div class="rprtu-card"><div class="rprtu-em">'+pg.em+'</div><div class="rprtu-t">'+pg.t+'</div><div class="rprtu-bd">'+pg.h+'</div><div class="rprtu-dots">'+dots+'</div>'+foot+'</div>';
+  }
+  window.rprtuNav=function(d){var np=P+d;if(np<0||np>=EXP.length)return;P=np;renderTut();};
+  function closeU(){fxRun=false;var ov=$('rprtuOv');if(ov){ov.classList.remove('on');ov.onclick=null;}}
+  window.rprtUnlockClose=closeU;
+  window.rprtuYes=function(){closeU();try{if(window.track)track('report','unlock_yes');}catch(e){}try{if(window.rprtOpen)rprtOpen();}catch(e){}};
+  window.rprtuNo=function(){closeU();try{if(window.track)track('report','unlock_no');}catch(e){}};
+  window.rprtUnlockShow=function(){
+    var ov=$('rprtuOv');if(!ov)return;ov.classList.add('on');
+    var fl=$('rprtuFlash');if(fl){fl.style.animation='none';void fl.offsetWidth;fl.style.animation='rprtuFlash 1s ease forwards';}
+    renderFan();startFx();
+    try{if(window.track)track('report','unlock_show');}catch(e){}
+    setTimeout(function(){var ov2=$('rprtuOv');if(ov2&&ov2.classList.contains('on')&&$('rprtuStage').querySelector('.rprtu-fan'))goTut();},3800);
+  };
+  function overlayOpen(){
+    try{
+      if(document.querySelector('.rprt-ov.on'))return true;
+      if(document.querySelector('.rprtu-ov.on'))return true;
+      var po=$('pwOv');if(po&&po.classList.contains('on'))return true;
+      var pf=$('pwFx');if(pf&&pf.classList.contains('on'))return true;
+      var sp=$('splash');if(sp&&getComputedStyle(sp).display!=='none'&&sp.style.opacity!=='0')return true;
+      var gc=$('grandCurtain');if(gc&&getComputedStyle(gc).display!=='none')return true;
+      var fr=document.querySelectorAll('.frov');for(var i=0;i<fr.length;i++){if(getComputedStyle(fr[i]).display!=='none')return true;}
+    }catch(e){}
+    return false;
+  }
+  function maybe(retry){
+    try{
+      if(localStorage.getItem('apexRprtAnnV1'))return;
+      if(overlayOpen()){if((retry||0)<12)setTimeout(function(){maybe((retry||0)+1);},1500);return;}
+      localStorage.setItem('apexRprtAnnV1','1');
+      window.rprtUnlockShow();
+    }catch(e){}
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(function(){maybe(0);},2800);});
+  else setTimeout(function(){maybe(0);},2800);
 })();
 </script></body>
 </html>
