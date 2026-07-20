@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Apex 大会まるわかりガイド ｜ ALGS・CRカップ…全部わかる教科書</title>
+<meta name="description" content="ALGS・ENC・EWCといった公式大会から、CRカップ・VTuber最協決定戦などの非公式大会まで。Apexの全大会の違い・ルール・見方・歴代優勝を、日本語でいちばん分かりやすく解説する教科書サイト。">
+<style>
+:root{
+  --bg:#06070d; --panel:#0c1018; --panel2:#0e131f; --line:#1d2740; --line2:#161d30;
+  --text:#eaf3ff; --sub:#93a2c4; --dim:#5b6580; --faint:#3f4863;
+  --cy:#19e3ff; --cy2:#0da5c4; --mg:#ff3df2; --or:#ff6a1f; --ok:#22e3a0;
+  --warn:#ffc23d; --down:#ff3d5e; --rank:#c062ff; --plat:#39c6ff; --gold:#ffd75e;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth;overflow-x:clip;width:100%}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,"Hiragino Kaku Gothic ProN","Yu Gothic Medium","Yu Gothic",sans-serif;line-height:1.8;overflow-x:clip;max-width:100%;position:relative;-webkit-font-smoothing:antialiased;font-feature-settings:"palt";font-weight:500}
+.wrap{max-width:720px;margin:0 auto;padding:0 22px}
+svg{display:block}
+a{color:var(--cy)}
+.en-h{font-family:Georgia,"Times New Roman",serif;font-weight:400;letter-spacing:.01em}
+.script{font-family:"Snell Roundhand","Apple Chancery","Segoe Script",cursive;font-style:italic;color:var(--faint);font-weight:400}
+
+.progress{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--cy),var(--mg));z-index:200;transition:width .1s linear;box-shadow:0 0 10px rgba(25,227,255,.5)}
+
+/* ===== スペシャルオファー モーダル（画像バナー版・金×赤ゴージャス）===== */
+.so-ov{position:fixed;inset:0;z-index:100050;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(2,3,8,.86);overscroll-behavior:contain}
+.so-ov.on{display:flex;animation:soOvIn .35s ease}
+@keyframes soOvIn{from{opacity:0}to{opacity:1}}
+.so-glow{position:absolute;top:50%;left:50%;width:520px;height:520px;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(255,180,90,.2),rgba(220,60,40,.08) 42%,transparent 68%);pointer-events:none;animation:soGlowPulse 4s ease-in-out infinite}
+@keyframes soGlowPulse{0%,100%{opacity:.7;transform:translate(-50%,-50%) scale(1)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.12)}}
+.so-fx{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
+.so-box{position:relative;z-index:2;width:100%;max-width:352px;background:linear-gradient(165deg,#2a1410,#180a06 55%,#1f0d08);border:1px solid rgba(255,180,90,.45);border-radius:24px;padding:24px 20px 18px;box-shadow:0 24px 70px rgba(0,0,0,.7),0 0 40px rgba(200,60,40,.15),inset 0 1px 0 rgba(255,210,150,.18);animation:soBoxIn .55s cubic-bezier(.16,1,.3,1);overflow:hidden}
+@keyframes soBoxIn{from{opacity:0;transform:scale(.88) translateY(16px)}to{opacity:1;transform:none}}
+.so-box::before{content:"";position:absolute;top:0;left:-60%;width:55%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,220,150,.14),transparent);transform:skewX(-18deg);animation:soShimmer 4.5s ease-in-out infinite;pointer-events:none;z-index:1}
+@keyframes soShimmer{0%,55%{left:-60%}82%,100%{left:130%}}
+.so-box::after{content:"";position:absolute;inset:-1px;border-radius:24px;padding:1.5px;background:conic-gradient(from 0deg,transparent,rgba(255,196,84,.6),rgba(255,90,60,.4) 20%,transparent 35%,transparent 65%,rgba(255,196,84,.55),rgba(255,120,60,.3) 85%,transparent);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:soBorderSpin 6s linear infinite;pointer-events:none}
+@keyframes soBorderSpin{to{transform:rotate(360deg)}}
+.so-x{position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:50%;background:rgba(30,12,6,.85);border:1px solid rgba(255,180,90,.4);color:#ffd98a;font-size:19px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:6;font-family:inherit}
+.so-x:active{opacity:.7;transform:scale(.92)}
+.so-ribbon{position:absolute;top:16px;left:-36px;transform:rotate(-45deg);background:linear-gradient(90deg,#e0341c,#ffc454);color:#2a0f00;font-size:10px;font-weight:900;letter-spacing:.12em;padding:5px 42px;box-shadow:0 3px 10px rgba(0,0,0,.5);z-index:5}
+.so-crown{position:absolute;top:-4px;left:50%;transform:translateX(-50%);font-size:30px;filter:drop-shadow(0 3px 8px rgba(255,196,84,.7));animation:soCrownFloat 2.6s ease-in-out infinite;z-index:4}
+@keyframes soCrownFloat{0%,100%{transform:translateX(-50%) translateY(0) rotate(-4deg)}50%{transform:translateX(-50%) translateY(-5px) rotate(4deg)}}
+.so-head{text-align:center;margin:26px 0 14px;position:relative;z-index:3}
+.so-eyebrow{font-family:Georgia,serif;font-size:10.5px;font-weight:700;letter-spacing:.3em;color:#ffc454;margin-bottom:8px;text-shadow:0 0 14px rgba(255,196,84,.6)}
+.so-title{font-size:22px;font-weight:900;color:#fff5e2;line-height:1.35;letter-spacing:.01em}
+.so-title-em{background:linear-gradient(100deg,#ffd98a,#ff7a3c,#ffe6b0);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;text-shadow:0 0 30px rgba(255,196,84,.4);font-size:25px}
+.so-timer{display:flex;align-items:center;justify-content:center;gap:8px;margin:0 0 16px;position:relative;z-index:3;flex-wrap:wrap}
+.so-timer-lbl{font-size:11px;color:#ffb37a;font-weight:600}
+.so-timer-val{font-family:"SF Mono",Menlo,Consolas,monospace;font-size:17px;font-weight:800;color:#fff;background:rgba(224,52,28,.25);border:1px solid rgba(255,120,80,.4);border-radius:8px;padding:4px 10px;letter-spacing:.05em;min-width:96px;text-align:center}
+.so-ad{position:relative;z-index:3}
+.so-ad-img{display:block;border-radius:14px;overflow:hidden;background:rgba(255,255,255,.03);border:1px solid rgba(255,140,80,.2);text-align:center;position:relative;min-height:80px}
+.so-ad-img a{display:block;line-height:0}
+.so-ad-img img{display:block;max-width:100%;height:auto;margin:0 auto;border-radius:14px}
+.so-ad-img.img-fail{min-height:110px;display:flex;align-items:center;justify-content:center;padding:24px}
+.so-ad-img.img-fail::before{content:"広告を読み込めませんでした";color:rgba(255,200,150,.5);font-size:12px}
+.so-ad-spark{position:absolute;pointer-events:none;font-size:13px;color:#ffd98a;animation:soTwinkle 1.8s ease-in-out infinite;z-index:2}
+@keyframes soTwinkle{0%,100%{opacity:.3;transform:scale(.7)}50%{opacity:1;transform:scale(1.1)}}
+.so-desc{font-size:12.5px;line-height:1.7;color:#f5e0d0;text-align:center;margin:14px 4px 0;position:relative;z-index:3}
+.so-desc:empty{display:none}
+.so-cta{display:flex;align-items:center;justify-content:center;gap:6px;padding:14px;border-radius:12px;font-size:15px;font-weight:800;background:linear-gradient(100deg,#ffc454,#e0341c);color:#2a0f00;position:relative;overflow:hidden;text-decoration:none;margin-top:14px;z-index:3}
+.so-cta::after{content:"";position:absolute;top:0;left:-70%;width:50%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.4),transparent);transform:skewX(-18deg);animation:soCtaShine 2.6s ease-in-out infinite}
+@keyframes soCtaShine{0%,60%{left:-70%}90%,100%{left:130%}}
+.so-cta:active{opacity:.9}
+.so-foot-note{margin-top:12px;text-align:center;font-size:9.5px;color:rgba(255,200,150,.4);position:relative;z-index:3}
+
+/* ===== 左下 常設FABボタン ===== */
+.so-fab{position:fixed;left:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:100040;display:none;align-items:center;gap:7px;padding:11px 15px 11px 13px;border:none;border-radius:30px;background:linear-gradient(100deg,#ff9d3c,#ffc454);color:#3a2100;font-family:inherit;font-size:13px;font-weight:800;cursor:pointer;box-shadow:0 6px 22px rgba(255,157,60,.45),0 2px 6px rgba(0,0,0,.3)}
+.so-fab.show{display:flex;animation:soFabIn .5s cubic-bezier(.16,1,.3,1),soFabPulse 2.4s ease-in-out infinite .5s}
+@keyframes soFabIn{from{opacity:0;transform:translateY(20px) scale(.8)}to{opacity:1;transform:none}}
+@keyframes soFabPulse{0%,100%{box-shadow:0 6px 22px rgba(255,157,60,.45),0 2px 6px rgba(0,0,0,.3)}50%{box-shadow:0 6px 30px rgba(255,157,60,.75),0 2px 6px rgba(0,0,0,.3)}}
+.so-fab:active{transform:scale(.94)}
+.so-fab-spark{font-size:14px;animation:soFabSpark 1.6s ease-in-out infinite}
+@keyframes soFabSpark{0%,100%{transform:rotate(0) scale(1);opacity:.9}50%{transform:rotate(180deg) scale(1.25);opacity:1}}
+.so-fab-tx{white-space:nowrap}
+.so-fab-badge{display:flex;align-items:center;justify-content:center;min-width:17px;height:17px;padding:0 4px;border-radius:9px;background:#ff2d2d;color:#fff;font-size:10px;font-weight:900;box-shadow:0 0 0 2px rgba(255,157,60,.5)}
+.so-fab-badge:empty,.so-fab-badge[hidden]{display:none}
+
+.navbtn{position:fixed;top:14px;right:14px;z-index:120;width:46px;height:46px;border-radius:14px;background:var(--panel);border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4.5px;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.4);transition:transform .2s}
+.navbtn:active{transform:scale(.92)}
+.navbtn span{width:20px;height:1.8px;background:var(--cy);border-radius:2px;transition:.3s;box-shadow:0 0 4px rgba(25,227,255,.6)}
+.navbtn.open span:nth-child(1){transform:translateY(6.3px) rotate(45deg)}
+.navbtn.open span:nth-child(2){opacity:0}
+.navbtn.open span:nth-child(3){transform:translateY(-6.3px) rotate(-45deg)}
+.navmask{position:fixed;inset:0;z-index:110;background:rgba(3,5,12,.78);opacity:0;pointer-events:none;transition:opacity .3s}
+.navmask.on{opacity:1;pointer-events:auto}
+.navpanel{position:fixed;top:0;right:0;bottom:0;z-index:115;width:78%;max-width:310px;background:var(--panel);border-left:1px solid var(--line);transform:translateX(101%);transition:transform .38s cubic-bezier(.22,1,.26,1);padding:74px 0 24px;overflow-y:auto;box-shadow:-12px 0 44px rgba(0,0,0,.55)}
+.navpanel.on{transform:none}
+.navpanel .nav-ttl{font-family:Georgia,serif;font-size:12px;letter-spacing:.2em;color:var(--cy);padding:0 26px 8px;text-indent:.2em}
+.navpanel a{display:flex;align-items:center;gap:12px;padding:13px 26px;font-size:14px;color:var(--text);font-weight:600;border-left:3px solid transparent;transition:.2s}
+.navpanel a .no{font-family:Georgia,serif;font-size:11px;color:var(--dim);width:20px;flex:none}
+.navpanel a:active,.navpanel a.here{background:var(--panel2);border-left-color:var(--cy);color:var(--cy)}
+.navpanel .div{height:1px;background:var(--line2);margin:10px 26px}
+
+.bgfx{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(29,39,64,.4) 1px,transparent 1px),linear-gradient(90deg,rgba(29,39,64,.4) 1px,transparent 1px);background-size:44px 44px;mask-image:radial-gradient(ellipse at 50% 0%,#000,transparent 72%);-webkit-mask-image:radial-gradient(ellipse at 50% 0%,#000,transparent 72%)}
+.glow{position:absolute;border-radius:50%;filter:blur(38px);opacity:.42;will-change:opacity}
+.g1{width:360px;height:360px;background:rgba(25,227,255,.13);top:-120px;left:-120px}
+.g2{width:400px;height:400px;background:rgba(255,61,242,.09);top:44%;right:-160px}
+.g3{width:320px;height:320px;background:rgba(255,106,31,.07);bottom:-100px;left:18%}
+main{position:relative;z-index:1}
+
+.hero{text-align:center;padding:70px 22px 48px}
+.hero .kicker{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:800;letter-spacing:.2em;color:var(--cy);border:1px solid rgba(25,227,255,.34);background:rgba(25,227,255,.06);border-radius:999px;padding:6px 15px;margin-bottom:22px;text-indent:.2em}
+.hero .kicker .dot{width:6px;height:6px;border-radius:50%;background:var(--cy);box-shadow:0 0 8px var(--cy);animation:bl 3s infinite}
+@keyframes bl{0%,100%{opacity:1}50%{opacity:.3}}
+.hero h1{font-size:clamp(28px,7.6vw,44px);font-weight:900;line-height:1.32;letter-spacing:-.01em;margin-bottom:20px;color:var(--text)}
+.hero h1 .em{background:linear-gradient(120deg,var(--cy),var(--plat) 55%,var(--mg));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{font-size:clamp(13.5px,3.5vw,15.5px);color:var(--sub);max-width:500px;margin:0 auto 16px;line-height:1.9}
+.hero .meta{font-size:11.5px;color:var(--dim);margin-bottom:30px}
+.hero .cta{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(120deg,var(--cy),var(--cy2));color:#03202a;font-size:14.5px;font-weight:800;padding:15px 34px;border-radius:14px;box-shadow:0 12px 30px rgba(25,227,255,.3);transition:transform .2s}
+.hero .cta:active{transform:scale(.96)}
+.hero .cta svg{stroke:#03202a}
+.scroll{margin-top:42px;color:var(--dim);animation:bob 3s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
+
+section{padding:46px 0;scroll-margin-top:10px;overflow-x:clip;content-visibility:auto;contain-intrinsic-size:auto 600px}
+.sec-h{display:flex;align-items:baseline;gap:13px;margin-bottom:7px;flex-wrap:wrap}
+.sec-h .big{font-size:clamp(26px,6.6vw,37px);font-weight:800;color:var(--text)}
+.sec-h .scr{font-size:clamp(19px,4.6vw,26px)}
+.sec-sub{font-size:12.5px;color:var(--sub);letter-spacing:.02em;margin-bottom:28px;line-height:1.8;font-weight:600}
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.8,.2,1)}
+.reveal.on{opacity:1;transform:none}
+
+.pains{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+@media(min-width:540px){.pains{grid-template-columns:1fr 1fr}}
+.pain{background:var(--panel);padding:19px 20px;display:flex;gap:15px;align-items:center}
+.pain .ic{width:33px;height:33px;flex:none;color:var(--cy)}
+.pain b{font-size:14.5px;font-weight:700;color:var(--text);display:block}
+.pain span{font-size:12px;color:var(--sub);display:block;margin-top:2px;font-weight:500}
+.pain-note{text-align:center;margin-top:26px;font-size:clamp(15px,4vw,19px);color:var(--text);font-weight:700}
+.pain-note em{font-style:normal;color:var(--cy)}
+
+.flow{position:relative;padding-left:8px}
+.flow-line{position:absolute;left:35px;top:30px;bottom:30px;width:2px;background:linear-gradient(180deg,var(--cy),var(--plat),var(--rank),var(--gold));opacity:.5}
+.step{position:relative;display:flex;gap:20px;padding:11px 0}
+.step .node{width:56px;height:56px;flex:none;border-radius:16px;background:var(--panel);border:2px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--cy);z-index:1}
+.step:nth-child(2) .node{border-color:var(--cy);box-shadow:0 0 20px rgba(25,227,255,.28)}
+.step:nth-child(3) .node{border-color:var(--plat);color:var(--plat)}
+.step:nth-child(4) .node{border-color:var(--rank);color:var(--rank)}
+.step:nth-child(5) .node{border-color:var(--or);color:var(--or)}
+.step:nth-child(6) .node{border-color:var(--gold);color:var(--gold);box-shadow:0 0 22px rgba(255,215,94,.3)}
+.step .node svg{width:26px;height:26px}
+.step-body{flex:1;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px 20px;min-width:0}
+.step-body .en{font-family:Georgia,serif;font-size:11px;letter-spacing:.14em;color:var(--dim)}
+.step-body h3{font-size:16.5px;font-weight:800;margin:3px 0 7px;color:var(--text)}
+.step-body p{font-size:13.5px;color:var(--sub);line-height:1.85;font-weight:500}
+.step-body p b{color:var(--cy);font-weight:700}
+.step-body .pin{display:inline-block;font-size:10.5px;font-weight:700;color:var(--cy);background:rgba(25,227,255,.1);border-radius:999px;padding:3px 11px;margin-top:10px}
+
+.promo{background:linear-gradient(135deg,rgba(25,227,255,.07),rgba(255,61,242,.05));border:1px solid var(--line);border-radius:22px;padding:30px 24px;text-align:center}
+.promo .badge{width:52px;height:52px;margin:0 auto 14px;border-radius:50%;background:var(--panel2);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--cy)}
+.promo h3{font-size:19px;font-weight:800;color:var(--text);margin-bottom:9px}
+.promo p{font-size:13.5px;color:var(--sub);max-width:420px;margin:0 auto 20px;line-height:1.9;font-weight:500}
+.promo .go{display:inline-flex;align-items:center;gap:9px;background:linear-gradient(120deg,var(--cy),var(--cy2));color:#03202a;font-size:14px;font-weight:800;padding:13px 30px;border-radius:12px;box-shadow:0 8px 22px rgba(25,227,255,.26);transition:transform .2s}
+.promo .go:active{transform:scale(.96)}
+.promo .go svg{stroke:#03202a}
+.promo .imgslot{display:none;max-width:280px;margin:0 auto 18px;border-radius:16px;overflow:hidden;border:1px solid var(--line)}
+.promo .imgslot img{width:100%;display:block}
+
+.terms{display:grid;gap:13px}
+.term{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:19px 22px;position:relative;overflow:hidden}
+.term:before{content:attr(data-abbr);position:absolute;right:-6px;top:-16px;font-size:62px;font-weight:900;color:rgba(255,255,255,.028);letter-spacing:-.04em}
+.term .tt{display:flex;align-items:baseline;gap:11px;flex-wrap:wrap;margin-bottom:9px;padding-bottom:9px;border-bottom:1px solid var(--line2);position:relative}
+.term .abbr{font-family:Georgia,serif;font-size:22px;font-weight:800;color:var(--cy)}
+.term .full{font-size:11.5px;color:var(--dim);font-weight:600}
+.term .desc{font-size:13.5px;color:var(--sub);line-height:1.9;font-weight:500;position:relative}
+.term .desc b{color:var(--warn);font-weight:700}
+/* 大会カテゴリ見出し */
+.tcat{display:flex;align-items:baseline;gap:10px;font-size:14px;font-weight:800;color:var(--text);margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--cy);flex-wrap:wrap}
+.tcat-en{font-family:Georgia,serif;font-size:10.5px;font-weight:400;letter-spacing:.08em;color:var(--dim)}
+.tnote{margin-top:16px;background:var(--panel2);border:1px solid var(--line2);border-radius:14px;padding:16px 18px;font-size:13px;color:var(--sub);line-height:1.9;font-weight:500}
+.tnote b{color:var(--cy);font-weight:700}
+
+.mp{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:24px 22px}
+.mp-team{display:flex;align-items:center;gap:13px;margin-bottom:13px}
+.mp-team .nm{width:56px;flex:none;font-size:12.5px;color:var(--sub);font-weight:600}
+.mp-track{flex:1;height:24px;background:var(--panel2);border-radius:999px;position:relative;overflow:hidden;border:1px solid var(--line)}
+.mp-fill{position:absolute;left:0;top:0;bottom:0;border-radius:999px;width:0;transition:width 1.5s cubic-bezier(.2,.9,.3,1);display:flex;align-items:center;justify-content:flex-end;padding-right:9px;font-size:11px;font-weight:800;color:#03202a}
+.mp-fill.a{background:linear-gradient(90deg,#19e3ff,#39c6ff)}
+.mp-fill.b{background:linear-gradient(90deg,#c062ff,#ff3df2)}
+.mp-fill.c{background:linear-gradient(90deg,#ff6a1f,#ffc23d)}
+.mp-line{position:absolute;left:58%;top:-5px;bottom:-5px;width:2px;background:var(--down);z-index:2}
+.mp-line:after{content:"50pt";position:absolute;top:-15px;left:50%;transform:translateX(-50%);font-size:9px;color:var(--down);white-space:nowrap;font-family:Georgia,serif;font-weight:700}
+.mp-steps{font-size:13.5px;color:var(--sub);margin-top:18px;padding-top:16px;border-top:1px solid var(--line2);line-height:2;font-weight:500}
+.mp-steps b{color:var(--cy);font-weight:700}
+.mp-reach{display:inline-block;font-size:11px;color:var(--gold);background:rgba(255,215,94,.12);border:1px solid rgba(255,215,94,.4);border-radius:999px;padding:2px 10px;font-weight:700}
+
+.ban{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:22px}
+.ban-row{display:flex;align-items:center;gap:9px;padding:11px 0;border-bottom:1px solid var(--line2);flex-wrap:wrap}
+.ban-row:last-of-type{border-bottom:none}
+.ban-r{font-size:11px;color:var(--dim);width:54px;flex:none;font-family:Georgia,serif}
+.leg{width:36px;height:36px;border-radius:10px;background:var(--panel2);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--plat);position:relative}
+.leg svg{width:18px;height:18px}
+.leg.x{opacity:.25}
+.leg.x:after{content:"";position:absolute;left:5px;right:5px;top:50%;height:2px;background:var(--down);transform:rotate(-18deg)}
+.ban-cap{font-size:11px;color:var(--sub);margin-left:4px;font-weight:600}
+.ban-note{font-size:13.5px;color:var(--sub);margin-top:16px;padding-top:15px;border-top:1px solid var(--line2);line-height:1.9;font-weight:500}
+.ban-note b{color:var(--down);font-weight:700}
+
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:20px 8px;text-align:center}
+.stat b{display:block;font-family:Georgia,serif;font-size:clamp(23px,6vw,31px);font-weight:800;background:linear-gradient(120deg,var(--cy),var(--plat));-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1}
+.stat.g b{background:linear-gradient(120deg,var(--gold),var(--or));-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat span{display:block;font-size:11px;color:var(--sub);margin-top:8px;line-height:1.6;font-weight:600}
+
+.win{border:1px solid rgba(255,215,94,.45);border-radius:24px;overflow:hidden;box-shadow:0 0 40px rgba(255,215,94,.12)}
+.win-top{background:linear-gradient(135deg,#1a1608,#2e2610);padding:26px 24px 22px;text-align:center;position:relative;overflow:hidden}
+.win-top:before{content:"";position:absolute;top:-40%;left:50%;width:200px;height:200px;transform:translateX(-50%);background:radial-gradient(circle,rgba(255,215,94,.35),transparent 66%)}
+.win-trophy{position:relative;font-size:46px;margin-bottom:8px;filter:drop-shadow(0 4px 14px rgba(255,215,94,.55))}
+.win-label{position:relative;font-family:Georgia,serif;font-size:11px;letter-spacing:.24em;color:#ffe9a8;text-indent:.24em;margin-bottom:8px;font-weight:700}
+.win-team{position:relative;font-size:36px;font-weight:900;color:#fff;letter-spacing:.05em;line-height:1.1;text-shadow:0 0 20px rgba(255,215,94,.4)}
+.win-sub{position:relative;font-size:12.5px;color:#d8c48a;margin-top:9px;font-weight:600}
+.win-body{padding:22px 22px 24px;background:var(--panel)}
+.win-lead{font-size:14.5px;color:var(--text);font-weight:700;line-height:1.8;margin-bottom:16px;text-align:center}
+.win-lead b{color:var(--gold)}
+.win-facts{display:grid;gap:10px;margin-bottom:16px}
+.wf{display:flex;gap:12px;align-items:flex-start;background:var(--panel2);border:1px solid var(--line2);border-radius:12px;padding:12px 14px}
+.wf .wic{width:26px;height:26px;flex:none;color:var(--gold);margin-top:1px}
+.wf p{font-size:12.5px;color:var(--sub);line-height:1.75;font-weight:500}
+.wf p b{color:var(--gold);font-weight:700}
+.win-players{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;padding-top:14px;border-top:1px solid var(--line2)}
+.wp{font-size:12px;font-weight:700;color:var(--plat);background:rgba(57,198,255,.1);border:1px solid var(--line);border-radius:999px;padding:5px 14px}
+.wp.mvp{background:rgba(255,215,94,.14);border-color:rgba(255,215,94,.5);color:var(--gold)}
+
+.drama{display:grid;gap:15px}
+.dc{background:var(--panel);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.dc-h{display:flex;align-items:center;gap:12px;padding:15px 18px;background:var(--panel2);border-bottom:1px solid var(--line2)}
+.dc-yr{font-family:Georgia,serif;font-size:11px;font-weight:800;color:#03202a;background:var(--cy);border-radius:8px;padding:4px 10px;flex:none;letter-spacing:.02em}
+.dc-h .dc-t{flex:1;min-width:0}
+.dc-h .dc-t h4{font-size:14.5px;font-weight:800;color:var(--text);line-height:1.4}
+.dc-h .dc-t .loc{font-size:11px;color:var(--dim);font-weight:600;margin-top:1px}
+.dc-champ{font-size:11px;font-weight:800;color:var(--gold);background:rgba(255,215,94,.12);border:1px solid rgba(255,215,94,.4);border-radius:999px;padding:3px 10px;flex:none}
+.dc-body{padding:15px 18px}
+.dc-body p{font-size:13px;color:var(--sub);line-height:1.9;font-weight:500}
+.dc-body p b{color:var(--cy);font-weight:700}
+.dc-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.dc-tag{font-size:10.5px;font-weight:600;color:var(--plat);background:var(--panel2);border:1px solid var(--line2);border-radius:6px;padding:2px 9px}
+
+.champ-tbl{background:var(--panel);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.ct-row{display:grid;grid-template-columns:56px 1fr auto;gap:10px;align-items:center;padding:13px 16px;border-bottom:1px solid var(--line2)}
+.ct-row:last-child{border-bottom:none}
+.ct-row.head{background:var(--panel2);font-size:10.5px;letter-spacing:.08em;color:var(--dim);font-weight:700;padding:10px 16px}
+.ct-yr{font-family:Georgia,serif;font-size:13px;font-weight:800;color:var(--cy)}
+.ct-team{font-size:14px;font-weight:700;color:var(--text);min-width:0}
+.ct-team .rg{font-size:10.5px;color:var(--dim);font-weight:600;display:block;margin-top:1px}
+.ct-when{font-size:11px;color:var(--sub);text-align:right;font-weight:600}
+.ct-row.hot{background:linear-gradient(90deg,rgba(255,215,94,.08),transparent)}
+.ct-row.hot .ct-team{color:var(--gold)}
+.ct-note{font-size:11px;color:var(--dim);text-align:left;padding:12px 16px;line-height:1.75;font-weight:500}
+
+.sched{position:relative;padding-left:24px}
+.sched:before{content:"";position:absolute;left:5px;top:6px;bottom:10px;width:2px;background:linear-gradient(180deg,var(--cy),var(--rank),var(--gold))}
+.sch{position:relative;padding:0 0 22px 20px}
+.sch:before{content:"";position:absolute;left:-23px;top:5px;width:11px;height:11px;border-radius:50%;background:var(--bg);border:2px solid var(--cy)}
+.sch.lan:before{background:var(--gold);border-color:var(--gold);box-shadow:0 0 10px rgba(255,215,94,.5)}
+.sch .d{font-family:Georgia,serif;font-size:11.5px;color:var(--cy);font-weight:600}
+.sch.lan .d{color:var(--gold)}
+.sch h4{font-size:15px;font-weight:800;color:var(--text);margin:3px 0 4px}
+.sch p{font-size:12.5px;color:var(--sub);line-height:1.8;font-weight:500}
+.sch .lan-badge{display:inline-block;font-size:9.5px;color:var(--gold);background:rgba(255,215,94,.14);border-radius:5px;padding:1.5px 7px;margin-left:6px;font-weight:700}
+
+.watch{display:grid;gap:13px}
+@media(min-width:540px){.watch{grid-template-columns:1fr 1fr}}
+.wc{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:19px;display:flex;gap:14px;align-items:flex-start}
+.wc .ic{width:40px;height:40px;flex:none;color:var(--cy)}
+.wc h4{font-size:14.5px;font-weight:800;color:var(--text);margin-bottom:5px}
+.wc p{font-size:12.5px;color:var(--sub);line-height:1.8;font-weight:500}
+
+.jp{background:linear-gradient(135deg,rgba(255,61,94,.06),rgba(25,227,255,.05));border:1px solid var(--line);border-radius:22px;padding:30px 24px;text-align:center}
+.jp .mark{font-family:Georgia,serif;font-size:13px;letter-spacing:.2em;color:var(--cy);margin-bottom:14px;font-weight:600}
+.jp h3{font-size:19px;font-weight:800;color:var(--text);margin-bottom:14px;line-height:1.6}
+.jp p{font-size:13.5px;color:var(--sub);max-width:460px;margin:0 auto 8px;line-height:1.95;font-weight:500}
+.jp .team{color:var(--cy);font-weight:700}
+
+.faq-item{background:var(--panel);border:1px solid var(--line);border-radius:15px;margin-bottom:11px;overflow:hidden}
+.faq-q{padding:17px 20px;font-size:14px;font-weight:700;color:var(--text);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.faq-q .pl{color:var(--cy);font-size:19px;flex:none;transition:transform .3s;font-family:Georgia,serif}
+.faq-item.open .faq-q .pl{transform:rotate(45deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .38s ease}
+.faq-a p{padding:0 20px 17px;font-size:13px;color:var(--sub);line-height:1.9;font-weight:500}
+.faq-a p b{color:var(--cy);font-weight:700}
+
+.end{text-align:center;padding:58px 22px 40px}
+.end .scr{font-size:clamp(22px,6vw,30px);margin-bottom:12px;display:block}
+.end h2{font-size:clamp(21px,5.5vw,29px);font-weight:900;color:var(--text);margin-bottom:14px;line-height:1.5}
+.end p{font-size:13.5px;color:var(--sub);max-width:440px;margin:0 auto 28px;line-height:1.95;font-weight:500}
+.end .cta{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(120deg,var(--cy),var(--cy2));color:#03202a;font-size:14.5px;font-weight:800;padding:15px 34px;border-radius:14px;box-shadow:0 12px 30px rgba(25,227,255,.3)}
+.end .cta svg{stroke:#03202a}
+
+footer{border-top:1px solid var(--line);padding:28px 22px calc(42px + env(safe-area-inset-bottom));text-align:center;background:var(--panel)}
+footer .fn{font-family:Georgia,serif;font-size:12px;letter-spacing:.14em;color:var(--cy);margin-bottom:6px;font-weight:600}
+.disc{font-size:10.5px;color:var(--dim);line-height:1.85;max-width:560px;margin:16px auto 0;font-weight:500}
+.src{font-size:10.5px;color:var(--dim);margin-top:10px}
+.src a{color:var(--plat);border-bottom:1px solid var(--line)}
+
+.topbtn{position:fixed;right:16px;bottom:calc(18px + env(safe-area-inset-bottom));z-index:90;width:44px;height:44px;border-radius:50%;background:var(--panel);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--cy);box-shadow:0 8px 22px rgba(0,0,0,.4);opacity:0;pointer-events:none;transform:translateY(10px);transition:.3s}
+.topbtn.on{opacity:1;pointer-events:auto;transform:none}
+
+/* ============ 100項目の演出（軽量・GPU合成のみ） ============ */
+/* パーティクルcanvas（背景の光の粒・星・データストリームを1枚に集約）*/
+#fxCanvas{position:fixed;left:0;top:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.9}
+/* 走査線（セクション切替時に一瞬） */
+.scanline{position:fixed;left:0;right:0;top:0;height:2px;z-index:60;pointer-events:none;opacity:0;background:linear-gradient(90deg,transparent,rgba(25,227,255,.7),transparent);box-shadow:0 0 12px rgba(25,227,255,.6)}
+.scanline.flash{animation:scan 1.1s ease-out}
+@keyframes scan{0%{opacity:0;transform:translateY(0)}10%{opacity:1}100%{opacity:0;transform:translateY(60vh)}}
+
+/* 呼吸するグロー（16-17-25） */
+.glow{animation:breathe 14s ease-in-out infinite}
+.g2{animation-delay:-3s}.g3{animation-delay:-6s}
+@keyframes breathe{0%,100%{opacity:.42;transform:scale(1)}50%{opacity:.6;transform:scale(1.12)}}
+
+/* 多層グリッド：奥行き用の2枚目（16-28 パララックス） */
+.grid-bg2{position:absolute;inset:0;will-change:transform;background-image:linear-gradient(rgba(25,227,255,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(25,227,255,.06) 1px,transparent 1px);background-size:88px 88px;mask-image:radial-gradient(ellipse at 50% 10%,#000,transparent 70%);-webkit-mask-image:radial-gradient(ellipse at 50% 10%,#000,transparent 70%);animation:gridflow 80s linear infinite}
+@keyframes gridflow{0%{background-position:0 0}100%{background-position:0 88px}}
+
+/* レーダー同心円（27） */
+.radar{position:absolute;left:50%;top:0;width:600px;height:600px;transform:translateX(-50%);border-radius:50%;pointer-events:none;opacity:.06;background:repeating-radial-gradient(circle at center,transparent 0,transparent 38px,rgba(25,227,255,.5) 39px,transparent 40px);animation:radarspin 120s linear infinite}
+@keyframes radarspin{0%{transform:translateX(-50%) rotate(0)}100%{transform:translateX(-50%) rotate(360deg)}}
+
+/* ビネット（29） */
+.vignette{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse at center,transparent 55%,rgba(3,4,10,.55) 100%)}
+
+/* 底面の反射光（24） */
+.floor-reflect{position:fixed;left:0;right:0;bottom:0;height:120px;z-index:0;pointer-events:none;background:linear-gradient(0deg,rgba(25,227,255,.05),transparent)}
+
+/* reveal を洗練：左右交互・方向差（32-43） */
+.reveal.from-l{transform:translateY(24px)}
+.reveal.from-r{transform:translateY(24px)}
+.reveal.from-l.on,.reveal.from-r.on{transform:none}
+/* カード出現時に縁を光が一周（45-61） */
+.edge-lit{}
+
+/* stagger（35-51-73）：子要素を時間差で */
+.stagger>*{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s cubic-bezier(.2,.8,.2,1)}
+.stagger.on>*{opacity:1;transform:none}
+.stagger.on>*:nth-child(1){transition-delay:.05s}
+.stagger.on>*:nth-child(2){transition-delay:.15s}
+.stagger.on>*:nth-child(3){transition-delay:.25s}
+.stagger.on>*:nth-child(4){transition-delay:.35s}
+.stagger.on>*:nth-child(5){transition-delay:.45s}
+.stagger.on>*:nth-child(6){transition-delay:.55s}
+
+/* 見出し下線がスッと伸びる（44-75） */
+.sec-h{position:relative}
+.sec-h:after{content:"";position:absolute;left:0;bottom:-6px;height:2px;width:0;background:linear-gradient(90deg,var(--cy),transparent);transition:width 1s cubic-bezier(.2,.8,.2,1);box-shadow:0 0 8px rgba(25,227,255,.5)}
+.reveal.on .sec-h:after{width:64px}
+
+/* 章番号が薄く大きく背景に（38-73） */
+.sec-ghost{position:absolute;right:0;top:-18px;font-family:Georgia,serif;font-size:78px;font-weight:900;color:rgba(255,255,255,.022);letter-spacing:-.04em;pointer-events:none;z-index:0;line-height:1;max-width:100%;overflow:hidden}
+section .wrap{position:relative;overflow:hidden}
+
+/* コーナーブラケット＝照準風（60） */
+.term,.mp,.ban,.champ-tbl,.win{position:relative}
+.bracket-tl,.bracket-br{position:absolute;width:14px;height:14px;pointer-events:none;opacity:.5}
+.bracket-tl{left:8px;top:8px;border-left:2px solid var(--cy);border-top:2px solid var(--cy)}
+.bracket-br{right:8px;bottom:8px;border-right:2px solid var(--cy);border-bottom:2px solid var(--cy)}
+
+/* カードのカラー影で浮遊感（68） */
+.term,.dc,.stat,.wc,.step-body{box-shadow:0 8px 22px rgba(0,0,0,.35),0 2px 10px rgba(25,227,255,.04)}
+
+/* 数字の脈動（52） */
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+.pulse-num{display:inline-block;animation:pulse 2.4s ease-in-out infinite}
+
+/* 優勝リーチ・MVPの点滅（53-75） */
+@keyframes softblink{0%,100%{opacity:1}50%{opacity:.68}}
+.wp.mvp{animation:softblink 3.4s ease-in-out infinite}
+.mp-reach{animation:softblink 3.4s ease-in-out infinite}
+
+/* トロフィー煌めき＋回転（48-78） */
+@keyframes trophyshine{0%,100%{transform:rotate(-4deg) scale(1)}50%{transform:rotate(4deg) scale(1.05)}}
+.win-trophy{animation:trophyshine 5s ease-in-out infinite;filter:drop-shadow(0 4px 14px rgba(255,215,94,.55));will-change:transform}
+
+/* UNLIMIT章の金枠が明滅（54） */
+@keyframes goldframe{0%,100%{opacity:1}50%{opacity:.92}}
+.win{animation:goldframe 8s ease-in-out infinite;box-shadow:0 0 46px rgba(255,215,94,.16)}
+
+/* 章入場フラッシュ（47） */
+.flash-layer{position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 50% 30%,rgba(255,215,94,.5),transparent 60%);opacity:0;border-radius:24px}
+.win.lit .flash-layer{animation:goldflash 1.2s ease-out}
+@keyframes goldflash{0%{opacity:0}15%{opacity:.9}100%{opacity:0}}
+
+/* セクション区切りのネオンライン（83-86） */
+.divline{height:1px;max-width:720px;margin:0 auto;position:relative;background:var(--line2);overflow:hidden}
+.divline:before{content:"";position:absolute;left:0;top:0;height:100%;width:40%;background:linear-gradient(90deg,transparent,var(--cy),transparent);animation:sweep 9s linear infinite;box-shadow:0 0 8px rgba(25,227,255,.4)}
+@keyframes sweep{0%{left:-40%}100%{left:100%}}
+
+/* 進捗バーがネオンの尾（41） */
+.progress{box-shadow:0 0 8px rgba(25,227,255,.5)}
+
+/* リンク下線がスッと（29-44） */
+.src a{position:relative}
+
+/* 引用のタイプ風（42）— 一度だけ幅を広げる */
+.quote-line{overflow:hidden;white-space:nowrap;border-right:2px solid var(--cy);width:0}
+.quote-line.type{animation:typing 2.4s steps(30,end) forwards,caret .7s step-end infinite}
+@keyframes typing{to{width:100%}}
+@keyframes caret{50%{border-color:transparent}}
+
+/* 通過セクションが僅かに沈む（46）— JSでclass付与 */
+section{transition:opacity .5s ease}
+
+/* 読了の紙吹雪（15-81）はcanvasで実施。DOMは増やさない。 */
+
+/* SVGパスが描かれる（39-71） */
+@keyframes draw{to{stroke-dashoffset:0}}
+.draw-icon path,.draw-icon circle,.draw-icon rect{stroke-dasharray:120;stroke-dashoffset:120}
+.draw-icon.on path,.draw-icon.on circle,.draw-icon.on rect{animation:draw 1.1s ease forwards}
+
+/* 省電力・モーション配慮：全アニメを止める */
+@media (prefers-reduced-motion: reduce){
+  *,*:before,*:after{animation:none!important;transition:none!important}
+  #fxCanvas{display:none}
+  .reveal,.stagger>*{opacity:1!important;transform:none!important}
+}
+</style>
+</head>
+<body>
+<!-- ===== スペシャルオファー モーダル（画像バナー版・GAS配信）===== -->
+<div class="so-ov" id="soOv" aria-hidden="true">
+  <div class="so-glow" id="soGlow"></div>
+  <canvas class="so-fx" id="soFx"></canvas>
+  <div class="so-box" id="soBox">
+    <button class="so-x" id="soX" aria-label="閉じる">×</button>
+    <div class="so-ribbon"><span>SPECIAL</span></div>
+    <div class="so-crown">👑</div>
+    <div class="so-head">
+      <div class="so-eyebrow">EXCLUSIVE OFFER</div>
+      <div class="so-title">あなただけの<br><span class="so-title-em">スペシャルオファー</span></div>
+    </div>
+    <div class="so-timer"><span class="so-timer-lbl">オファー終了まで</span><span class="so-timer-val" id="soTimer">--:--:--</span></div>
+    <div class="so-ad" id="soAd">
+      <span class="so-ad-spark" style="top:8px;right:10px">✦</span>
+      <span class="so-ad-spark" style="bottom:8px;left:10px;animation-delay:.8s">✦</span>
+      <div class="so-ad-img" id="soAdImg"><!-- A8タグがここに入る --></div>
+    </div>
+    <div class="so-desc" id="soDesc"></div>
+    <a class="so-cta" id="soCta" href="#" target="_blank" rel="nofollow noopener">詳細を見る →</a>
+    <div class="so-foot-note">※ 本オファーは予告なく終了する場合があります</div>
+  </div>
+</div>
+<button class="so-fab" id="soFab" aria-label="スペシャルオファーを見る">
+  <span class="so-fab-spark">✦</span>
+  <span class="so-fab-tx">スペシャルオファー</span>
+  <span class="so-fab-badge" id="soFabBadge">1</span>
+</button>
+<canvas id="fxCanvas" aria-hidden="true"></canvas>
+<div class="scanline" id="scanline" aria-hidden="true"></div>
+<div class="progress" id="prog"></div>
+
+<div class="navbtn" id="navbtn" aria-label="メニュー"><span></span><span></span><span></span></div>
+<div class="navmask" id="navmask"></div>
+<nav class="navpanel" id="navpanel">
+  <div class="nav-ttl">CONTENTS</div>
+  <a data-to="win"><span class="no">01</span>UNLIMIT 世界制覇の物語</a>
+  <div class="div"></div>
+  <a data-to="types"><span class="no">02</span>大会の種類（公式/非公式）</a>
+  <a data-to="flow"><span class="no">03</span>ALGSの全体像</a>
+  <a data-to="matchpoint"><span class="no">04</span>マッチポイント</a>
+  <a data-to="ban"><span class="no">05</span>キャラBAN</a>
+  <a data-to="words"><span class="no">06</span>用語</a>
+  <div class="div"></div>
+  <a data-to="champs"><span class="no">07</span>歴代優勝チーム</a>
+  <a data-to="japan"><span class="no">08</span>日本のチーム</a>
+  <a data-to="scale"><span class="no">09</span>大会の規模</a>
+  <a data-to="schedule"><span class="no">10</span>年間スケジュール</a>
+  <a data-to="watch"><span class="no">11</span>観る方法</a>
+  <a data-to="drama"><span class="no">12</span>歴代の名勝負</a>
+  <a data-to="faq"><span class="no">13</span>よくある質問</a>
+</nav>
+
+<div class="bgfx"><div class="grid-bg"></div><div class="grid-bg2"></div><div class="radar"></div><div class="glow g1"></div><div class="glow g2"></div><div class="glow g3"></div></div>
+<div class="vignette"></div>
+<div class="floor-reflect"></div>
+
+<main>
+  <header class="hero">
+    <div class="kicker"><span class="dot"></span>APEX 全大会ガイド ・ 公式 &amp; 非公式</div>
+    <h1>Apexの大会、<br><span class="em">ぜんぶ分かる。</span><br>ここは、その教科書。</h1>
+    <p>ALGS、CRカップ、最協決定戦……Apexの大会は実はたくさん。その違いも見方も、この一枚で。まずは、2026年に日本で起きた"事件"から聞いてください。</p>
+    <div class="meta">読了 約6分 ・ 2026年 Year 6 対応</div>
+    <div class="scroll"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6"/></svg></div>
+  </header>
+  <section id="win">
+    <div class="wrap reveal"><span class="sec-ghost">01</span>
+      <div class="sec-h"><span class="big en-h">Champion 2026</span></div>
+      <div class="sec-sub">— はじめに、この話を聞いてください。ルールも用語も、その後でいい。</div>
+      <div class="win">
+        <div class="bracket-tl"></div><div class="bracket-br"></div>
+        <div class="flash-layer"></div>
+        <div class="win-top">
+          <div class="win-trophy">🏆</div>
+          <div class="win-label">ALGS YEAR 6 SPLIT 1 PLAYOFFS ・ CHAMPION</div>
+          <div class="win-team">UNLIMIT</div>
+          <div class="win-sub">2026年7月11日 ・ フランス / パリ（EWC 2026）</div>
+        </div>
+        <div class="win-body">
+          <p class="win-lead">これは、全員が日本人のチームが<b>世界的なFPSタイトルで初めてトロフィーを掲げた</b>、その日の物語です。</p>
+          <div class="win-facts stagger">
+            <div class="wf"><svg class="wic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6-6 6 6M12 3v13M5 21h14"/></svg><p><b>下剋上だった。</b> グループステージではVirtus.proとのタイブレーカーで14位。危うく敗退コース（Survivor Stage）を免れての、ギリギリの決勝進出でした。優勝候補はTeam Liquid や Falcons、Sentinels。UNLIMITはノーマークでした。</p></div>
+            <div class="wf"><svg class="wic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6h16M4 12h16M4 18h10"/></svg><p><b>史上まれに見る大混戦。</b> 決勝はマッチポイント形式で10試合の死闘。<b>20チーム中11チームが優勝リーチ</b>に到達する、史上最も予測不能なロビーに。第7試合ではSentinelsが優勝目前まで迫るも、UNLIMITが直接対決で撃破して望みをつなぎました。</p></div>
+            <div class="wf"><svg class="wic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6z"/></svg><p><b>最後は日本対決。</b> 運命の第10試合、ワールズエッジの最終円。同じ日本の <b>ZETA DIVISION</b> との一騎打ちを制し、悲願の世界一を掴みました。賞金は $600,000（約9,000万円）。</p></div>
+            <div class="wf"><svg class="wic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="13" rx="2"/><path d="M10 9l5 2.5-5 2.5z"/></svg><p><b>世界中が見ていた。</b> UNLIMITが勝利を決めた最終ラウンドは <b>ピーク同時視聴<span class="pulse-num">44万人</span>超</b>。今年のApex最多視聴イベントとなり、EWC史上で最も観られたApex大会になりました。</p></div>
+          </div>
+          <div class="win-players">
+            <span class="wp mvp">Peace ・ 決勝MVP</span>
+            <span class="wp">Yulariman</span>
+            <span class="wp">Xtsuvi</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="q">
+    <div class="wrap reveal">
+      <div class="sec-h"><span class="big en-h">Question</span><span class="scr script">question</span></div>
+      <div class="sec-sub">— ……とはいえ正直、大会のことよく分かってない。大丈夫、ほぼ全員そうです。ここから、やさしくほどきます。</div>
+      <div class="pains stagger">
+        <div class="pain"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 0 1 4.5 1.5c0 1.5-2 2-2 3M12 17h.01"/></svg><div><b>ALGSって何の略？</b><span>なんか毎週やってる大会…？</span></div></div>
+        <div class="pain"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M8 15s1.5-2 4-2 4 2 4 2M9 9h.01M15 9h.01"/></svg><div><b>ENCってやつ、急に出た</b><span>ALGSとは違うの？</span></div></div>
+        <div class="pain"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6h16M4 12h16M4 18h10"/></svg><div><b>マッチポイントが謎</b><span>なんで急に優勝が決まるの？</span></div></div>
+        <div class="pain"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M5.6 5.6l12.8 12.8"/></svg><div><b>キャラBANって何？</b><span>いつの間に使えなくなってる</span></div></div>
+        <div class="pain"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="13" rx="2"/><path d="M10 9l5 2.5-5 2.5z"/></svg><div><b>どこで見れるの？</b><span>日本語の配信ってある？</span></div></div>
+        <div class="pain"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3l2.5 5 5.5.8-4 3.9.9 5.5L12 21l-4.9-2.6.9-5.5-4-3.9 5.5-.8z"/></svg><div><b>日本のチームは強いの？</b><span>誰を応援すればいい？</span></div></div>
+      </div>
+      <p class="pain-note">その全部を、<em>このページで解決します。</em></p>
+    </div>
+  </section>
+  <div class="divline"></div>
+  <section id="types">
+    <div class="wrap reveal"><span class="sec-ghost">02</span>
+      <div class="sec-h"><span class="big en-h">Tournaments</span><span class="scr script">types</span></div>
+      <div class="sec-sub">— Apexの大会は「公式」と「非公式」に分かれます。まずこの地図を頭に。</div>
+
+      <div class="tcat">公式大会 <span class="tcat-en">Official ・ EA/Respawn主催</span></div>
+      <div class="terms">
+        <div class="term" data-abbr="ALGS"><div class="tt"><span class="abbr">ALGS</span><span class="full">Apex Legends Global Series</span></div><div class="desc"><b>Apex最高峰の公式世界リーグ</b>。EA公式が主催し、世界4地域のプロが年間王者と数億円を懸けて戦う。このページで詳しく解説するのが主にこれ。<b>プロの本気</b>が見たいならALGS。</div></div>
+        <div class="term" data-abbr="V最"><div class="tt"><span class="abbr">最協決定戦</span><span class="full">VTuber最協決定戦（渋谷ハル主催）</span></div><div class="desc">個人VTuber<b>渋谷ハルが主催</b>する、VTuber限定の招待制大会。にじさんじ・ホロライブ等から総勢60名20チームが参加。本配信は同時視聴16万人超と、コミュニティ大会の枠を超えた人気。演出のクオリティの高さでも知られる。</div></div>
+      </div>
+
+      <div class="tnote">
+        <b>ざっくり言うと：</b>ガチのプロの世界一を決めるのが<b>ALGS(公式)</b>、推しの配信者が集まってワイワイ盛り上がるのが<b>CRカップ・最協(非公式)</b>。同じApexの大会でも、目的も雰囲気もまるで別物です。このページでは主に公式のALGSを掘り下げます。
+      </div>
+    </div>
+  </section>
+  <section id="flow">
+    <div class="wrap reveal"><span class="sec-ghost">03</span>
+      <div class="sec-h"><span class="big en-h">Structure</span><span class="scr script">structure</span></div>
+      <div class="sec-sub">— ALGS＝Apexの公式世界大会。まず“1年の流れ”を掴みましょう。</div>
+      <div class="flow">
+        <div class="flow-line"></div>
+        <div class="step reveal from-l">
+          <div class="node"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 2.5 15.5 0 18M12 3c-2.5 2.5-2.5 15.5 0 18"/></svg></div>
+          <div class="step-body"><div class="en">STAGE 1</div><h3>オンラインオープン</h3><p>誰でも参加できる予選。勝ち抜くとプロリーグへの切符が手に入る、みんなの入口。</p><span class="pin">誰でも参加OK</span></div>
+        </div>
+        <div class="step reveal from-r">
+          <div class="node"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14.5 4l5.5 5.5-9 9L5.5 13z"/><path d="M4 20l3-1"/></svg></div>
+          <div class="step-body"><div class="en">STAGE 2</div><h3>チャレンジャーサーキット</h3><p>プロリーグ未所属チームが「昇格」を目指す登竜門。プロリーグと並行して開催されます。</p><span class="pin">アマチュアの戦い</span></div>
+        </div>
+        <div class="step reveal from-l">
+          <div class="node"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 4h10v5a5 5 0 0 1-10 0zM5 6H3v1a3 3 0 0 0 3 3M19 6h2v1a3 3 0 0 1-3 3M9 15h6M8 20h8M12 15v5"/></svg></div>
+          <div class="step-body"><div class="en">STAGE 3</div><h3>プロリーグ</h3><p>各地域トップ30チームのリーグ戦。Split 1・2の2期制。ここでの成績が次の進出を決める、いわば <b>レギュラーシーズン</b>。</p><span class="pin">プロの主戦場</span></div>
+        </div>
+        <div class="step reveal from-r">
+          <div class="node"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3c1.5 3 4 4 4 7a4 4 0 0 1-8 0c0-1 .5-2 1-2.5M12 21c-3 0-5-2-5-5"/></svg></div>
+          <div class="step-body"><div class="en">STAGE 4</div><h3>プレイオフ（LAN）</h3><p>各地域の上位が世界から集まる、現地開催の大会。ネットではなく会場で戦う「LAN」。世界規模の真剣勝負です。</p><span class="pin">国際LAN</span></div>
+        </div>
+        <div class="step reveal from-l">
+          <div class="node"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 8l3.5 3L12 5l4.5 6L20 8v9H4zM4 20h16"/></svg></div>
+          <div class="step-body"><div class="en">FINAL</div><h3>チャンピオンシップ</h3><p>1年の集大成。頂点40チームが年間王者と最高賞金を懸けて激突。<b>3年連続で札幌開催</b>。日本で世界一が決まります。</p><span class="pin">年間最終決戦</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="matchpoint">
+    <div class="wrap reveal"><span class="sec-ghost">04</span>
+      <div class="sec-h"><span class="big en-h">Match Point</span></div>
+      <div class="sec-sub">— さっきの「11チームが優勝リーチ」の正体がこれ。分かると終盤が何倍も面白い。</div>
+      <div class="mp">
+        <div class="bracket-tl"></div><div class="bracket-br"></div>
+        <div class="mp-team"><span class="nm">Aチーム</span><div class="mp-track"><div class="mp-line"></div><div class="mp-fill a" id="mpA"></div></div></div>
+        <div class="mp-team"><span class="nm">Bチーム</span><div class="mp-track"><div class="mp-line"></div><div class="mp-fill b" id="mpB"></div></div></div>
+        <div class="mp-team"><span class="nm">Cチーム</span><div class="mp-track"><div class="mp-line"></div><div class="mp-fill c" id="mpC"></div></div></div>
+        <div class="mp-steps">
+          <b>①</b> まず全チーム、試合を重ねてポイントを貯めます（順位＋キル）。<br>
+          <b>②</b> 誰かが <b>50ポイント</b> を超えると「<span class="mp-reach">優勝リーチ</span>」が点灯。<br>
+          <b>③</b> でも50超えだけでは優勝じゃない。<b>リーチ状態で“1位”を取る</b>と、その瞬間に優勝が確定します。<br><br>
+          つまり「ポイント1位＝優勝」ではありません。<b>リーチしてから、もう一度キメる</b>必要がある。だから最後の1試合まで、誰が勝つか分からないのです。
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="ban">
+    <div class="wrap reveal"><span class="sec-ghost">05</span>
+      <div class="sec-h"><span class="big en-h">Legend Ban</span></div>
+      <div class="sec-sub">— Year 5から入った新ルール。「あのキャラ使えなくなってる」の正体。</div>
+      <div class="ban">
+        <div class="bracket-tl"></div><div class="bracket-br"></div>
+        <div class="ban-row"><span class="ban-r">Game 1</span>
+          <span class="leg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="8"/></svg></span>
+          <span class="leg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6z"/></svg></span>
+          <span class="leg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3c1.5 3 4 4 4 7a4 4 0 0 1-8 0c0-3 2.5-4 4-7z"/></svg></span>
+          <span class="leg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13 2L4 14h6l-1 8 9-12h-6z"/></svg></span>
+          <span class="leg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg></span>
+          <span class="ban-cap">全員使える</span>
+        </div>
+        <div class="ban-row"><span class="ban-r">Game 2</span>
+          <span class="leg x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="8"/></svg></span>
+          <span class="leg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6z"/></svg></span>
+          <span class="leg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3c1.5 3 4 4 4 7a4 4 0 0 1-8 0c0-3 2.5-4 4-7z"/></svg></span>
+          <span class="leg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13 2L4 14h6l-1 8 9-12h-6z"/></svg></span>
+          <span class="leg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg></span>
+          <span class="ban-cap">人気の1体がBAN</span>
+        </div>
+        <div class="ban-row"><span class="ban-r">Game 3</span>
+          <span class="leg x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="8"/></svg></span>
+          <span class="leg x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6z"/></svg></span>
+          <span class="leg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3c1.5 3 4 4 4 7a4 4 0 0 1-8 0c0-3 2.5-4 4-7z"/></svg></span>
+          <span class="leg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13 2L4 14h6l-1 8 9-12h-6z"/></svg></span>
+          <span class="leg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg></span>
+          <span class="ban-cap">さらにもう1体</span>
+        </div>
+        <div class="ban-note">ルールはシンプル。<b>1試合ごとに、最も多くのチームが選んだレジェンドが、次から使用禁止</b>になります。人気キャラが1体ずつ消えていく。<br>結果、いろんなキャラを扱える“引き出しの多いチーム”が有利に。戦略性がぐっと深まる、良いルールです。</div>
+      </div>
+    </div>
+  </section>
+  <section id="words">
+    <div class="wrap reveal"><span class="sec-ghost">06</span>
+      <div class="sec-h"><span class="big en-h">Words</span><span class="scr script">words</span></div>
+      <div class="sec-sub">— LAN、CP、LCQ…試合で飛び交うその他の言葉。これも分かればもう怖くない。</div>
+      <div class="terms stagger">
+        <div class="term" data-abbr="LAN"><div class="tt"><span class="abbr">LAN</span><span class="full">ラン</span></div><div class="desc"><b>現地開催のオフライン大会</b>のこと。全チームが同じ会場・同じ環境で戦うので、回線差が出ません。ここでの勝利が“本物の実力”とされています。</div></div>
+        <div class="term" data-abbr="CP"><div class="tt"><span class="abbr">CP</span><span class="full">Championship Points ／ チャンピオンシップP</span></div><div class="desc">1年を通して貯まる<b>「札幌への出場権ポイント」</b>。各大会の成績に応じてもらえ、多く集めたチームが最終決戦に出られます。シーズンを通した、いちばん大事な指標。</div></div>
+        <div class="term" data-abbr="LCQ"><div class="tt"><span class="abbr">LCQ</span><span class="full">Last Chance Qualifier ／ 敗者復活</span></div><div class="desc">その名の通り<b>“最後のチャンス”</b>。チャンピオンシップ出場をまだ決められていないチームの、ラストの椅子取りゲーム。ここからドラマが生まれます。</div></div>
+      </div>
+    </div>
+  </section>
+  <div class="divline"></div>
+  <section>
+    <div class="wrap reveal">
+      <div class="promo">
+        <div class="badge"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3l2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4L4.2 8.7l5.4-.8z"/></svg></div>
+        <h3>強いチームには、理由がある</h3>
+        <p>彼らのように、まずは自分のプレイを知ることから。キャラ相性診断や戦績チェックで、次の一歩が見えてきます。</p>
+        <a href="https://mexastarted.github.io/apex/" class="go">APEX激やばツールへ
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke-width="1.7"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+  <section id="champs">
+    <div class="wrap reveal"><span class="sec-ghost">07</span>
+      <div class="sec-h"><span class="big en-h">Champions</span><span class="scr script">history</span></div>
+      <div class="sec-sub">— 歴代の年間王者。「このチーム、いつも強いな」が見えてきます。</div>
+      <div class="champ-tbl">
+        <div class="ct-row head"><span>YEAR</span><span>CHAMPION（年間王者）</span><span>開催</span></div>
+        <div class="ct-row"><span class="ct-yr">Y2</span><span class="ct-team">DarkZero<span class="rg">豪州ロスター ・ 連覇</span></span><span class="ct-when">2022</span></div>
+        <div class="ct-row"><span class="ct-yr">Y3</span><span class="ct-team">TSM<span class="rg">北米 ・ 20位からの大逆転</span></span><span class="ct-when">2023</span></div>
+        <div class="ct-row"><span class="ct-yr">Y4</span><span class="ct-team">GoNext Esports<span class="rg">EMEA ・ 30位からの奇跡</span></span><span class="ct-when">2025年2月</span></div>
+        <div class="ct-row hot"><span class="ct-yr">Y5</span><span class="ct-team">Oblivion<span class="rg">北米 ・ 9チーム大混戦を制す</span></span><span class="ct-when">2026年1月</span></div>
+      </div>
+      <div class="champ-tbl" style="margin-top:8px">
+        <div class="ct-note">※ 上は年間王者（Championship優勝）の一覧です。Year 1（2020–21）はコロナ禍で地域別の開催でした。各Splitのプレイオフ優勝（例：Y4 REJECT WINNITY、Y6 UNLIMIT など）は、上の「歴代の名勝負」で紹介しています。</div>
+      </div>
+    </div>
+  </section>
+  <section id="japan">
+    <div class="wrap reveal"><span class="sec-ghost">08</span>
+      <div class="jp">
+        <div class="mark">JAPAN</div>
+        <h3>日本のチーム、<br>いま世界の頂点にいます。</h3>
+        <p>2026年、<span class="team">UNLIMIT</span> が全員日本人ロスターとして世界制覇。さらに <span class="team">ZETA DIVISION</span> が決勝で最後まで競り、2024年には <span class="team">REJECT WINNITY</span> もプレイオフを制しています。</p>
+        <p>もう「日本は健闘している」段階ではありません。<b style="color:var(--cy);font-weight:700">世界で勝つ地域</b>になった。その最前線を、地元・札幌のチャンピオンシップで応援できる。それが今のApexシーンです。</p>
+      </div>
+    </div>
+  </section>
+  <section id="scale">
+    <div class="wrap reveal"><span class="sec-ghost">09</span>
+      <div class="sec-h"><span class="big en-h">Scale</span><span class="scr script">scale</span></div>
+      <div class="sec-sub">— Year 6は過去最大規模。数字にすると、本気度が伝わります。</div>
+      <div class="stats stagger">
+        <div class="stat g"><b data-count="7" data-prefix="$" data-suffix="M">$7M</b><span>年間賞金総額<br>（約10億円超）</span></div>
+        <div class="stat"><b data-count="4">4</b><span>世界の地域<br>で同時開催</span></div>
+        <div class="stat"><b data-count="3">3</b><span>国際LAN<br>イベント</span></div>
+      </div>
+    </div>
+  </section>
+  <section id="schedule">
+    <div class="wrap reveal"><span class="sec-ghost">10</span>
+      <div class="sec-h"><span class="big en-h">Schedule</span><span class="scr script">schedule</span></div>
+      <div class="sec-sub">— ●印が、世界が注目する現地LAN。ここだけ押さえてもOK。</div>
+      <div class="sched">
+        <div class="sch"><div class="d">Feb – Mar</div><h4>オンラインオープン</h4><p>誰でも参加できる予選。ここからシーズンが始まります。</p></div>
+        <div class="sch"><div class="d">Apr –</div><h4>プロリーグ Split 1</h4><p>4月4日開幕。各地域でリーグ戦がスタート。</p></div>
+        <div class="sch lan"><div class="d">Jul 7 – 11</div><h4>Split 1 プレイオフ<span class="lan-badge">LAN・終了</span></h4><p>パリ（EWC）で開催。UNLIMITが優勝。賞金 約$2M。</p></div>
+        <div class="sch"><div class="d">後半 –</div><h4>プロリーグ Split 2</h4><p>2期目のリーグ戦。チャンピオンシップへの最終レース。</p></div>
+        <div class="sch lan"><div class="d">Oct 29 – Nov 1</div><h4>Split 2 プレイオフ<span class="lan-badge">LAN</span></h4><p>ラスベガス開催。賞金 約$2M。ポイント獲得の最後の大舞台。</p></div>
+        <div class="sch"><div class="d">Nov</div><h4>ラストチャンス予選</h4><p>敗者復活。札幌への最後の椅子を懸けた戦い。</p></div>
+        <div class="sch lan"><div class="d">Season Final</div><h4>チャンピオンシップ<span class="lan-badge">札幌</span></h4><p>3年連続で日本・札幌開催。世界一が、ここ日本で決まります。</p></div>
+      </div>
+    </div>
+  </section>
+  <section id="watch">
+    <div class="wrap reveal"><span class="sec-ghost">11</span>
+      <div class="sec-h"><span class="big en-h">How to Watch</span></div>
+      <div class="sec-sub">— ここまで分かれば、あとは観るだけ。全部無料、スマホでOKです。</div>
+      <div class="watch stagger">
+        <div class="wc"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="13" rx="2"/><path d="M10 9l5 2.5-5 2.5z"/></svg><div><h4>Twitch</h4><p>公式は twitch.tv/playapex。アジア北（日本含む）は日本語配信で観られることも。</p></div></div>
+        <div class="wc"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M10 9l5 3-5 3z"/></svg><div><h4>YouTube</h4><p>「ALGS」「Apex 大会」で検索。日本語解説つきのミラー配信が見つかります。</p></div></div>
+      </div>
+      <p style="font-size:12px;color:var(--sub);margin-top:16px;text-align:center;line-height:1.8;font-weight:500">はじめてなら「日本語解説つきミラー配信」がおすすめ。実況が用語も教えてくれるので、このページと合わせれば安心です。</p>
+    </div>
+  </section>
+  <div class="divline"></div>
+  <section>
+    <div class="wrap reveal">
+      <div class="promo">
+        <div class="badge"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 7h16M4 12h16M4 17h10"/><circle cx="19" cy="17" r="2"/></svg></div>
+        <h3>大会を知ったら、次は自分の番</h3>
+        <p>キャラ診断、戦績チェック、プレイヤーウォッチ。Apexをもっと楽しむための道具が、ぜんぶそろっています。</p>
+        <a href="https://mexastarted.github.io/apex/" class="go">APEX激やばツールへ
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke-width="1.7"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+  <section id="drama">
+    <div class="wrap reveal"><span class="sec-ghost">12</span>
+      <div class="sec-h"><span class="big en-h">Legendary</span><span class="scr script">stories</span></div>
+      <div class="sec-sub">— お疲れさまでした。ルールが分かった今なら、この名勝負がもっと熱い。</div>
+      <div class="drama stagger">
+
+        <div class="dc">
+          <div class="dc-h"><span class="dc-yr">Y6 S1</span><div class="dc-t"><h4>UNLIMIT、日本人初の世界制覇</h4><div class="loc">2026年7月11日 / パリ（EWC）・賞金 $600,000</div></div><span class="dc-champ">🏆 UNLIMIT</span></div>
+          <div class="dc-body">
+            <p><b>優勝：UNLIMIT</b>（Yulariman・Xtsuvi・Peace ／ アジア北）。全員が日本人のチームが、世界的なFPSタイトルで初めてトロフィーを掲げた歴史的な一戦。</p>
+            <p style="margin-top:9px">グループステージではVirtus.proとのタイブレーカーで<b>14位</b>、危うく敗退コースを免れるギリギリの通過。優勝候補はTeam Liquid・Falcons・Sentinelsで、UNLIMITはノーマークだった。ところが決勝のマッチポイント形式(10試合)で覚醒。<b>20チーム中11チームが優勝リーチに到達</b>する史上まれに見る大混戦の中、第7試合ではSentinelsの優勝を直接対決で阻止。運命の第10試合、ワールズエッジの最終円で、同じ日本の<b>ZETA DIVISION</b>との一騎打ちを制して決着した。決勝MVPはPeace。優勝を決めた最終ラウンドは<b>ピーク44万人超</b>が視聴し、今年のApex最多視聴イベントとなった。</p>
+            <div class="dc-tags"><span class="dc-tag">#日本人初の世界一</span><span class="dc-tag">#14位からの下剋上</span><span class="dc-tag">#日本対決の決着</span><span class="dc-tag">#44万視聴</span></div>
+          </div>
+        </div>
+
+        <div class="dc">
+          <div class="dc-h"><span class="dc-yr">Y5</span><div class="dc-t"><h4>Oblivion、まさかの初戴冠</h4><div class="loc">2026年1月 / 札幌・年間王者</div></div><span class="dc-champ">🏆 Oblivion</span></div>
+          <div class="dc-body">
+            <p><b>優勝：Oblivion</b>（北米）。札幌で行われた年間最終決戦を、アメリカの伏兵が制して初優勝を飾った。</p>
+            <p style="margin-top:9px">決勝は<b>20チーム中9チームがマッチポイントに到達</b>する大接戦。日本の<b>UNLIMIT</b>もこの舞台で10位と健闘し、翌シーズンの世界制覇へとつながる経験を積んだ。マッチポイント形式らしく、最後まで優勝チームが読めない展開が続いた一戦だった。</p>
+            <div class="dc-tags"><span class="dc-tag">#札幌</span><span class="dc-tag">#9チーム大混戦</span><span class="dc-tag">#初戴冠</span></div>
+          </div>
+        </div>
+
+        <div class="dc">
+          <div class="dc-h"><span class="dc-yr">Y4</span><div class="dc-t"><h4>GoNext、30位の伏兵が世界を獲る</h4><div class="loc">2025年2月2日 / 札幌・賞金 $600,000</div></div><span class="dc-champ">🏆 GoNext</span></div>
+          <div class="dc-body">
+            <p><b>優勝：GoNext Esports</b>（Uxako・Hiarka・zhidan ／ EMEA）。<b>EMEA地域から史上初のALGS世界王者</b>。しかも予選を<b>30位ギリギリ</b>で通過した、まさかの伏兵だった。</p>
+            <p style="margin-top:9px">世界ランキング29位、直前のプロリーグも19位・5位と平凡。誰も優勝を予想しなかった。決勝は9試合の激戦で、<b>20チーム中ほぼ半数が優勝リーチ</b>に到達する大混戦に。優勝候補のAllianceは第8試合で12位に沈んで自滅、その隙を突いてGoNextが第9試合で1位を奪取。最終円ではCatalystの壁で他2チームを強制的に戦わせ、漁夫の利で頂点に立った。北米一強だった時代の終わりを告げ、EMEA台頭を決定づけた記念碑的な勝利。札幌開催は、この年が初めてだった。</p>
+            <div class="dc-tags"><span class="dc-tag">#30位からの奇跡</span><span class="dc-tag">#EMEA初優勝</span><span class="dc-tag">#札幌初開催</span></div>
+          </div>
+        </div>
+
+        <div class="dc">
+          <div class="dc-h"><span class="dc-yr">Y4 S1</span><div class="dc-t"><h4>REJECT、日本に歓喜をもたらす</h4><div class="loc">2024 / Split 1 プレイオフ</div></div><span class="dc-champ">🏆 REJECT</span></div>
+          <div class="dc-body">
+            <p><b>優勝：REJECT WINNITY</b>（日本）。Split 1プレイオフという国際LANの舞台で、日本チームがトップに立った快挙。</p>
+            <p style="margin-top:9px">当時、日本チームが世界規模のLANを制するのは極めて珍しく、国内のApexシーンが大きく沸いた。「日本も世界で勝てる」——後のUNLIMITの世界制覇につながる、その第一歩を示した重要な勝利だった。</p>
+            <div class="dc-tags"><span class="dc-tag">#日本優勝</span><span class="dc-tag">#国際LAN制覇</span></div>
+          </div>
+        </div>
+
+        <div class="dc">
+          <div class="dc-h"><span class="dc-yr">Y3</span><div class="dc-t"><h4>TSM、絶体絶命からの3連勝</h4><div class="loc">2023年9月 / バーミンガム・賞金 $600,000</div></div><span class="dc-champ">🏆 TSM</span></div>
+          <div class="dc-body">
+            <p><b>優勝：TSM</b>（ImperialHal・Reps・Verhulst ／ 北米）。決勝史上に残る大逆転劇で世界王者に。</p>
+            <p style="margin-top:9px">イギリス・バーミンガムでの決勝、TSMは最初の3試合を<b>17位・10位・20位</b>と大きく出遅れた。第3試合ではIGLのImperialHalが降下直後に倒され、優勝どころか大会が第4試合で終わりかけるほどの絶望的な状況。しかし「失うものは何もない」とギアを上げたTSMは、<b>第6・7・8試合を3連勝</b>。最終第8試合では、最終円の好位置を占めていたBLVKHVNDに対し、ImperialHalがHorizonの重力リフトで急襲し、Verhulstの援護で撃破して優勝を決めた。合計83ポイント。ImperialHalは<b>マウス＆キーボードとコントローラーの両方で国際優勝を果たした初の選手</b>となり、MVPに輝いた。「バトロワで3連勝なんて魔法みたいだ」とはコーチの言葉。</p>
+            <div class="dc-tags"><span class="dc-tag">#20位からの大逆転</span><span class="dc-tag">#奇跡の3連勝</span><span class="dc-tag">#ImperialHal伝説</span></div>
+          </div>
+        </div>
+
+        <div class="dc">
+          <div class="dc-h"><span class="dc-yr">Y2</span><div class="dc-t"><h4>DarkZero、約束を果たす連覇</h4><div class="loc">2022年7月 / ローリー(米)・賞金 $500,000</div></div><span class="dc-champ">🏆 DarkZero</span></div>
+          <div class="dc-body">
+            <p><b>優勝：DarkZero</b>（Zer0・Genburten・Sharky ／ オーストラリア勢）。コロナ禍を越えて開催された、LAN復活の記念すべき大会。</p>
+            <p style="margin-top:9px">この3人は前回のSplit 2をReigniteとして制していたが、その時は主力の<b>Genburtenがコロナで出場できず</b>、Zer0は「次こそ彼と一緒に獲る」と誓っていた。その約束通り、Genburtenを迎えた完全体で臨んだ一戦。決勝は序盤つまずき最初の2試合はキル0だったが、World's Edgeを離れると3試合で13キルと爆発。第8試合で<b>52ポイント</b>に到達しリーチ、続く第9試合で1位を取り優勝を決めた。相手は最終円で好位置を取っていたSpacestation。オーストラリアのロスターによる、名前を変えての実質連覇。「バトロワで確実な勝利なんて無いのに、有言実行した」と称賛された。</p>
+            <div class="dc-tags"><span class="dc-tag">#LAN復活</span><span class="dc-tag">#有言実行の連覇</span><span class="dc-tag">#豪州の強豪</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+  <section>
+    <div class="wrap reveal">
+      <div class="promo">
+        <div class="badge"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3l2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4L4.2 8.7l5.4-.8z"/></svg></div>
+        <h3>強いチームには、理由がある</h3>
+        <p>彼らのように、まずは自分のプレイを知ることから。キャラ相性診断や戦績チェックで、次の一歩が見えてきます。</p>
+        <a href="https://mexastarted.github.io/apex/" class="go">APEX激やばツールへ
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke-width="1.7"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+  <section id="faq">
+    <div class="wrap reveal"><span class="sec-ghost">13</span>
+      <div class="sec-h"><span class="big en-h">Q &amp; A</span></div>
+      <div class="sec-sub">— まだ気になること、ありますよね。</div>
+      <div class="faq">
+        <div class="faq-item"><div class="faq-q">ALGSとENCとEWCの違いが結局分からない<span class="pl">＋</span></div><div class="faq-a"><p>ざっくり：<b>ALGS</b>＝Apex公式の年間リーグ（クラブ対抗）。<b>ENC</b>＝国別対抗のワールドカップ。<b>EWC</b>＝色んなゲーム合同の巨大祭典で、ApexのALGSの一部がその中で開催された関係です。なお<b>CRカップや最協決定戦</b>は主催者が違う“非公式”の大会。詳しくは上の「大会の種類」を見てください。</p></div></div>
+        <div class="faq-item"><div class="faq-q">Apexをやってなくても楽しめる？<span class="pl">＋</span></div><div class="faq-a"><p>楽しめます。プレイしない人でも「プロの動き」「終盤の緊張感」は観るだけで面白い。このページで基本を押さえれば、実況が分かって一気にハマります。</p></div></div>
+        <div class="faq-item"><div class="faq-q">どのチームを応援すればいい？<span class="pl">＋</span></div><div class="faq-a"><p>まずは日本のチーム（UNLIMIT、ZETA DIVISION、REJECT など）から追うのがおすすめ。応援対象がいると、勝敗に一喜一憂できて観戦が何倍も楽しくなります。推し選手を1人見つけるのが近道です。</p></div></div>
+        <div class="faq-item"><div class="faq-q">情報が古くなってない？<span class="pl">＋</span></div><div class="faq-a"><p>このページはALGS Year 6（2026年シーズン）の情報に基づいています。ALGSは年ごとにフォーマットが変わるため、最新の日程・結果は公式（algs.ea.com）やLiquipediaでのご確認をおすすめします。</p></div></div>
+      </div>
+    </div>
+  </section>
+  <section class="end reveal">
+    <span class="scr script">thank you</span>
+    <h2>もう、<br>「分からない」とは言わせない。</h2>
+    <p>次にALGSを観るとき、あなたはきっと実況の言葉が分かる。推しを見つけて、終盤の1試合に手に汗握る。そんな楽しみ方が、もう始まっています。</p>
+    <a href="https://mexastarted.github.io/apex/" class="cta">APEX激やばツールをひらく
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#03202a" stroke-width="1.7"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
+  </section>
+  <footer>
+    <div class="fn">APEX 激やばツール</div>
+    <div class="disc">本ページはApex Legends eスポーツ（ALGS）を日本語で分かりやすく解説する非公式のファンコンテンツです。Apex Legends および ALGS は Electronic Arts Inc. の商標です。本ページは EA／Respawn Entertainment とは一切関係ありません。掲載情報は Year 6 シーズン時点のもので、最新の日程・ルールは公式をご確認ください。</div>
+    <div class="src">出典：<a href="https://algs.ea.com">algs.ea.com</a> ／ <a href="https://liquipedia.net/apexlegends">Liquipedia</a></div>
+  </footer>
+</main>
+
+<div class="topbtn" id="topbtn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M18 15l-6-6-6 6"/></svg></div>
+
+<script>
+var REDUCE = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ===== スペシャルオファー（画像バナー版・GAS配信・24hキャッシュ・フォールバック）===== */
+(function(){
+  /* ▼▼▼ GASのデプロイURLをここに貼る（未設定なら内蔵デフォルトのみで動作）▼▼▼ */
+  var SO_GAS_URL = '';
+  /* ▲▲▲ 例: https://script.google.com/macros/s/xxxxx/exec ▲▲▲ */
+
+  /* 内蔵デフォルト広告（GASが無い/失敗/空の時のフォールバック。Acerを初期登録）*/
+  var DEFAULT_OFFERS = [
+    {
+      uid:'acer_default',
+      a8tag:'<a href="https://px.a8.net/svt/ejp?a8mat=4B85OY+APSWS2+5G54+5YZ75" rel="nofollow" target="_blank"><img border="0" width="300" height="250" alt="Acer公式オンラインストア" src="https://www28.a8.net/svt/bgt?aid=260721106648&wid=001&eno=01&mid=s00000025420001003000&mc=1"></a><img border="0" width="1" height="1" src="https://www19.a8.net/0.gif?a8mat=4B85OY+APSWS2+5G54+5YZ75" alt="">',
+      desc:'世界160か国以上で展開する台湾発のPCメーカー【Acer公式オンラインストア】',
+      end: Date.now()+3*86400000
+    }
+  ];
+
+  var CACHE_KEY='apexGuideOfferCache';   // 受信データのキャッシュ
+  var SEEN_KEY ='apexGuideOfferSeen';    // 1日1回表示の当日フラグ
+  var PICK_KEY ='apexGuideOfferPick';    // その日に選んだ広告(uid)を固定
+  var CACHE_TTL=24*3600*1000;            // 24時間
+
+  var ov=document.getElementById('soOv'),adImg=document.getElementById('soAdImg');
+  var descEl=document.getElementById('soDesc'),ctaEl=document.getElementById('soCta');
+  var timerEl=document.getElementById('soTimer'),xBtn=document.getElementById('soX');
+  var fab=document.getElementById('soFab'),fabBadge=document.getElementById('soFabBadge'),fx=document.getElementById('soFx');
+  if(!ov||!adImg)return;
+
+  function todayStr(){var d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();}
+  var isLocal=(location.protocol==='file:'||/^(localhost|127\.0\.0\.1|0\.0\.0\.0)$/.test(location.hostname)||location.hostname==='');
+
+  /* ---- キャッシュ読み書き ---- */
+  function readCache(){
+    try{var raw=localStorage.getItem(CACHE_KEY);if(!raw)return null;var o=JSON.parse(raw);
+      if(!o||!o.offers||!o.offers.length)return null;return o;}catch(e){return null;}
+  }
+  function writeCache(offers){
+    try{localStorage.setItem(CACHE_KEY,JSON.stringify({ts:Date.now(),offers:offers}));}catch(e){}
+  }
+  function cacheFresh(c){return c&&(Date.now()-c.ts)<CACHE_TTL;}
+
+  /* ---- GAS受信（JSONP不要、fetch。失敗しても例外を投げない）---- */
+  function fetchGAS(cb){
+    if(!SO_GAS_URL){cb(null);return;}
+    var done=false;
+    var to=setTimeout(function(){if(!done){done=true;cb(null);}},6000);
+    try{
+      fetch(SO_GAS_URL,{method:'GET'}).then(function(r){return r.json();}).then(function(j){
+        if(done)return;done=true;clearTimeout(to);
+        if(j&&j.ok&&j.offers&&j.offers.length)cb(j.offers);else cb(null);
+      }).catch(function(){if(!done){done=true;clearTimeout(to);cb(null);}});
+    }catch(e){if(!done){done=true;clearTimeout(to);cb(null);}}
+  }
+
+  /* ---- 有効な広告(締切前)だけ ---- */
+  function validOffers(list){
+    var now=Date.now(),out=[];
+    for(var i=0;i<list.length;i++){var o=list[i];if(o&&o.a8tag&&(!o.end||o.end>now))out.push(o);}
+    return out;
+  }
+
+  /* ---- その日の1件を決定（同日は同じ広告を出す）---- */
+  function decideOffer(list){
+    var valid=validOffers(list);
+    if(!valid.length)return null;
+    /* 当日すでに選択済みなら、それを維持（ある限り）*/
+    var pickUid='';try{var p=JSON.parse(localStorage.getItem(PICK_KEY)||'null');if(p&&p.day===todayStr())pickUid=p.uid;}catch(e){}
+    if(pickUid){for(var i=0;i<valid.length;i++)if(valid[i].uid===pickUid)return valid[i];}
+    /* 未選択ならランダム */
+    var pick=valid[Math.floor(Math.random()*valid.length)];
+    try{localStorage.setItem(PICK_KEY,JSON.stringify({day:todayStr(),uid:pick.uid}));}catch(e){}
+    return pick;
+  }
+
+  /* ---- リンクURLをA8タグから抽出（CTAボタン用）---- */
+  function extractHref(tag){
+    var m=tag.match(/<a[^>]*href=["']([^"']+)["']/i);
+    return m?m[1]:'#';
+  }
+
+  var curTimer=null;
+  function renderOffer(o){
+    /* 画像バナー（A8タグを丸ごと挿入）*/
+    adImg.classList.remove('img-fail');
+    adImg.innerHTML=o.a8tag;
+    /* 画像ロード失敗のフォールバック */
+    var img=adImg.querySelector('img');
+    if(img){img.onerror=function(){this.style.display='none';adImg.classList.add('img-fail');};}
+    /* 説明文 */
+    descEl.textContent=o.desc||'';
+    /* CTAリンク */
+    ctaEl.href=extractHref(o.a8tag);
+    /* カウントダウン */
+    startTimer(o.end);
+  }
+
+  function startTimer(endMs){
+    if(curTimer){clearInterval(curTimer);curTimer=null;}
+    function z(n){return(n<10?'0':'')+n;}
+    function tick(){
+      var d=Math.floor((endMs-Date.now())/1000);
+      if(d<=0){timerEl.textContent='00:00:00';if(curTimer){clearInterval(curTimer);curTimer=null;}return;}
+      var h=Math.floor(d/3600),m=Math.floor((d%3600)/60),s=d%60;
+      /* 100時間超は時間部分を3桁表示 */
+      timerEl.textContent=(h>99?h:z(h))+':'+z(m)+':'+z(s);
+    }
+    tick();curTimer=setInterval(tick,1000);
+  }
+
+  /* ---- パーティクル ---- */
+  var fxRun=false,rafId=null;
+  function startFx(){
+    if(!fx)return;var c=fx,x=c.getContext('2d');
+    c.width=c.offsetWidth;c.height=c.offsetHeight;
+    var ps=[];for(var i=0;i<40;i++)ps.push({x:Math.random()*c.width,y:Math.random()*c.height,r:.7+Math.random()*2,vx:(Math.random()-.5)*.3,vy:-(.15+Math.random()*.5),ph:Math.random()*6.28,gold:Math.random()<.7});
+    fxRun=true;
+    function tick(){
+      if(!fxRun){rafId=null;return;}
+      rafId=requestAnimationFrame(tick);
+      x.clearRect(0,0,c.width,c.height);
+      for(var i=0;i<ps.length;i++){var p=ps[i];p.x+=p.vx;p.y+=p.vy;p.ph+=.05;
+        if(p.y<-6){p.y=c.height+6;p.x=Math.random()*c.width;}
+        if(p.x<-6)p.x=c.width+6;if(p.x>c.width+6)p.x=-6;
+        var al=.35+.35*Math.sin(p.ph);
+        x.beginPath();x.arc(p.x,p.y,p.r,0,6.28);
+        x.fillStyle=(p.gold?'rgba(255,205,120,':'rgba(255,150,90,')+al.toFixed(3)+')';
+        x.shadowBlur=6;x.shadowColor=p.gold?'rgba(255,196,84,.7)':'rgba(255,120,60,.5)';x.fill();
+      }
+      x.shadowBlur=0;
+    }
+    tick();
+  }
+  function stopFx(){fxRun=false;if(rafId){cancelAnimationFrame(rafId);rafId=null;}}
+
+  /* ---- スクロールロック ---- */
+  var lockY=0;
+  function lock(){lockY=window.scrollY||window.pageYOffset||0;var b=document.body;b.style.position='fixed';b.style.top=(-lockY)+'px';b.style.left='0';b.style.right='0';b.style.width='100%';b.style.overflow='hidden';}
+  function unlock(){var b=document.body;b.style.position='';b.style.top='';b.style.left='';b.style.right='';b.style.width='';b.style.overflow='';window.scrollTo(0,lockY);}
+
+  /* ---- 現在の広告リスト（メモリ保持）---- */
+  var currentList=null;
+
+  function openModalWith(list){
+    var o=decideOffer(list);
+    if(!o){ /* 有効な広告ゼロ → 出さない。FABも隠す */ return false; }
+    renderOffer(o);
+    ov.classList.add('on');ov.setAttribute('aria-hidden','false');
+    lock();startFx();
+    try{if(window.track)track('offer','open_'+o.uid);}catch(e){}
+    return true;
+  }
+  function closeModal(){
+    stopFx();if(curTimer){clearInterval(curTimer);curTimer=null;}
+    ov.classList.remove('on');ov.setAttribute('aria-hidden','true');unlock();
+    if(fab)fab.classList.add('show');
+    try{if(window.track)track('offer','close');}catch(e){}
+  }
+
+  if(xBtn)xBtn.addEventListener('click',closeModal);
+  ov.addEventListener('click',function(e){if(e.target===ov||e.target.id==='soGlow')closeModal();});
+  if(fab)fab.addEventListener('click',function(){
+    if(fabBadge)fabBadge.setAttribute('hidden','');
+    if(currentList)openModalWith(currentList);
+  });
+
+  /* ---- データ取得の全体フロー ----
+     1) キャッシュが新鮮(24h以内) → それを使う（GAS叩かない）
+     2) 新鮮でない → GAS受信を試す。成功→保存して使う。失敗→古いキャッシュ→内蔵デフォルト
+  */
+  function ensureData(cb){
+    var c=readCache();
+    if(cacheFresh(c)){cb(c.offers);return;}
+    fetchGAS(function(offers){
+      if(offers){writeCache(offers);cb(offers);return;}
+      /* GAS失敗：古いキャッシュがあれば使う（期限切れでも）*/
+      if(c&&c.offers&&c.offers.length){cb(c.offers);return;}
+      /* それも無ければ内蔵デフォルト */
+      cb(DEFAULT_OFFERS);
+    });
+  }
+
+  /* ---- 初回表示（1日1回。ローカルは毎回）---- */
+  function boot(){
+    ensureData(function(list){
+      currentList=list;
+      var seen=false;try{seen=(localStorage.getItem(SEEN_KEY)===todayStr());}catch(e){}
+      if(seen&&!isLocal){
+        /* 今日はもう見た → FABだけ出す（有効な広告がある時のみ）*/
+        if(validOffers(list).length&&fab)fab.classList.add('show');
+        return;
+      }
+      try{localStorage.setItem(SEEN_KEY,todayStr());}catch(e){}
+      setTimeout(function(){
+        var ok=openModalWith(list);
+        if(!ok&&fab){fab.classList.remove('show');} /* 広告ゼロなら何も出さない */
+      },500);
+    });
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);
+  else boot();
+})();
+</script>
+</body>
+</html>
