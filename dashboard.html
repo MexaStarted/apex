@@ -109,6 +109,40 @@ svg text{font-family:var(--disp)}
 @media print{body{background:#fff;color:#000;padding:8px}.tabbar,.totop,.toprow,.hdr .hsub{display:none}.pane{display:block!important}.sec{border-color:#bbb;break-inside:avoid;background:#fff}:root{--text:#000;--sub:#444;--panel:#fff;--panel2:#f4f4f4;--line:#ccc;--cy:#005a8c;--mg:#90135c}}
 html:not(.light) .neon0 .sec{box-shadow:none}
 html:not(.light) .neon2 .sec{box-shadow:0 0 22px rgba(25,227,255,.08)}
+
+/* 広告管理 */
+.ad-note{font-size:12px;color:var(--sub,#93a2c4);line-height:1.6;margin:4px 0 14px}
+.ad-form{display:flex;flex-direction:column;gap:6px}
+.ad-lb{font-size:11px;font-weight:700;color:var(--sub,#93a2c4);margin-top:8px}
+.ad-ta,.ad-in{width:100%;box-sizing:border-box;background:rgba(255,255,255,.04);border:1px solid var(--line,#1d2740);border-radius:8px;color:var(--text,#eaf3ff);font-size:12px;padding:9px 11px;font-family:inherit}
+.ad-ta{resize:vertical;line-height:1.5;font-family:Menlo,monospace}
+.ad-in:focus,.ad-ta:focus{outline:none;border-color:var(--cy,#19e3ff)}
+.ad-btn-add{margin-top:12px;background:linear-gradient(100deg,#ffc454,#e0341c);color:#2a0f00;border:none;border-radius:9px;padding:12px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit}
+.ad-btn-add:active{opacity:.85}
+.ad-btn-add:disabled{opacity:.5;cursor:default}
+.ad-msg{font-size:12px;margin-top:8px;min-height:16px}
+.ad-msg.ok{color:#22e37a}
+.ad-msg.err{color:#ff6b6b}
+.ad-refresh{margin-left:auto;background:rgba(255,255,255,.06);border:1px solid var(--line,#1d2740);color:var(--sub,#93a2c4);border-radius:7px;padding:4px 10px;font-size:11px;cursor:pointer;font-family:inherit}
+.ad-list{display:flex;flex-direction:column;gap:10px;margin-top:6px}
+.ad-empty{color:var(--sub,#93a2c4);font-size:12px;text-align:center;padding:18px}
+.ad-item{border:1px solid var(--line,#1d2740);border-radius:10px;padding:12px;background:rgba(255,255,255,.02)}
+.ad-item.off{opacity:.5}
+.ad-item.expired{border-color:rgba(255,107,107,.4)}
+.ad-item-top{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.ad-item-uid{font-size:10px;color:var(--dim,#5b6580);font-family:Menlo,monospace}
+.ad-badge-st{font-size:10px;font-weight:800;padding:2px 7px;border-radius:5px}
+.ad-badge-st.on{background:rgba(34,227,122,.18);color:#22e37a}
+.ad-badge-st.off{background:rgba(155,152,143,.18);color:#9b988f}
+.ad-badge-st.exp{background:rgba(255,107,107,.18);color:#ff6b6b}
+.ad-item-desc{font-size:12px;color:var(--text,#eaf3ff);line-height:1.5;margin-bottom:6px;word-break:break-word}
+.ad-item-end{font-size:11px;color:var(--sub,#93a2c4);margin-bottom:10px}
+.ad-item-tag{font-size:10px;color:var(--dim,#5b6580);font-family:Menlo,monospace;background:rgba(0,0,0,.3);border-radius:6px;padding:6px 8px;margin-bottom:10px;max-height:52px;overflow:hidden;word-break:break-all;line-height:1.4}
+.ad-item-acts{display:flex;gap:8px}
+.ad-act{flex:1;border:1px solid var(--line,#1d2740);background:rgba(255,255,255,.04);color:var(--text,#eaf3ff);border-radius:7px;padding:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit}
+.ad-act.toggle:active,.ad-act.del:active{opacity:.8}
+.ad-act.del{color:#ff6b6b;border-color:rgba(255,107,107,.3)}
+
 </style></head>
 <body>
 <div class="hdr" id="hdr">
@@ -129,6 +163,31 @@ html:not(.light) .neon2 .sec{box-shadow:0 0 22px rgba(25,227,255,.08)}
   <div class="pane" id="p-list"></div>
   <div class="pane" id="p-ins"></div>
   <div class="pane" id="p-set"></div>
+<div class="pane" id="p-ad">
+  <div class="card">
+    <div class="card-h"><span class="card-ic">🎁</span>スペシャルオファー広告管理</div>
+    <div class="ad-note">A8などの広告タグを貼って追加すると、サイトのスペシャルオファーに表示されます。GASを設定したページ（ガイド／本体）で反映されます。</div>
+
+    <div class="ad-form">
+      <label class="ad-lb">A8タグ（&lt;a&gt;…&lt;img&gt;…&lt;/a&gt; を丸ごと貼付）</label>
+      <textarea id="adfTag" class="ad-ta" rows="4" placeholder="&lt;a href=&quot;https://px.a8.net/...&quot;&gt;&lt;img src=&quot;...&quot;&gt;&lt;/a&gt;&lt;img width=&quot;1&quot; height=&quot;1&quot; src=&quot;...&quot;&gt;"></textarea>
+
+      <label class="ad-lb">説明文</label>
+      <input id="adfDesc" class="ad-in" type="text" placeholder="例: 世界160か国以上で展開する台湾発のPCメーカー【Acer公式オンラインストア】">
+
+      <label class="ad-lb">終了日時（空欄なら3日後）</label>
+      <input id="adfEnd" class="ad-in" type="text" placeholder="例: 2026-08-31 23:59">
+
+      <button id="adfAdd" class="ad-btn-add" onclick="adAddSubmit()">＋ この広告を追加</button>
+      <div id="adfMsg" class="ad-msg"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><span class="card-ic">📋</span>登録済みの広告 <button class="ad-refresh" onclick="adLoadList()">↻ 更新</button></div>
+    <div id="adList" class="ad-list"><div class="ad-empty">読み込み中…</div></div>
+  </div>
+</div>
 </div>
 <button class="totop" id="totop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 <div class="tabbar">
@@ -137,6 +196,7 @@ html:not(.light) .neon2 .sec{box-shadow:0 0 22px rgba(25,227,255,.08)}
   <button data-tab="list" onclick="tab('list',this)"><span class="ic">🏆</span>ランキング</button>
   <button data-tab="ins" onclick="tab('ins',this)"><span class="ic">💡</span>インサイト</button>
   <button data-tab="set" onclick="tab('set',this)"><span class="ic">⚙️</span>設定</button>
+  <button data-tab="ad" onclick="tab('ad',this)"><span class="ic">🎁</span>広告</button>
 </div>
 <script>
 /* ===== 基盤: 設定・ユーティリティ・データ ===== */
@@ -723,7 +783,7 @@ function helpMode(){alert('各セクションの見出しタップで開閉。KP
 /* ===== インタラクション・取得・初期化 ===== */
 function secToggle(h){var sec=h.closest('.sec');sec.classList.toggle('closed');var key='sec_'+(sec.getAttribute('data-sec')||h.textContent.slice(0,6));var st=lsGet('dash2secs',{});st[key]=sec.classList.contains('closed')?1:0;lsSet('dash2secs',st);}
 function applySecState(){var st=lsGet('dash2secs',{});document.querySelectorAll('.sec').forEach(function(sec){var h=sec.querySelector('h2');if(!h)return;var key='sec_'+(sec.getAttribute('data-sec')||h.textContent.slice(0,6));if(st[key])sec.classList.add('closed');});}
-function tab(t,btn){document.querySelectorAll('.pane').forEach(function(p){p.classList.remove('on');});$g('p-'+t).classList.add('on');document.querySelectorAll('.tabbar button').forEach(function(b){b.classList.remove('on');});if(btn)btn.classList.add('on');else{var b=document.querySelector('.tabbar button[data-tab="'+t+'"]');if(b)b.classList.add('on');}
+function tab(t,btn){document.querySelectorAll('.pane').forEach(function(p){p.classList.remove('on');});$g('p-'+t).classList.add('on');if(t==='ad'){try{adLoadList();}catch(e){}}document.querySelectorAll('.tabbar button').forEach(function(b){b.classList.remove('on');});if(btn)btn.classList.add('on');else{var b=document.querySelector('.tabbar button[data-tab="'+t+'"]');if(b)b.classList.add('on');}
  try{history.replaceState(null,'','#'+t);}catch(e){}window.scrollTo(0,lsGet('dash2scroll_'+t,0));vib();}
 function bindKpi(){
  document.querySelectorAll('.kpi').forEach(function(el){
@@ -899,5 +959,88 @@ var startTab=(location.hash||'').slice(1)||CFG.startTab||'sum';
 tab(['sum','chart','list','ins','set'].indexOf(startTab)>=0?startTab:'sum');
 setupAuto();
 loadData(false);
+
+/* ===== 広告(スペシャルオファー)管理 ===== */
+function adJsonp(params, cb){
+  var url = KNOWN_URL + (KNOWN_URL.indexOf('?')>=0?'&':'?');
+  var qs = [];
+  for(var k in params){ if(params.hasOwnProperty(k)) qs.push(encodeURIComponent(k)+'='+encodeURIComponent(params[k])); }
+  var cbName = '__ad_'+Date.now()+'_'+Math.floor(Math.random()*1000);
+  qs.push('callback='+cbName);
+  url += qs.join('&');
+  var sc = document.createElement('script');
+  var done=false;
+  var tm=setTimeout(function(){ if(done)return; done=true; clean(); cb({ok:false,error:'応答なし（15秒）'}); },15000);
+  function clean(){ try{delete window[cbName];}catch(e){} if(sc.parentNode)sc.parentNode.removeChild(sc); clearTimeout(tm); }
+  window[cbName]=function(d){ if(done)return; done=true; clean(); cb(d||{ok:false,error:'空応答'}); };
+  sc.src=url;
+  sc.onerror=function(){ if(done)return; done=true; clean(); cb({ok:false,error:'読み込み失敗'}); };
+  document.body.appendChild(sc);
+}
+
+function adAddSubmit(){
+  var tag=$g('adfTag').value.trim();
+  var desc=$g('adfDesc').value.trim();
+  var end=$g('adfEnd').value.trim();
+  var msg=$g('adfMsg'), btn=$g('adfAdd');
+  if(!tag){ msg.className='ad-msg err'; msg.textContent='A8タグを入力してください'; return; }
+  msg.className='ad-msg'; msg.textContent='送信中…'; btn.disabled=true;
+  adJsonp({action:'adAdd', a8tag:tag, desc:desc, end:end}, function(d){
+    btn.disabled=false;
+    if(d&&d.ok){
+      msg.className='ad-msg ok'; msg.textContent='✅ 追加しました（uid: '+d.uid+'）';
+      $g('adfTag').value=''; $g('adfDesc').value=''; $g('adfEnd').value='';
+      adLoadList();
+    } else {
+      msg.className='ad-msg err'; msg.textContent='❌ 失敗: '+((d&&d.error)||'不明');
+    }
+  });
+}
+
+function adEsc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function adLoadList(){
+  var box=$g('adList');
+  box.innerHTML='<div class="ad-empty">読み込み中…</div>';
+  adJsonp({action:'adList'}, function(d){
+    if(!d||!d.ok){ box.innerHTML='<div class="ad-empty">読み込み失敗: '+adEsc((d&&d.error)||'不明')+'</div>'; return; }
+    var ads=d.ads||[];
+    if(!ads.length){ box.innerHTML='<div class="ad-empty">まだ広告がありません。上のフォームから追加してください。</div>'; return; }
+    var html='';
+    for(var i=0;i<ads.length;i++){
+      var a=ads[i];
+      var cls='ad-item'+(a.active?'':' off')+(a.expired?' expired':'');
+      var st = a.expired ? '<span class="ad-badge-st exp">期限切れ</span>'
+             : (a.active ? '<span class="ad-badge-st on">配信中</span>' : '<span class="ad-badge-st off">停止中</span>');
+      html+='<div class="'+cls+'">'
+        + '<div class="ad-item-top">'+st+'<span class="ad-item-uid">'+adEsc(a.uid)+'</span></div>'
+        + (a.desc?'<div class="ad-item-desc">'+adEsc(a.desc)+'</div>':'')
+        + '<div class="ad-item-end">終了: '+adEsc(a.endText)+'</div>'
+        + '<div class="ad-item-tag">'+adEsc(a.a8tag).slice(0,200)+(a.a8tag.length>200?'…':'')+'</div>'
+        + '<div class="ad-item-acts">'
+        +   '<button class="ad-act toggle" onclick="adToggle(\''+adEsc(a.uid)+'\')">'+(a.active?'停止する':'配信する')+'</button>'
+        +   '<button class="ad-act del" onclick="adDelete(\''+adEsc(a.uid)+'\')">削除</button>'
+        + '</div>'
+      + '</div>';
+    }
+    box.innerHTML=html;
+  });
+}
+
+function adToggle(uid){
+  adJsonp({action:'adToggle', uid:uid}, function(d){
+    if(d&&d.ok) adLoadList();
+    else alert('切替失敗: '+((d&&d.error)||'不明'));
+  });
+}
+
+function adDelete(uid){
+  if(!confirm('この広告を削除しますか？（元に戻せません）')) return;
+  adJsonp({action:'adDelete', uid:uid}, function(d){
+    if(d&&d.ok) adLoadList();
+    else alert('削除失敗: '+((d&&d.error)||'不明'));
+  });
+}
+
 </script>
 </body></html>
