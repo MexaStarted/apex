@@ -942,7 +942,7 @@ var REDUCE = window.matchMedia && window.matchMedia('(prefers-reduced-motion: re
 /* ===== スペシャルオファー（画像バナー版・GAS配信・24hキャッシュ・フォールバック）===== */
 (function(){
   /* ▼▼▼ GASのデプロイURLをここに貼る（未設定なら内蔵デフォルトのみで動作）▼▼▼ */
-  var SO_GAS_URL = '';
+  var SO_GAS_URL = 'https://script.google.com/macros/s/AKfycbwSF3v0hCeZb4KpynjfXITY-FGL7lOZSj7vdkIQU85WGswdpnAzaROXV_jyVFXHYn78/exec';
   /* ▲▲▲ 例: https://script.google.com/macros/s/xxxxx/exec ▲▲▲ */
 
   /* 内蔵デフォルト広告（GASが無い/失敗/空の時のフォールバック。Acerを初期登録）*/
@@ -985,7 +985,7 @@ var REDUCE = window.matchMedia && window.matchMedia('(prefers-reduced-motion: re
     var done=false;
     var to=setTimeout(function(){if(!done){done=true;cb(null);}},6000);
     try{
-      fetch(SO_GAS_URL,{method:'GET'}).then(function(r){return r.json();}).then(function(j){
+      fetch(SO_GAS_URL+(SO_GAS_URL.indexOf('?')>=0?'&':'?')+'action=getOffers',{method:'GET'}).then(function(r){return r.json();}).then(function(j){
         if(done)return;done=true;clearTimeout(to);
         if(j&&j.ok&&j.offers&&j.offers.length)cb(j.offers);else cb(null);
       }).catch(function(){if(!done){done=true;clearTimeout(to);cb(null);}});
