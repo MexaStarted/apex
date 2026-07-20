@@ -2111,6 +2111,59 @@ html[data-theme="light"] .xbn{background:linear-gradient(135deg,#fff,#eef3fa)}
 .hon-b b{font-size:13px;font-weight:700;color:var(--text);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .hon-b small{font-size:10.5px;color:var(--sub)}
 .hon-rp{font-size:12px;font-weight:700;color:var(--cy);font-variant-numeric:tabular-nums;flex:none}
+
+/* ===== スペシャルオファー モーダル（画像バナー版・金×赤ゴージャス）===== */
+.so-ov{position:fixed;inset:0;z-index:100050;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(2,3,8,.86);overscroll-behavior:contain}
+.so-ov.on{display:flex;animation:soOvIn .35s ease}
+@keyframes soOvIn{from{opacity:0}to{opacity:1}}
+.so-glow{position:absolute;top:50%;left:50%;width:520px;height:520px;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(255,180,90,.2),rgba(220,60,40,.08) 42%,transparent 68%);pointer-events:none;animation:soGlowPulse 4s ease-in-out infinite}
+@keyframes soGlowPulse{0%,100%{opacity:.7;transform:translate(-50%,-50%) scale(1)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.12)}}
+.so-fx{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
+.so-box{position:relative;z-index:2;width:100%;max-width:352px;background:linear-gradient(165deg,#2a1410,#180a06 55%,#1f0d08);border:1px solid rgba(255,180,90,.45);border-radius:24px;padding:24px 20px 18px;box-shadow:0 24px 70px rgba(0,0,0,.7),0 0 40px rgba(200,60,40,.15),inset 0 1px 0 rgba(255,210,150,.18);animation:soBoxIn .55s cubic-bezier(.16,1,.3,1);overflow:hidden}
+@keyframes soBoxIn{from{opacity:0;transform:scale(.88) translateY(16px)}to{opacity:1;transform:none}}
+.so-box::before{content:"";position:absolute;top:0;left:-60%;width:55%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,220,150,.14),transparent);transform:skewX(-18deg);animation:soShimmer 4.5s ease-in-out infinite;pointer-events:none;z-index:1}
+@keyframes soShimmer{0%,55%{left:-60%}82%,100%{left:130%}}
+.so-box::after{content:"";position:absolute;inset:-1px;border-radius:24px;padding:1.5px;background:conic-gradient(from 0deg,transparent,rgba(255,196,84,.6),rgba(255,90,60,.4) 20%,transparent 35%,transparent 65%,rgba(255,196,84,.55),rgba(255,120,60,.3) 85%,transparent);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:soBorderSpin 6s linear infinite;pointer-events:none}
+@keyframes soBorderSpin{to{transform:rotate(360deg)}}
+.so-x{position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:50%;background:rgba(30,12,6,.85);border:1px solid rgba(255,180,90,.4);color:#ffd98a;font-size:19px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:6;font-family:inherit}
+.so-x:active{opacity:.7;transform:scale(.92)}
+.so-ribbon{position:absolute;top:16px;left:-36px;transform:rotate(-45deg);background:linear-gradient(90deg,#e0341c,#ffc454);color:#2a0f00;font-size:10px;font-weight:900;letter-spacing:.12em;padding:5px 42px;box-shadow:0 3px 10px rgba(0,0,0,.5);z-index:5}
+.so-crown{position:absolute;top:-4px;left:50%;transform:translateX(-50%);font-size:30px;filter:drop-shadow(0 3px 8px rgba(255,196,84,.7));animation:soCrownFloat 2.6s ease-in-out infinite;z-index:4}
+@keyframes soCrownFloat{0%,100%{transform:translateX(-50%) translateY(0) rotate(-4deg)}50%{transform:translateX(-50%) translateY(-5px) rotate(4deg)}}
+.so-head{text-align:center;margin:26px 0 14px;position:relative;z-index:3}
+.so-eyebrow{font-family:Georgia,serif;font-size:10.5px;font-weight:700;letter-spacing:.3em;color:#ffc454;margin-bottom:8px;text-shadow:0 0 14px rgba(255,196,84,.6)}
+.so-title{font-size:22px;font-weight:900;color:#fff5e2;line-height:1.35;letter-spacing:.01em}
+.so-title-em{background:linear-gradient(100deg,#ffd98a,#ff7a3c,#ffe6b0);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;text-shadow:0 0 30px rgba(255,196,84,.4);font-size:25px}
+.so-timer{display:flex;align-items:center;justify-content:center;gap:8px;margin:0 0 16px;position:relative;z-index:3;flex-wrap:wrap}
+.so-timer-lbl{font-size:11px;color:#ffb37a;font-weight:600}
+.so-timer-val{font-family:"SF Mono",Menlo,Consolas,monospace;font-size:17px;font-weight:800;color:#fff;background:rgba(224,52,28,.25);border:1px solid rgba(255,120,80,.4);border-radius:8px;padding:4px 10px;letter-spacing:.05em;min-width:96px;text-align:center}
+.so-ad{position:relative;z-index:3}
+.so-ad-img{display:block;border-radius:14px;overflow:hidden;background:rgba(255,255,255,.03);border:1px solid rgba(255,140,80,.2);text-align:center;position:relative;min-height:80px}
+.so-ad-img a{display:block;line-height:0}
+.so-ad-img img{display:block;max-width:100%;height:auto;margin:0 auto;border-radius:14px}
+.so-ad-img.img-fail{min-height:110px;display:flex;align-items:center;justify-content:center;padding:24px}
+.so-ad-img.img-fail::before{content:"広告を読み込めませんでした";color:rgba(255,200,150,.5);font-size:12px}
+.so-ad-spark{position:absolute;pointer-events:none;font-size:13px;color:#ffd98a;animation:soTwinkle 1.8s ease-in-out infinite;z-index:2}
+@keyframes soTwinkle{0%,100%{opacity:.3;transform:scale(.7)}50%{opacity:1;transform:scale(1.1)}}
+.so-desc{font-size:12.5px;line-height:1.7;color:#f5e0d0;text-align:center;margin:14px 4px 0;position:relative;z-index:3}
+.so-desc:empty{display:none}
+.so-cta{display:flex;align-items:center;justify-content:center;gap:6px;padding:14px;border-radius:12px;font-size:15px;font-weight:800;background:linear-gradient(100deg,#ffc454,#e0341c);color:#2a0f00;position:relative;overflow:hidden;text-decoration:none;margin-top:14px;z-index:3}
+.so-cta::after{content:"";position:absolute;top:0;left:-70%;width:50%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.4),transparent);transform:skewX(-18deg);animation:soCtaShine 2.6s ease-in-out infinite}
+@keyframes soCtaShine{0%,60%{left:-70%}90%,100%{left:130%}}
+.so-cta:active{opacity:.9}
+.so-foot-note{margin-top:12px;text-align:center;font-size:9.5px;color:rgba(255,200,150,.4);position:relative;z-index:3}
+
+/* ===== 左下 常設FABボタン ===== */
+.so-fab{position:fixed;left:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:100040;display:none;align-items:center;gap:7px;padding:11px 15px 11px 13px;border:none;border-radius:30px;background:linear-gradient(100deg,#ff9d3c,#ffc454);color:#3a2100;font-family:inherit;font-size:13px;font-weight:800;cursor:pointer;box-shadow:0 6px 22px rgba(255,157,60,.45),0 2px 6px rgba(0,0,0,.3)}
+.so-fab.show{display:flex;animation:soFabIn .5s cubic-bezier(.16,1,.3,1),soFabPulse 2.4s ease-in-out infinite .5s}
+@keyframes soFabIn{from{opacity:0;transform:translateY(20px) scale(.8)}to{opacity:1;transform:none}}
+@keyframes soFabPulse{0%,100%{box-shadow:0 6px 22px rgba(255,157,60,.45),0 2px 6px rgba(0,0,0,.3)}50%{box-shadow:0 6px 30px rgba(255,157,60,.75),0 2px 6px rgba(0,0,0,.3)}}
+.so-fab:active{transform:scale(.94)}
+.so-fab-spark{font-size:14px;animation:soFabSpark 1.6s ease-in-out infinite}
+@keyframes soFabSpark{0%,100%{transform:rotate(0) scale(1);opacity:.9}50%{transform:rotate(180deg) scale(1.25);opacity:1}}
+.so-fab-tx{white-space:nowrap}
+.so-fab-badge{display:flex;align-items:center;justify-content:center;min-width:17px;height:17px;padding:0 4px;border-radius:9px;background:#ff2d2d;color:#fff;font-size:10px;font-weight:900;box-shadow:0 0 0 2px rgba(255,157,60,.5)}
+.so-fab-badge:empty,.so-fab-badge[hidden]{display:none}
 </style>
 <script type="application/ld+json">
 {
@@ -2273,6 +2326,34 @@ html[data-theme="light"] .xbn{background:linear-gradient(135deg,#fff,#eef3fa)}
   }catch(e){}
 })();
 </script>
+<!-- ===== スペシャルオファー モーダル（画像バナー版・GAS配信）===== -->
+<div class="so-ov" id="soOv" aria-hidden="true">
+  <div class="so-glow" id="soGlow"></div>
+  <canvas class="so-fx" id="soFx"></canvas>
+  <div class="so-box" id="soBox">
+    <button class="so-x" id="soX" aria-label="閉じる">×</button>
+    <div class="so-ribbon"><span>SPECIAL</span></div>
+    <div class="so-crown">👑</div>
+    <div class="so-head">
+      <div class="so-eyebrow">EXCLUSIVE OFFER</div>
+      <div class="so-title">あなただけの<br><span class="so-title-em">スペシャルオファー</span></div>
+    </div>
+    <div class="so-timer"><span class="so-timer-lbl">オファー終了まで</span><span class="so-timer-val" id="soTimer">--:--:--</span></div>
+    <div class="so-ad" id="soAd">
+      <span class="so-ad-spark" style="top:8px;right:10px">✦</span>
+      <span class="so-ad-spark" style="bottom:8px;left:10px;animation-delay:.8s">✦</span>
+      <div class="so-ad-img" id="soAdImg"><!-- A8タグがここに入る --></div>
+    </div>
+    <div class="so-desc" id="soDesc"></div>
+    <a class="so-cta" id="soCta" href="#" target="_blank" rel="nofollow noopener">詳細を見る →</a>
+    <div class="so-foot-note">※ 本オファーは予告なく終了する場合があります</div>
+  </div>
+</div>
+<button class="so-fab" id="soFab" aria-label="スペシャルオファーを見る">
+  <span class="so-fab-spark">✦</span>
+  <span class="so-fab-tx">スペシャルオファー</span>
+  <span class="so-fab-badge" id="soFabBadge">1</span>
+</button>
 <canvas id="fx"></canvas><div class="scan"></div>
 <div id="grandCurtain"><b class="t"></b><b class="d"></b><div class="gc-crest">👑</div></div>
 <div id="grandFlash"></div>
@@ -11163,5 +11244,220 @@ B:[[85,'歩くマップ 🧭','全マップを完璧に記憶した地理マス�
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(function(){maybe(0);},60);});
   else setTimeout(function(){maybe(0);},60);
 })();
-</script></body>
+</script><script>
+/* ===== スペシャルオファー（画像バナー版・GAS配信・24hキャッシュ・フォールバック）===== */
+(function(){
+  /* ▼▼▼ GASのデプロイURLをここに貼る（未設定なら内蔵デフォルトのみで動作）▼▼▼ */
+  var SO_GAS_URL = '';
+  /* ▲▲▲ 例: https://script.google.com/macros/s/xxxxx/exec ▲▲▲ */
+
+  /* 内蔵デフォルト広告（GASが無い/失敗/空の時のフォールバック。Acerを初期登録）*/
+  var DEFAULT_OFFERS = [
+    {
+      uid:'acer_default',
+      a8tag:'<a href="https://px.a8.net/svt/ejp?a8mat=4B85OY+APSWS2+5G54+5YZ75" rel="nofollow" target="_blank"><img border="0" width="300" height="250" alt="Acer公式オンラインストア" src="https://www28.a8.net/svt/bgt?aid=260721106648&wid=001&eno=01&mid=s00000025420001003000&mc=1"></a><img border="0" width="1" height="1" src="https://www19.a8.net/0.gif?a8mat=4B85OY+APSWS2+5G54+5YZ75" alt="">',
+      desc:'世界160か国以上で展開する台湾発のPCメーカー【Acer公式オンラインストア】',
+      end: Date.now()+3*86400000
+    }
+  ];
+
+  var CACHE_KEY='apexGuideOfferCache';   // 受信データのキャッシュ
+  var SEEN_KEY ='apexGuideOfferSeen';    // 1日1回表示の当日フラグ
+  var PICK_KEY ='apexGuideOfferPick';    // その日に選んだ広告(uid)を固定
+  var CACHE_TTL=24*3600*1000;            // 24時間
+
+  var ov=document.getElementById('soOv'),adImg=document.getElementById('soAdImg');
+  var descEl=document.getElementById('soDesc'),ctaEl=document.getElementById('soCta');
+  var timerEl=document.getElementById('soTimer'),xBtn=document.getElementById('soX');
+  var fab=document.getElementById('soFab'),fabBadge=document.getElementById('soFabBadge'),fx=document.getElementById('soFx');
+  if(!ov||!adImg)return;
+
+  function todayStr(){var d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();}
+  var isLocal=(location.protocol==='file:'||/^(localhost|127\.0\.0\.1|0\.0\.0\.0)$/.test(location.hostname)||location.hostname==='');
+
+  /* ---- キャッシュ読み書き ---- */
+  function readCache(){
+    try{var raw=localStorage.getItem(CACHE_KEY);if(!raw)return null;var o=JSON.parse(raw);
+      if(!o||!o.offers||!o.offers.length)return null;return o;}catch(e){return null;}
+  }
+  function writeCache(offers){
+    try{localStorage.setItem(CACHE_KEY,JSON.stringify({ts:Date.now(),offers:offers}));}catch(e){}
+  }
+  function cacheFresh(c){return c&&(Date.now()-c.ts)<CACHE_TTL;}
+
+  /* ---- GAS受信（JSONP不要、fetch。失敗しても例外を投げない）---- */
+  function fetchGAS(cb){
+    if(!SO_GAS_URL){cb(null);return;}
+    var done=false;
+    var to=setTimeout(function(){if(!done){done=true;cb(null);}},6000);
+    try{
+      fetch(SO_GAS_URL,{method:'GET'}).then(function(r){return r.json();}).then(function(j){
+        if(done)return;done=true;clearTimeout(to);
+        if(j&&j.ok&&j.offers&&j.offers.length)cb(j.offers);else cb(null);
+      }).catch(function(){if(!done){done=true;clearTimeout(to);cb(null);}});
+    }catch(e){if(!done){done=true;clearTimeout(to);cb(null);}}
+  }
+
+  /* ---- 有効な広告(締切前)だけ ---- */
+  function validOffers(list){
+    var now=Date.now(),out=[];
+    for(var i=0;i<list.length;i++){var o=list[i];if(o&&o.a8tag&&(!o.end||o.end>now))out.push(o);}
+    return out;
+  }
+
+  /* ---- その日の1件を決定（同日は同じ広告を出す）---- */
+  function decideOffer(list){
+    var valid=validOffers(list);
+    if(!valid.length)return null;
+    /* 当日すでに選択済みなら、それを維持（ある限り）*/
+    var pickUid='';try{var p=JSON.parse(localStorage.getItem(PICK_KEY)||'null');if(p&&p.day===todayStr())pickUid=p.uid;}catch(e){}
+    if(pickUid){for(var i=0;i<valid.length;i++)if(valid[i].uid===pickUid)return valid[i];}
+    /* 未選択ならランダム */
+    var pick=valid[Math.floor(Math.random()*valid.length)];
+    try{localStorage.setItem(PICK_KEY,JSON.stringify({day:todayStr(),uid:pick.uid}));}catch(e){}
+    return pick;
+  }
+
+  /* ---- リンクURLをA8タグから抽出（CTAボタン用）---- */
+  function extractHref(tag){
+    var m=tag.match(/<a[^>]*href=["']([^"']+)["']/i);
+    return m?m[1]:'#';
+  }
+
+  var curTimer=null;
+  function renderOffer(o){
+    /* 画像バナー（A8タグを丸ごと挿入）*/
+    adImg.classList.remove('img-fail');
+    adImg.innerHTML=o.a8tag;
+    /* 画像ロード失敗のフォールバック */
+    var img=adImg.querySelector('img');
+    if(img){img.onerror=function(){this.style.display='none';adImg.classList.add('img-fail');};}
+    /* 説明文 */
+    descEl.textContent=o.desc||'';
+    /* CTAリンク */
+    ctaEl.href=extractHref(o.a8tag);
+    /* カウントダウン */
+    startTimer(o.end);
+  }
+
+  function startTimer(endMs){
+    if(curTimer){clearInterval(curTimer);curTimer=null;}
+    function z(n){return(n<10?'0':'')+n;}
+    function tick(){
+      var d=Math.floor((endMs-Date.now())/1000);
+      if(d<=0){timerEl.textContent='00:00:00';if(curTimer){clearInterval(curTimer);curTimer=null;}return;}
+      var h=Math.floor(d/3600),m=Math.floor((d%3600)/60),s=d%60;
+      /* 100時間超は時間部分を3桁表示 */
+      timerEl.textContent=(h>99?h:z(h))+':'+z(m)+':'+z(s);
+    }
+    tick();curTimer=setInterval(tick,1000);
+  }
+
+  /* ---- パーティクル ---- */
+  var fxRun=false,rafId=null;
+  function startFx(){
+    if(!fx)return;var c=fx,x=c.getContext('2d');
+    c.width=c.offsetWidth;c.height=c.offsetHeight;
+    var ps=[];for(var i=0;i<40;i++)ps.push({x:Math.random()*c.width,y:Math.random()*c.height,r:.7+Math.random()*2,vx:(Math.random()-.5)*.3,vy:-(.15+Math.random()*.5),ph:Math.random()*6.28,gold:Math.random()<.7});
+    fxRun=true;
+    function tick(){
+      if(!fxRun){rafId=null;return;}
+      rafId=requestAnimationFrame(tick);
+      x.clearRect(0,0,c.width,c.height);
+      for(var i=0;i<ps.length;i++){var p=ps[i];p.x+=p.vx;p.y+=p.vy;p.ph+=.05;
+        if(p.y<-6){p.y=c.height+6;p.x=Math.random()*c.width;}
+        if(p.x<-6)p.x=c.width+6;if(p.x>c.width+6)p.x=-6;
+        var al=.35+.35*Math.sin(p.ph);
+        x.beginPath();x.arc(p.x,p.y,p.r,0,6.28);
+        x.fillStyle=(p.gold?'rgba(255,205,120,':'rgba(255,150,90,')+al.toFixed(3)+')';
+        x.shadowBlur=6;x.shadowColor=p.gold?'rgba(255,196,84,.7)':'rgba(255,120,60,.5)';x.fill();
+      }
+      x.shadowBlur=0;
+    }
+    tick();
+  }
+  function stopFx(){fxRun=false;if(rafId){cancelAnimationFrame(rafId);rafId=null;}}
+
+  /* ---- スクロールロック ---- */
+  var lockY=0;
+  function lock(){lockY=window.scrollY||window.pageYOffset||0;var b=document.body;b.style.position='fixed';b.style.top=(-lockY)+'px';b.style.left='0';b.style.right='0';b.style.width='100%';b.style.overflow='hidden';}
+  function unlock(){var b=document.body;b.style.position='';b.style.top='';b.style.left='';b.style.right='';b.style.width='';b.style.overflow='';window.scrollTo(0,lockY);}
+
+  /* ---- 現在の広告リスト（メモリ保持）---- */
+  var currentList=null;
+
+  function openModalWith(list){
+    var o=decideOffer(list);
+    if(!o){ /* 有効な広告ゼロ → 出さない。FABも隠す */ return false; }
+    renderOffer(o);
+    ov.classList.add('on');ov.setAttribute('aria-hidden','false');
+    lock();startFx();
+    try{if(window.track)track('offer','open_'+o.uid);}catch(e){}
+    return true;
+  }
+  function closeModal(){
+    stopFx();if(curTimer){clearInterval(curTimer);curTimer=null;}
+    ov.classList.remove('on');ov.setAttribute('aria-hidden','true');unlock();
+    if(fab)fab.classList.add('show');
+    try{if(window.track)track('offer','close');}catch(e){}
+  }
+
+  if(xBtn)xBtn.addEventListener('click',closeModal);
+  ov.addEventListener('click',function(e){if(e.target===ov||e.target.id==='soGlow')closeModal();});
+  if(fab)fab.addEventListener('click',function(){
+    if(fabBadge)fabBadge.setAttribute('hidden','');
+    if(currentList)openModalWith(currentList);
+  });
+
+  /* ---- データ取得の全体フロー ----
+     1) キャッシュが新鮮(24h以内) → それを使う（GAS叩かない）
+     2) 新鮮でない → GAS受信を試す。成功→保存して使う。失敗→古いキャッシュ→内蔵デフォルト
+  */
+  function ensureData(cb){
+    var c=readCache();
+    if(cacheFresh(c)){cb(c.offers);return;}
+    fetchGAS(function(offers){
+      if(offers){writeCache(offers);cb(offers);return;}
+      /* GAS失敗：古いキャッシュがあれば使う（期限切れでも）*/
+      if(c&&c.offers&&c.offers.length){cb(c.offers);return;}
+      /* それも無ければ内蔵デフォルト */
+      cb(DEFAULT_OFFERS);
+    });
+  }
+
+  /* ---- 初回表示（1日1回。ローカルは毎回）---- */
+  /* 教科書解放演出などのオーバーレイが出ている間は広告を出さない */
+  function annBusy(){
+    try{
+      var gu=document.getElementById('guideuOv');if(gu&&gu.classList.contains('on'))return true;
+      var ag=document.getElementById('annGuard');if(ag&&getComputedStyle(ag).display!=='none')return true;
+      var ru=document.getElementById('rprtuOv');if(ru&&ru.classList.contains('on'))return true;
+      var gc=document.getElementById('grandCurtain');if(gc&&gc.classList.contains('go'))return true;
+    }catch(e){}
+    return false;
+  }
+  function boot(){
+    ensureData(function(list){
+      currentList=list;
+      var seen=false;try{seen=(localStorage.getItem(SEEN_KEY)===todayStr());}catch(e){}
+      if(seen&&!isLocal){
+        /* 今日はもう見た → FABだけ出す（有効な広告がある時のみ）*/
+        if(validOffers(list).length&&fab)fab.classList.add('show');
+        return;
+      }
+      /* 解放演出等が出ている間は待ってから表示（重複回避）*/
+      function tryShow(retry){
+        if(annBusy()){if((retry||0)<60){setTimeout(function(){tryShow((retry||0)+1);},500);return;}}
+        try{localStorage.setItem(SEEN_KEY,todayStr());}catch(e){}
+        var ok=openModalWith(list);
+        if(!ok&&fab){fab.classList.remove('show');}
+      }
+      setTimeout(function(){tryShow(0);},800);
+    });
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);
+  else boot();
+})();
+</script>
+</body>
 </html>
