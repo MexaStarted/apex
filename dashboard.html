@@ -110,6 +110,10 @@ svg text{font-family:var(--disp)}
 html:not(.light) .neon0 .sec{box-shadow:none}
 html:not(.light) .neon2 .sec{box-shadow:0 0 22px rgba(25,227,255,.08)}
 
+/* 広告管理 コンテナ（専用・既存.cardと非干渉）*/
+.adbox{background:var(--panel2);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:12px}
+.adbox-h{font-size:14px;font-weight:800;color:var(--text);display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.adbox-note{font-size:11px;color:var(--sub);line-height:1.6;margin:4px 0 12px}
 /* 広告管理 */
 .ad-note{font-size:12px;color:var(--sub,#93a2c4);line-height:1.6;margin:4px 0 14px}
 .ad-form{display:flex;flex-direction:column;gap:6px}
@@ -117,7 +121,7 @@ html:not(.light) .neon2 .sec{box-shadow:0 0 22px rgba(25,227,255,.08)}
 .ad-ta,.ad-in{width:100%;box-sizing:border-box;background:rgba(255,255,255,.04);border:1px solid var(--line,#1d2740);border-radius:8px;color:var(--text,#eaf3ff);font-size:12px;padding:9px 11px;font-family:inherit}
 .ad-ta{resize:vertical;line-height:1.5;font-family:Menlo,monospace}
 .ad-in:focus,.ad-ta:focus{outline:none;border-color:var(--cy,#19e3ff)}
-.ad-btn-add{margin-top:12px;background:linear-gradient(100deg,#ffc454,#e0341c);color:#2a0f00;border:none;border-radius:9px;padding:12px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit}
+.ad-btn-add{margin-top:12px;background:linear-gradient(100deg,#ffc454,#e0341c);color:#2a0f00;border:none;border-radius:9px;padding:12px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;width:100%;box-sizing:border-box;display:block}
 .ad-btn-add:active{opacity:.85}
 .ad-btn-add:disabled{opacity:.5;cursor:default}
 .ad-msg{font-size:12px;margin-top:8px;min-height:16px}
@@ -164,27 +168,21 @@ html:not(.light) .neon2 .sec{box-shadow:0 0 22px rgba(25,227,255,.08)}
   <div class="pane" id="p-ins"></div>
   <div class="pane" id="p-set"></div>
 <div class="pane" id="p-ad">
-  <div class="card">
-    <div class="card-h"><span class="card-ic">🎁</span>スペシャルオファー広告管理</div>
-    <div class="ad-note">A8などの広告タグを貼って追加すると、サイトのスペシャルオファーに表示されます。GASを設定したページ（ガイド／本体）で反映されます。</div>
-
-    <div class="ad-form">
-      <label class="ad-lb">A8タグ（&lt;a&gt;…&lt;img&gt;…&lt;/a&gt; を丸ごと貼付）</label>
-      <textarea id="adfTag" class="ad-ta" rows="4" placeholder="&lt;a href=&quot;https://px.a8.net/...&quot;&gt;&lt;img src=&quot;...&quot;&gt;&lt;/a&gt;&lt;img width=&quot;1&quot; height=&quot;1&quot; src=&quot;...&quot;&gt;"></textarea>
-
-      <label class="ad-lb">説明文</label>
-      <input id="adfDesc" class="ad-in" type="text" placeholder="例: 世界160か国以上で展開する台湾発のPCメーカー【Acer公式オンラインストア】">
-
-      <label class="ad-lb">終了日時（空欄なら3日後）</label>
-      <input id="adfEnd" class="ad-in" type="text" placeholder="例: 2026-08-31 23:59">
-
-      <button id="adfAdd" class="ad-btn-add" onclick="adAddSubmit()">＋ この広告を追加</button>
-      <div id="adfMsg" class="ad-msg"></div>
-    </div>
+  <div class="adbox">
+    <div class="adbox-h">🎁 スペシャルオファー広告管理</div>
+    <p class="adbox-note">A8などの広告タグを貼って追加すると、サイトのスペシャルオファーに表示されます。GASを設定したページ（ガイド／本体）で反映されます。</p>
+    <label class="ad-lb">A8タグ（&lt;a&gt;…&lt;img&gt;…&lt;/a&gt; を丸ごと貼付）</label>
+    <textarea id="adfTag" class="ad-ta" rows="4" placeholder="&lt;a href=&quot;https://px.a8.net/...&quot;&gt;&lt;img src=&quot;...&quot;&gt;&lt;/a&gt;"></textarea>
+    <label class="ad-lb">説明文</label>
+    <input id="adfDesc" class="ad-in" type="text" placeholder="例: 世界160か国以上で展開する台湾発のPCメーカー【Acer公式オンラインストア】">
+    <label class="ad-lb">終了日時（空欄なら10時間後）</label>
+    <input id="adfEnd" class="ad-in" type="text" placeholder="例: 2026-08-31 23:59">
+    <button id="adfAdd" class="ad-btn-add" onclick="adAddSubmit()">＋ この広告を追加</button>
+    <div id="adfMsg" class="ad-msg"></div>
   </div>
 
-  <div class="card">
-    <div class="card-h"><span class="card-ic">📋</span>登録済みの広告 <button class="ad-refresh" onclick="adLoadList()">↻ 更新</button></div>
+  <div class="adbox">
+    <div class="adbox-h">📋 登録済みの広告 <button class="ad-refresh" onclick="adLoadList()">↻ 更新</button></div>
     <div id="adList" class="ad-list"><div class="ad-empty">読み込み中…</div></div>
   </div>
 </div>

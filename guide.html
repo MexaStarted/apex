@@ -958,7 +958,7 @@ var REDUCE = window.matchMedia && window.matchMedia('(prefers-reduced-motion: re
   var CACHE_KEY='apexGuideOfferCache';   // 受信データのキャッシュ
   var SEEN_KEY ='apexGuideOfferSeen';    // 1日1回表示の当日フラグ
   var PICK_KEY ='apexGuideOfferPick';    // その日に選んだ広告(uid)を固定
-  var CACHE_TTL=24*3600*1000;            // 24時間
+  var CACHE_TTL=10*3600*1000;            // 10時間（表示間隔）
 
   var ov=document.getElementById('soOv'),adImg=document.getElementById('soAdImg');
   var descEl=document.getElementById('soDesc'),ctaEl=document.getElementById('soCta');
@@ -1003,12 +1003,16 @@ var REDUCE = window.matchMedia && window.matchMedia('(prefers-reduced-motion: re
   function decideOffer(list){
     var valid=validOffers(list);
     if(!valid.length)return null;
-    /* 当日すでに選択済みなら、それを維持（ある限り）*/
-    var pickUid='';try{var p=JSON.parse(localStorage.getItem(PICK_KEY)||'null');if(p&&p.day===todayStr())pickUid=p.uid;}catch(e){}
-    if(pickUid){for(var i=0;i<valid.length;i++)if(valid[i].uid===pickUid)return valid[i];}
-    /* 未選択ならランダム */
-    var pick=valid[Math.floor(Math.random()*valid.length)];
-    try{localStorage.setItem(PICK_KEY,JSON.stringify({day:todayStr(),uid:pick.uid}));}catch(e){}
+    /* 前回表示した広告のuid（2連続で同じものを出さないため）*/
+    var lastUid='';try{var p=JSON.parse(localStorage.getItem(PICK_KEY)||'null');if(p)lastUid=p.uid||'';}catch(e){}
+    /* 前回と違う広告の候補を作る */
+    var pool=valid;
+    if(valid.length>1&&lastUid){
+      var filtered=[];for(var i=0;i<valid.length;i++){if(valid[i].uid!==lastUid)filtered.push(valid[i]);}
+      if(filtered.length)pool=filtered;  /* 前回以外から選ぶ。全部同じなら仕方なく全体 */
+    }
+    var pick=pool[Math.floor(Math.random()*pool.length)];
+    try{localStorage.setItem(PICK_KEY,JSON.stringify({uid:pick.uid,at:Date.now()}));}catch(e){}
     return pick;
   }
 
@@ -1123,13 +1127,14 @@ var REDUCE = window.matchMedia && window.matchMedia('(prefers-reduced-motion: re
   function boot(){
     ensureData(function(list){
       currentList=list;
-      var seen=false;try{seen=(localStorage.getItem(SEEN_KEY)===todayStr());}catch(e){}
-      if(seen&&!isLocal){
-        /* 今日はもう見た → FABだけ出す（有効な広告がある時のみ）*/
+      /* 前回表示から10時間経過していなければ、モーダルは出さずFABのみ */
+      var shownRecently=false;
+      try{var last=parseFloat(localStorage.getItem(SEEN_KEY)||'0');shownRecently=(Date.now()-last)<CACHE_TTL;}catch(e){}
+      if(shownRecently&&!isLocal){
         if(validOffers(list).length&&fab)fab.classList.add('show');
         return;
       }
-      try{localStorage.setItem(SEEN_KEY,todayStr());}catch(e){}
+      try{localStorage.setItem(SEEN_KEY,String(Date.now()));}catch(e){}
       setTimeout(function(){
         var ok=openModalWith(list);
         if(!ok&&fab){fab.classList.remove('show');} /* 広告ゼロなら何も出さない */
