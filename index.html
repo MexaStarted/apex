@@ -11338,8 +11338,11 @@ B:[[85,'歩くマップ 🧭','全マップを完璧に記憶した地理マス�
     if(img){img.onerror=function(){this.style.display='none';adImg.classList.add('img-fail');};}
     /* 説明文 */
     descEl.textContent=o.desc||'';
-    /* CTAリンク */
+    /* CTAリンク＋クリック計測 */
     ctaEl.href=extractHref(o.a8tag);
+    ctaEl.onclick=function(){try{if(window.track)track('offer_click',o.uid);}catch(e){}};
+    /* バナー画像のクリックも計測（A8タグ内のaにイベント付与）*/
+    try{var bl=adImg.querySelector('a');if(bl)bl.addEventListener('click',function(){try{if(window.track)track('offer_click',o.uid);}catch(e){}});}catch(e){}
     /* カウントダウン */
     startTimer(o.end);
   }
@@ -11396,7 +11399,7 @@ B:[[85,'歩くマップ 🧭','全マップを完璧に記憶した地理マス�
     renderOffer(o);
     ov.classList.add('on');ov.setAttribute('aria-hidden','false');
     lock();startFx();
-    try{if(window.track)track('offer','open_'+o.uid);}catch(e){}
+    try{if(window.track)track('offer_view',o.uid);}catch(e){}
     return true;
   }
   function closeModal(){

@@ -110,6 +110,14 @@ svg text{font-family:var(--disp)}
 html:not(.light) .neon0 .sec{box-shadow:none}
 html:not(.light) .neon2 .sec{box-shadow:0 0 22px rgba(25,227,255,.08)}
 
+/* 広告の統計表示 */
+.adbox-stat{padding:14px 16px}
+.ad-site-stat{font-size:13px;color:var(--text);line-height:1.6;text-align:center}
+.ad-site-stat b{color:var(--cy);font-size:16px;font-weight:800;margin:0 2px}
+.ad-stats{display:flex;gap:8px;margin:10px 0}
+.ad-stat{flex:1;background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:9px;padding:8px 4px;text-align:center}
+.ad-stat-n{display:block;font-size:17px;font-weight:800;color:var(--text);line-height:1.2}
+.ad-stat-l{display:block;font-size:9.5px;color:var(--sub);margin-top:2px}
 /* 広告管理 コンテナ（専用・既存.cardと非干渉）*/
 .adbox{background:var(--panel2);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:12px}
 .adbox-h{font-size:14px;font-weight:800;color:var(--text);display:flex;align-items:center;gap:8px;margin-bottom:4px}
@@ -168,6 +176,9 @@ html:not(.light) .neon2 .sec{box-shadow:0 0 22px rgba(25,227,255,.08)}
   <div class="pane" id="p-ins"></div>
   <div class="pane" id="p-set"></div>
 <div class="pane" id="p-ad">
+  <div class="adbox adbox-stat">
+    <div id="adSiteStat" class="ad-site-stat">サイト訪問数を読み込み中…</div>
+  </div>
   <div class="adbox">
     <div class="adbox-h">🎁 スペシャルオファー広告管理</div>
     <p class="adbox-note">A8などの広告タグを貼って追加すると、サイトのスペシャルオファーに表示されます。GASを設定したページ（ガイド／本体）で反映されます。</p>
@@ -997,31 +1008,51 @@ function adAddSubmit(){
 
 function adEsc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
+var __adStats={};   // uid -> {view,click,ctr}
 function adLoadList(){
   var box=$g('adList');
   box.innerHTML='<div class="ad-empty">読み込み中…</div>';
-  adJsonp({action:'adList'}, function(d){
-    if(!d||!d.ok){ box.innerHTML='<div class="ad-empty">読み込み失敗: '+adEsc((d&&d.error)||'不明')+'</div>'; return; }
-    var ads=d.ads||[];
-    if(!ads.length){ box.innerHTML='<div class="ad-empty">まだ広告がありません。上のフォームから追加してください。</div>'; return; }
-    var html='';
-    for(var i=0;i<ads.length;i++){
-      var a=ads[i];
-      var cls='ad-item'+(a.active?'':' off')+(a.expired?' expired':'');
-      var st = a.expired ? '<span class="ad-badge-st exp">期限切れ</span>'
-             : (a.active ? '<span class="ad-badge-st on">配信中</span>' : '<span class="ad-badge-st off">停止中</span>');
-      html+='<div class="'+cls+'">'
-        + '<div class="ad-item-top">'+st+'<span class="ad-item-uid">'+adEsc(a.uid)+'</span></div>'
-        + (a.desc?'<div class="ad-item-desc">'+adEsc(a.desc)+'</div>':'')
-        + '<div class="ad-item-end">終了: '+adEsc(a.endText)+'</div>'
-        + '<div class="ad-item-tag">'+adEsc(a.a8tag).slice(0,200)+(a.a8tag.length>200?'…':'')+'</div>'
-        + '<div class="ad-item-acts">'
-        +   '<button class="ad-act toggle" onclick="adToggle(\''+adEsc(a.uid)+'\')">'+(a.active?'停止する':'配信する')+'</button>'
-        +   '<button class="ad-act del" onclick="adDelete(\''+adEsc(a.uid)+'\')">削除</button>'
-        + '</div>'
-      + '</div>';
-    }
-    box.innerHTML=html;
+  /* まず統計(dashboard)を取得 → 続けて広告一覧を取得 */
+  adJsonp({action:'dashboard'}, function(dd){
+    __adStats = (dd&&dd.adStats)?dd.adStats:{};
+    /* 教科書サイトの来訪者数を表示 */
+    try{
+      var siteBox=$g('adSiteStat');
+      if(siteBox){
+        var ss=(dd&&dd.siteStats)?dd.siteStats:[];
+        var guideN=0, apexN=0;
+        for(var k=0;k<ss.length;k++){ var row=ss[k]; var name=row[0]||row.k||''; var val=Number(row[1]||row.v||0);
+          if(String(name).indexOf('guide')>=0)guideN=val; else if(String(name).indexOf('apex')>=0)apexN=val; }
+        siteBox.innerHTML='📖 教科書サイト 累計訪問 <b>'+guideN.toLocaleString()+'</b> ・ 🎮 本体 <b>'+apexN.toLocaleString()+'</b>';
+      }
+    }catch(e){}
+    adJsonp({action:'adList'}, function(d){
+      if(!d||!d.ok){ box.innerHTML='<div class="ad-empty">読み込み失敗: '+adEsc((d&&d.error)||'不明')+'</div>'; return; }
+      var ads=d.ads||[];
+      if(!ads.length){ box.innerHTML='<div class="ad-empty">まだ広告がありません。上のフォームから追加してください。</div>'; return; }
+      var html='';
+      for(var i=0;i<ads.length;i++){
+        var a=ads[i];
+        var stt=__adStats[a.uid]||{view:0,click:0,ctr:0};
+        var cls='ad-item'+(a.active?'':' off')+(a.expired?' expired':'');
+        var st = a.expired ? '<span class="ad-badge-st exp">期限切れ</span>'
+               : (a.active ? '<span class="ad-badge-st on">配信中</span>' : '<span class="ad-badge-st off">停止中</span>');
+        html+='<div class="'+cls+'">'
+          + '<div class="ad-item-top">'+st+'<span class="ad-item-uid">'+adEsc(a.uid)+'</span></div>'
+          + (a.desc?'<div class="ad-item-desc">'+adEsc(a.desc)+'</div>':'')
+          + '<div class="ad-stats"><div class="ad-stat"><span class="ad-stat-n">'+stt.view.toLocaleString()+'</span><span class="ad-stat-l">👁 表示</span></div>'
+          +   '<div class="ad-stat"><span class="ad-stat-n">'+stt.click.toLocaleString()+'</span><span class="ad-stat-l">🖱 クリック</span></div>'
+          +   '<div class="ad-stat"><span class="ad-stat-n">'+stt.ctr+'%</span><span class="ad-stat-l">CTR</span></div></div>'
+          + '<div class="ad-item-end">終了: '+adEsc(a.endText)+'</div>'
+          + '<div class="ad-item-tag">'+adEsc(a.a8tag).slice(0,200)+(a.a8tag.length>200?'…':'')+'</div>'
+          + '<div class="ad-item-acts">'
+          +   '<button class="ad-act toggle" onclick="adToggle(\''+adEsc(a.uid)+'\')">'+(a.active?'停止する':'配信する')+'</button>'
+          +   '<button class="ad-act del" onclick="adDelete(\''+adEsc(a.uid)+'\')">削除</button>'
+          + '</div>'
+        + '</div>';
+      }
+      box.innerHTML=html;
+    });
   });
 }
 
