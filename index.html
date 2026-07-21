@@ -5250,7 +5250,16 @@ var DIAG_BASE={ng:27,ub:18,ts:11,sh:7,nl:1,pt:1,sp:1,bg:1,tr:1,rl:1,izo:2};
 function diagHitInc(c){try{var h=JSON.parse(localStorage.getItem('diagHits')||'{}');h[c]=(h[c]||0)+1;localStorage.setItem('diagHits',JSON.stringify(h));}catch(e){}}
 function diagHitCount(c){var local={};try{local=JSON.parse(localStorage.getItem('diagHits')||'{}');}catch(e){}return (DIAG_BASE[c]||0)+(local[c]||0)*2;}
 function hubSetCat(c){HUBSTATE.cat=c;renderHub();}
-function hubSearch(v){HUBSTATE.q=v;renderHub();}
+function hubSearch(v){
+  HUBSTATE.q=v;
+  /* 入力中のカーソル位置を保存 */
+  var el=document.getElementById('hubq');
+  var pos=el?el.selectionStart:null;
+  renderHub();
+  /* 再描画で作り直された検索欄にフォーカスとカーソルを戻す（キーボードが閉じないように）*/
+  var el2=document.getElementById('hubq');
+  if(el2){el2.focus();try{if(pos!=null)el2.setSelectionRange(pos,pos);}catch(e){}}
+}
 function diagRandom(){var codes=Object.keys(DIAGREG);var c=codes[Math.floor(Math.random()*codes.length)];openDiag(c);}
 function diagNextNew(){var done=diagDone();var todo=Object.keys(DIAGREG).filter(function(c){return !done[c];});if(!todo.length){alert('全診断コンプ済み！おめでとう🎉');return;}openDiag(todo[Math.floor(Math.random()*todo.length)]);}
 
@@ -6611,7 +6620,7 @@ function linkProceed(auto){
 function linkCancel(){if(LINKTIMER){clearInterval(LINKTIMER);LINKTIMER=null;}var m=$('linkAdModal');if(m){m.className='linkad';m.innerHTML='';}}
 
 /* ===== 新着システム ===== */
-var DIAGNEW=['wmas','clr','tmn','seme','aimt','tilt','cau','perf','shou','focus','iqsa','vcte','nosh','higa','sekk','wpck','drop','guard','slep','saif'];
+var DIAGNEW=['shiin','sagi2','senpan','sagyo','mental','miho','tokkou','aimc','shido','nobi','wmas','clr','tmn','seme','aimt','tilt','cau','perf','shou','focus','iqsa','vcte','nosh','higa','sekk','wpck','drop','guard','slep','saif'];
 var NEWBATCH_DIAG='2026-06-11';   // 診断の新着バッチ（新規追加時はここを更新）
 var NEWBATCH_SHOP='2026-06-11';   // 商品の新着バッチ
 function diagNewUnseen(){try{return localStorage.getItem('apexDiagNewSeen')!==NEWBATCH_DIAG;}catch(e){return true;}}
