@@ -2164,6 +2164,64 @@ html[data-theme="light"] .xbn{background:linear-gradient(135deg,#fff,#eef3fa)}
 .so-fab-tx{white-space:nowrap}
 .so-fab-badge{display:flex;align-items:center;justify-content:center;min-width:17px;height:17px;padding:0 4px;border-radius:9px;background:#ff2d2d;color:#fff;font-size:10px;font-weight:900;box-shadow:0 0 0 2px rgba(255,157,60,.5)}
 .so-fab-badge:empty,.so-fab-badge[hidden]{display:none}
+
+/* 診断結果 リッチシェア画像モーダル */
+.shimg-ov{position:fixed;inset:0;z-index:100080;background:rgba(4,7,13,.86);backdrop-filter:blur(6px);
+  display:none;align-items:center;justify-content:center;padding:16px}
+.shimg-ov.on{display:flex}
+.shimg-box{background:#0e1420;border:1px solid #1e2942;border-radius:18px;max-width:420px;width:100%;
+  max-height:92vh;overflow:auto;box-shadow:0 20px 60px -12px rgba(0,0,0,.7)}
+.shimg-h{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid #1e2942}
+.shimg-h b{font-size:15px}
+.shimg-x{background:rgba(255,255,255,.06);border:none;color:#8494b4;width:30px;height:30px;border-radius:8px;font-size:15px;cursor:pointer}
+.shimg-body{padding:14px}
+.shimg-body img{width:100%;border-radius:12px;display:block}
+.shimg-acts{display:flex;flex-direction:column;gap:9px;padding:0 16px 8px}
+.shimg-btn{border:none;border-radius:11px;padding:13px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit}
+.shimg-btn.tw{background:linear-gradient(100deg,#19e3ff,#8a5cff);color:#04121a}
+.shimg-btn.dl{background:rgba(255,255,255,.07);color:#eaf2ff;border:1px solid #2a3852}
+.shimg-btn.cp{background:rgba(255,255,255,.04);color:#9fb0d0;border:1px solid #1e2942}
+.shimg-btn:active{opacity:.82}
+.shimg-note{font-size:11.5px;color:#7e8db0;text-align:center;padding:6px 16px 16px;line-height:1.6}
+.shimg-note b{color:#19e3ff}
+
+
+/* ツイート文ジェネレータ */
+.twg-ov{position:fixed;inset:0;z-index:100085;background:rgba(4,7,13,.86);backdrop-filter:blur(6px);
+  display:none;align-items:center;justify-content:center;padding:16px}
+.twg-ov.on{display:flex}
+.twg-box{background:#0e1420;border:1px solid #1e2942;border-radius:18px;max-width:440px;width:100%;
+  max-height:92vh;overflow:auto;box-shadow:0 20px 60px -12px rgba(0,0,0,.7)}
+.twg-h{display:flex;align-items:center;justify-content:space-between;padding:15px 16px;border-bottom:1px solid #1e2942}
+.twg-h b{font-size:15px}
+.twg-x{background:rgba(255,255,255,.06);border:none;color:#8494b4;width:30px;height:30px;border-radius:8px;font-size:15px;cursor:pointer}
+.twg-menu{padding:12px;display:flex;flex-direction:column;gap:9px}
+.twg-item{display:flex;align-items:center;gap:12px;text-align:left;background:rgba(255,255,255,.03);
+  border:1px solid #1e2942;border-radius:12px;padding:13px 14px;cursor:pointer;font-family:inherit;color:#eaf2ff}
+.twg-item:active{opacity:.8}
+.twg-ic{font-size:24px;flex:0 0 auto}
+.twg-item b{font-size:14px;display:block}
+.twg-item small{font-size:11px;color:#7e8db0;display:block;margin-top:2px;line-height:1.4}
+.twg-body{padding:14px}
+.twg-ta{width:100%;box-sizing:border-box;background:rgba(255,255,255,.04);border:1px solid #1e2942;
+  border-radius:11px;color:#eaf2ff;font-size:14px;padding:12px;font-family:inherit;line-height:1.6;resize:vertical}
+.twg-ta:focus{outline:none;border-color:#19e3ff}
+.twg-cnt{font-size:11px;color:#7e8db0;text-align:right;margin-top:6px}
+.twg-acts{display:flex;flex-direction:column;gap:9px;padding:0 16px 8px}
+.twg-btn{border:none;border-radius:11px;padding:13px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit}
+.twg-btn.post{background:linear-gradient(100deg,#19e3ff,#8a5cff);color:#04121a}
+.twg-btn.regen{background:rgba(255,255,255,.06);color:#eaf2ff;border:1px solid #2a3852}
+.twg-btn.copy{background:rgba(255,255,255,.04);color:#9fb0d0;border:1px solid #1e2942}
+.twg-btn:active{opacity:.82}
+.twg-note{font-size:11.5px;color:#7e8db0;text-align:center;padding:8px 16px 16px;line-height:1.6}
+/* ホームのツイート作成ボタン */
+.tw-entry{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;box-sizing:border-box;
+  background:linear-gradient(100deg,rgba(25,227,255,.12),rgba(138,92,255,.12));
+  border:1px solid rgba(25,227,255,.35);color:#eaf2ff;border-radius:14px;padding:14px;
+  font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;margin:12px 0}
+.tw-entry:active{opacity:.82}
+.tw-entry .em{font-size:18px}
+
 </style>
 <script type="application/ld+json">
 {
@@ -2438,6 +2496,7 @@ html[data-theme="light"] .xbn{background:linear-gradient(135deg,#fff,#eef3fa)}
     <div class="caption"><h2 data-i18n="cap_pred_h">👑 Apexプレデターボーダー｜今シーズンの到達RP</h2><span class="d" data-i18n="cap_pred_d">いまプレデターになるのに必要なRP</span></div>
     <p class="seolead">Apexの<strong>プレデターボーダー</strong>とは、プレデター（各プラットフォーム上位約750人）に到達するために必要な<strong>RP（ランクポイント）</strong>のこと。ここではPC・PS・Xbox・Switchのプラットフォーム別に、今シーズンの最新ボーダーをリアルタイムで表示しています。</p>
     <div id="predBox"><div class="loading">読み込み中…</div></div>
+    <button class="tw-entry" onclick="openTweetGen()"><span class="em">📝</span> ワンボタンでツイート文を作る</button>
     <div class="note">ボーダー＝上位枠に入るのに必要なRP。リセット直後やシーズン序盤は大きく動きます。</div>
     <div class="ad adSlot"></div>
   </div>
@@ -3045,6 +3104,8 @@ function grandOpen(){
 }
 function home(){try{if(localStorage.getItem('apexSkin')==='simple'&&document.getElementById('simpleApp')){document.documentElement.setAttribute('data-skin','simple');var _sa=document.getElementById('simpleApp');if(_sa)_sa.style.display='block';try{swapThemeColor();}catch(e){}try{updateSkinBtn();}catch(e){}try{sBoot();}catch(e){}window.scrollTo(0,0);return;}}catch(e){}document.querySelectorAll('.view').forEach(function(v){v.classList.remove('on')});$('home').style.display='block';try{fillAdsIn($('home'));}catch(e){}try{homeHealthCheck();}catch(e){}window.scrollTo(0,0);try{botnavUpdate();}catch(e){}try{renderHomeNotice();}catch(e){}try{renderPopular();}catch(e){}try{document.title='Apexプレデターボーダー 今シーズン｜マップ・サーバー状態・戦績・診断 - 激やばツール';}catch(e){}try{seoApply('');}catch(e){}try{pushUrl('');}catch(e){}try{var _h=$('home');if(_h){_h.classList.remove('vltopen');void _h.offsetWidth;_h.classList.add('vltopen');setTimeout(function(){_h.classList.remove('vltopen');},1500);}}catch(e){}try{setTimeout(pwHomeIntroMaybe,500);}catch(e){}try{if(window.svMaybe)svMaybe();}catch(e){}}
 function open_(sec){$('home').style.display='none';document.querySelectorAll('.view').forEach(function(v){v.classList.remove('on')});$('v-'+sec).classList.add('on');window.scrollTo(0,0);try{fillAdsIn($('v-'+sec));}catch(e){}
+  /* ★どの画面を開いた時も、その日まだ出していなければスペシャルオファーを表示 */
+  try{if(window.__soTryShow)setTimeout(window.__soTryShow,500);}catch(e){}
   if(sec==='map'&&!loaded.map){loaded.map=1;loadMap();}
   if(sec==='pred'&&!loaded.pred){loaded.pred=1;loadPred();}
   if(sec==='srv'&&!loaded.srv){loaded.srv=1;loadSrv();}
@@ -7087,7 +7148,9 @@ function recoBlock(code){
  html+='<div class="recowrap"><div class="recottl">あわせて遊ぶ</div><div class="recos">'+diagChips+'<button class="reco shop" onclick="home();open_(\'shop\')">🛒 デバイス一覧</button></div></div>';try{if(typeof dnSupportStrip==='function')html+=dnSupportStrip();}catch(e){}
  return html;
 }
-function gaugeRes(pct,num,suf,band,ts,shareTxt,code){DIAG_R=code+pct;diagHistSave({c:code,n:band.n,num:num,suf:suf,pct:pct,sh:shareTxt,t:Date.now()});return '<div class="res"><div class="gauge" style="--p:'+pct+'%"><div class="in"><div class="n mono">'+num+'</div><div class="o">'+suf+'</div></div></div><div class="tn">'+band.n+'</div><div class="ts">'+ts+'</div><div class="desc">'+band.d+'</div>'+richBlockG(code,pct,band)+'<button class="btn x" onclick="share(\''+shareTxt+'\')">𝕏 シェア</button><button class="btn primary" onclick="openDiag(\''+code+'\')">もう一度</button>'+recoBlock(code)+'</div>';}
+function gaugeRes(pct,num,suf,band,ts,shareTxt,code){DIAG_R=code+pct;window.__lastTs=ts;window.__lastRes={pct:pct,num:num,suf:suf,band:band,code:code};diagHistSave({c:code,n:band.n,num:num,suf:suf,pct:pct,sh:shareTxt,t:Date.now()});return '<div class="res"><div class="gauge" style="--p:'+pct+'%"><div class="in"><div class="n mono">'+num+'</div><div class="o">'+suf+'</div></div></div><div class="tn">'+band.n+'</div><div class="ts">'+ts+'</div><div class="desc">'+band.d+'</div>'+richBlockG(code,pct,band)+'<button class="btn x" onclick="openShareImageFromLast()">🖼️ 結果カードを作ってシェア</button><button class="btn primary" onclick="openDiag(\''+code+'\')">もう一度</button>'+recoBlock(code)+'</div>';}
+/* 直近の診断結果からリッチ画像を開く */
+function openShareImageFromLast(){var r=window.__lastRes;if(!r){return;}try{openShareImage(r.code,r.pct,r.num,r.suf,r.band);}catch(e){}}
 
 /* 煽り耐性診断 mt */
 var MTQ=[{q:"試合中に暴言を受けた。",a:[["完全スルー",2],["少しイラッとする",1],["言い返す",0],["プレイが乱れる",-1]]},{q:"連敗が続いた時の気分は？",a:[["すぐ切り替える",2],["普通",1],["しばらく引きずる",0]]},{q:"味方の地雷ムーブを見たら？",a:[["フォローに回る",2],["黙って続行",1],["つい指摘する",0],["萎える",-1]]},{q:"理不尽な負け方をした。",a:[["次いこ、で終了",2],["軽く愚痴る",1],["デバイスを握る手に力が入る",-1]]},{q:"煽りエモートをされた。",a:[["何も感じない",2],["ちょっとムカつく",0],["絶対やり返す",-1]]},{q:"VCで責められた。",a:[["冷静に話し合う",2],["スルーする",1],["口論になる",-1]]},{q:"格上に一瞬で溶かされた。",a:[["学びにする",2],["仕方ないと割り切る",1],["萎えて落ちる",-1]]},{q:"自分のミスで全滅させた。",a:[["謝って前を向く",2],["反省して続ける",1],["自己嫌悪で崩れる",-1]]}];
@@ -11289,7 +11352,8 @@ B:[[85,'歩くマップ 🧭','全マップを完璧に記憶した地理マス�
   var CACHE_KEY='apexGuideOfferCache';   // 受信データのキャッシュ
   var SEEN_KEY ='apexGuideOfferSeen';    // 1日1回表示の当日フラグ
   var PICK_KEY ='apexGuideOfferPick';    // その日に選んだ広告(uid)を固定
-  var CACHE_TTL=10*3600*1000;            // 10時間（表示間隔）
+  var CACHE_TTL=30*60*1000;              // 30分（広告リストのキャッシュ。追加した広告が早く反映されるように）
+  var ROTATE_MS=5*3600*1000;             // ★5時間ごとに別の広告へ切替＆モーダル再表示
 
   var ov=document.getElementById('soOv'),adImg=document.getElementById('soAdImg');
   var descEl=document.getElementById('soDesc'),ctaEl=document.getElementById('soCta');
@@ -11330,20 +11394,33 @@ B:[[85,'歩くマップ 🧭','全マップを完璧に記憶した地理マス�
     return out;
   }
 
-  /* ---- その日の1件を決定（同日は同じ広告を出す）---- */
-  function decideOffer(list){
+  /* ---- 表示中の広告と切替タイミング（5時間ごとにローテーション）---- */
+  function readPick(){try{return JSON.parse(localStorage.getItem(PICK_KEY)||'null');}catch(e){return null;}}
+  function writePick(uid){try{localStorage.setItem(PICK_KEY,JSON.stringify({uid:uid,at:Date.now()}));}catch(e){}}
+  /* 切替時刻が来たか（＝モーダルを出すタイミング）。初回は常にtrue */
+  function rotationDue(){
+    var p=readPick();
+    if(!p||!p.at)return true;
+    return (Date.now()-p.at)>=ROTATE_MS;
+  }
+  /* いま出すべき広告を決める。rotate=true なら「前回と違う広告」に切り替える */
+  function decideOffer(list,rotate){
     var valid=validOffers(list);
     if(!valid.length)return null;
-    /* 前回表示した広告のuid（2連続で同じものを出さないため）*/
-    var lastUid='';try{var p=JSON.parse(localStorage.getItem(PICK_KEY)||'null');if(p)lastUid=p.uid||'';}catch(e){}
-    /* 前回と違う広告の候補を作る */
+    var p=readPick(),lastUid=(p&&p.uid)||'';
+    /* 切替時刻前 → 今のスロットの広告をそのまま出す（FABから開いた時など）*/
+    if(!rotate&&lastUid){
+      for(var i=0;i<valid.length;i++){if(valid[i].uid===lastUid)return valid[i];}
+      /* その広告が期限切れ等で無効になっていたら選び直す */
+    }
+    /* 前回と違う広告から選ぶ（2連続で同じものを出さない）*/
     var pool=valid;
     if(valid.length>1&&lastUid){
-      var filtered=[];for(var i=0;i<valid.length;i++){if(valid[i].uid!==lastUid)filtered.push(valid[i]);}
-      if(filtered.length)pool=filtered;  /* 前回以外から選ぶ。全部同じなら仕方なく全体 */
+      var f=[];for(var j=0;j<valid.length;j++){if(valid[j].uid!==lastUid)f.push(valid[j]);}
+      if(f.length)pool=f;
     }
     var pick=pool[Math.floor(Math.random()*pool.length)];
-    try{localStorage.setItem(PICK_KEY,JSON.stringify({uid:pick.uid,at:Date.now()}));}catch(e){}
+    writePick(pick.uid);   /* ここで切替時刻をリセット */
     return pick;
   }
 
@@ -11418,8 +11495,8 @@ B:[[85,'歩くマップ 🧭','全マップを完璧に記憶した地理マス�
   /* ---- 現在の広告リスト（メモリ保持）---- */
   var currentList=null;
 
-  function openModalWith(list){
-    var o=decideOffer(list);
+  function openModalWith(list,rotate){
+    var o=decideOffer(list,rotate);
     if(!o){ /* 有効な広告ゼロ → 出さない。FABも隠す */ return false; }
     renderOffer(o);
     ov.classList.add('on');ov.setAttribute('aria-hidden','false');
@@ -11468,29 +11545,442 @@ B:[[85,'歩くマップ 🧭','全マップを完璧に記憶した地理マス�
     }catch(e){}
     return false;
   }
-  function boot(){
+  /* ---- 表示制御：5時間ごとに切替＆モーダル再表示 ---- */
+  var _soNoOffer=false;   /* 有効広告ゼロ→この読み込み中は無駄な再試行をしない */
+
+  /* 表示を試みる。ホーム/各画面のどこからでも呼べる。切替時刻が来ている時だけ実際に開く */
+  function trySkipOrShow(){
+    if(_soNoOffer)return;
+    /* データは必ず先に用意する（未取得だとFABが出せないため）*/
     ensureData(function(list){
       currentList=list;
-      /* 前回表示から10時間経過していなければ、モーダルは出さずFABのみ */
-      var shownRecently=false;
-      try{var last=parseFloat(localStorage.getItem(SEEN_KEY)||'0');shownRecently=(Date.now()-last)<CACHE_TTL;}catch(e){}
-      if(shownRecently&&!isLocal){
+      if(!rotationDue()&&!isLocal){
         if(validOffers(list).length&&fab)fab.classList.add('show');
         return;
       }
       /* 解放演出等が出ている間は待ってから表示（重複回避）*/
       function tryShow(retry){
+        if(!rotationDue()&&!isLocal)return;                /* 別画面で先に出た */
+        if(ov&&ov.classList.contains('on'))return;          /* すでに開いている */
         if(annBusy()){if((retry||0)<60){setTimeout(function(){tryShow((retry||0)+1);},500);return;}}
-        try{localStorage.setItem(SEEN_KEY,String(Date.now()));}catch(e){}
-        var ok=openModalWith(list);
-        if(!ok&&fab){fab.classList.remove('show');}
+        var ok=openModalWith(list,true);   /* ★切替＝前回と違う広告を出す */
+        if(!ok){_soNoOffer=true;if(fab)fab.classList.remove('show');}
       }
       setTimeout(function(){tryShow(0);},800);
     });
   }
+  /* 画面遷移からも呼べるよう公開（ホームに来ず直接他画面へ行く人にも出す）*/
+  window.__soTryShow=function(){try{trySkipOrShow();}catch(e){}};
+
+  function boot(){ trySkipOrShow(); }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);
   else boot();
+  /* 開きっぱなしでも5時間経てば切り替わるよう定期チェック（5分ごと）*/
+  setInterval(function(){try{if(rotationDue())trySkipOrShow();}catch(e){}},300000);
 })();
+
+
+/* ================================================================
+ * ★診断結果 リッチシェア画像ジェネレータ（アイデア1-10）
+ *   濃密な結果（判定・上位%・3軸レーダー・詳細解説要約）を
+ *   1枚の縦長カード画像に描画。レア度で枠色・演出が変化。
+ * ================================================================ */
+var SHIMG={
+  last:null,   // 直近生成のdataURL
+  lastMeta:null
+};
+/* 色: レア度(スコア)による枠・アクセント */
+function shimgTheme(pct){
+  if(pct>=80) return {name:'LEGENDARY',ac:'#ff4d5e',ac2:'#ff8a3d',glow:'rgba(255,77,94,.55)',tag:'⚠ 危険域'};
+  if(pct>=60) return {name:'EPIC',ac:'#ffa23d',ac2:'#ffd23d',glow:'rgba(255,162,61,.5)',tag:'要注意'};
+  if(pct>=40) return {name:'RARE',ac:'#19e3ff',ac2:'#5d9bff',glow:'rgba(25,227,255,.45)',tag:'平均圏'};
+  if(pct>=20) return {name:'FINE',ac:'#22e3a0',ac2:'#19e3ff',glow:'rgba(34,227,160,.45)',tag:'良好'};
+  return {name:'DIAMOND',ac:'#8ad4ff',ac2:'#c9a0ff',glow:'rgba(138,212,255,.55)',tag:'✦ 上澄み'};
+}
+/* テキスト折返し */
+function shimgWrap(x,text,maxW){
+  var out=[]; var chars=String(text||'').split('');
+  var line='';
+  for(var i=0;i<chars.length;i++){
+    var t=line+chars[i];
+    if(x.measureText(t).width>maxW && line){out.push(line);line=chars[i];}
+    else line=t;
+  }
+  if(line)out.push(line);
+  return out;
+}
+/* メイン: 結果カード画像を生成しdataURLを返す */
+function buildDiagImage(o){
+  // o: {title,ts,pct,num,suf,comment,cats[3],subs[3]|null,pctile,detail}
+  var R=2; // 高解像度
+  var W=540, H=960;
+  var c=document.createElement('canvas'); c.width=W*R; c.height=H*R;
+  var x=c.getContext('2d'); x.scale(R,R);
+  var th=shimgTheme(o.pct);
+
+  // 背景（深い宇宙グラデ）
+  var bg=x.createLinearGradient(0,0,W,H);
+  bg.addColorStop(0,'#0a0e18'); bg.addColorStop(.5,'#070a12'); bg.addColorStop(1,'#05070d');
+  x.fillStyle=bg; x.fillRect(0,0,W,H);
+  // 星屑
+  for(var i=0;i<60;i++){x.globalAlpha=.08+Math.random()*.35;x.fillStyle=i%3===0?th.ac:(i%3===1?th.ac2:'#ffffff');
+    x.beginPath();x.arc(Math.random()*W,Math.random()*H,.6+Math.random()*1.9,0,7);x.fill();}
+  x.globalAlpha=1;
+  // 外枠（レア色・グロー）
+  x.shadowColor=th.glow; x.shadowBlur=24;
+  x.strokeStyle=th.ac; x.lineWidth=3; x.strokeRect(16,16,W-32,H-32);
+  x.shadowBlur=0;
+  x.strokeStyle='rgba(255,255,255,.08)'; x.lineWidth=1; x.strokeRect(24,24,W-48,H-48);
+
+  var pad=40, cx=W/2, y=64;
+
+  // ヘッダー：レアバッジ
+  x.textAlign='center'; x.textBaseline='alphabetic';
+  x.font='800 13px sans-serif'; x.fillStyle=th.ac;
+  x.fillText('◆ '+th.name+' ◆  '+th.tag, cx, y); y+=8;
+
+  // サービス名
+  x.font='600 12px sans-serif'; x.fillStyle='#6b7896';
+  x.fillText('APEX 激やばツール ・ 診断結果', cx, y+14); y+=44;
+
+  // 円形ゲージ（スコア）
+  var gr=54, gy=y+gr;
+  // 背景リング
+  x.beginPath(); x.arc(cx,gy,gr,0,Math.PI*2); x.strokeStyle='rgba(255,255,255,.08)'; x.lineWidth=9; x.stroke();
+  // 値リング
+  x.beginPath(); x.arc(cx,gy,gr,-Math.PI/2, -Math.PI/2 + Math.PI*2*(o.pct/100));
+  var rg=x.createLinearGradient(cx-gr,gy,cx+gr,gy); rg.addColorStop(0,th.ac); rg.addColorStop(1,th.ac2);
+  x.strokeStyle=rg; x.lineWidth=9; x.lineCap='round'; x.stroke(); x.lineCap='butt';
+  // 中央の数値
+  x.fillStyle='#f2f7ff'; x.font='800 40px sans-serif'; x.textAlign='center';
+  x.fillText(String(o.num), cx, gy+8);
+  x.fillStyle='#8494b4'; x.font='700 13px sans-serif';
+  x.fillText(o.suf||'/100', cx, gy+26);
+  y=gy+gr+40;
+
+  // 判定名（大）
+  x.fillStyle=th.ac; x.font='800 30px "Hiragino Kaku Gothic ProN",sans-serif';
+  var titleLines=shimgWrap(x,o.title,W-pad*2);
+  for(var i=0;i<titleLines.length;i++){x.fillText(titleLines[i],cx,y);y+=36;}
+  // 英語サブ
+  x.fillStyle='#5a6784'; x.font='700 13px sans-serif'; x.fillText(o.ts||'',cx,y); y+=30;
+
+  // コメント（判定の説明・辛口）
+  x.fillStyle='#d6e2f5'; x.font='500 15px "Hiragino Kaku Gothic ProN",sans-serif'; x.textAlign='left';
+  var cLines=shimgWrap(x,o.comment,W-pad*2);
+  for(var i=0;i<Math.min(cLines.length,4);i++){x.fillText(cLines[i],pad,y);y+=23;}
+  y+=14;
+
+  // 3軸スコア（内訳バー）※あれば
+  if(o.subs && o.subs.length===3){
+    x.fillStyle=th.ac2; x.font='800 13px sans-serif'; x.textAlign='left';
+    x.fillText('📊 内訳スコア', pad, y); y+=18;
+    for(var i=0;i<3;i++){
+      var lbl=(o.cats&&o.cats[i])||('要素'+(i+1));
+      var v=o.subs[i];
+      x.fillStyle='#9fb0d0'; x.font='600 12px sans-serif'; x.textAlign='left';
+      x.fillText(lbl, pad, y+2);
+      // バー
+      var barX=pad+150, barW=W-pad-barX-36;
+      x.fillStyle='rgba(255,255,255,.07)'; x.fillRect(barX,y-9,barW,10);
+      var bg2=x.createLinearGradient(barX,0,barX+barW,0); bg2.addColorStop(0,th.ac); bg2.addColorStop(1,th.ac2);
+      x.fillStyle=bg2; x.fillRect(barX,y-9,barW*(v/100),10);
+      x.fillStyle='#eaf2ff'; x.font='800 12px sans-serif'; x.textAlign='right';
+      x.fillText(String(v), W-pad, y+1);
+      y+=24;
+    }
+    y+=8;
+  }
+
+  // 位置づけ（上位%）— 主役級に
+  var posTop = o.pctile;
+  x.fillStyle='rgba(255,255,255,.03)'; 
+  roundRectSh(x,pad,y-4,W-pad*2,52,10); x.fill();
+  x.strokeStyle='rgba(255,255,255,.08)'; x.lineWidth=1; roundRectSh(x,pad,y-4,W-pad*2,52,10); x.stroke();
+  x.textAlign='left'; x.fillStyle='#8494b4'; x.font='700 12px sans-serif';
+  x.fillText('🏅 位置づけ', pad+14, y+16);
+  x.fillStyle=th.ac; x.font='800 26px sans-serif';
+  x.fillText('上位 '+posTop+'%', pad+14, y+42);
+  x.fillStyle='#7e8db0'; x.font='600 11px sans-serif'; x.textAlign='right';
+  x.fillText('全プレイヤー中', W-pad-14, y+40);
+  y+=68;
+
+  // フッター：URL＋誘導
+  x.textAlign='center';
+  x.fillStyle=th.ac2; x.font='800 15px sans-serif';
+  x.fillText('▶ あなたも診断してみる', cx, H-58);
+  x.fillStyle='#6b7896'; x.font='600 13px sans-serif';
+  x.fillText('mexastarted.github.io/apex/', cx, H-36);
+
+  return c.toDataURL('image/png');
+}
+function roundRectSh(x,rx,ry,rw,rh,r){x.beginPath();x.moveTo(rx+r,ry);x.arcTo(rx+rw,ry,rx+rw,ry+rh,r);x.arcTo(rx+rw,ry+rh,rx,ry+rh,r);x.arcTo(rx,ry+rh,rx,ry,r);x.arcTo(rx,ry,rx+rw,ry,r);x.closePath();}
+
+/* 結果データを集めて画像モーダルを開く */
+function openShareImage(code,pct,num,suf,band){
+  var cats=(window.RICHCAT&&RICHCAT[code])||['要素1','要素2','要素3'];
+  var subs=null; try{subs=richSub(code);}catch(e){}
+  var pctile=Math.max(1,Math.min(99,(pct>=50?(pct-3):(pct+3))));
+  // 詳細解説の要約
+  var comment=(band&&band.d)||'';
+  var o={title:(band&&band.n)||'結果',ts:(window.__lastTs||''),pct:pct,num:num,suf:suf,
+    comment:comment,cats:cats,subs:subs,pctile:pctile};
+  var url;
+  try{url=buildDiagImage(o);}catch(e){url=null;}
+  SHIMG.last=url; SHIMG.lastMeta=o;
+  showShareImageModal(url,o,code);
+}
+
+/* 画像プレビュー＋シェア/保存モーダル */
+function showShareImageModal(dataUrl,o,code){
+  var m=document.getElementById('shimgModal');
+  if(!m){
+    m=document.createElement('div'); m.id='shimgModal'; m.className='shimg-ov';
+    m.innerHTML='<div class="shimg-box">'
+      +'<div class="shimg-h"><b>🖼️ 結果カード</b><button class="shimg-x" onclick="closeShareImage()">✕</button></div>'
+      +'<div class="shimg-body"><img id="shimgImg" alt="診断結果カード"></div>'
+      +'<div class="shimg-acts">'
+      +'<button class="shimg-btn tw" onclick="shareImageToX()">𝕏 画像付きでポスト</button>'
+      +'<button class="shimg-btn dl" onclick="downloadShareImage()">⬇ 画像を保存</button>'
+      +'<button class="shimg-btn cp" onclick="copyShareText()">📋 文章をコピー</button>'
+      +'</div>'
+      +'<div class="shimg-note" id="shimgNote">画像を長押しで保存 → Xに添付すると濃い結果が伝わる！</div>'
+      +'</div>';
+    document.body.appendChild(m);
+  }
+  var img=document.getElementById('shimgImg');
+  if(dataUrl){img.src=dataUrl;img.style.display='block';document.getElementById('shimgNote').textContent='画像を長押しで保存 → Xに添付すると濃い結果が伝わる！';}
+  else{img.style.display='none';document.getElementById('shimgNote').textContent='画像の生成に失敗しました。文章コピーをご利用ください。';}
+  m.__code=code; m.classList.add('on');
+  try{if(window.track)track('share_img','open');}catch(e){}
+}
+function closeShareImage(){var m=document.getElementById('shimgModal');if(m)m.classList.remove('on');}
+/* 結果連動のツイート文言（煽り＋誘導） */
+function shareImageText(o){
+  var t=o||SHIMG.lastMeta; if(!t)return '';
+  var title=t.title, pct=t.pct;
+  var hook;
+  if(pct>=80)hook='【重症】俺の「'+title+'」やばすぎた…😇 お前らも測定してみろ↓';
+  else if(pct>=60)hook='「'+title+'」判定出た…図星すぎて草。お前らはどうなん？↓';
+  else if(pct>=40)hook='診断したら「'+title+'」だった。まあ妥当か。お前らも試せ↓';
+  else hook='「'+title+'」きた✨ 上位'+t.pctile+'%らしい。お前ら勝てる？↓';
+  return hook;
+}
+function shareImageToX(){
+  var o=SHIMG.lastMeta; var txt=shareImageText(o);
+  var url='https://mexastarted.github.io/apex/';
+  var tags='APEX,ApexLegends,エーペックス,Apex診断';
+  var intent='https://twitter.com/intent/tweet?text='+encodeURIComponent(txt)+'&url='+encodeURIComponent(url)+'&hashtags='+encodeURIComponent(tags);
+  try{if(window.track)track('share_img','post');}catch(e){}
+  try{if(window.grantCoin){var g=grantCoin(44,{daily:'share_diag',perDay:1});if(g&&window.coinToast)coinToast('🪙 シェアありがとう！ +'+g);}}catch(e){}
+  var note=document.getElementById('shimgNote');
+  if(note)note.innerHTML='① まず上の画像を<b>長押し→保存</b> → ② Xの投稿画面で<b>画像を添付</b>してね！';
+  setTimeout(function(){openX(intent);},400);
+}
+function downloadShareImage(){
+  if(!SHIMG.last)return;
+  try{
+    var a=document.createElement('a'); a.href=SHIMG.last;
+    a.download='apex_diag_'+Date.now()+'.png'; document.body.appendChild(a); a.click(); a.remove();
+    try{if(window.track)track('share_img','download');}catch(e){}
+  }catch(e){alert('保存に失敗しました。画像を長押しで保存してください。');}
+}
+function copyShareText(){
+  var o=SHIMG.lastMeta; if(!o)return;
+  var txt=shareImageText(o)+'\n\n診断はこちら → https://mexastarted.github.io/apex/\n#APEX #ApexLegends #エーペックス #Apex診断';
+  try{
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(function(){shimgToast('コピーしました！');});}
+    else{var ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();shimgToast('コピーしました！');}
+    try{if(window.track)track('share_img','copy');}catch(e){}
+  }catch(e){}
+}
+function shimgToast(msg){var n=document.getElementById('shimgNote');if(n)n.textContent=msg;}
+
+
+
+/* ================================================================
+ * ★ワンボタン ツイート文ジェネレータ
+ *   現在のデータ(プレデターボーダー/マップ/診断)を取得し、
+ *   文言を自動生成してX投稿画面を開く。文言は多数バリエーション
+ *   からランダムなのでbotっぽくならない。投稿は本人が最終決定。
+ * ================================================================ */
+var TWGEN={ site:'https://mexastarted.github.io/apex/', tag:'#APEX #ApexLegends #エーペックス' };
+function twPick(a){ return a[Math.floor(Math.random()*a.length)]; }
+function twNow(){ var d=new Date(); return (d.getMonth()+1)+'/'+d.getDate(); }
+/* X投稿画面を開く（既存openX利用） */
+function twOpen(text){
+  try{if(window.track)track('tweetgen','open');}catch(e){}
+  var url='https://twitter.com/intent/tweet?text='+encodeURIComponent(text);
+  if(typeof openX==='function')openX(url); else window.open(url,'_blank');
+}
+/* 生成した文をプレビューモーダルに出す（コピー/別文言/投稿） */
+function twShow(text, regenFn, kind){
+  var m=document.getElementById('twgModal');
+  if(!m){
+    m=document.createElement('div'); m.id='twgModal'; m.className='twg-ov';
+    m.innerHTML='<div class="twg-box">'
+      +'<div class="twg-h"><b>📝 ツイート文ができました</b><button class="twg-x" onclick="twClose()">✕</button></div>'
+      +'<div class="twg-body"><textarea id="twgText" class="twg-ta" rows="7"></textarea>'
+      +'<div class="twg-cnt" id="twgCnt"></div></div>'
+      +'<div class="twg-acts">'
+      +'<button class="twg-btn post" onclick="twPostNow()">𝕏 この内容で投稿画面へ</button>'
+      +'<button class="twg-btn regen" id="twgRegen">🎲 別の文章にする</button>'
+      +'<button class="twg-btn copy" onclick="twCopy()">📋 コピー</button>'
+      +'</div>'
+      +'<div class="twg-note">投稿ボタンでXの投稿画面が開きます。中身は編集OK。最後にあなたが投稿を押すだけ。</div>'
+      +'</div>';
+    document.body.appendChild(m);
+  }
+  var ta=document.getElementById('twgText'); ta.value=text;
+  twUpdateCount();
+  ta.oninput=twUpdateCount;
+  var rb=document.getElementById('twgRegen');
+  rb.onclick=function(){ if(regenFn)regenFn(); };
+  m.__kind=kind;
+  m.classList.add('on');
+}
+function twUpdateCount(){
+  var ta=document.getElementById('twgText'); if(!ta)return;
+  var n=ta.value.length; var el=document.getElementById('twgCnt');
+  if(el){el.textContent=n+' 文字'+(n>280?' ⚠ 長すぎ（280以内推奨）':''); el.style.color=n>280?'#ff5d73':'#7e8db0';}
+}
+function twClose(){ var m=document.getElementById('twgModal'); if(m)m.classList.remove('on'); }
+function twPostNow(){
+  var ta=document.getElementById('twgText'); if(!ta)return;
+  twOpen(ta.value); 
+}
+function twCopy(){
+  var ta=document.getElementById('twgText'); if(!ta)return;
+  try{
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(ta.value).then(function(){twToast('コピーしました！');});}
+    else{ta.select();document.execCommand('copy');twToast('コピーしました！');}
+  }catch(e){}
+}
+function twToast(msg){ var n=document.querySelector('.twg-note'); if(n)n.textContent=msg; }
+function twErr(msg){ twShow('（データ取得に失敗しました：'+msg+'）\n\n少し時間をおいて再度お試しください。', null, 'err'); }
+
+/* ===== ① プレデターボーダー ===== */
+function twGenPred(){
+  var box=document.getElementById('twgModal');
+  gasCached('pred',300000).then(function(d){
+    if(!d||d.error){ twErr('プレデターボーダー'); return; }
+    var rp=d.RP||{};
+    var order=[['PC','🖥️','PC'],['PS4','🎮','PS4'],['X1','🎮','Xbox'],['SWITCH','🕹️','Switch']];
+    var arr=order.map(function(o){var x=rp[o[0]]||{};return {e:o[1],pl:o[2],val:(x.val!=null?x.val:0),cnt:(x.totalMastersAndPreds!=null?x.totalMastersAndPreds:null)};}).filter(function(x){return x.val>0;});
+    if(!arr.length){ twErr('プレデターボーダーのデータが空'); return; }
+    arr.sort(function(a,b){return b.val-a.val;});
+    var top=arr[0];
+    var line=arr.map(function(x){return x.e+x.pl+' '+x.val.toLocaleString()+'RP';}).join(' / ');
+    var v=top.val.toLocaleString();
+    var templates=[
+      '【'+twNow()+' プレデターボーダー】\n\n現在のプレデターの壁はこちら👇\n'+line+'\n\n'+top.pl+'が一番エグい('+v+'RP)。今日も上位勢の戦い熱すぎる🔥\n\n'+TWGEN.site+'\n'+TWGEN.tag+' #Apexプレデター',
+      '本日のプレデターボーダー📊\n'+line+'\n\nこのライン超えられる猛者おる？💪\nリアルタイムのボーダーはこちらで見れます👇\n'+TWGEN.site+'\n'+TWGEN.tag,
+      'プレデターの壁、今こうなってる👀\n\n'+line+'\n\n'+top.pl+'勢まじで魔境…'+v+'RPて。今シーズンも終盤戦って感じ🔥\n'+TWGEN.site+'\n'+TWGEN.tag+' #Apexランク',
+      '📢 プレデターボーダー速報 ('+twNow()+')\n\n'+line+'\n\nランク上げ勢の参考にどうぞ。毎日更新でチェックできます👇\n'+TWGEN.site+'\n'+TWGEN.tag,
+      '今日のプレデターボーダーはこんな感じ🎯\n'+line+'\n\n自分のRPと比べてみて。あと何RPでプレデター見える？👀\n'+TWGEN.site+'\n'+TWGEN.tag+' #Apexプレデター'
+    ];
+    twShow(twPick(templates), twGenPred, 'pred');
+  }).catch(function(){ twErr('通信エラー'); });
+}
+
+/* ===== ② 今日のマップ（時間毎） ===== */
+function twGenMap(){
+  gasCached('map',60000).then(function(d){
+    if(!d||d.error){ twErr('マップ'); return; }
+    function line(label,o){ if(!o||!o.current)return null; var cur=o.current,nx=o.next||{};
+      var rem=(cur.remainingSecs!=null)?fmt(cur.remainingSecs):'-';
+      return {label:label, name:mapName(cur.map), next:(nx.map?mapName(nx.map):'-'), rem:rem}; }
+    var br=line('カジュアル',d.battle_royale), rk=line('ランク',d.ranked);
+    if(!br&&!rk){ twErr('マップのデータが空'); return; }
+    var parts=[]; if(br)parts.push('🟢 '+br.label+'：'+br.name+'（あと'+br.rem+'）'); if(rk)parts.push('🔴 '+rk.label+'：'+rk.name+'（あと'+rk.rem+'）');
+    var nextParts=[]; if(br&&br.next!=='-')nextParts.push(br.label+'→'+br.next); if(rk&&rk.next!=='-')nextParts.push(rk.label+'→'+rk.next);
+    var body=parts.join('\n');
+    var nx=nextParts.length?('\n\nNEXT: '+nextParts.join(' / ')):'';
+    var templates=[
+      '【今のApexマップ】'+twNow()+'\n\n'+body+nx+'\n\n今からやる人の参考に！マップは時間で変わるので最新はこちら👇\n'+TWGEN.site+'\n'+TWGEN.tag+' #Apexマップ',
+      '🗺️ 現在のマップ情報\n'+body+nx+'\n\nどのマップ来てるか一目でわかる。リアタイ更新はこちら👇\n'+TWGEN.site+'\n'+TWGEN.tag,
+      '今Apexやるならこのマップ🎮\n'+body+nx+'\n\n切り替え時間も分かるので狩り時を逃すな🔥\n'+TWGEN.site+'\n'+TWGEN.tag+' #エーペックス',
+      'マップローテーション ('+twNow()+')📍\n'+body+nx+'\n\n好きなマップ来てる？次のマップまでの時間もチェック👇\n'+TWGEN.site+'\n'+TWGEN.tag,
+      '📢 いまのマップこれ！\n'+body+nx+'\n\n「今どのマップ？」はこれ見れば一発。ブックマーク推奨👇\n'+TWGEN.site+'\n'+TWGEN.tag+' #Apexマップ'
+    ];
+    twShow(twPick(templates), twGenMap, 'map');
+  }).catch(function(){ twErr('通信エラー'); });
+}
+
+/* ===== ③ 本日の開発者の診断結果（ランダム診断） ===== */
+function twGenDiag(){
+  // 登録済み診断からランダムに1つ選び、ランダムな結果を"開発者の今日の結果"として生成
+  var codes=[]; try{ codes=Object.keys(DIAGREG); }catch(e){}
+  // 結果が面白い辛口系を優先
+  var pref=['sagi2','senpan','shiin','mental','miho','tokkou','aimc','ub','ng','ts','tr'];
+  var pool=pref.filter(function(c){return codes.indexOf(c)>=0;});
+  if(!pool.length)pool=codes.slice(0,20);
+  if(!pool.length){ twErr('診断データ'); return; }
+  var code=twPick(pool);
+  var reg=(typeof DIAGREG!=='undefined')?DIAGREG[code]:null;
+  var name=reg?reg.n:'診断';
+  // バンドからランダムな結果名を取得
+  var bandName=''; var pct=Math.floor(Math.random()*100);
+  try{
+    if(typeof BANDF!=='undefined'&&BANDF[code]){ var b=BANDF[code](pct); bandName=b?b.n:''; }
+  }catch(e){}
+  if(!bandName)bandName='？';
+  var templates=[
+    '【本日の開発者診断】🎲\n\n今日は「'+name+'」をやってみた結果…\n→ '+bandName+'\n\nあなたもやってみて。全'+ (codes.length||'100') +'種の診断が無料👇\n'+TWGEN.site+'\n'+TWGEN.tag+' #Apex診断',
+    '開発者、今日の診断結果🔮\n「'+name+'」→ '+bandName+'\n\n…って出た。みんなはどんな結果になる？😏\n'+TWGEN.site+'\n'+TWGEN.tag+' #Apex診断',
+    '今日の一問一答的なやつ🎯\n「'+name+'」で開発者を診断したら\n『'+bandName+'』だった。\n\nお前らも測定してけ👇\n'+TWGEN.site+'\n'+TWGEN.tag,
+    '📊 本日のApex診断ピックアップ\n『'+name+'』\n\n開発者の結果は「'+bandName+'」でした。\nあなたの結果もシェアしてね👇\n'+TWGEN.site+'\n'+TWGEN.tag+' #Apex診断',
+    'ヒマな人向け🎮\n今日のおすすめ診断は「'+name+'」。\n開発者は『'+bandName+'』判定でした…w\n\nやってみる👇\n'+TWGEN.site+'\n'+TWGEN.tag
+  ];
+  twShow(twPick(templates), twGenDiag, 'diag');
+}
+
+/* ===== ④ 今日の名言 ===== */
+function twGenQuote(){
+  var q=''; try{ q=todayQuote(); }catch(e){}
+  if(!q){ twErr('名言データ'); return; }
+  var templates=[
+    '【今日の一言】'+twNow()+'\n\n「'+q+'」\n\n…らしいぞ。今日も1日Apex頑張ろう🔥\n'+TWGEN.site+'\n'+TWGEN.tag,
+    '💬 本日の名言\n"'+q+'"\n\n刺さる人には刺さる。今日も頑張れ👊\n'+TWGEN.site+'\n'+TWGEN.tag+' #エーペックス',
+    '今日の格言メモ📝\n「'+q+'」\n\nApexツールで毎日変わる名言が見れるよ👇\n'+TWGEN.site+'\n'+TWGEN.tag
+  ];
+  twShow(twPick(templates), twGenQuote, 'quote');
+}
+
+/* ===== ⑤ サイト紹介（汎用・宣伝用） ===== */
+function twGenPromo(){
+  var templates=[
+    'Apexの激やばツール作ってます🛠️\n\n・リアルタイムのマップ/プレデターボーダー\n・辛口診断100種以上\n・EA通報機能 など\n\n全部無料。使ってみて👇\n'+TWGEN.site+'\n'+TWGEN.tag,
+    'このApexツール、地味に便利だから使ってほしい👀\n\n今のマップ・プレデボーダーが一発で分かる＋診断で暇つぶしもできる。\n全部無料👇\n'+TWGEN.site+'\n'+TWGEN.tag+' #Apex',
+    '【拡散希望】Apex便利ツール📢\n\nマップ確認・ボーダー確認・診断・通報…Apex勢に必要なもの詰め込みました。\n無料なので気軽にどうぞ👇\n'+TWGEN.site+'\n'+TWGEN.tag,
+    'Apexやってる人、これブックマークしとくと便利だよ🔖\n\nマップもプレデボーダーもリアタイで見れる。診断も地味に当たると好評👇\n'+TWGEN.site+'\n'+TWGEN.tag+' #エーペックス'
+  ];
+  twShow(twPick(templates), twGenPromo, 'promo');
+}
+
+/* ===== ツイート作成メニューを開く ===== */
+function openTweetGen(){
+  try{if(window.track)track('tweetgen','menu');}catch(e){}
+  var m=document.getElementById('twgMenu');
+  if(!m){
+    m=document.createElement('div'); m.id='twgMenu'; m.className='twg-ov';
+    m.innerHTML='<div class="twg-box">'
+      +'<div class="twg-h"><b>📝 ツイート文を作る</b><button class="twg-x" onclick="twMenuClose()">✕</button></div>'
+      +'<div class="twg-menu">'
+      +'<button class="twg-item" onclick="twGenPred()"><span class="twg-ic">👑</span><span><b>プレデターボーダー</b><small>現在のボーダーを取得して投稿文を生成</small></span></button>'
+      +'<button class="twg-item" onclick="twGenMap()"><span class="twg-ic">🗺️</span><span><b>今日のマップ</b><small>今のマップ・次のマップ・残り時間で生成</small></span></button>'
+      +'<button class="twg-item" onclick="twGenDiag()"><span class="twg-ic">🎲</span><span><b>本日の開発者診断</b><small>ランダムな診断結果で投稿文を生成</small></span></button>'
+      +'<button class="twg-item" onclick="twGenQuote()"><span class="twg-ic">💬</span><span><b>今日の名言</b><small>日替わりの名言で投稿文を生成</small></span></button>'
+      +'<button class="twg-item" onclick="twGenPromo()"><span class="twg-ic">📢</span><span><b>サイト紹介</b><small>ツールの宣伝用の投稿文を生成</small></span></button>'
+      +'</div>'
+      +'<div class="twg-note">ボタンを押すと投稿文が自動生成されます。文言は毎回ランダムなので機械的になりません。</div>'
+      +'</div>';
+    document.body.appendChild(m);
+  }
+  m.classList.add('on');
+}
+function twMenuClose(){ var m=document.getElementById('twgMenu'); if(m)m.classList.remove('on'); }
+
 </script>
 </body>
 </html>

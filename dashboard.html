@@ -148,8 +148,8 @@ html:not(.light) .neon2 .sec{box-shadow:0 0 22px rgba(25,227,255,.08)}
 .ad-item-tag{font-size:10px;color:var(--sub,#7e8db0);font-family:monospace;background:rgba(0,0,0,.3);
   border-radius:7px;padding:6px 8px;margin-bottom:9px;max-height:44px;overflow:hidden;word-break:break-all;line-height:1.4}
 .ad-item-acts{display:flex;gap:8px}
-.ad-item-acts button{flex:1;border:1px solid var(--line,#1d2740);background:rgba(255,255,255,.04);
-  color:var(--text,#eaf2ff);border-radius:8px;padding:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit}
+.ad-item-acts button{flex:1;min-width:0;border:1px solid var(--line,#1d2740);background:rgba(255,255,255,.04);
+  color:var(--text,#eaf2ff);border-radius:8px;padding:8px 4px;font-size:11.5px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap}
 .ad-item-acts button.del{color:var(--down,#ff3d5e);border-color:rgba(255,61,94,.3)}
 .ad-item-acts button:active{opacity:.75}
 .ad-site-stat{font-size:13px;line-height:1.7}
@@ -1052,11 +1052,21 @@ function adLoadList(){
         +'<div class="ad-item-end">終了: '+adEsc(a.endText)+'</div>'
         +'<div class="ad-item-tag">'+adEsc((a.a8tag||'').slice(0,180))+((a.a8tag||'').length>180?'…':'')+'</div>'
         +'<div class="ad-item-acts"><button onclick="adToggle(\''+adEsc(a.uid)+'\')">'+(a.active?'停止する':'配信する')+'</button>'
+        +'<button onclick="adExtend(\''+adEsc(a.uid)+'\')">'+(a.expired?'復活(延長)':'期限を延長')+'</button>'
         +'<button class="del" onclick="adDelete(\''+adEsc(a.uid)+'\')">削除</button></div></div>';
     }).join('');
   });
 }
 function adToggle(uid){adJsonp({action:'adToggle',uid:uid},function(d){if(d&&d.ok)adLoadList();else alert('切替失敗');});}
+function adExtend(uid){
+  var days=prompt('何日間 延長しますか？（期限を今日から数えて再設定します）','365');
+  if(days===null)return;
+  days=parseInt(days,10); if(!days||days<1)days=365;
+  adJsonp({action:'adExtend',uid:uid,days:days},function(d){
+    if(d&&d.ok){adLoadList();}
+    else{alert('延長に失敗しました: '+((d&&d.error)||'不明'));}
+  });
+}
 function adDelete(uid){if(!confirm('この広告を削除しますか？'))return;adJsonp({action:'adDelete',uid:uid},function(d){if(d&&d.ok)adLoadList();else alert('削除失敗');});}
 function adRenderSiteStat(){
   var el=$g('adSiteStat');if(!el)return;
